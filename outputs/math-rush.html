@@ -69,8 +69,8 @@
     .stat-value { display: block; margin-top: 2px; font-size: 25px; font-weight: 850; letter-spacing: -.04em; }
     .timer { color: var(--accent-dark); }
     .timer.low { color: var(--bad); }
-    .progress { height: 8px; margin: 0 0 28px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
-    .progress > div { height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width 1s linear; }
+    .progress { height: 10px; margin: 0 0 28px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
+    .progress > div { height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width .3s ease; }
     .problem-box { text-align: center; }
     .problem { min-height: 78px; display: grid; place-items: center; margin-bottom: 20px; font-size: clamp(42px, 12vw, 68px); font-weight: 900; letter-spacing: -.06em; }
     .answer-row { display: flex; gap: 10px; }
@@ -81,12 +81,18 @@
     .feedback.good { color: var(--good); }
     .feedback.bad { color: var(--bad); }
     .feedback.milestone { color: #b54708; }
-    .flash-good { animation: goodFlash .48s ease; }
-    .flash-bad { animation: badFlash .48s ease; }
-    .flash-milestone { animation: milestoneFlash .72s ease; }
-    @keyframes goodFlash { 0% { background: rgba(236,253,243,.9); } 100% { background: transparent; } }
-    @keyframes badFlash { 0% { background: rgba(254,243,242,.95); } 100% { background: transparent; } }
-    @keyframes milestoneFlash { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+    .flash-good { animation: goodFlash .62s ease; }
+    .flash-bad { animation: badFlash .62s ease; }
+    .flash-milestone { animation: milestoneFlash .95s ease; }
+    .flash-good .problem { animation: problemGood .62s cubic-bezier(.2,.8,.2,1); }
+    .flash-bad .problem { animation: problemBad .62s ease; }
+    .flash-milestone .problem { animation: problemMilestone .95s cubic-bezier(.2,.8,.2,1); }
+    @keyframes goodFlash { 0% { background: rgba(236,253,243,.95); box-shadow: inset 0 0 0 4px rgba(18,183,106,.28); } 100% { background: transparent; box-shadow: inset 0 0 0 0 transparent; } }
+    @keyframes badFlash { 0% { background: rgba(254,243,242,.98); box-shadow: inset 0 0 0 4px rgba(217,45,32,.3); } 100% { background: transparent; box-shadow: inset 0 0 0 0 transparent; } }
+    @keyframes milestoneFlash { 0% { background: rgba(255,250,235,.98); box-shadow: inset 0 0 0 5px rgba(247,144,9,.4); } 70% { background: rgba(255,250,235,.35); box-shadow: inset 0 0 0 2px rgba(247,144,9,.18); } 100% { background: transparent; box-shadow: inset 0 0 0 0 transparent; } }
+    @keyframes problemGood { 0% { transform: scale(1); color: var(--good); } 42% { transform: scale(1.12); } 100% { transform: scale(1); } }
+    @keyframes problemBad { 0%, 100% { transform: translateX(0); color: var(--ink); } 20% { transform: translateX(-12px); color: var(--bad); } 40% { transform: translateX(12px); } 60% { transform: translateX(-7px); } 80% { transform: translateX(7px); } }
+    @keyframes problemMilestone { 0% { transform: scale(.92) rotate(-2deg); color: #b54708; } 35% { transform: scale(1.2) rotate(2deg); } 65% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0); } }
     .result { text-align: center; padding-top: 34px; }
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
@@ -107,10 +113,10 @@
       <section id="startScreen" class="screen start-screen">
         <div class="orb">×</div>
         <h2>Готов проверить себя?</h2>
-        <p>У тебя будет 30 секунд на игру. По умолчанию доступны все множители от 1 до 10.</p>
+        <p>У тебя есть 30 секунд на старте, а каждый правильный ответ добавляет время. По умолчанию доступны все множители от 1 до 10.</p>
         <button id="startBtn" class="primary">Старт</button>
         <button id="settingsBtn" class="secondary" type="button">Настройки</button>
-        <p id="settingsSummary" class="settings-summary">Пример: 15 сек · серия: 10</p>
+        <p id="settingsSummary" class="settings-summary">Множители 1–10 · +3 сек · серия: 10</p>
         <p class="hint">Можно отвечать клавишей Enter</p>
         <div id="settingsPanel" class="settings-panel hidden">
           <h3>Настройки игры</h3>
@@ -121,21 +127,21 @@
             <div class="setting"><label for="factorTo">Множители до</label><select id="factorTo">
               <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option>
             </select></div>
-            <div class="setting"><label for="problemTime">Время на пример</label><select id="problemTime"><option>5</option><option>10</option><option selected>15</option><option>20</option><option>30</option></select></div>
+            <div class="setting"><label for="timeBonus">Бонус за ответ</label><select id="timeBonus"><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
             <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
           </div>
           <button id="closeSettingsBtn" class="secondary" type="button">Готово</button>
         </div>
       </section>
 
-      <section id="gameScreen" class="screen hidden" aria-live="polite">
+      <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
         <div class="stats">
           <div class="stat"><span class="stat-label">Игра</span><span id="timer" class="stat-value timer">30</span></div>
-          <div class="stat"><span class="stat-label">Пример</span><span id="problemTimer" class="stat-value timer">15</span></div>
+          <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
           <div class="stat"><span class="stat-label">Счёт</span><span id="score" class="stat-value">0</span></div>
           <div class="stat"><span class="stat-label">Серия</span><span id="streak" class="stat-value">0</span></div>
         </div>
-        <div class="progress" aria-label="Оставшееся время на пример"><div id="progressBar"></div></div>
+        <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
         <div class="problem-box">
           <div id="problem" class="problem">—</div>
           <form id="answerForm" class="answer-row" autocomplete="off">
@@ -148,9 +154,9 @@
 
       <section id="resultScreen" class="screen result hidden">
         <div class="result-icon">✓</div>
-        <h2>Время вышло!</h2>
+        <h2>Раунд завершён!</h2>
         <div id="finalScore" class="result-score">0</div>
-        <p class="result-note">правильных ответов за 30 секунд</p>
+        <p class="result-note">правильных ответов</p>
         <button id="againBtn" class="primary">Сыграть ещё</button>
       </section>
     </section>
@@ -161,13 +167,13 @@
       const GAME_TIME = 30;
       const $ = (id) => document.getElementById(id);
       const startScreen = $('startScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
-      const timerEl = $('timer'), problemTimerEl = $('problemTimer'), scoreEl = $('score'), streakEl = $('streak'), problemEl = $('problem');
+      const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak'), problemEl = $('problem');
       const progressBar = $('progressBar'), answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback');
       const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
-      const factorFrom = $('factorFrom'), factorTo = $('factorTo'), problemTimeSelect = $('problemTime'), streakGoalSelect = $('streakGoal');
-      let timeLeft = GAME_TIME, problemTimeLeft = 15, score = 0, streak = 0, answer = 0, timerId = null;
+      const factorFrom = $('factorFrom'), factorTo = $('factorTo'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal');
+      let timeLeft = GAME_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
-      let settings = { factorFrom: 1, factorTo: 10, problemTime: 15, streakGoal: 10 };
+      let settings = { factorFrom: 1, factorTo: 10, timeBonus: 3, streakGoal: 10 };
 
       function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
@@ -177,7 +183,6 @@
         answer = a * b;
         problemEl.textContent = `${a} × ${b} = ?`;
         answerInput.value = '';
-        problemTimeLeft = settings.problemTime;
         canAnswer = true;
         updateStats();
         answerInput.focus({ preventScroll: true });
@@ -185,12 +190,11 @@
 
       function updateStats() {
         timerEl.textContent = timeLeft;
-        problemTimerEl.textContent = problemTimeLeft;
+        solvedEl.textContent = solved;
         scoreEl.textContent = score;
         streakEl.textContent = streak;
-        progressBar.style.width = `${(problemTimeLeft / settings.problemTime) * 100}%`;
+        progressBar.style.width = `${Math.min(100, Math.max(0, (timeLeft / GAME_TIME) * 100))}%`;
         timerEl.classList.toggle('low', timeLeft <= 10);
-        problemTimerEl.classList.toggle('low', problemTimeLeft <= 5);
       }
 
       function finishGame() {
@@ -230,10 +234,9 @@
 
       function playSound(kind) {
         initAudio();
-        if (kind === 'correct') { tone(660, 0.16); tone(880, 0.2, 0.09); }
-        if (kind === 'milestone') { tone(523, 0.16, 0, 'triangle', 0.1); tone(659, 0.16, 0.11, 'triangle', 0.1); tone(784, 0.28, 0.22, 'triangle', 0.1); }
-        if (kind === 'wrong') tone(190, 0.22, 0, 'sawtooth', 0.055);
-        if (kind === 'timeout') tone(150, 0.28, 0, 'triangle', 0.06);
+        if (kind === 'correct') { tone(784, 0.16, 0, 'sine', 0.12); tone(1046, 0.22, 0.1, 'sine', 0.12); }
+        if (kind === 'milestone') { tone(523, 0.18, 0, 'triangle', 0.13); tone(659, 0.18, 0.12, 'triangle', 0.13); tone(784, 0.2, 0.24, 'triangle', 0.13); tone(1046, 0.34, 0.37, 'triangle', 0.13); }
+        if (kind === 'wrong') { tone(180, 0.2, 0, 'sawtooth', 0.09); tone(120, 0.3, 0.12, 'sawtooth', 0.08); }
       }
 
       function showFlash(className) {
@@ -253,31 +256,17 @@
         }, delay);
       }
 
-      function timeOutProblem() {
-        if (!gameActive || !canAnswer) return;
-        canAnswer = false;
-        streak = 0;
-        feedback.textContent = `Время! Правильный ответ: ${answer}`;
-        feedback.className = 'feedback bad';
-        showFlash('flash-bad');
-        playSound('timeout');
-        updateStats();
-        queueNextProblem(450);
-      }
-
       function tick() {
         timeLeft -= 1;
-        problemTimeLeft -= 1;
         updateStats();
         if (timeLeft <= 0) finishGame();
-        else if (problemTimeLeft <= 0) timeOutProblem();
       }
 
       function startGame() {
         clearInterval(timerId);
         clearTimeout(nextProblemTimeout);
         readSettings();
-        timeLeft = GAME_TIME; score = 0; streak = 0;
+        timeLeft = GAME_TIME; solved = 0; score = 0; streak = 0;
         gameActive = true;
         initAudio();
         startScreen.classList.add('hidden'); resultScreen.classList.add('hidden'); gameScreen.classList.remove('hidden');
@@ -291,8 +280,8 @@
         if (from > to) [from, to] = [to, from];
         factorFrom.value = from;
         factorTo.value = to;
-        settings = { factorFrom: from, factorTo: to, problemTime: Number(problemTimeSelect.value), streakGoal: Number(streakGoalSelect.value) };
-        settingsSummary.textContent = `Множители ${from}–${to} · пример: ${settings.problemTime} сек · серия: ${settings.streakGoal}`;
+        settings = { factorFrom: from, factorTo: to, timeBonus: Number(timeBonusSelect.value), streakGoal: Number(streakGoalSelect.value) };
+        settingsSummary.textContent = `Множители ${from}–${to} · +${settings.timeBonus} сек · серия: ${settings.streakGoal}`;
       }
 
       answerForm.addEventListener('submit', (event) => {
@@ -301,12 +290,14 @@
         const submittedAnswer = answerInput.value.trim();
         answerInput.value = '';
         canAnswer = false;
+        solved += 1;
         const isCorrect = Number(submittedAnswer) === answer;
         const milestone = isCorrect && (streak + 1) % settings.streakGoal === 0;
         if (isCorrect) {
           score += 1;
           streak += 1;
-          feedback.textContent = milestone ? `🔥 Серия ${streak}! Отлично!` : (streak > 1 ? `Верно! Серия: ${streak}` : 'Верно!');
+          timeLeft += settings.timeBonus;
+          feedback.textContent = milestone ? `🔥 Серия ${streak}! +${settings.timeBonus} сек — отлично!` : `Верно! +${settings.timeBonus} сек`;
           feedback.className = milestone ? 'feedback milestone' : 'feedback good';
           showFlash(milestone ? 'flash-milestone' : 'flash-good');
           playSound(milestone ? 'milestone' : 'correct');
@@ -339,7 +330,7 @@
         settingsPanel.classList.add('hidden');
         $('startBtn').focus();
       });
-      [factorFrom, factorTo, problemTimeSelect, streakGoalSelect].forEach((control) => control.addEventListener('change', readSettings));
+      [factorFrom, factorTo, timeBonusSelect, streakGoalSelect].forEach((control) => control.addEventListener('change', readSettings));
       readSettings();
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && !startScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && event.target !== $('startBtn')) startGame();
