@@ -135,7 +135,7 @@
         <div class="menu-heading"><h2>Выбери режим</h2><p>Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
           <button class="mode-card selected" type="button" data-mode="tables"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
-          <button class="mode-card" type="button" data-mode="equations"><span class="mode-icon">x</span><strong>Уравнения</strong><small>Например: x × 5 = 10</small></button>
+          <button class="mode-card" type="button" data-mode="equations"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
           <button class="mode-card" type="button" data-mode="addition"><span class="mode-icon">+</span><strong>Сложение</strong><small>Простые и многозначные числа</small></button>
           <button class="mode-card" type="button" data-mode="multiplication"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
           <button class="mode-card" type="button" data-mode="mixed"><span class="mode-icon">★</span><strong>Смешанный режим</strong><small>Все выбранные типы вперемешку</small></button>
@@ -205,7 +205,7 @@
       const modeNames = { tables: 'Таблица умножения', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Сложное умножение', mixed: 'Смешанный режим' };
       const modeDescriptions = {
         tables: 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.',
-        equations: 'Найди x в примерах вида x × 5 = 10.',
+        equations: 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.',
         addition: 'Складывай числа выбранной сложности — от простых до трёхзначных.',
         multiplication: 'Решай более сложные примеры с умножением однозначных и двузначных чисел.',
         mixed: 'Типы примеров выбираются случайно из отмеченных в настройках.'
@@ -231,8 +231,27 @@
         }
         if (mode === 'equations') {
           const x = randomInt(settings.factorFrom, settings.factorTo);
-          const factor = randomInt(Math.max(2, settings.factorFrom), Math.max(2, settings.factorTo));
-          return { text: `x × ${factor} = ${x * factor}`, answer: x };
+          const operation = ['+', '-', '×', '/'][randomInt(0, 3)];
+          if (operation === '+') {
+            const number = randomInt(1, 10);
+            return { text: `x + ${number} = ${x + number}`, answer: x };
+          }
+          if (operation === '-') {
+            const number = randomInt(1, Math.max(1, x));
+            return { text: `x - ${number} = ${x - number}`, answer: x };
+          }
+          if (operation === '×') {
+            const number = randomInt(2, 10);
+            return { text: `x × ${number} = ${x * number}`, answer: x };
+          }
+          const divisors = [];
+          for (let number = 2; number <= 10; number += 1) if (x % number === 0) divisors.push(number);
+          if (divisors.length) {
+            const number = divisors[randomInt(0, divisors.length - 1)];
+            return { text: `x / ${number} = ${x / number}`, answer: x };
+          }
+          const number = randomInt(1, 10);
+          return { text: `x + ${number} = ${x + number}`, answer: x };
         }
         const range = difficultyRange();
         if (mode === 'addition') {
