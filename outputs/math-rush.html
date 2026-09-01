@@ -150,7 +150,7 @@
           <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
           <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
           <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
-          <div class="mix-options"><label><input type="checkbox" value="tables" checked> Таблица</label><label><input type="checkbox" value="equations" checked> Уравнения</label><label><input type="checkbox" value="addition" checked> Сложение</label><label><input type="checkbox" value="multiplication" checked> Умножение</label></div>
+          <div class="mix-options"><label><input type="checkbox" value="tables" checked> Таблица</label><label><input type="checkbox" value="equations" checked> Уравнения</label><label><input type="checkbox" value="addition" checked> Сложение</label><label><input type="checkbox" value="multiplication" checked> Умножение</label><label><input type="checkbox" value="fractions-simplify" checked> Сокращение дробей</label><label><input type="checkbox" value="fractions-compare" checked> Сравнение дробей</label><label><input type="checkbox" value="fractions-calculate" checked> Действия с дробями</label></div>
         </div>
         <button id="closeSettingsBtn" class="secondary" type="button">Готово</button>
       </div>
@@ -162,6 +162,10 @@
           <button class="mode-card" type="button" data-mode="equations"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
           <button class="mode-card" type="button" data-mode="addition"><span class="mode-icon">+</span><strong>Сложение</strong><small>Простые и многозначные числа</small></button>
           <button class="mode-card" type="button" data-mode="multiplication"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
+          <button class="mode-card" type="button" data-mode="fractions-simplify"><span class="mode-icon">½</span><strong>Сокращение дробей</strong><small>Например: 6/8 = 3/4</small></button>
+          <button class="mode-card" type="button" data-mode="fractions-compare"><span class="mode-icon">?</span><strong>Сравнение дробей</strong><small>Введи &lt;, &gt; или =</small></button>
+          <button class="mode-card" type="button" data-mode="fractions-calculate"><span class="mode-icon">⅓</span><strong>Действия с дробями</strong><small>Сложение, вычитание, × и /</small></button>
+          <button class="mode-card" type="button" data-mode="fractions-mixed"><span class="mode-icon">½</span><strong>Дроби — микс</strong><small>Все задания с дробями</small></button>
           <button class="mode-card" type="button" data-mode="mixed"><span class="mode-icon">★</span><strong>Смешанный режим</strong><small>Все выбранные типы вперемешку</small></button>
         </div>
         <p id="modeDescription" class="mode-description">Вся таблица умножения: оба множителя случайно выбираются от 1 до 10.</p>
@@ -214,13 +218,13 @@
       const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
       const languageData = {
         ru: {
-          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (from, to, start, bonus, goal) => `Множители ${from}–${to} · старт: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => `Верно! +${bonus} сек`, milestone: (streak, bonus) => `🔥 Серия ${streak}! +${bonus} сек — отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 1 до 10', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Сложение', 'Простые и многозначные числа', 'Складывай числа выбранной сложности — от простых до трёхзначных.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
+          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (from, to, start, bonus, goal) => `Множители ${from}–${to} · старт: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => `Верно! +${bonus} сек`, milestone: (streak, bonus) => `🔥 Серия ${streak}! +${bonus} сек — отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 1 до 10', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Сложение', 'Простые и многозначные числа', 'Складывай числа выбранной сложности — от простых до трёхзначных.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], 'fractions-simplify': ['Сокращение дробей', 'Например: 6/8 = 3/4', 'Сократи дробь до несократимого вида.'], 'fractions-compare': ['Сравнение дробей', 'Введи <, > или =', 'Сравни две дроби и введи знак: <, > или =.'], 'fractions-calculate': ['Действия с дробями', 'Сложение, вычитание, × и /', 'Решай примеры с дробями и вводи сокращённый ответ.'], 'fractions-mixed': ['Дроби — микс', 'Все задания с дробями', 'Сокращай, сравнивай и вычисляй дроби вперемешку.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
         en: {
-          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (from, to, start, bonus, goal) => `Multipliers ${from}–${to} · start: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => `Correct! +${bonus}s`, milestone: (streak, bonus) => `🔥 ${streak} streak! +${bonus}s — great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Addition', 'Simple and multi-digit numbers', 'Add numbers at the selected difficulty, from simple to three-digit problems.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
+          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (from, to, start, bonus, goal) => `Multipliers ${from}–${to} · start: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => `Correct! +${bonus}s`, milestone: (streak, bonus) => `🔥 ${streak} streak! +${bonus}s — great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Addition', 'Simple and multi-digit numbers', 'Add numbers at the selected difficulty, from simple to three-digit problems.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
       };
       const settingsLabels = {
-        ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
-        en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
+        ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение', 'fractions-simplify': 'Сокращение дробей', 'fractions-compare': 'Сравнение дробей', 'fractions-calculate': 'Действия с дробями' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
+        en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication', 'fractions-simplify': 'Simplify fractions', 'fractions-compare': 'Compare fractions', 'fractions-calculate': 'Fraction operations' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
       };
       let selectedMode = 'tables';
       let currentQuestionMode = 'tables';
@@ -235,6 +239,40 @@
         if (settings.difficulty === 'simple') return { min: 1, max: 20 };
         if (settings.difficulty === 'expert') return { min: 100, max: 999 };
         return { min: 10, max: 99 };
+      }
+
+      function gcd(a, b) { while (b) [a, b] = [b, a % b]; return Math.abs(a); }
+
+      function simplifyFraction(numerator, denominator) {
+        if (denominator < 0) { numerator *= -1; denominator *= -1; }
+        const divisor = gcd(numerator, denominator);
+        const n = numerator / divisor, d = denominator / divisor;
+        return d === 1 ? String(n) : `${n}/${d}`;
+      }
+
+      function fractionLimit() {
+        if (settings.difficulty === 'simple') return 6;
+        if (settings.difficulty === 'expert') return 20;
+        return 12;
+      }
+
+      function fractionText(numerator, denominator) { return `${numerator}/${denominator}`; }
+
+      function buildFractionCalculation() {
+        const limit = fractionLimit();
+        let firstNumerator = randomInt(1, limit - 1), firstDenominator = randomInt(2, limit);
+        let secondNumerator = randomInt(1, limit - 1), secondDenominator = randomInt(2, limit);
+        const operation = ['+', '-', '×', '/'][randomInt(0, 3)];
+        if (operation === '-' && firstNumerator * secondDenominator < secondNumerator * firstDenominator) {
+          [firstNumerator, secondNumerator] = [secondNumerator, firstNumerator];
+          [firstDenominator, secondDenominator] = [secondDenominator, firstDenominator];
+        }
+        let numerator, denominator;
+        if (operation === '+') { numerator = firstNumerator * secondDenominator + secondNumerator * firstDenominator; denominator = firstDenominator * secondDenominator; }
+        if (operation === '-') { numerator = firstNumerator * secondDenominator - secondNumerator * firstDenominator; denominator = firstDenominator * secondDenominator; }
+        if (operation === '×') { numerator = firstNumerator * secondNumerator; denominator = firstDenominator * secondDenominator; }
+        if (operation === '/') { numerator = firstNumerator * secondDenominator; denominator = firstDenominator * secondNumerator; }
+        return { text: `${fractionText(firstNumerator, firstDenominator)} ${operation} ${fractionText(secondNumerator, secondDenominator)} = ?`, answer: simplifyFraction(numerator, denominator) };
       }
 
       function buildProblem(mode) {
@@ -276,6 +314,22 @@
           const a = settings.difficulty === 'simple' ? randomInt(2, 12) : randomInt(10, settings.difficulty === 'expert' ? 99 : 30);
           const b = settings.difficulty === 'simple' ? randomInt(2, 12) : randomInt(2, settings.difficulty === 'expert' ? 30 : 12);
           return { text: `${a} × ${b} = ?`, answer: a * b };
+        }
+        if (mode === 'fractions-simplify') {
+          const baseDenominator = randomInt(2, fractionLimit());
+          const baseNumerator = randomInt(1, baseDenominator - 1);
+          const multiplier = randomInt(2, 5);
+          return { text: `${baseNumerator * multiplier}/${baseDenominator * multiplier} = ?`, answer: simplifyFraction(baseNumerator, baseDenominator) };
+        }
+        if (mode === 'fractions-compare') {
+          const firstDenominator = randomInt(2, fractionLimit()), secondDenominator = randomInt(2, fractionLimit());
+          const firstNumerator = randomInt(1, firstDenominator), secondNumerator = randomInt(1, secondDenominator);
+          const left = firstNumerator * secondDenominator, right = secondNumerator * firstDenominator;
+          return { text: `${fractionText(firstNumerator, firstDenominator)}  ?  ${fractionText(secondNumerator, secondDenominator)}`, answer: left === right ? '=' : (left > right ? '>' : '<') };
+        }
+        if (mode === 'fractions-calculate') return buildFractionCalculation();
+        if (mode === 'fractions-mixed') {
+          return buildProblem(['fractions-simplify', 'fractions-compare', 'fractions-calculate'][randomInt(0, 2)]);
         }
         return buildProblem('tables');
       }
@@ -408,6 +462,20 @@
         settingsSummary.textContent = languageData[currentLanguage].summary(from, to, settings.startTime, settings.timeBonus, settings.streakGoal);
       }
 
+      function normalizeFractionAnswer(value) {
+        const cleaned = value.trim().replace(/\s+/g, '');
+        if (/^-?\d+$/.test(cleaned)) return simplifyFraction(Number(cleaned), 1);
+        const match = cleaned.match(/^(-?\d+)\/(\d+)$/);
+        if (!match || Number(match[2]) === 0) return null;
+        return simplifyFraction(Number(match[1]), Number(match[2]));
+      }
+
+      function answerMatches(value) {
+        if (typeof answer === 'number') return Number(value) === answer;
+        if (['<', '>', '='].includes(answer)) return value.trim().replace('==', '=') === answer;
+        return normalizeFractionAnswer(value) === answer;
+      }
+
       function applyLanguage() {
         const language = languageData[currentLanguage];
         const labels = settingsLabels[currentLanguage];
@@ -456,7 +524,7 @@
         answerInput.value = '';
         canAnswer = false;
         solved += 1;
-        const isCorrect = Number(submittedAnswer) === answer;
+        const isCorrect = answerMatches(submittedAnswer);
         const milestone = isCorrect && (streak + 1) % settings.streakGoal === 0;
         if (isCorrect) {
           score += 1;
