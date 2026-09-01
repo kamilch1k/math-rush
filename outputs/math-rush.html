@@ -429,6 +429,7 @@
         $('answerInput').placeholder = language.placeholder;
         $('answerInput').setAttribute('aria-label', language.placeholder);
         $('exitBtn').textContent = language.exit;
+        document.querySelector('.progress').setAttribute('aria-label', currentLanguage === 'ru' ? 'Оставшееся время игры' : 'Time remaining');
         $('resultTitle').textContent = language.resultTitle;
         $('againBtn').textContent = language.again;
         $('menuBtn').textContent = language.menu;
