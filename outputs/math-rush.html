@@ -40,7 +40,11 @@
       backdrop-filter: blur(16px);
       overflow: hidden;
     }
-    .top { padding: 30px 30px 8px; }
+    .top { padding: 24px 30px 8px; }
+    .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
+    .global-tools { display: flex; gap: 8px; }
+    .tool-button { padding: 8px 11px; border: 1px solid var(--line); border-radius: 11px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .tool-button:hover { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .eyebrow { margin: 0 0 7px; color: var(--accent); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
     h1 { margin: 0; font-size: clamp(30px, 7vw, 44px); line-height: 1.04; letter-spacing: -.045em; }
     .subtitle { margin: 12px 0 0; color: var(--muted); }
@@ -68,7 +72,7 @@
     .primary:active { transform: translateY(1px); }
     .secondary { width: 100%; margin-top: 10px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.7); font-weight: 750; }
     .secondary:hover { border-color: #b9b4ff; background: #fff; }
-    .settings-panel { margin: 18px 0 0; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.72); text-align: left; }
+    .settings-panel { margin: 0 30px 18px; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.72); text-align: left; }
     .settings-panel h3 { margin: 0 0 13px; font-size: 17px; }
     .settings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .setting label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 12px; font-weight: 700; }
@@ -123,20 +127,36 @@
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } }
+    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } }
   </style>
 </head>
 <body>
   <main class="app">
     <section class="card">
       <header class="top">
-        <p class="eyebrow">Тренировка скорости</p>
-        <h1>Математический рывок</h1>
-        <p class="subtitle">Выбирай режим, настраивай правила и решай примеры как можно быстрее.</p>
+        <div class="top-row">
+          <div><p id="eyebrow" class="eyebrow">Тренировка скорости</p><h1 id="siteTitle">Математический рывок</h1></div>
+          <div class="global-tools"><button id="globalSettingsBtn" class="tool-button" type="button">⚙ Настройки</button><button id="languageBtn" class="tool-button" type="button" aria-label="Переключить язык">EN</button></div>
+        </div>
+        <p id="siteSubtitle" class="subtitle">Выбирай режим, настраивай правила и решай примеры как можно быстрее.</p>
       </header>
 
+      <div id="settingsPanel" class="settings-panel hidden">
+        <h3 id="settingsTitle">Настройки игры</h3>
+        <div class="settings-grid">
+          <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+          <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
+          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option selected>30</option><option>60</option><option>90</option></select></div>
+          <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
+          <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
+          <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
+          <div class="mix-options"><label><input type="checkbox" value="tables" checked> Таблица</label><label><input type="checkbox" value="equations" checked> Уравнения</label><label><input type="checkbox" value="addition" checked> Сложение</label><label><input type="checkbox" value="multiplication" checked> Умножение</label></div>
+        </div>
+        <button id="closeSettingsBtn" class="secondary" type="button">Готово</button>
+      </div>
+
       <section id="menuScreen" class="screen menu-screen">
-        <div class="menu-heading"><h2>Выбери режим</h2><p>Можно менять настройки перед каждой игрой</p></div>
+        <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
           <button class="mode-card selected" type="button" data-mode="tables"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
           <button class="mode-card" type="button" data-mode="equations"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
@@ -146,23 +166,8 @@
         </div>
         <p id="modeDescription" class="mode-description">Вся таблица умножения: оба множителя случайно выбираются от 1 до 10.</p>
         <button id="startBtn" class="primary" type="button">Начать игру</button>
-        <button id="settingsBtn" class="secondary" type="button">Настройки</button>
         <p id="settingsSummary" class="settings-summary">Множители 1–10 · старт: 30 сек · +3 сек · серия: 10</p>
-        <p class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
-
-        <div id="settingsPanel" class="settings-panel hidden">
-          <h3>Настройки игры</h3>
-          <div class="settings-grid">
-            <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
-            <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
-            <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option selected>30</option><option>60</option><option>90</option></select></div>
-            <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
-            <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
-            <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
-            <div class="mix-options"><label><input type="checkbox" value="tables" checked> Таблица</label><label><input type="checkbox" value="equations" checked> Уравнения</label><label><input type="checkbox" value="addition" checked> Сложение</label><label><input type="checkbox" value="multiplication" checked> Умножение</label></div>
-          </div>
-          <button id="closeSettingsBtn" class="secondary" type="button">Готово</button>
-        </div>
+        <p id="menuHintText" class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
@@ -178,7 +183,7 @@
           <div id="problem" class="problem">—</div>
           <form id="answerForm" class="answer-row" autocomplete="off">
             <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
-            <button class="submit" type="submit">Ответить</button>
+            <button id="submitBtn" class="submit" type="submit">Ответить</button>
           </form>
           <div id="feedback" class="feedback" role="status"></div>
           <div id="reward" class="reward" aria-hidden="true"></div>
@@ -187,7 +192,7 @@
 
       <section id="resultScreen" class="screen result hidden">
         <div class="result-icon">✓</div>
-        <h2>Раунд завершён!</h2>
+        <h2 id="resultTitle">Раунд завершён!</h2>
         <div id="finalScore" class="result-score">0</div>
         <p id="resultNote" class="result-note">правильных ответов</p>
         <button id="againBtn" class="primary" type="button">Сыграть ещё</button>
@@ -205,16 +210,21 @@
       const problemEl = $('problem'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback'), reward = $('reward');
       const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
+      const globalSettingsBtn = $('globalSettingsBtn'), languageBtn = $('languageBtn');
       const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
-      const modeNames = { tables: 'Таблица умножения', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Сложное умножение', mixed: 'Смешанный режим' };
-      const modeDescriptions = {
-        tables: 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.',
-        equations: 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.',
-        addition: 'Складывай числа выбранной сложности — от простых до трёхзначных.',
-        multiplication: 'Решай более сложные примеры с умножением однозначных и двузначных чисел.',
-        mixed: 'Типы примеров выбираются случайно из отмеченных в настройках.'
+      const languageData = {
+        ru: {
+          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (from, to, start, bonus, goal) => `Множители ${from}–${to} · старт: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => `Верно! +${bonus} сек`, milestone: (streak, bonus) => `🔥 Серия ${streak}! +${bonus} сек — отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 1 до 10', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Сложение', 'Простые и многозначные числа', 'Складывай числа выбранной сложности — от простых до трёхзначных.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
+        en: {
+          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (from, to, start, bonus, goal) => `Multipliers ${from}–${to} · start: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => `Correct! +${bonus}s`, milestone: (streak, bonus) => `🔥 ${streak} streak! +${bonus}s — great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Addition', 'Simple and multi-digit numbers', 'Add numbers at the selected difficulty, from simple to three-digit problems.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
+      };
+      const settingsLabels = {
+        ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
+        en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
       };
       let selectedMode = 'tables';
+      let currentQuestionMode = 'tables';
+      let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
       let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
@@ -279,8 +289,9 @@
       function newProblem() {
         const mode = nextMode();
         const built = buildProblem(mode);
+        currentQuestionMode = mode;
         answer = built.answer;
-        modeBadge.textContent = modeNames[mode];
+        modeBadge.textContent = languageData[currentLanguage].modes[mode][0];
         problemEl.textContent = built.text;
         answerInput.value = '';
         canAnswer = true;
@@ -304,7 +315,7 @@
         gameActive = false;
         canAnswer = false;
         $('finalScore').textContent = score;
-        $('resultNote').textContent = `${score} правильных ответов · решено примеров: ${solved}`;
+        $('resultNote').textContent = languageData[currentLanguage].resultNote(score, solved);
         gameScreen.classList.add('hidden');
         resultScreen.classList.remove('hidden');
       }
@@ -394,7 +405,46 @@
         factorTo.value = to;
         const mixTypes = [...document.querySelectorAll('.mix-options input:checked')].map((box) => box.value);
         settings = { factorFrom: from, factorTo: to, startTime: Number(startTimeSelect.value), timeBonus: Number(timeBonusSelect.value), streakGoal: Number(streakGoalSelect.value), difficulty: difficultySelect.value, mixTypes };
-        settingsSummary.textContent = `Множители ${from}–${to} · старт: ${settings.startTime} сек · +${settings.timeBonus} сек · серия: ${settings.streakGoal}`;
+        settingsSummary.textContent = languageData[currentLanguage].summary(from, to, settings.startTime, settings.timeBonus, settings.streakGoal);
+      }
+
+      function applyLanguage() {
+        const language = languageData[currentLanguage];
+        const labels = settingsLabels[currentLanguage];
+        document.documentElement.lang = currentLanguage;
+        document.title = language.pageTitle;
+        $('eyebrow').textContent = language.eyebrow;
+        $('siteTitle').textContent = language.pageTitle;
+        $('siteSubtitle').textContent = language.subtitle;
+        $('menuTitle').textContent = language.menuTitle;
+        $('menuHint').textContent = language.menuHint;
+        $('menuHintText').textContent = language.hint;
+        $('globalSettingsBtn').textContent = `⚙ ${language.settings}`;
+        $('languageBtn').textContent = currentLanguage === 'ru' ? 'EN' : 'RU';
+        $('languageBtn').setAttribute('aria-label', language.languageLabel);
+        $('settingsTitle').textContent = language.settingsTitle;
+        $('closeSettingsBtn').textContent = language.ready;
+        $('submitBtn').textContent = language.submit;
+        $('answerInput').placeholder = language.placeholder;
+        $('answerInput').setAttribute('aria-label', language.placeholder);
+        $('exitBtn').textContent = language.exit;
+        $('resultTitle').textContent = language.resultTitle;
+        $('againBtn').textContent = language.again;
+        $('menuBtn').textContent = language.menu;
+        document.querySelectorAll('.stat-label').forEach((label, index) => { label.textContent = [language.stats.time, language.stats.solved, language.stats.score, language.stats.streak][index]; });
+        document.querySelectorAll('.mode-card').forEach((card) => {
+          const mode = card.dataset.mode;
+          card.querySelector('strong').textContent = language.modes[mode][0];
+          card.querySelector('small').textContent = language.modes[mode][1];
+        });
+        $('modeDescription').textContent = language.modes[selectedMode][2];
+        $('modeBadge').textContent = language.modes[currentQuestionMode][0];
+        const labelMap = { factorFrom: 'factorFrom', factorTo: 'factorTo', startTime: 'startTime', timeBonus: 'timeBonus', streakGoal: 'streakGoal', difficulty: 'difficulty' };
+        Object.entries(labelMap).forEach(([controlId, labelKey]) => { document.querySelector(`label[for="${controlId}"]`).textContent = labels[labelKey]; });
+        document.querySelectorAll('.mix-options label').forEach((label) => { const box = label.querySelector('input'); label.lastChild.textContent = ` ${labels.mix[box.value]}`; });
+        difficultySelect.querySelectorAll('option').forEach((option) => { option.textContent = labels.difficultyValues[option.value]; });
+        readSettings();
+        $('resultNote').textContent = language.resultNote(score, solved);
       }
 
       function submitAnswer(event) {
@@ -410,14 +460,14 @@
           score += 1;
           streak += 1;
           timeLeft += settings.timeBonus;
-          feedback.textContent = milestone ? `🔥 Серия ${streak}! +${settings.timeBonus} сек — отлично!` : `Верно! +${settings.timeBonus} сек`;
+          feedback.textContent = milestone ? languageData[currentLanguage].feedback.milestone(streak, settings.timeBonus) : languageData[currentLanguage].feedback.correct(settings.timeBonus);
           feedback.className = milestone ? 'feedback milestone' : 'feedback good';
           showFlash(milestone ? 'flash-milestone' : 'flash-good');
           showReward(milestone ? `🔥 ${streak} подряд!` : `+${settings.timeBonus} сек`, milestone ? 'milestone' : 'good');
           playSound(milestone ? 'milestone' : 'correct');
         } else {
           streak = 0;
-          feedback.textContent = `Не совсем. Правильный ответ: ${answer}`;
+          feedback.textContent = languageData[currentLanguage].feedback.wrong(answer);
           feedback.className = 'feedback bad';
           showFlash('flash-bad');
           showReward('✕ Ошибка', 'bad');
@@ -430,7 +480,7 @@
       document.querySelectorAll('.mode-card').forEach((card) => card.addEventListener('click', () => {
         selectedMode = card.dataset.mode;
         document.querySelectorAll('.mode-card').forEach((item) => item.classList.toggle('selected', item === card));
-        $('modeDescription').textContent = modeDescriptions[selectedMode];
+        $('modeDescription').textContent = languageData[currentLanguage].modes[selectedMode][2];
       }));
       answerForm.addEventListener('submit', submitAnswer);
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
@@ -449,11 +499,12 @@
       }
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
-      $('settingsBtn').addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
+      globalSettingsBtn.addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
+      languageBtn.addEventListener('click', () => { currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru'; applyLanguage(); });
       $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
       [factorFrom, factorTo, startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', readSettings));
       document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
-      readSettings();
+      applyLanguage();
       document.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && event.target !== $('startBtn')) startGame(); });
     })();
   </script>
