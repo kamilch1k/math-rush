@@ -321,6 +321,13 @@
         queueNextProblem(180);
       });
 
+      answerInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          answerForm.requestSubmit();
+        }
+      });
+
       $('startBtn').addEventListener('click', startGame);
       $('againBtn').addEventListener('click', startGame);
       $('settingsBtn').addEventListener('click', () => {
