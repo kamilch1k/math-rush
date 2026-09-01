@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg: #f3f6fb;
-      --card: rgba(255,255,255,.88);
+      --card: rgba(255,255,255,.9);
       --ink: #101828;
       --muted: #667085;
       --line: #e4e7ec;
@@ -16,6 +16,7 @@
       --accent-dark: #4f46e5;
       --good: #079455;
       --bad: #d92d20;
+      --gold: #b54708;
       --shadow: 0 24px 70px rgba(16,24,40,.12);
     }
     * { box-sizing: border-box; }
@@ -30,7 +31,7 @@
                   radial-gradient(circle at 100% 100%, #d8f8ee 0, transparent 30%), var(--bg);
       font: 16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .app { width: min(100%, 560px); }
+    .app { width: min(100%, 680px); }
     .card {
       background: var(--card);
       border: 1px solid rgba(255,255,255,.8);
@@ -44,43 +45,63 @@
     h1 { margin: 0; font-size: clamp(30px, 7vw, 44px); line-height: 1.04; letter-spacing: -.045em; }
     .subtitle { margin: 12px 0 0; color: var(--muted); }
     .screen { padding: 24px 30px 30px; }
-    .start-screen { text-align: center; padding-top: 36px; }
-    .start-screen .orb { margin: 0 auto 22px; }
-    .orb { width: 92px; height: 92px; display: grid; place-items: center; border-radius: 28px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); box-shadow: 0 14px 28px rgba(99,91,255,.28); font-size: 42px; font-weight: 800; transform: rotate(-6deg); }
-    .start-screen h2, .result h2 { margin: 0; font-size: 26px; letter-spacing: -.03em; }
-    .start-screen p { max-width: 390px; margin: 10px auto 25px; color: var(--muted); }
-    button, input { font: inherit; }
+    .hidden { display: none !important; }
+    .menu-heading { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 14px; }
+    .menu-heading h2, .result h2 { margin: 0; font-size: 26px; letter-spacing: -.03em; }
+    .menu-heading p { margin: 0; color: var(--muted); font-size: 13px; text-align: right; }
+    .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
+    .mode-card { min-height: 120px; padding: 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; cursor: pointer; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
+    .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
+    .mode-card.selected { border-color: var(--accent); background: #f7f6ff; box-shadow: 0 8px 20px rgba(99,91,255,.12); }
+    .mode-icon { display: grid; width: 35px; height: 35px; place-items: center; margin-bottom: 11px; border-radius: 11px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); font-size: 19px; font-weight: 900; }
+    .mode-card:nth-child(2) .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
+    .mode-card:nth-child(3) .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
+    .mode-card:nth-child(4) .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
+    .mode-card:nth-child(5) .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
+    .mode-card strong { display: block; font-size: 15px; }
+    .mode-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+    .mode-description { min-height: 25px; margin: 14px 0 18px; color: var(--muted); font-size: 13px; }
+    button, input, select { font: inherit; }
     button { border: 0; cursor: pointer; }
     .primary { width: 100%; padding: 15px 22px; border-radius: 15px; color: #fff; background: var(--accent); font-weight: 800; transition: transform .15s, background .15s, box-shadow .15s; box-shadow: 0 10px 20px rgba(99,91,255,.22); }
     .primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
     .primary:active { transform: translateY(1px); }
     .secondary { width: 100%; margin-top: 10px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.7); font-weight: 750; }
     .secondary:hover { border-color: #b9b4ff; background: #fff; }
-    .hidden { display: none !important; }
-    .settings-panel { margin: 22px 0 0; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.72); text-align: left; }
+    .settings-panel { margin: 18px 0 0; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.72); text-align: left; }
     .settings-panel h3 { margin: 0 0 13px; font-size: 17px; }
-    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .settings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .setting label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 12px; font-weight: 700; }
     select { width: 100%; padding: 10px 11px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: white; }
-    .settings-summary { margin: 16px auto 0 !important; color: var(--muted); font-size: 13px; }
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+    .mix-options { grid-column: 1 / -1; padding-top: 4px; }
+    .mix-options label { display: inline-flex; align-items: center; gap: 7px; margin: 0 12px 8px 0; color: var(--ink); font-size: 13px; font-weight: 600; }
+    .mix-options input { accent-color: var(--accent); }
+    .settings-summary { margin: 14px 0 0 !important; color: var(--muted); font-size: 13px; text-align: center; }
+    .hint { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
     .stat { padding: 13px 14px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); }
     .stat-label { display: block; color: var(--muted); font-size: 12px; }
     .stat-value { display: block; margin-top: 2px; font-size: 25px; font-weight: 850; letter-spacing: -.04em; }
     .timer { color: var(--accent-dark); }
     .timer.low { color: var(--bad); }
-    .progress { height: 10px; margin: 0 0 28px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
+    .progress { height: 10px; margin: 0 0 25px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
     .progress > div { height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width .3s ease; }
-    .problem-box { text-align: center; }
-    .problem { min-height: 78px; display: grid; place-items: center; margin-bottom: 20px; font-size: clamp(42px, 12vw, 68px); font-weight: 900; letter-spacing: -.06em; }
+    .problem-box { position: relative; text-align: center; }
+    .mode-badge { display: inline-block; margin-bottom: 5px; padding: 4px 9px; border-radius: 99px; color: var(--accent-dark); background: #eeecff; font-size: 12px; font-weight: 800; }
+    .problem { min-height: 90px; display: grid; place-items: center; margin-bottom: 17px; font-size: clamp(40px, 11vw, 66px); font-weight: 900; letter-spacing: -.06em; }
     .answer-row { display: flex; gap: 10px; }
     input { min-width: 0; flex: 1; padding: 15px 16px; border: 2px solid var(--line); border-radius: 15px; outline: 0; background: white; color: var(--ink); font-size: 20px; text-align: center; transition: border-color .15s, box-shadow .15s; }
     input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(99,91,255,.12); }
     .submit { padding: 0 22px; border-radius: 15px; color: white; background: var(--ink); font-weight: 800; }
-    .feedback { min-height: 28px; margin-top: 15px; font-weight: 750; }
+    .feedback { min-height: 30px; margin-top: 15px; font-size: 17px; font-weight: 800; }
     .feedback.good { color: var(--good); }
     .feedback.bad { color: var(--bad); }
-    .feedback.milestone { color: #b54708; }
+    .feedback.milestone { color: var(--gold); }
+    .reward { position: absolute; top: 0; right: 10px; min-width: 100px; opacity: 0; pointer-events: none; font-size: 19px; font-weight: 900; }
+    .reward.show { animation: rewardPop .95s ease both; }
+    .reward.good { color: var(--good); }
+    .reward.bad { color: var(--bad); }
+    .reward.milestone { color: var(--gold); }
     .flash-good { animation: goodFlash .62s ease; }
     .flash-bad { animation: badFlash .62s ease; }
     .flash-milestone { animation: milestoneFlash .95s ease; }
@@ -92,13 +113,13 @@
     @keyframes milestoneFlash { 0% { background: rgba(255,250,235,.98); box-shadow: inset 0 0 0 5px rgba(247,144,9,.4); } 70% { background: rgba(255,250,235,.35); box-shadow: inset 0 0 0 2px rgba(247,144,9,.18); } 100% { background: transparent; box-shadow: inset 0 0 0 0 transparent; } }
     @keyframes problemGood { 0% { transform: scale(1); color: var(--good); } 42% { transform: scale(1.12); } 100% { transform: scale(1); } }
     @keyframes problemBad { 0%, 100% { transform: translateX(0); color: var(--ink); } 20% { transform: translateX(-12px); color: var(--bad); } 40% { transform: translateX(12px); } 60% { transform: translateX(-7px); } 80% { transform: translateX(7px); } }
-    @keyframes problemMilestone { 0% { transform: scale(.92) rotate(-2deg); color: #b54708; } 35% { transform: scale(1.2) rotate(2deg); } 65% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0); } }
+    @keyframes problemMilestone { 0% { transform: scale(.92) rotate(-2deg); color: var(--gold); } 35% { transform: scale(1.2) rotate(2deg); } 65% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0); } }
+    @keyframes rewardPop { 0% { opacity: 0; transform: translateY(11px) scale(.8); } 25% { opacity: 1; transform: translateY(0) scale(1.1); } 75% { opacity: 1; transform: translateY(-5px) scale(1); } 100% { opacity: 0; transform: translateY(-18px) scale(.96); } }
     .result { text-align: center; padding-top: 34px; }
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    .hint { margin: 17px 0 0; color: var(--muted); font-size: 13px; }
-    @media (max-width: 450px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .card { border-radius: 24px; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } }
   </style>
 </head>
 <body>
@@ -107,28 +128,34 @@
       <header class="top">
         <p class="eyebrow">Тренировка скорости</p>
         <h1>Математический рывок</h1>
-        <p class="subtitle">Решай примеры на умножение быстро и набери как можно больше очков.</p>
+        <p class="subtitle">Выбирай режим, настраивай правила и решай примеры как можно быстрее.</p>
       </header>
 
-      <section id="startScreen" class="screen start-screen">
-        <div class="orb">×</div>
-        <h2>Готов проверить себя?</h2>
-        <p>У тебя есть 30 секунд на старте, а каждый правильный ответ добавляет время. По умолчанию доступны все множители от 1 до 10.</p>
-        <button id="startBtn" class="primary">Старт</button>
+      <section id="menuScreen" class="screen menu-screen">
+        <div class="menu-heading"><h2>Выбери режим</h2><p>Можно менять настройки перед каждой игрой</p></div>
+        <div class="mode-grid">
+          <button class="mode-card selected" type="button" data-mode="tables"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
+          <button class="mode-card" type="button" data-mode="equations"><span class="mode-icon">x</span><strong>Уравнения</strong><small>Например: x × 5 = 10</small></button>
+          <button class="mode-card" type="button" data-mode="addition"><span class="mode-icon">+</span><strong>Сложение</strong><small>Простые и многозначные числа</small></button>
+          <button class="mode-card" type="button" data-mode="multiplication"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
+          <button class="mode-card" type="button" data-mode="mixed"><span class="mode-icon">★</span><strong>Смешанный режим</strong><small>Все выбранные типы вперемешку</small></button>
+        </div>
+        <p id="modeDescription" class="mode-description">Вся таблица умножения: оба множителя случайно выбираются от 1 до 10.</p>
+        <button id="startBtn" class="primary" type="button">Начать игру</button>
         <button id="settingsBtn" class="secondary" type="button">Настройки</button>
-        <p id="settingsSummary" class="settings-summary">Множители 1–10 · +3 сек · серия: 10</p>
-        <p class="hint">Можно отвечать клавишей Enter</p>
+        <p id="settingsSummary" class="settings-summary">Множители 1–10 · старт: 30 сек · +3 сек · серия: 10</p>
+        <p class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
+
         <div id="settingsPanel" class="settings-panel hidden">
           <h3>Настройки игры</h3>
           <div class="settings-grid">
-            <div class="setting"><label for="factorFrom">Множители от</label><select id="factorFrom">
-              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-            </select></div>
-            <div class="setting"><label for="factorTo">Множители до</label><select id="factorTo">
-              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option>
-            </select></div>
-            <div class="setting"><label for="timeBonus">Бонус за ответ</label><select id="timeBonus"><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
+            <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+            <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
+            <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option selected>30</option><option>60</option><option>90</option></select></div>
+            <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
             <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
+            <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
+            <div class="mix-options"><label><input type="checkbox" value="tables" checked> Таблица</label><label><input type="checkbox" value="equations" checked> Уравнения</label><label><input type="checkbox" value="addition" checked> Сложение</label><label><input type="checkbox" value="multiplication" checked> Умножение</label></div>
           </div>
           <button id="closeSettingsBtn" class="secondary" type="button">Готово</button>
         </div>
@@ -136,19 +163,21 @@
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
         <div class="stats">
-          <div class="stat"><span class="stat-label">Игра</span><span id="timer" class="stat-value timer">30</span></div>
+          <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
           <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
           <div class="stat"><span class="stat-label">Счёт</span><span id="score" class="stat-value">0</span></div>
           <div class="stat"><span class="stat-label">Серия</span><span id="streak" class="stat-value">0</span></div>
         </div>
         <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
         <div class="problem-box">
+          <span id="modeBadge" class="mode-badge">Таблица умножения</span>
           <div id="problem" class="problem">—</div>
           <form id="answerForm" class="answer-row" autocomplete="off">
             <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
             <button class="submit" type="submit">Ответить</button>
           </form>
           <div id="feedback" class="feedback" role="status"></div>
+          <div id="reward" class="reward" aria-hidden="true"></div>
         </div>
       </section>
 
@@ -156,32 +185,80 @@
         <div class="result-icon">✓</div>
         <h2>Раунд завершён!</h2>
         <div id="finalScore" class="result-score">0</div>
-        <p class="result-note">правильных ответов</p>
-        <button id="againBtn" class="primary">Сыграть ещё</button>
+        <p id="resultNote" class="result-note">правильных ответов</p>
+        <button id="againBtn" class="primary" type="button">Сыграть ещё</button>
+        <button id="menuBtn" class="secondary" type="button">Вернуться в меню</button>
       </section>
     </section>
   </main>
 
   <script>
     (() => {
-      const GAME_TIME = 30;
+      const START_TIME = 30;
       const $ = (id) => document.getElementById(id);
-      const startScreen = $('startScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
-      const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak'), problemEl = $('problem');
-      const progressBar = $('progressBar'), answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback');
+      const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
+      const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
+      const problemEl = $('problem'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
+      const answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback'), reward = $('reward');
       const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
-      const factorFrom = $('factorFrom'), factorTo = $('factorTo'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal');
-      let timeLeft = GAME_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
+      const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
+      const modeNames = { tables: 'Таблица умножения', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Сложное умножение', mixed: 'Смешанный режим' };
+      const modeDescriptions = {
+        tables: 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.',
+        equations: 'Найди x в примерах вида x × 5 = 10.',
+        addition: 'Складывай числа выбранной сложности — от простых до трёхзначных.',
+        multiplication: 'Решай более сложные примеры с умножением однозначных и двузначных чисел.',
+        mixed: 'Типы примеров выбираются случайно из отмеченных в настройках.'
+      };
+      let selectedMode = 'tables';
+      let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
-      let settings = { factorFrom: 1, factorTo: 10, timeBonus: 3, streakGoal: 10 };
+      let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
 
       function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+      function difficultyRange() {
+        if (settings.difficulty === 'simple') return { min: 1, max: 20 };
+        if (settings.difficulty === 'expert') return { min: 100, max: 999 };
+        return { min: 10, max: 99 };
+      }
+
+      function buildProblem(mode) {
+        if (mode === 'tables') {
+          const a = randomInt(settings.factorFrom, settings.factorTo);
+          const b = randomInt(settings.factorFrom, settings.factorTo);
+          return { text: `${a} × ${b} = ?`, answer: a * b };
+        }
+        if (mode === 'equations') {
+          const x = randomInt(settings.factorFrom, settings.factorTo);
+          const factor = randomInt(Math.max(2, settings.factorFrom), Math.max(2, settings.factorTo));
+          return { text: `x × ${factor} = ${x * factor}`, answer: x };
+        }
+        const range = difficultyRange();
+        if (mode === 'addition') {
+          const a = randomInt(range.min, range.max), b = randomInt(range.min, range.max);
+          return { text: `${a} + ${b} = ?`, answer: a + b };
+        }
+        if (mode === 'multiplication') {
+          const a = settings.difficulty === 'simple' ? randomInt(2, 12) : randomInt(10, settings.difficulty === 'expert' ? 99 : 30);
+          const b = settings.difficulty === 'simple' ? randomInt(2, 12) : randomInt(2, settings.difficulty === 'expert' ? 30 : 12);
+          return { text: `${a} × ${b} = ?`, answer: a * b };
+        }
+        return buildProblem('tables');
+      }
+
+      function nextMode() {
+        if (selectedMode !== 'mixed') return selectedMode;
+        const types = settings.mixTypes.length ? settings.mixTypes : ['tables'];
+        return types[randomInt(0, types.length - 1)];
+      }
+
       function newProblem() {
-        const a = randomInt(settings.factorFrom, settings.factorTo);
-        const b = randomInt(settings.factorFrom, settings.factorTo);
-        answer = a * b;
-        problemEl.textContent = `${a} × ${b} = ?`;
+        const mode = nextMode();
+        const built = buildProblem(mode);
+        answer = built.answer;
+        modeBadge.textContent = modeNames[mode];
+        problemEl.textContent = built.text;
         answerInput.value = '';
         canAnswer = true;
         updateStats();
@@ -189,11 +266,11 @@
       }
 
       function updateStats() {
-        timerEl.textContent = timeLeft;
+        timerEl.textContent = Math.max(0, timeLeft);
         solvedEl.textContent = solved;
         scoreEl.textContent = score;
         streakEl.textContent = streak;
-        progressBar.style.width = `${Math.min(100, Math.max(0, (timeLeft / GAME_TIME) * 100))}%`;
+        progressBar.style.width = `${Math.min(100, Math.max(0, (timeLeft / settings.startTime) * 100))}%`;
         timerEl.classList.toggle('low', timeLeft <= 10);
       }
 
@@ -204,6 +281,7 @@
         gameActive = false;
         canAnswer = false;
         $('finalScore').textContent = score;
+        $('resultNote').textContent = `${score} правильных ответов · решено примеров: ${solved}`;
         gameScreen.classList.add('hidden');
         resultScreen.classList.remove('hidden');
       }
@@ -243,7 +321,14 @@
         gameScreen.classList.remove('flash-good', 'flash-bad', 'flash-milestone');
         void gameScreen.offsetWidth;
         gameScreen.classList.add(className);
-        setTimeout(() => gameScreen.classList.remove(className), 800);
+        setTimeout(() => gameScreen.classList.remove(className), 950);
+      }
+
+      function showReward(text, kind) {
+        reward.textContent = text;
+        reward.className = `reward ${kind}`;
+        void reward.offsetWidth;
+        reward.classList.add('show');
       }
 
       function queueNextProblem(delay = 180) {
@@ -266,26 +351,31 @@
         clearInterval(timerId);
         clearTimeout(nextProblemTimeout);
         readSettings();
-        timeLeft = GAME_TIME; solved = 0; score = 0; streak = 0;
+        timeLeft = settings.startTime;
+        solved = 0; score = 0; streak = 0;
         gameActive = true;
         initAudio();
-        startScreen.classList.add('hidden'); resultScreen.classList.add('hidden'); gameScreen.classList.remove('hidden');
-        feedback.textContent = ''; feedback.className = 'feedback'; newProblem(); updateStats();
+        menuScreen.classList.add('hidden');
+        resultScreen.classList.add('hidden');
+        gameScreen.classList.remove('hidden');
+        feedback.textContent = '';
+        feedback.className = 'feedback';
+        newProblem();
         timerId = setInterval(tick, 1000);
       }
 
       function readSettings() {
-        let from = Number(factorFrom.value);
-        let to = Number(factorTo.value);
+        let from = Number(factorFrom.value), to = Number(factorTo.value);
         if (from > to) [from, to] = [to, from];
         factorFrom.value = from;
         factorTo.value = to;
-        settings = { factorFrom: from, factorTo: to, timeBonus: Number(timeBonusSelect.value), streakGoal: Number(streakGoalSelect.value) };
-        settingsSummary.textContent = `Множители ${from}–${to} · +${settings.timeBonus} сек · серия: ${settings.streakGoal}`;
+        const mixTypes = [...document.querySelectorAll('.mix-options input:checked')].map((box) => box.value);
+        settings = { factorFrom: from, factorTo: to, startTime: Number(startTimeSelect.value), timeBonus: Number(timeBonusSelect.value), streakGoal: Number(streakGoalSelect.value), difficulty: difficultySelect.value, mixTypes };
+        settingsSummary.textContent = `Множители ${from}–${to} · старт: ${settings.startTime} сек · +${settings.timeBonus} сек · серия: ${settings.streakGoal}`;
       }
 
-      answerForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+      function submitAnswer(event) {
+        if (event) event.preventDefault();
         if (!gameActive || !canAnswer || answerInput.value.trim() === '') return;
         const submittedAnswer = answerInput.value.trim();
         answerInput.value = '';
@@ -300,41 +390,36 @@
           feedback.textContent = milestone ? `🔥 Серия ${streak}! +${settings.timeBonus} сек — отлично!` : `Верно! +${settings.timeBonus} сек`;
           feedback.className = milestone ? 'feedback milestone' : 'feedback good';
           showFlash(milestone ? 'flash-milestone' : 'flash-good');
+          showReward(milestone ? `🔥 ${streak} подряд!` : `+${settings.timeBonus} сек`, milestone ? 'milestone' : 'good');
           playSound(milestone ? 'milestone' : 'correct');
         } else {
           streak = 0;
           feedback.textContent = `Не совсем. Правильный ответ: ${answer}`;
           feedback.className = 'feedback bad';
           showFlash('flash-bad');
+          showReward('✕ Ошибка', 'bad');
           playSound('wrong');
         }
         updateStats();
         queueNextProblem(180);
-      });
+      }
 
-      answerInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          answerForm.requestSubmit();
-        }
-      });
-
+      document.querySelectorAll('.mode-card').forEach((card) => card.addEventListener('click', () => {
+        selectedMode = card.dataset.mode;
+        document.querySelectorAll('.mode-card').forEach((item) => item.classList.toggle('selected', item === card));
+        $('modeDescription').textContent = modeDescriptions[selectedMode];
+      }));
+      answerForm.addEventListener('submit', submitAnswer);
+      answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
       $('startBtn').addEventListener('click', startGame);
       $('againBtn').addEventListener('click', startGame);
-      $('settingsBtn').addEventListener('click', () => {
-        settingsPanel.classList.toggle('hidden');
-        if (!settingsPanel.classList.contains('hidden')) factorFrom.focus();
-      });
-      $('closeSettingsBtn').addEventListener('click', () => {
-        readSettings();
-        settingsPanel.classList.add('hidden');
-        $('startBtn').focus();
-      });
-      [factorFrom, factorTo, timeBonusSelect, streakGoalSelect].forEach((control) => control.addEventListener('change', readSettings));
+      $('menuBtn').addEventListener('click', () => { clearInterval(timerId); clearTimeout(nextProblemTimeout); gameActive = false; resultScreen.classList.add('hidden'); gameScreen.classList.add('hidden'); menuScreen.classList.remove('hidden'); });
+      $('settingsBtn').addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
+      $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
+      [factorFrom, factorTo, startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', readSettings));
+      document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
       readSettings();
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' && !startScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && event.target !== $('startBtn')) startGame();
-      });
+      document.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && event.target !== $('startBtn')) startGame(); });
     })();
   </script>
 </body>
