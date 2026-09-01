@@ -79,6 +79,10 @@
     .settings-summary { margin: 14px 0 0 !important; color: var(--muted); font-size: 13px; text-align: center; }
     .hint { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+    .game-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; }
+    .game-top .mode-badge { margin-bottom: 0; }
+    .exit-button { padding: 7px 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 12px; font-weight: 750; }
+    .exit-button:hover { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .stat { padding: 13px 14px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); }
     .stat-label { display: block; color: var(--muted); font-size: 12px; }
     .stat-value { display: block; margin-top: 2px; font-size: 25px; font-weight: 850; letter-spacing: -.04em; }
@@ -162,6 +166,7 @@
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
+        <div class="game-top"><span id="modeBadge" class="mode-badge">Таблица умножения</span><button id="exitBtn" class="exit-button" type="button">← В меню</button></div>
         <div class="stats">
           <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
           <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
@@ -170,7 +175,6 @@
         </div>
         <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
         <div class="problem-box">
-          <span id="modeBadge" class="mode-badge">Таблица умножения</span>
           <div id="problem" class="problem">—</div>
           <form id="answerForm" class="answer-row" autocomplete="off">
             <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
@@ -432,7 +436,19 @@
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
       $('startBtn').addEventListener('click', startGame);
       $('againBtn').addEventListener('click', startGame);
-      $('menuBtn').addEventListener('click', () => { clearInterval(timerId); clearTimeout(nextProblemTimeout); gameActive = false; resultScreen.classList.add('hidden'); gameScreen.classList.add('hidden'); menuScreen.classList.remove('hidden'); });
+      function goToMenu() {
+        clearInterval(timerId);
+        clearTimeout(nextProblemTimeout);
+        timerId = null;
+        gameActive = false;
+        canAnswer = false;
+        resultScreen.classList.add('hidden');
+        gameScreen.classList.add('hidden');
+        menuScreen.classList.remove('hidden');
+        settingsPanel.classList.add('hidden');
+      }
+      $('exitBtn').addEventListener('click', goToMenu);
+      $('menuBtn').addEventListener('click', goToMenu);
       $('settingsBtn').addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
       $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
       [factorFrom, factorTo, startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', readSettings));
