@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101828">
+  <title>Математический рывок</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --card: rgba(255,255,255,.88);
+      --ink: #101828;
+      --muted: #667085;
+      --line: #e4e7ec;
+      --accent: #635bff;
+      --accent-dark: #4f46e5;
+      --good: #079455;
+      --bad: #d92d20;
+      --shadow: 0 24px 70px rgba(16,24,40,.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 0%, #dfe7ff 0, transparent 34%),
+                  radial-gradient(circle at 100% 100%, #d8f8ee 0, transparent 30%), var(--bg);
+      font: 16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .app { width: min(100%, 560px); }
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+    .top { padding: 30px 30px 8px; }
+    .eyebrow { margin: 0 0 7px; color: var(--accent); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+    h1 { margin: 0; font-size: clamp(30px, 7vw, 44px); line-height: 1.04; letter-spacing: -.045em; }
+    .subtitle { margin: 12px 0 0; color: var(--muted); }
+    .screen { padding: 24px 30px 30px; }
+    .start-screen { text-align: center; padding-top: 36px; }
+    .start-screen .orb { margin: 0 auto 22px; }
+    .orb { width: 92px; height: 92px; display: grid; place-items: center; border-radius: 28px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); box-shadow: 0 14px 28px rgba(99,91,255,.28); font-size: 42px; font-weight: 800; transform: rotate(-6deg); }
+    .start-screen h2, .result h2 { margin: 0; font-size: 26px; letter-spacing: -.03em; }
+    .start-screen p { max-width: 390px; margin: 10px auto 25px; color: var(--muted); }
+    button, input { font: inherit; }
+    button { border: 0; cursor: pointer; }
+    .primary { width: 100%; padding: 15px 22px; border-radius: 15px; color: #fff; background: var(--accent); font-weight: 800; transition: transform .15s, background .15s, box-shadow .15s; box-shadow: 0 10px 20px rgba(99,91,255,.22); }
+    .primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .primary:active { transform: translateY(1px); }
+    .secondary { width: 100%; margin-top: 10px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.7); font-weight: 750; }
+    .secondary:hover { border-color: #b9b4ff; background: #fff; }
+    .hidden { display: none !important; }
+    .settings-panel { margin: 22px 0 0; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.72); text-align: left; }
+    .settings-panel h3 { margin: 0 0 13px; font-size: 17px; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .setting label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 12px; font-weight: 700; }
+    select { width: 100%; padding: 10px 11px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: white; }
+    .settings-summary { margin: 16px auto 0 !important; color: var(--muted); font-size: 13px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+    .stat { padding: 13px 14px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); }
+    .stat-label { display: block; color: var(--muted); font-size: 12px; }
+    .stat-value { display: block; margin-top: 2px; font-size: 25px; font-weight: 850; letter-spacing: -.04em; }
+    .timer { color: var(--accent-dark); }
+    .timer.low { color: var(--bad); }
+    .progress { height: 8px; margin: 0 0 28px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
+    .progress > div { height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width 1s linear; }
+    .problem-box { text-align: center; }
+    .problem { min-height: 78px; display: grid; place-items: center; margin-bottom: 20px; font-size: clamp(42px, 12vw, 68px); font-weight: 900; letter-spacing: -.06em; }
+    .answer-row { display: flex; gap: 10px; }
+    input { min-width: 0; flex: 1; padding: 15px 16px; border: 2px solid var(--line); border-radius: 15px; outline: 0; background: white; color: var(--ink); font-size: 20px; text-align: center; transition: border-color .15s, box-shadow .15s; }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(99,91,255,.12); }
+    .submit { padding: 0 22px; border-radius: 15px; color: white; background: var(--ink); font-weight: 800; }
+    .feedback { min-height: 28px; margin-top: 15px; font-weight: 750; }
+    .feedback.good { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+    .feedback.milestone { color: #b54708; }
+    .flash-good { animation: goodFlash .48s ease; }
+    .flash-bad { animation: badFlash .48s ease; }
+    .flash-milestone { animation: milestoneFlash .72s ease; }
+    @keyframes goodFlash { 0% { background: rgba(236,253,243,.9); } 100% { background: transparent; } }
+    @keyframes badFlash { 0% { background: rgba(254,243,242,.95); } 100% { background: transparent; } }
+    @keyframes milestoneFlash { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+    .result { text-align: center; padding-top: 34px; }
+    .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
+    .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
+    .result-note { margin: 0 0 27px; color: var(--muted); }
+    .hint { margin: 17px 0 0; color: var(--muted); font-size: 13px; }
+    @media (max-width: 450px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .card { border-radius: 24px; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="card">
+      <header class="top">
+        <p class="eyebrow">Тренировка скорости</p>
+        <h1>Математический рывок</h1>
+        <p class="subtitle">Решай примеры на умножение быстро и набери как можно больше очков.</p>
+      </header>
+
+      <section id="startScreen" class="screen start-screen">
+        <div class="orb">×</div>
+        <h2>Готов проверить себя?</h2>
+        <p>У тебя будет 30 секунд на игру. По умолчанию доступны все множители от 1 до 10.</p>
+        <button id="startBtn" class="primary">Старт</button>
+        <button id="settingsBtn" class="secondary" type="button">Настройки</button>
+        <p id="settingsSummary" class="settings-summary">Пример: 15 сек · серия: 10</p>
+        <p class="hint">Можно отвечать клавишей Enter</p>
+        <div id="settingsPanel" class="settings-panel hidden">
+          <h3>Настройки игры</h3>
+          <div class="settings-grid">
+            <div class="setting"><label for="factorFrom">Множители от</label><select id="factorFrom">
+              <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            </select></div>
+            <div class="setting"><label for="factorTo">Множители до</label><select id="factorTo">
+              <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option>
+            </select></div>
+            <div class="setting"><label for="problemTime">Время на пример</label><select id="problemTime"><option>5</option><option>10</option><option selected>15</option><option>20</option><option>30</option></select></div>
+            <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
+          </div>
+          <button id="closeSettingsBtn" class="secondary" type="button">Готово</button>
+        </div>
+      </section>
+
+      <section id="gameScreen" class="screen hidden" aria-live="polite">
+        <div class="stats">
+          <div class="stat"><span class="stat-label">Игра</span><span id="timer" class="stat-value timer">30</span></div>
+          <div class="stat"><span class="stat-label">Пример</span><span id="problemTimer" class="stat-value timer">15</span></div>
+          <div class="stat"><span class="stat-label">Счёт</span><span id="score" class="stat-value">0</span></div>
+          <div class="stat"><span class="stat-label">Серия</span><span id="streak" class="stat-value">0</span></div>
+        </div>
+        <div class="progress" aria-label="Оставшееся время на пример"><div id="progressBar"></div></div>
+        <div class="problem-box">
+          <div id="problem" class="problem">—</div>
+          <form id="answerForm" class="answer-row" autocomplete="off">
+            <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
+            <button class="submit" type="submit">Ответить</button>
+          </form>
+          <div id="feedback" class="feedback" role="status"></div>
+        </div>
+      </section>
+
+      <section id="resultScreen" class="screen result hidden">
+        <div class="result-icon">✓</div>
+        <h2>Время вышло!</h2>
+        <div id="finalScore" class="result-score">0</div>
+        <p class="result-note">правильных ответов за 30 секунд</p>
+        <button id="againBtn" class="primary">Сыграть ещё</button>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const GAME_TIME = 30;
+      const $ = (id) => document.getElementById(id);
+      const startScreen = $('startScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
+      const timerEl = $('timer'), problemTimerEl = $('problemTimer'), scoreEl = $('score'), streakEl = $('streak'), problemEl = $('problem');
+      const progressBar = $('progressBar'), answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback');
+      const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
+      const factorFrom = $('factorFrom'), factorTo = $('factorTo'), problemTimeSelect = $('problemTime'), streakGoalSelect = $('streakGoal');
+      let timeLeft = GAME_TIME, problemTimeLeft = 15, score = 0, streak = 0, answer = 0, timerId = null;
+      let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
+      let settings = { factorFrom: 1, factorTo: 10, problemTime: 15, streakGoal: 10 };
+
+      function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      function newProblem() {
+        const a = randomInt(settings.factorFrom, settings.factorTo);
+        const b = randomInt(settings.factorFrom, settings.factorTo);
+        answer = a * b;
+        problemEl.textContent = `${a} × ${b} = ?`;
+        answerInput.value = '';
+        problemTimeLeft = settings.problemTime;
+        canAnswer = true;
+        updateStats();
+        answerInput.focus({ preventScroll: true });
+      }
+
+      function updateStats() {
+        timerEl.textContent = timeLeft;
+        problemTimerEl.textContent = problemTimeLeft;
+        scoreEl.textContent = score;
+        streakEl.textContent = streak;
+        progressBar.style.width = `${(problemTimeLeft / settings.problemTime) * 100}%`;
+        timerEl.classList.toggle('low', timeLeft <= 10);
+        problemTimerEl.classList.toggle('low', problemTimeLeft <= 5);
+      }
+
+      function finishGame() {
+        clearInterval(timerId);
+        clearTimeout(nextProblemTimeout);
+        timerId = null;
+        gameActive = false;
+        canAnswer = false;
+        $('finalScore').textContent = score;
+        gameScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+      }
+
+      function initAudio() {
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return;
+        try {
+          if (!audioContext) audioContext = new AudioCtor();
+          if (audioContext.state === 'suspended') audioContext.resume();
+        } catch (error) { audioContext = null; }
+      }
+
+      function tone(frequency, duration, delay = 0, type = 'sine', volume = 0.08) {
+        if (!audioContext) return;
+        const now = audioContext.currentTime + delay;
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, now);
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(volume, now + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        oscillator.connect(gain).connect(audioContext.destination);
+        oscillator.start(now);
+        oscillator.stop(now + duration + 0.02);
+      }
+
+      function playSound(kind) {
+        initAudio();
+        if (kind === 'correct') { tone(660, 0.16); tone(880, 0.2, 0.09); }
+        if (kind === 'milestone') { tone(523, 0.16, 0, 'triangle', 0.1); tone(659, 0.16, 0.11, 'triangle', 0.1); tone(784, 0.28, 0.22, 'triangle', 0.1); }
+        if (kind === 'wrong') tone(190, 0.22, 0, 'sawtooth', 0.055);
+        if (kind === 'timeout') tone(150, 0.28, 0, 'triangle', 0.06);
+      }
+
+      function showFlash(className) {
+        gameScreen.classList.remove('flash-good', 'flash-bad', 'flash-milestone');
+        void gameScreen.offsetWidth;
+        gameScreen.classList.add(className);
+        setTimeout(() => gameScreen.classList.remove(className), 800);
+      }
+
+      function queueNextProblem(delay = 180) {
+        clearTimeout(nextProblemTimeout);
+        nextProblemTimeout = setTimeout(() => {
+          if (!gameActive) return;
+          feedback.textContent = '';
+          feedback.className = 'feedback';
+          newProblem();
+        }, delay);
+      }
+
+      function timeOutProblem() {
+        if (!gameActive || !canAnswer) return;
+        canAnswer = false;
+        streak = 0;
+        feedback.textContent = `Время! Правильный ответ: ${answer}`;
+        feedback.className = 'feedback bad';
+        showFlash('flash-bad');
+        playSound('timeout');
+        updateStats();
+        queueNextProblem(450);
+      }
+
+      function tick() {
+        timeLeft -= 1;
+        problemTimeLeft -= 1;
+        updateStats();
+        if (timeLeft <= 0) finishGame();
+        else if (problemTimeLeft <= 0) timeOutProblem();
+      }
+
+      function startGame() {
+        clearInterval(timerId);
+        clearTimeout(nextProblemTimeout);
+        readSettings();
+        timeLeft = GAME_TIME; score = 0; streak = 0;
+        gameActive = true;
+        initAudio();
+        startScreen.classList.add('hidden'); resultScreen.classList.add('hidden'); gameScreen.classList.remove('hidden');
+        feedback.textContent = ''; feedback.className = 'feedback'; newProblem(); updateStats();
+        timerId = setInterval(tick, 1000);
+      }
+
+      function readSettings() {
+        let from = Number(factorFrom.value);
+        let to = Number(factorTo.value);
+        if (from > to) [from, to] = [to, from];
+        factorFrom.value = from;
+        factorTo.value = to;
+        settings = { factorFrom: from, factorTo: to, problemTime: Number(problemTimeSelect.value), streakGoal: Number(streakGoalSelect.value) };
+        settingsSummary.textContent = `Множители ${from}–${to} · пример: ${settings.problemTime} сек · серия: ${settings.streakGoal}`;
+      }
+
+      answerForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!gameActive || !canAnswer || answerInput.value.trim() === '') return;
+        const submittedAnswer = answerInput.value.trim();
+        answerInput.value = '';
+        canAnswer = false;
+        const isCorrect = Number(submittedAnswer) === answer;
+        const milestone = isCorrect && (streak + 1) % settings.streakGoal === 0;
+        if (isCorrect) {
+          score += 1;
+          streak += 1;
+          feedback.textContent = milestone ? `🔥 Серия ${streak}! Отлично!` : (streak > 1 ? `Верно! Серия: ${streak}` : 'Верно!');
+          feedback.className = milestone ? 'feedback milestone' : 'feedback good';
+          showFlash(milestone ? 'flash-milestone' : 'flash-good');
+          playSound(milestone ? 'milestone' : 'correct');
+        } else {
+          streak = 0;
+          feedback.textContent = `Не совсем. Правильный ответ: ${answer}`;
+          feedback.className = 'feedback bad';
+          showFlash('flash-bad');
+          playSound('wrong');
+        }
+        updateStats();
+        queueNextProblem(180);
+      });
+
+      $('startBtn').addEventListener('click', startGame);
+      $('againBtn').addEventListener('click', startGame);
+      $('settingsBtn').addEventListener('click', () => {
+        settingsPanel.classList.toggle('hidden');
+        if (!settingsPanel.classList.contains('hidden')) factorFrom.focus();
+      });
+      $('closeSettingsBtn').addEventListener('click', () => {
+        readSettings();
+        settingsPanel.classList.add('hidden');
+        $('startBtn').focus();
+      });
+      [factorFrom, factorTo, problemTimeSelect, streakGoalSelect].forEach((control) => control.addEventListener('change', readSettings));
+      readSettings();
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !startScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && event.target !== $('startBtn')) startGame();
+      });
+    })();
+  </script>
+</body>
+</html>
