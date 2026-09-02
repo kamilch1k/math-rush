@@ -63,9 +63,17 @@
     .menu-heading h2, .result h2 { margin: 0; font-size: 26px; letter-spacing: -.03em; }
     .menu-heading p { margin: 0; color: var(--muted); font-size: 13px; text-align: right; }
     .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
-    .mode-card { min-height: 120px; padding: 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; cursor: pointer; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
+    .mode-card { position: relative; min-height: 120px; padding: 0; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
     .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
     .mode-card.selected { border-color: var(--accent); background: #f7f6ff; box-shadow: 0 8px 20px rgba(99,91,255,.12); }
+    .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
+    .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
+    .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.85); font-size: 18px; line-height: 1; transition: transform .16s, color .16s, border-color .16s, background .16s; }
+    .mode-settings-button:hover, .mode-settings-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
+    .mode-settings-button.open { transform: rotate(180deg); }
+    .mode-settings { margin: -4px 12px 12px; padding: 10px 11px 11px; border-top: 1px solid var(--line); border-radius: 0 0 11px 11px; background: rgba(255,255,255,.56); }
+    .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
+    .mode-settings-label select { margin-top: 5px; padding: 7px 9px; font-size: 13px; }
     .mode-icon { display: grid; width: 35px; height: 35px; place-items: center; margin-bottom: 11px; border-radius: 11px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); font-size: 19px; font-weight: 900; }
     .mode-card:nth-child(2) .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
     .mode-card:nth-child(3) .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
@@ -92,9 +100,9 @@
     .settings-summary { margin: 14px 0 0 !important; color: var(--muted); font-size: 13px; text-align: center; }
     .hint { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
-    .game-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; }
+    .game-top { display: flex; justify-content: flex-start; align-items: center; gap: 12px; margin-bottom: 15px; }
     .game-top .mode-badge { margin-bottom: 0; }
-    .exit-button { padding: 7px 11px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 12px; font-weight: 750; }
+    .exit-button { display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 23px; font-weight: 850; line-height: 1; }
     .exit-button:hover { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .stat { padding: 13px 14px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); }
     .stat-label { display: block; color: var(--muted); font-size: 12px; }
@@ -172,15 +180,51 @@
       <section id="menuScreen" class="screen menu-screen">
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
-          <button class="mode-card selected" type="button" data-mode="tables"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
-          <button class="mode-card" type="button" data-mode="equations"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
-          <button class="mode-card" type="button" data-mode="addition"><span class="mode-icon">+</span><strong>Сложение</strong><small>Простые и многозначные числа</small></button>
-          <button class="mode-card" type="button" data-mode="multiplication"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
-          <button class="mode-card" type="button" data-mode="fractions-simplify"><span class="mode-icon">½</span><strong>Сокращение дробей</strong><small>Например: 6/8 = 3/4</small></button>
-          <button class="mode-card" type="button" data-mode="fractions-compare"><span class="mode-icon">?</span><strong>Сравнение дробей</strong><small>Введи &lt;, &gt; или =</small></button>
-          <button class="mode-card" type="button" data-mode="fractions-calculate"><span class="mode-icon">⅓</span><strong>Действия с дробями</strong><small>Сложение, вычитание, × и /</small></button>
-          <button class="mode-card" type="button" data-mode="fractions-mixed"><span class="mode-icon">½</span><strong>Дроби — микс</strong><small>Все задания с дробями</small></button>
-          <button class="mode-card" type="button" data-mode="mixed"><span class="mode-icon">★</span><strong>Смешанный режим</strong><small>Все выбранные типы вперемешку</small></button>
+          <article class="mode-card selected" data-mode="tables">
+            <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="tables" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="tables"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="equations">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="equations" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="equations"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="addition">
+            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Сложение</strong><small>Простые и многозначные числа</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="multiplication">
+            <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="multiplication" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="multiplication"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="fractions-simplify">
+            <button class="mode-card-main" type="button"><span class="mode-icon">½</span><strong>Сокращение дробей</strong><small>Например: 6/8 = 3/4</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="fractions-simplify" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="fractions-simplify"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="fractions-compare">
+            <button class="mode-card-main" type="button"><span class="mode-icon">?</span><strong>Сравнение дробей</strong><small>Введи &lt;, &gt; или =</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="fractions-compare" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="fractions-compare"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="fractions-calculate">
+            <button class="mode-card-main" type="button"><span class="mode-icon">⅓</span><strong>Действия с дробями</strong><small>Сложение, вычитание, × и /</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="fractions-calculate" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="fractions-calculate"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="fractions-mixed">
+            <button class="mode-card-main" type="button"><span class="mode-icon">½</span><strong>Дроби — микс</strong><small>Все задания с дробями</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="fractions-mixed" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="fractions-mixed"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="mixed">
+            <button class="mode-card-main" type="button"><span class="mode-icon">★</span><strong>Смешанный режим</strong><small>Все выбранные типы вперемешку</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="mixed" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="mixed"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
         </div>
         <p id="modeDescription" class="mode-description">Вся таблица умножения: оба множителя случайно выбираются от 1 до 10.</p>
         <button id="startBtn" class="primary" type="button">Начать игру</button>
@@ -189,7 +233,7 @@
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
-        <div class="game-top"><span id="modeBadge" class="mode-badge">Таблица умножения</span><button id="exitBtn" class="exit-button" type="button">← В меню</button></div>
+        <div class="game-top"><button id="exitBtn" class="exit-button" type="button" aria-label="В меню" title="В меню">←</button><span id="modeBadge" class="mode-badge">Таблица умножения</span></div>
         <div class="stats">
           <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
           <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
@@ -238,6 +282,10 @@
         en: {
           pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, profile: { level: 'Level', score: 'Overall score', progress: (current) => `${current}/${LEVEL_STEP} to next level`, levelUp: (level) => `⬆ New level: ${level}!` }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (from, to, start, bonus, goal) => `Multipliers ${from}–${to} · start: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => `Correct! +${bonus}s`, milestone: (streak, bonus) => `🔥 ${streak} streak! +${bonus}s — great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Addition', 'Simple and multi-digit numbers', 'Add numbers at the selected difficulty, from simple to three-digit problems.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
       };
+      languageData.ru.exitLabel = 'В меню';
+      languageData.ru.modeSettings = { label: 'Сложность', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
+      languageData.en.exitLabel = 'Menu';
+      languageData.en.modeSettings = { label: 'Difficulty', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
       const settingsLabels = {
         ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение', 'fractions-simplify': 'Сокращение дробей', 'fractions-compare': 'Сравнение дробей', 'fractions-calculate': 'Действия с дробями' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
         en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication', 'fractions-simplify': 'Simplify fractions', 'fractions-compare': 'Compare fractions', 'fractions-calculate': 'Fraction operations' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
@@ -248,6 +296,7 @@
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
       let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
+      const modeDifficulties = { tables: 'advanced', equations: 'advanced', addition: 'advanced', multiplication: 'advanced', 'fractions-simplify': 'advanced', 'fractions-compare': 'advanced', 'fractions-calculate': 'advanced', 'fractions-mixed': 'advanced', mixed: 'advanced' };
       let profile = { totalScore: 0 };
 
       function levelFor(totalScore) { return Math.floor(totalScore / LEVEL_STEP) + 1; }
@@ -297,9 +346,12 @@
 
       function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-      function difficultyRange() {
-        if (settings.difficulty === 'simple') return { min: 1, max: 20 };
-        if (settings.difficulty === 'expert') return { min: 100, max: 999 };
+      function difficultyFor(mode) { return modeDifficulties[mode] || settings.difficulty; }
+
+      function difficultyRange(mode) {
+        const difficulty = difficultyFor(mode);
+        if (difficulty === 'simple') return { min: 1, max: 20 };
+        if (difficulty === 'expert') return { min: 100, max: 999 };
         return { min: 10, max: 99 };
       }
 
@@ -312,16 +364,17 @@
         return d === 1 ? String(n) : `${n}/${d}`;
       }
 
-      function fractionLimit() {
-        if (settings.difficulty === 'simple') return 6;
-        if (settings.difficulty === 'expert') return 20;
+      function fractionLimit(mode) {
+        const difficulty = difficultyFor(mode);
+        if (difficulty === 'simple') return 6;
+        if (difficulty === 'expert') return 20;
         return 12;
       }
 
       function fractionText(numerator, denominator) { return `${numerator}/${denominator}`; }
 
-      function buildFractionCalculation() {
-        const limit = fractionLimit();
+      function buildFractionCalculation(mode = 'fractions-calculate') {
+        const limit = fractionLimit(mode);
         let firstNumerator = randomInt(1, limit - 1), firstDenominator = randomInt(2, limit);
         let secondNumerator = randomInt(1, limit - 1), secondDenominator = randomInt(2, limit);
         const operation = ['+', '-', '×', '/'][randomInt(0, 3)];
@@ -344,7 +397,9 @@
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
         if (mode === 'equations') {
-          const x = randomInt(settings.factorFrom, settings.factorTo);
+          const difficulty = difficultyFor(mode);
+          const equationMax = difficulty === 'simple' ? Math.min(settings.factorTo, 5) : difficulty === 'expert' ? Math.max(settings.factorTo, 20) : settings.factorTo;
+          const x = randomInt(settings.factorFrom, Math.max(settings.factorFrom, equationMax));
           const operation = ['+', '-', '×', '/'][randomInt(0, 3)];
           if (operation === '+') {
             const number = randomInt(1, 10);
@@ -367,29 +422,30 @@
           const number = randomInt(1, 10);
           return { text: `x + ${number} = ${x + number}`, answer: x };
         }
-        const range = difficultyRange();
+        const range = difficultyRange(mode);
         if (mode === 'addition') {
           const a = randomInt(range.min, range.max), b = randomInt(range.min, range.max);
           return { text: `${a} + ${b} = ?`, answer: a + b };
         }
         if (mode === 'multiplication') {
-          const a = settings.difficulty === 'simple' ? randomInt(2, 12) : randomInt(10, settings.difficulty === 'expert' ? 99 : 30);
-          const b = settings.difficulty === 'simple' ? randomInt(2, 12) : randomInt(2, settings.difficulty === 'expert' ? 30 : 12);
+          const difficulty = difficultyFor(mode);
+          const a = difficulty === 'simple' ? randomInt(2, 12) : randomInt(10, difficulty === 'expert' ? 99 : 30);
+          const b = difficulty === 'simple' ? randomInt(2, 12) : randomInt(2, difficulty === 'expert' ? 30 : 12);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
         if (mode === 'fractions-simplify') {
-          const baseDenominator = randomInt(2, fractionLimit());
+          const baseDenominator = randomInt(2, fractionLimit(mode));
           const baseNumerator = randomInt(1, baseDenominator - 1);
           const multiplier = randomInt(2, 5);
           return { text: `${baseNumerator * multiplier}/${baseDenominator * multiplier} = ?`, answer: simplifyFraction(baseNumerator, baseDenominator) };
         }
         if (mode === 'fractions-compare') {
-          const firstDenominator = randomInt(2, fractionLimit()), secondDenominator = randomInt(2, fractionLimit());
+          const firstDenominator = randomInt(2, fractionLimit(mode)), secondDenominator = randomInt(2, fractionLimit(mode));
           const firstNumerator = randomInt(1, firstDenominator), secondNumerator = randomInt(1, secondDenominator);
           const left = firstNumerator * secondDenominator, right = secondNumerator * firstDenominator;
           return { text: `${fractionText(firstNumerator, firstDenominator)}  ?  ${fractionText(secondNumerator, secondDenominator)}`, answer: left === right ? '=' : (left > right ? '>' : '<') };
         }
-        if (mode === 'fractions-calculate') return buildFractionCalculation();
+        if (mode === 'fractions-calculate') return buildFractionCalculation(mode);
         if (mode === 'fractions-mixed') {
           return buildProblem(['fractions-simplify', 'fractions-compare', 'fractions-calculate'][randomInt(0, 2)]);
         }
@@ -558,7 +614,9 @@
         $('submitBtn').textContent = language.submit;
         $('answerInput').placeholder = language.placeholder;
         $('answerInput').setAttribute('aria-label', language.placeholder);
-        $('exitBtn').textContent = language.exit;
+        $('exitBtn').textContent = '←';
+        $('exitBtn').setAttribute('aria-label', language.exitLabel || language.exit.replace('←', '').trim());
+        $('exitBtn').title = language.exitLabel || language.exit.replace('←', '').trim();
         document.querySelector('.progress').setAttribute('aria-label', currentLanguage === 'ru' ? 'Оставшееся время игры' : 'Time remaining');
         $('resultTitle').textContent = language.resultTitle;
         $('againBtn').textContent = language.again;
@@ -569,6 +627,15 @@
           const mode = card.dataset.mode;
           card.querySelector('strong').textContent = language.modes[mode][0];
           card.querySelector('small').textContent = language.modes[mode][1];
+          const modeSettings = card.querySelector('.mode-settings');
+          const modeSettingsButton = card.querySelector('.mode-settings-button');
+          const modeDifficulty = card.querySelector('.mode-difficulty');
+          modeSettingsButton.setAttribute('aria-label', `${language.modeSettings.button}: ${language.modes[mode][0]}`);
+          modeSettingsButton.title = `${language.modeSettings.button}: ${language.modes[mode][0]}`;
+          card.querySelector('.mode-settings-label-text').textContent = language.modeSettings.label;
+          modeDifficulty.value = modeDifficulties[mode];
+          modeDifficulty.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
+          modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
         $('modeDescription').textContent = language.modes[selectedMode][2];
         $('modeBadge').textContent = language.modes[currentQuestionMode][0];
@@ -611,10 +678,38 @@
         queueNextProblem(180);
       }
 
-      document.querySelectorAll('.mode-card').forEach((card) => card.addEventListener('click', () => {
+      function selectMode(card) {
         selectedMode = card.dataset.mode;
         document.querySelectorAll('.mode-card').forEach((item) => item.classList.toggle('selected', item === card));
+        difficultySelect.value = modeDifficulties[selectedMode] || settings.difficulty;
         $('modeDescription').textContent = languageData[currentLanguage].modes[selectedMode][2];
+        readSettings();
+      }
+
+      function closeModeSettings() {
+        document.querySelectorAll('.mode-settings').forEach((panel) => panel.classList.add('hidden'));
+        document.querySelectorAll('.mode-settings-button').forEach((button) => { button.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); });
+      }
+
+      function toggleModeSettings(button) {
+        const card = button.closest('.mode-card');
+        const panel = card.querySelector('.mode-settings');
+        const shouldOpen = panel.classList.contains('hidden');
+        closeModeSettings();
+        if (shouldOpen) {
+          panel.classList.remove('hidden');
+          button.classList.add('open');
+          button.setAttribute('aria-expanded', 'true');
+          card.querySelector('.mode-difficulty').focus();
+        }
+      }
+
+      document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => selectMode(button.closest('.mode-card'))));
+      document.querySelectorAll('.mode-settings-button').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); toggleModeSettings(button); }));
+      document.querySelectorAll('.mode-difficulty').forEach((control) => control.addEventListener('change', () => {
+        const mode = control.dataset.modeDifficulty;
+        modeDifficulties[mode] = control.value;
+        if (mode === selectedMode) { difficultySelect.value = control.value; readSettings(); }
       }));
       answerForm.addEventListener('submit', submitAnswer);
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
@@ -630,17 +725,19 @@
         gameScreen.classList.add('hidden');
         menuScreen.classList.remove('hidden');
         settingsPanel.classList.add('hidden');
+        closeModeSettings();
       }
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
       globalSettingsBtn.addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
       languageBtn.addEventListener('click', () => { currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru'; applyLanguage(); });
       $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
-      [factorFrom, factorTo, startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', readSettings));
+      [factorFrom, factorTo, startTimeSelect, timeBonusSelect, streakGoalSelect].forEach((control) => control.addEventListener('change', readSettings));
+      difficultySelect.addEventListener('change', () => { modeDifficulties[selectedMode] = difficultySelect.value; readSettings(); });
       document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
       loadProfile();
       applyLanguage();
-      document.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && event.target !== $('startBtn')) startGame(); });
+      document.addEventListener('keydown', (event) => { const tagName = event.target && event.target.tagName; const isControl = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(tagName); if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && !isControl) startGame(); });
     })();
   </script>
 </body>
