@@ -68,9 +68,10 @@
     .mode-card.selected { border-color: var(--accent); background: #f7f6ff; box-shadow: 0 8px 20px rgba(99,91,255,.12); }
     .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
     .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
-    .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.85); font-size: 18px; line-height: 1; transition: transform .16s, color .16s, border-color .16s, background .16s; }
+    .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.85); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s; }
+    .mode-settings-button::before { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .16s; }
     .mode-settings-button:hover, .mode-settings-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
-    .mode-settings-button.open { transform: rotate(180deg); }
+    .mode-settings-button.open::before { transform: translateY(2px) rotate(225deg); }
     .mode-settings { margin: -4px 12px 12px; padding: 10px 11px 11px; border-top: 1px solid var(--line); border-radius: 0 0 11px 11px; background: rgba(255,255,255,.56); }
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
     .mode-settings-label select { margin-top: 5px; padding: 7px 9px; font-size: 13px; }
@@ -102,7 +103,7 @@
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
     .game-top { display: flex; justify-content: flex-start; align-items: center; gap: 12px; margin-bottom: 15px; }
     .game-top .mode-badge { margin-bottom: 0; }
-    .exit-button { display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 23px; font-weight: 850; line-height: 1; }
+    .exit-button { display: inline-flex; min-height: 40px; align-items: center; gap: 7px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 14px; font-weight: 800; line-height: 1; }
     .exit-button:hover { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .stat { padding: 13px 14px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); }
     .stat-label { display: block; color: var(--muted); font-size: 12px; }
@@ -614,7 +615,7 @@
         $('submitBtn').textContent = language.submit;
         $('answerInput').placeholder = language.placeholder;
         $('answerInput').setAttribute('aria-label', language.placeholder);
-        $('exitBtn').textContent = '←';
+        $('exitBtn').textContent = language.exit;
         $('exitBtn').setAttribute('aria-label', language.exitLabel || language.exit.replace('←', '').trim());
         $('exitBtn').title = language.exitLabel || language.exit.replace('←', '').trim();
         document.querySelector('.progress').setAttribute('aria-label', currentLanguage === 'ru' ? 'Оставшееся время игры' : 'Time remaining');
