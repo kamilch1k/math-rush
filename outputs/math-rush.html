@@ -73,8 +73,9 @@
     .mode-settings-button:hover, .mode-settings-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .mode-settings-button.open::before { transform: translateY(2px) rotate(225deg); }
     .mode-settings { margin: -4px 12px 12px; padding: 10px 11px 11px; border-top: 1px solid var(--line); border-radius: 0 0 11px 11px; background: rgba(255,255,255,.56); }
+    .mode-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
-    .mode-settings-label select { margin-top: 5px; padding: 7px 9px; font-size: 13px; }
+    .mode-settings-label select { width: 100%; margin-top: 5px; padding: 7px 9px; font-size: 13px; }
     .mode-icon { display: grid; width: 35px; height: 35px; place-items: center; margin-bottom: 11px; border-radius: 11px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); font-size: 19px; font-weight: 900; }
     .mode-card:nth-child(2) .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
     .mode-card:nth-child(3) .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
@@ -146,7 +147,7 @@
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } }
+    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } }
   </style>
 </head>
 <body>
@@ -171,7 +172,7 @@
         <div class="settings-grid">
           <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
           <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
-          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option selected>30</option><option>60</option><option>90</option></select></div>
+          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option selected>30</option><option>40</option><option>60</option><option>90</option></select></div>
           <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
           <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
           <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
@@ -194,9 +195,9 @@
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="equations"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <article class="mode-card" data-mode="addition">
-            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Сложение</strong><small>Простые и многозначные числа</small></button>
+            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Простое сложение</strong><small>Числа от 1 до 19 · 40 секунд</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
-            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text" data-mode-setting-label="difficulty">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition" data-mode-config="difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <article class="mode-card" data-mode="multiplication">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
@@ -281,14 +282,14 @@
       const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
       const languageData = {
         ru: {
-          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, profile: { level: 'Уровень', score: 'Общий счёт', progress: (current) => `${current}/${LEVEL_STEP} до следующего уровня`, levelUp: (level) => `⬆ Новый уровень: ${level}!` }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (from, to, start, bonus, goal) => `Множители ${from}–${to} · старт: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => `Верно! +${bonus} сек`, milestone: (streak, bonus) => `🔥 Серия ${streak}! +${bonus} сек — отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 1 до 10', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Сложение', 'Простые и многозначные числа', 'Складывай числа выбранной сложности — от простых до трёхзначных.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], 'fractions-simplify': ['Сокращение дробей', 'Например: 6/8 = 3/4', 'Сократи дробь до несократимого вида.'], 'fractions-compare': ['Сравнение дробей', 'Введи <, > или =', 'Сравни две дроби и введи знак: <, > или =.'], 'fractions-calculate': ['Действия с дробями', 'Сложение, вычитание, × и /', 'Решай примеры с дробями и вводи сокращённый ответ.'], 'fractions-mixed': ['Дроби — микс', 'Все задания с дробями', 'Сокращай, сравнивай и вычисляй дроби вперемешку.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
+          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, profile: { level: 'Уровень', score: 'Общий счёт', progress: (current) => `${current}/${LEVEL_STEP} до следующего уровня`, levelUp: (level) => `⬆ Новый уровень: ${level}!` }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (mode, start, bonus, goal) => `${mode} · время: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => `Верно! +${bonus} сек`, milestone: (streak, bonus) => `🔥 Серия ${streak}! +${bonus} сек — отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 1 до 10', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Простое сложение', 'Числа от 1 до 19 · 40 секунд', 'Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], 'fractions-simplify': ['Сокращение дробей', 'Например: 6/8 = 3/4', 'Сократи дробь до несократимого вида.'], 'fractions-compare': ['Сравнение дробей', 'Введи <, > или =', 'Сравни две дроби и введи знак: <, > или =.'], 'fractions-calculate': ['Действия с дробями', 'Сложение, вычитание, × и /', 'Решай примеры с дробями и вводи сокращённый ответ.'], 'fractions-mixed': ['Дроби — микс', 'Все задания с дробями', 'Сокращай, сравнивай и вычисляй дроби вперемешку.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
         en: {
-          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, profile: { level: 'Level', score: 'Overall score', progress: (current) => `${current}/${LEVEL_STEP} to next level`, levelUp: (level) => `⬆ New level: ${level}!` }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (from, to, start, bonus, goal) => `Multipliers ${from}–${to} · start: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => `Correct! +${bonus}s`, milestone: (streak, bonus) => `🔥 ${streak} streak! +${bonus}s — great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Addition', 'Simple and multi-digit numbers', 'Add numbers at the selected difficulty, from simple to three-digit problems.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
+          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, profile: { level: 'Level', score: 'Overall score', progress: (current) => `${current}/${LEVEL_STEP} to next level`, levelUp: (level) => `⬆ New level: ${level}!` }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (mode, start, bonus, goal) => `${mode} · time: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => `Correct! +${bonus}s`, milestone: (streak, bonus) => `🔥 ${streak} streak! +${bonus}s — great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Simple addition', 'Numbers from 1 to 19 · 40 seconds', 'Add two numbers from 1 to 19. Use the card settings to expand the range or change the timer.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
       };
       languageData.ru.exitLabel = 'В меню';
-      languageData.ru.modeSettings = { label: 'Сложность', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
+      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
       languageData.en.exitLabel = 'Menu';
-      languageData.en.modeSettings = { label: 'Difficulty', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
+      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
       const settingsLabels = {
         ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение', 'fractions-simplify': 'Сокращение дробей', 'fractions-compare': 'Сравнение дробей', 'fractions-calculate': 'Действия с дробями' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
         en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication', 'fractions-simplify': 'Simplify fractions', 'fractions-compare': 'Compare fractions', 'fractions-calculate': 'Fraction operations' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
@@ -299,7 +300,17 @@
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
       let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
-      const modeDifficulties = { tables: 'advanced', equations: 'advanced', addition: 'advanced', multiplication: 'advanced', 'fractions-simplify': 'advanced', 'fractions-compare': 'advanced', 'fractions-calculate': 'advanced', 'fractions-mixed': 'advanced', mixed: 'advanced' };
+      const modeConfigs = {
+        tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10 },
+        multiplication: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        'fractions-simplify': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        'fractions-compare': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        'fractions-calculate': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        'fractions-mixed': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
+        mixed: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 }
+      };
       let profile = { totalScore: 0 };
 
       function levelFor(totalScore) { return Math.floor(totalScore / LEVEL_STEP) + 1; }
@@ -349,13 +360,82 @@
 
       function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
-      function difficultyFor(mode) { return modeDifficulties[mode] || settings.difficulty; }
+      function configFor(mode = selectedMode) { return modeConfigs[mode] || modeConfigs.tables; }
+
+      function difficultyFor(mode) { return configFor(mode).difficulty || settings.difficulty; }
 
       function difficultyRange(mode) {
         const difficulty = difficultyFor(mode);
-        if (difficulty === 'simple') return { min: 1, max: 20 };
+        if (difficulty === 'simple') return { min: 1, max: 19 };
         if (difficulty === 'expert') return { min: 100, max: 999 };
         return { min: 10, max: 99 };
+      }
+
+      const modeControlOptions = {
+        startTime: [15, 20, 30, 40, 60, 90],
+        timeBonus: [0, 1, 2, 3, 5, 10],
+        streakGoal: [5, 10, 15, 20]
+      };
+
+      function makeModeControl(mode, key, values) {
+        const label = document.createElement('label');
+        label.className = 'mode-settings-label';
+        const labelText = document.createElement('span');
+        labelText.dataset.modeSettingLabel = key;
+        const control = document.createElement('select');
+        control.className = 'mode-config';
+        control.dataset.mode = mode;
+        control.dataset.modeConfig = key;
+        values.forEach((value) => {
+          const option = document.createElement('option');
+          option.value = String(value);
+          option.textContent = String(value);
+          control.append(option);
+        });
+        label.append(labelText, control);
+        return label;
+      }
+
+      function ensureModeSettingsControls() {
+        document.querySelectorAll('.mode-card').forEach((card) => {
+          const mode = card.dataset.mode;
+          const panel = card.querySelector('.mode-settings');
+          const difficultyLabel = panel.querySelector('.mode-settings-label');
+          const difficultyText = difficultyLabel.querySelector('.mode-settings-label-text');
+          const difficultyControl = panel.querySelector('.mode-difficulty');
+          difficultyText.dataset.modeSettingLabel = 'difficulty';
+          difficultyControl.dataset.mode = mode;
+          difficultyControl.dataset.modeConfig = 'difficulty';
+          const grid = document.createElement('div');
+          grid.className = 'mode-settings-grid';
+          grid.append(difficultyLabel);
+          Object.entries(modeControlOptions).forEach(([key, values]) => grid.append(makeModeControl(mode, key, values)));
+          panel.append(grid);
+        });
+      }
+
+      function syncModeCardControls(mode) {
+        const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
+        if (!card) return;
+        const config = configFor(mode);
+        card.querySelectorAll('[data-mode-config]').forEach((control) => { control.value = String(config[control.dataset.modeConfig]); });
+      }
+
+      function syncGlobalSettingsControls() {
+        const config = configFor(selectedMode);
+        difficultySelect.value = config.difficulty;
+        startTimeSelect.value = String(config.startTime);
+        timeBonusSelect.value = String(config.timeBonus);
+        streakGoalSelect.value = String(config.streakGoal);
+      }
+
+      function updateSelectedModeConfigFromGlobalControls() {
+        const config = configFor(selectedMode);
+        config.difficulty = difficultySelect.value;
+        config.startTime = Number(startTimeSelect.value);
+        config.timeBonus = Number(timeBonusSelect.value);
+        config.streakGoal = Number(streakGoalSelect.value);
+        syncModeCardControls(selectedMode);
       }
 
       function gcd(a, b) { while (b) [a, b] = [b, a % b]; return Math.abs(a); }
@@ -581,8 +661,9 @@
         factorFrom.value = from;
         factorTo.value = to;
         const mixTypes = [...document.querySelectorAll('.mix-options input:checked')].map((box) => box.value);
-        settings = { factorFrom: from, factorTo: to, startTime: Number(startTimeSelect.value), timeBonus: Number(timeBonusSelect.value), streakGoal: Number(streakGoalSelect.value), difficulty: difficultySelect.value, mixTypes };
-        settingsSummary.textContent = languageData[currentLanguage].summary(from, to, settings.startTime, settings.timeBonus, settings.streakGoal);
+        const modeConfig = configFor(selectedMode);
+        settings = { factorFrom: from, factorTo: to, startTime: modeConfig.startTime, timeBonus: modeConfig.timeBonus, streakGoal: modeConfig.streakGoal, difficulty: modeConfig.difficulty, mixTypes };
+        settingsSummary.textContent = languageData[currentLanguage].summary(languageData[currentLanguage].modes[selectedMode][0], settings.startTime, settings.timeBonus, settings.streakGoal);
       }
 
       function normalizeFractionAnswer(value) {
@@ -634,12 +715,13 @@
           card.querySelector('small').textContent = language.modes[mode][1];
           const modeSettings = card.querySelector('.mode-settings');
           const modeSettingsButton = card.querySelector('.mode-settings-button');
-          const modeDifficulty = card.querySelector('.mode-difficulty');
           modeSettingsButton.setAttribute('aria-label', `${language.modeSettings.button}: ${language.modes[mode][0]}`);
           modeSettingsButton.title = `${language.modeSettings.button}: ${language.modes[mode][0]}`;
-          card.querySelector('.mode-settings-label-text').textContent = language.modeSettings.label;
-          modeDifficulty.value = modeDifficulties[mode];
-          modeDifficulty.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
+          card.querySelectorAll('[data-mode-setting-label]').forEach((label) => { label.textContent = language.modeSettings[label.dataset.modeSettingLabel]; });
+          card.querySelectorAll('[data-mode-config]').forEach((control) => {
+            control.value = String(configFor(mode)[control.dataset.modeConfig]);
+            if (control.dataset.modeConfig === 'difficulty') control.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
+          });
           modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
         $('modeDescription').textContent = language.modes[selectedMode][2];
@@ -648,6 +730,7 @@
         Object.entries(labelMap).forEach(([controlId, labelKey]) => { document.querySelector(`label[for="${controlId}"]`).textContent = labels[labelKey]; });
         document.querySelectorAll('.mix-options label').forEach((label) => { const box = label.querySelector('input'); label.lastChild.textContent = ` ${labels.mix[box.value]}`; });
         difficultySelect.querySelectorAll('option').forEach((option) => { option.textContent = labels.difficultyValues[option.value]; });
+        syncGlobalSettingsControls();
         readSettings();
         $('resultNote').textContent = language.resultNote(score, solved);
       }
@@ -686,7 +769,7 @@
       function selectMode(card) {
         selectedMode = card.dataset.mode;
         document.querySelectorAll('.mode-card').forEach((item) => item.classList.toggle('selected', item === card));
-        difficultySelect.value = modeDifficulties[selectedMode] || settings.difficulty;
+        syncGlobalSettingsControls();
         $('modeDescription').textContent = languageData[currentLanguage].modes[selectedMode][2];
         readSettings();
       }
@@ -705,16 +788,20 @@
           panel.classList.remove('hidden');
           button.classList.add('open');
           button.setAttribute('aria-expanded', 'true');
-          card.querySelector('.mode-difficulty').focus();
+          card.querySelector('[data-mode-config]').focus();
         }
       }
 
+      ensureModeSettingsControls();
       document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => selectMode(button.closest('.mode-card'))));
       document.querySelectorAll('.mode-settings-button').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); toggleModeSettings(button); }));
-      document.querySelectorAll('.mode-difficulty').forEach((control) => control.addEventListener('change', () => {
-        const mode = control.dataset.modeDifficulty;
-        modeDifficulties[mode] = control.value;
-        if (mode === selectedMode) { difficultySelect.value = control.value; readSettings(); }
+      document.querySelectorAll('[data-mode-config]').forEach((control) => control.addEventListener('change', () => {
+        const mode = control.dataset.mode;
+        const config = configFor(mode);
+        const key = control.dataset.modeConfig;
+        config[key] = key === 'difficulty' ? control.value : Number(control.value);
+        if (mode !== selectedMode) selectMode(control.closest('.mode-card'));
+        else { syncGlobalSettingsControls(); readSettings(); }
       }));
       answerForm.addEventListener('submit', submitAnswer);
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
@@ -738,8 +825,8 @@
       globalSettingsBtn.addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
       languageBtn.addEventListener('click', () => { currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru'; applyLanguage(); });
       $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
-      [factorFrom, factorTo, startTimeSelect, timeBonusSelect, streakGoalSelect].forEach((control) => control.addEventListener('change', readSettings));
-      difficultySelect.addEventListener('change', () => { modeDifficulties[selectedMode] = difficultySelect.value; readSettings(); });
+      [factorFrom, factorTo].forEach((control) => control.addEventListener('change', readSettings));
+      [startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', () => { updateSelectedModeConfigFromGlobalControls(); readSettings(); }));
       document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
       loadProfile();
       applyLanguage();
