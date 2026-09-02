@@ -849,6 +849,10 @@
       }));
       answerForm.addEventListener('submit', submitAnswer);
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
+      answerInput.addEventListener('input', () => {
+        const value = answerInput.value.trim();
+        if (gameActive && canAnswer && value !== '' && answerMatches(value)) submitAnswer();
+      });
       $('startBtn').addEventListener('click', startGame);
       $('againBtn').addEventListener('click', startGame);
       function goToMenu() {
