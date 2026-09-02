@@ -103,7 +103,8 @@
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
     .game-top { display: flex; justify-content: flex-start; align-items: center; gap: 12px; margin-bottom: 15px; }
     .game-top .mode-badge { margin-bottom: 0; }
-    .exit-button { position: fixed; top: 20px; left: 20px; z-index: 20; display: inline-flex; min-height: 44px; align-items: center; gap: 7px; padding: 10px 15px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 10px 28px rgba(16,24,40,.14); font-size: 14px; font-weight: 850; line-height: 1; }
+    .exit-button { position: fixed; top: 20px; left: 20px; z-index: 20; display: none; min-height: 44px; align-items: center; gap: 7px; padding: 10px 15px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 10px 28px rgba(16,24,40,.14); font-size: 14px; font-weight: 850; line-height: 1; }
+    .exit-button.visible { display: inline-flex; }
     .exit-button:hover { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .stat { padding: 13px 14px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.72); }
     .stat-label { display: block; color: var(--muted); font-size: 12px; }
@@ -149,6 +150,7 @@
   </style>
 </head>
 <body>
+  <button id="exitBtn" class="exit-button" type="button" aria-label="В меню" title="В меню">←</button>
   <main class="app">
     <section class="card">
       <header class="top">
@@ -234,7 +236,7 @@
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
-        <div class="game-top"><button id="exitBtn" class="exit-button" type="button" aria-label="В меню" title="В меню">←</button><span id="modeBadge" class="mode-badge">Таблица умножения</span></div>
+        <div class="game-top"><span id="modeBadge" class="mode-badge">Таблица умножения</span></div>
         <div class="stats">
           <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
           <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
@@ -487,6 +489,7 @@
         timerId = null;
         gameActive = false;
         canAnswer = false;
+        $('exitBtn').classList.remove('visible');
         $('finalScore').textContent = score;
         $('resultNote').textContent = languageData[currentLanguage].resultNote(score, solved);
         gameScreen.classList.add('hidden');
@@ -565,6 +568,7 @@
         menuScreen.classList.add('hidden');
         resultScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
+        $('exitBtn').classList.add('visible');
         feedback.textContent = '';
         feedback.className = 'feedback';
         newProblem();
@@ -722,6 +726,7 @@
         timerId = null;
         gameActive = false;
         canAnswer = false;
+        $('exitBtn').classList.remove('visible');
         resultScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
         menuScreen.classList.remove('hidden');
