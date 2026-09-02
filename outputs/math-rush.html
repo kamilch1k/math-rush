@@ -65,7 +65,6 @@
     .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
     .mode-card { position: relative; min-height: 120px; padding: 0; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
     .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
-    .mode-card.selected { border-color: var(--accent); background: #f7f6ff; box-shadow: 0 8px 20px rgba(99,91,255,.12); }
     .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
     .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
     .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.85); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s; }
@@ -184,7 +183,7 @@
       <section id="menuScreen" class="screen menu-screen">
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
-          <article class="mode-card selected" data-mode="tables">
+          <article class="mode-card" data-mode="tables">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="tables" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="tables"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
@@ -769,7 +768,6 @@
 
       function selectMode(card) {
         selectedMode = card.dataset.mode;
-        document.querySelectorAll('.mode-card').forEach((item) => item.classList.toggle('selected', item === card));
         syncGlobalSettingsControls();
         $('modeDescription').textContent = languageData[currentLanguage].modes[selectedMode][2];
         readSettings();
