@@ -103,9 +103,9 @@
     .mix-options input { accent-color: var(--accent); }
     .settings-summary { margin: 14px 0 0 !important; color: var(--muted); font-size: 13px; text-align: center; }
     .hint { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
-    .game-screen { padding-top: 82px; }
+    .game-screen { display: flex; flex-direction: column; min-height: 100vh; padding-top: 82px; }
     .quiz-primary, .quiz-details { width: min(100%, 820px); margin-right: auto; margin-left: auto; }
-    .quiz-details { margin-top: 26px; }
+    .quiz-details { margin-top: auto; padding-top: 26px; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 0; }
     .game-top { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 13px; }
     .game-top .mode-badge { margin-bottom: 0; }
@@ -158,7 +158,7 @@
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } .game-active .top { top: 12px; right: 12px; } .game-screen { padding-top: 74px; } .quiz-details { margin-top: 22px; } }
+    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } .game-active .top { top: 12px; right: 12px; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
   </style>
 </head>
 <body>
