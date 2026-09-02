@@ -42,9 +42,12 @@
     }
     .top { padding: 24px 30px 8px; }
     .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
-    .global-tools { display: flex; gap: 8px; }
+    .global-tools { display: flex; align-items: center; gap: 8px; }
     .tool-button { padding: 8px 11px; border: 1px solid var(--line); border-radius: 11px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 12px; font-weight: 800; white-space: nowrap; }
     .tool-button:hover { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
+    .language-control { display: inline-flex; align-items: center; gap: 5px; min-height: 34px; padding: 0 8px 0 10px; border: 1px solid var(--line); border-radius: 11px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .language-control:focus-within { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
+    .language-control select { width: auto; min-width: 38px; padding: 0 15px 0 0; border: 0; border-radius: 0; color: inherit; background: transparent; font: inherit; font-weight: 900; cursor: pointer; outline: 0; }
     .eyebrow { margin: 0 0 7px; color: var(--accent); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
     h1 { margin: 0; font-size: clamp(30px, 7vw, 44px); line-height: 1.04; letter-spacing: -.045em; }
     .subtitle { margin: 12px 0 0; color: var(--muted); }
@@ -76,10 +79,10 @@
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
     .mode-settings-label select { width: 100%; margin-top: 5px; padding: 7px 9px; font-size: 13px; }
     .mode-icon { display: grid; width: 35px; height: 35px; place-items: center; margin-bottom: 11px; border-radius: 11px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); font-size: 19px; font-weight: 900; }
-    .mode-card:nth-child(2) .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
-    .mode-card:nth-child(3) .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
-    .mode-card:nth-child(4) .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
-    .mode-card:nth-child(5) .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
+    .mode-card[data-mode="equations"] .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
+    .mode-card[data-mode="addition"] .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
+    .mode-card[data-mode="multiplication"] .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
+    .mode-card[data-mode^="fractions"] .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
     .mode-card strong { display: block; font-size: 15px; }
     .mode-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.35; }
     .mode-description { min-height: 25px; margin: 14px 0 18px; color: var(--muted); font-size: 13px; }
@@ -156,7 +159,7 @@
       <header class="top">
         <div class="top-row">
           <div><p id="eyebrow" class="eyebrow">Тренировка скорости</p><h1 id="siteTitle">Математический рывок</h1></div>
-          <div class="global-tools"><button id="globalSettingsBtn" class="tool-button" type="button">⚙ Настройки</button><button id="languageBtn" class="tool-button" type="button" aria-label="Переключить язык">EN</button></div>
+          <div class="global-tools"><button id="globalSettingsBtn" class="tool-button" type="button">⚙ Настройки</button><label class="language-control" for="languageSelect"><span id="languageLabel">🌐 Язык</span><select id="languageSelect" aria-label="Язык"><option value="ru">RU</option><option value="en">EN</option><option value="fr">FR</option><option value="es">ES</option><option value="de">DE</option></select></label></div>
         </div>
         <p id="siteSubtitle" class="subtitle">Выбирай режим, настраивай правила и решай примеры как можно быстрее.</p>
         <div class="profile-bar" aria-label="Профиль игрока">
@@ -183,6 +186,11 @@
       <section id="menuScreen" class="screen menu-screen">
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
+          <article class="mode-card" data-mode="addition">
+            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Простое сложение</strong><small>Числа от 1 до 19 · 40 секунд</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text" data-mode-setting-label="difficulty">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition" data-mode-config="difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
           <article class="mode-card" data-mode="tables">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="tables" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
@@ -192,11 +200,6 @@
             <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="equations" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="equations"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
-          </article>
-          <article class="mode-card" data-mode="addition">
-            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Простое сложение</strong><small>Числа от 1 до 19 · 40 секунд</small></button>
-            <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
-            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text" data-mode-setting-label="difficulty">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition" data-mode-config="difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <article class="mode-card" data-mode="multiplication">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
@@ -229,14 +232,14 @@
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="mixed"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
         </div>
-        <p id="modeDescription" class="mode-description">Вся таблица умножения: оба множителя случайно выбираются от 1 до 10.</p>
+        <p id="modeDescription" class="mode-description">Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.</p>
         <button id="startBtn" class="primary" type="button" hidden aria-hidden="true">Начать игру</button>
-        <p id="settingsSummary" class="settings-summary">Множители 1–10 · старт: 30 сек · +3 сек · серия: 10</p>
+        <p id="settingsSummary" class="settings-summary">Простое сложение · время: 40 сек · +3 сек · серия: 10</p>
         <p id="menuHintText" class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
-        <div class="game-top"><span id="modeBadge" class="mode-badge">Таблица умножения</span></div>
+        <div class="game-top"><span id="modeBadge" class="mode-badge">Простое сложение</span></div>
         <div class="stats">
           <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
           <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
@@ -275,7 +278,7 @@
       const problemEl = $('problem'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback'), reward = $('reward');
       const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
-      const globalSettingsBtn = $('globalSettingsBtn'), languageBtn = $('languageBtn');
+      const globalSettingsBtn = $('globalSettingsBtn'), languageSelect = $('languageSelect'), languageLabel = $('languageLabel');
       const userLevelEl = $('userLevel'), globalScoreEl = $('globalScore'), profileLevelLabel = $('profileLevelLabel'), profileScoreLabel = $('profileScoreLabel'), profileProgressText = $('profileProgressText'), profileProgressPercent = $('profileProgressPercent'), profileProgressBar = $('profileProgressBar');
       const LEVEL_STEP = 10, PROFILE_STORAGE_KEY = 'mathRushProfileV1';
       const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
@@ -285,16 +288,39 @@
         en: {
           pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, profile: { level: 'Level', score: 'Overall score', progress: (current) => `${current}/${LEVEL_STEP} to next level`, levelUp: (level) => `⬆ New level: ${level}!` }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (mode, start, bonus, goal) => `${mode} · time: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => bonus ? `Correct! +${bonus}s` : 'Correct!', milestone: (streak, bonus) => bonus ? `🔥 ${streak} streak! +${bonus}s — great!` : `🔥 ${streak} streak! Great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Simple addition', 'Numbers from 1 to 19 · 40 seconds', 'Add two numbers from 1 to 19. Use the card settings to expand the range or change the timer.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
       };
+      Object.assign(languageData, {
+        fr: {
+          pageTitle: 'Défi mathématique', eyebrow: 'Entraînement de vitesse', subtitle: 'Choisis un mode, règle les paramètres et résous les exercices le plus vite possible.', menuTitle: 'Choisis un mode', menuHint: 'Tu peux modifier les paramètres avant chaque partie', start: 'Commencer', settings: 'Paramètres', hint: 'Saisis ta réponse et appuie sur Entrée', settingsTitle: 'Paramètres du jeu', ready: 'Terminé', languageLabel: 'Choisir la langue', languageMenu: 'Langue', timeRemaining: 'Temps restant', placeholder: 'Ta réponse', submit: 'Répondre', exit: '← Menu', stats: { time: 'Temps', solved: 'Résolus', score: 'Score', streak: 'Série' }, profile: { level: 'Niveau', score: 'Score total', progress: (current) => `${current}/${LEVEL_STEP} avant le niveau suivant`, levelUp: (level) => `⬆ Nouveau niveau : ${level} !` }, resultTitle: 'Partie terminée !', again: 'Rejouer', menu: 'Retour au menu', resultNote: (score, solved) => `${score} bonnes réponses · ${solved} exercices résolus`, summary: (mode, start, bonus, goal) => `${mode} · temps : ${start}s · +${bonus}s · série : ${goal}`, feedback: { correct: (bonus) => bonus ? `Correct ! +${bonus}s` : 'Correct !', milestone: (streak, bonus) => bonus ? `🔥 Série de ${streak} ! +${bonus}s — bravo !` : `🔥 Série de ${streak} ! Bravo !`, wrong: (answer) => `Pas tout à fait. La bonne réponse : ${answer}` }, modes: { tables: ['Table de multiplication', 'Multiplicateurs de 1 à 10', 'Toute la table de multiplication avec deux facteurs choisis dans la plage définie.'], equations: ['Équations', 'x +, −, × ou / un nombre', 'Trouve x dans des exemples comme x + 5 = 10, x − 5 = 10, x × 5 = 10 ou x / 5 = 2.'], addition: ['Addition simple', 'Nombres de 1 à 19 · 40 secondes', 'Additionne deux nombres de 1 à 19.'], multiplication: ['Multiplication avancée', 'Nombres à un ou deux chiffres', 'Résous des multiplications plus difficiles.'], 'fractions-simplify': ['Simplifier des fractions', 'Par exemple : 6/8 = 3/4', 'Réduis chaque fraction à sa forme la plus simple.'], 'fractions-compare': ['Comparer des fractions', 'Saisis <, > ou =', 'Compare deux fractions et saisis le bon signe.'], 'fractions-calculate': ['Opérations sur les fractions', 'Addition, soustraction, × et /', 'Résous les exercices avec des fractions.'], 'fractions-mixed': ['Fractions — mélange', 'Tous les défis avec des fractions', 'Simplifie, compare et calcule des fractions.'], mixed: ['Mode mixte', 'Tous les types sélectionnés', 'Les types d’exercices sont choisis au hasard.'] } },
+        es: {
+          pageTitle: 'Reto matemático', eyebrow: 'Entrenamiento de velocidad', subtitle: 'Elige un modo, ajusta las reglas y resuelve ejercicios lo más rápido posible.', menuTitle: 'Elige un modo', menuHint: 'Puedes cambiar los ajustes antes de cada partida', start: 'Empezar', settings: 'Ajustes', hint: 'Escribe tu respuesta y pulsa Intro', settingsTitle: 'Ajustes del juego', ready: 'Listo', languageLabel: 'Elegir idioma', languageMenu: 'Idioma', timeRemaining: 'Tiempo restante', placeholder: 'Tu respuesta', submit: 'Responder', exit: '← Menú', stats: { time: 'Tiempo', solved: 'Resueltos', score: 'Puntos', streak: 'Racha' }, profile: { level: 'Nivel', score: 'Puntuación total', progress: (current) => `${current}/${LEVEL_STEP} para el siguiente nivel`, levelUp: (level) => `⬆ ¡Nuevo nivel: ${level}!` }, resultTitle: '¡Ronda terminada!', again: 'Jugar otra vez', menu: 'Volver al menú', resultNote: (score, solved) => `${score} respuestas correctas · ${solved} ejercicios resueltos`, summary: (mode, start, bonus, goal) => `${mode} · tiempo: ${start}s · +${bonus}s · racha: ${goal}`, feedback: { correct: (bonus) => bonus ? `¡Correcto! +${bonus}s` : '¡Correcto!', milestone: (streak, bonus) => bonus ? `🔥 ¡Racha de ${streak}! +${bonus}s — ¡genial!` : `🔥 ¡Racha de ${streak}! ¡Genial!`, wrong: (answer) => `No exactamente. La respuesta correcta: ${answer}` }, modes: { tables: ['Tabla de multiplicar', 'Multiplicadores del 1 al 10', 'La tabla de multiplicar completa con factores dentro del rango elegido.'], equations: ['Ecuaciones', 'x +, −, × o / un número', 'Encuentra x en ejercicios como x + 5 = 10, x − 5 = 10, x × 5 = 10 o x / 5 = 2.'], addition: ['Suma sencilla', 'Números del 1 al 19 · 40 segundos', 'Suma dos números del 1 al 19.'], multiplication: ['Multiplicación avanzada', 'Números de una y dos cifras', 'Resuelve multiplicaciones más difíciles.'], 'fractions-simplify': ['Simplificar fracciones', 'Por ejemplo: 6/8 = 3/4', 'Reduce cada fracción a su forma más simple.'], 'fractions-compare': ['Comparar fracciones', 'Escribe <, > o =', 'Compara dos fracciones y escribe el signo correcto.'], 'fractions-calculate': ['Operaciones con fracciones', 'Suma, resta, × y /', 'Resuelve ejercicios con fracciones.'], 'fractions-mixed': ['Fracciones — mezcla', 'Todos los retos de fracciones', 'Simplifica, compara y calcula fracciones.'], mixed: ['Modo mixto', 'Todos los tipos seleccionados', 'Los tipos de ejercicios se eligen al azar.'] } },
+        de: {
+          pageTitle: 'Mathe-Sprint', eyebrow: 'Schnelligkeitstraining', subtitle: 'Wähle einen Modus, passe die Regeln an und löse Aufgaben so schnell wie möglich.', menuTitle: 'Wähle einen Modus', menuHint: 'Du kannst die Einstellungen vor jeder Runde ändern', start: 'Starten', settings: 'Einstellungen', hint: 'Gib deine Antwort ein und drücke Enter', settingsTitle: 'Spieleinstellungen', ready: 'Fertig', languageLabel: 'Sprache auswählen', languageMenu: 'Sprache', timeRemaining: 'Verbleibende Zeit', placeholder: 'Deine Antwort', submit: 'Antworten', exit: '← Menü', stats: { time: 'Zeit', solved: 'Gelöst', score: 'Punkte', streak: 'Serie' }, profile: { level: 'Stufe', score: 'Gesamtpunktzahl', progress: (current) => `${current}/${LEVEL_STEP} bis zur nächsten Stufe`, levelUp: (level) => `⬆ Neue Stufe: ${level}!` }, resultTitle: 'Runde beendet!', again: 'Noch einmal spielen', menu: 'Zurück zum Menü', resultNote: (score, solved) => `${score} richtige Antworten · ${solved} Aufgaben gelöst`, summary: (mode, start, bonus, goal) => `${mode} · Zeit: ${start}s · +${bonus}s · Serie: ${goal}`, feedback: { correct: (bonus) => bonus ? `Richtig! +${bonus}s` : 'Richtig!', milestone: (streak, bonus) => bonus ? `🔥 ${streak}er-Serie! +${bonus}s — toll!` : `🔥 ${streak}er-Serie! Toll!`, wrong: (answer) => `Nicht ganz. Die richtige Antwort: ${answer}` }, modes: { tables: ['Einmaleins', 'Faktoren von 1 bis 10', 'Das ganze Einmaleins mit Faktoren aus dem gewählten Bereich.'], equations: ['Gleichungen', 'x +, −, × oder / eine Zahl', 'Finde x in Aufgaben wie x + 5 = 10, x − 5 = 10, x × 5 = 10 oder x / 5 = 2.'], addition: ['Einfache Addition', 'Zahlen von 1 bis 19 · 40 Sekunden', 'Addiere zwei Zahlen von 1 bis 19.'], multiplication: ['Fortgeschrittene Multiplikation', 'Ein- und zweistellige Zahlen', 'Löse schwierigere Multiplikationsaufgaben.'], 'fractions-simplify': ['Brüche kürzen', 'Zum Beispiel: 6/8 = 3/4', 'Kürze jeden Bruch vollständig.'], 'fractions-compare': ['Brüche vergleichen', 'Gib <, > oder = ein', 'Vergleiche zwei Brüche und gib das richtige Zeichen ein.'], 'fractions-calculate': ['Bruchrechnen', 'Addition, Subtraktion, × und /', 'Löse Aufgaben mit Brüchen.'], 'fractions-mixed': ['Brüche — Mix', 'Alle Bruchaufgaben', 'Kürze, vergleiche und berechne Brüche.'], mixed: ['Gemischter Modus', 'Alle ausgewählten Typen', 'Aufgabentypen werden zufällig ausgewählt.'] } }
+      });
       languageData.ru.exitLabel = 'В меню';
+      languageData.ru.languageMenu = 'Язык';
+      languageData.ru.timeRemaining = 'Оставшееся время игры';
       languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
       languageData.en.exitLabel = 'Menu';
+      languageData.en.languageMenu = 'Language';
+      languageData.en.timeRemaining = 'Time remaining';
       languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
+      languageData.fr.exitLabel = 'Menu';
+      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', button: 'Configurer le mode', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
+      languageData.es.exitLabel = 'Menú';
+      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', button: 'Configurar modo', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
+      languageData.de.exitLabel = 'Menü';
+      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', button: 'Modus einstellen', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
       const settingsLabels = {
         ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение', 'fractions-simplify': 'Сокращение дробей', 'fractions-compare': 'Сравнение дробей', 'fractions-calculate': 'Действия с дробями' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
         en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication', 'fractions-simplify': 'Simplify fractions', 'fractions-compare': 'Compare fractions', 'fractions-calculate': 'Fraction operations' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
       };
-      let selectedMode = 'tables';
-      let currentQuestionMode = 'tables';
+      Object.assign(settingsLabels, {
+        fr: { factorFrom: 'Multiplicateurs à partir de', factorTo: 'Multiplicateurs jusqu’à', startTime: 'Temps de départ', timeBonus: 'Bonus par bonne réponse', streakGoal: 'Longueur de la série', difficulty: 'Difficulté des nombres', mix: { tables: 'Table', equations: 'Équations', addition: 'Addition', multiplication: 'Multiplication', 'fractions-simplify': 'Simplifier les fractions', 'fractions-compare': 'Comparer les fractions', 'fractions-calculate': 'Opérations sur les fractions' }, difficultyValues: { simple: 'Simple', advanced: 'Avancé', expert: 'Expert' } },
+        es: { factorFrom: 'Multiplicadores desde', factorTo: 'Multiplicadores hasta', startTime: 'Tiempo inicial', timeBonus: 'Bonificación por respuesta', streakGoal: 'Longitud de racha', difficulty: 'Dificultad de números', mix: { tables: 'Tabla', equations: 'Ecuaciones', addition: 'Suma', multiplication: 'Multiplicación', 'fractions-simplify': 'Simplificar fracciones', 'fractions-compare': 'Comparar fracciones', 'fractions-calculate': 'Operaciones con fracciones' }, difficultyValues: { simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' } },
+        de: { factorFrom: 'Faktoren von', factorTo: 'Faktoren bis', startTime: 'Startzeit', timeBonus: 'Bonus pro richtiger Antwort', streakGoal: 'Serienlänge', difficulty: 'Zahlenschwierigkeit', mix: { tables: 'Einmaleins', equations: 'Gleichungen', addition: 'Addition', multiplication: 'Multiplikation', 'fractions-simplify': 'Brüche kürzen', 'fractions-compare': 'Brüche vergleichen', 'fractions-calculate': 'Bruchrechnen' }, difficultyValues: { simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' } }
+      });
+      let selectedMode = 'addition';
+      let currentQuestionMode = 'addition';
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
@@ -692,8 +718,9 @@
         $('menuHintText').textContent = language.hint;
         $('startBtn').textContent = language.start;
         $('globalSettingsBtn').textContent = `⚙ ${language.settings}`;
-        $('languageBtn').textContent = currentLanguage === 'ru' ? 'EN' : 'RU';
-        $('languageBtn').setAttribute('aria-label', language.languageLabel);
+        languageLabel.textContent = `🌐 ${language.languageMenu}`;
+        languageSelect.value = currentLanguage;
+        languageSelect.setAttribute('aria-label', language.languageLabel);
         $('settingsTitle').textContent = language.settingsTitle;
         $('closeSettingsBtn').textContent = language.ready;
         $('submitBtn').textContent = language.submit;
@@ -702,7 +729,7 @@
         $('exitBtn').textContent = language.exit;
         $('exitBtn').setAttribute('aria-label', language.exitLabel || language.exit.replace('←', '').trim());
         $('exitBtn').title = language.exitLabel || language.exit.replace('←', '').trim();
-        document.querySelector('.progress').setAttribute('aria-label', currentLanguage === 'ru' ? 'Оставшееся время игры' : 'Time remaining');
+        document.querySelector('.progress').setAttribute('aria-label', language.timeRemaining);
         $('resultTitle').textContent = language.resultTitle;
         $('againBtn').textContent = language.again;
         $('menuBtn').textContent = language.menu;
@@ -825,7 +852,7 @@
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
       globalSettingsBtn.addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
-      languageBtn.addEventListener('click', () => { currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru'; applyLanguage(); });
+      languageSelect.addEventListener('change', () => { currentLanguage = languageSelect.value; applyLanguage(); });
       $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
       [factorFrom, factorTo].forEach((control) => control.addEventListener('change', readSettings));
       [startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', () => { updateSelectedModeConfigFromGlobalControls(); readSettings(); }));
