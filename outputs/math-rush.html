@@ -103,8 +103,11 @@
     .mix-options input { accent-color: var(--accent); }
     .settings-summary { margin: 14px 0 0 !important; color: var(--muted); font-size: 13px; text-align: center; }
     .hint { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
-    .game-top { display: flex; justify-content: flex-start; align-items: center; gap: 12px; margin-bottom: 15px; }
+    .game-screen { padding-top: 82px; }
+    .quiz-primary, .quiz-details { width: min(100%, 820px); margin-right: auto; margin-left: auto; }
+    .quiz-details { margin-top: 26px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 0; }
+    .game-top { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 13px; }
     .game-top .mode-badge { margin-bottom: 0; }
     .exit-button { position: fixed; top: 20px; left: 20px; z-index: 20; display: none; min-height: 44px; align-items: center; gap: 7px; padding: 10px 15px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 10px 28px rgba(16,24,40,.14); font-size: 14px; font-weight: 850; line-height: 1; }
     .exit-button.visible { display: inline-flex; }
@@ -114,7 +117,7 @@
     .stat-value { display: block; margin-top: 2px; font-size: 25px; font-weight: 850; letter-spacing: -.04em; }
     .timer { color: var(--accent-dark); }
     .timer.low { color: var(--bad); }
-    .progress { height: 10px; margin: 0 0 25px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
+    .progress { height: 10px; margin: 0 0 38px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
     .progress > div { height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width .3s ease; }
     .problem-box { position: relative; text-align: center; }
     .mode-badge { display: inline-block; margin-bottom: 5px; padding: 4px 9px; border-radius: 99px; color: var(--accent-dark); background: #eeecff; font-size: 12px; font-weight: 800; }
@@ -145,11 +148,17 @@
     @keyframes problemBad { 0%, 100% { transform: translateX(0); color: var(--ink); } 20% { transform: translateX(-12px); color: var(--bad); } 40% { transform: translateX(12px); } 60% { transform: translateX(-7px); } 80% { transform: translateX(7px); } }
     @keyframes problemMilestone { 0% { transform: scale(.92) rotate(-2deg); color: var(--gold); } 35% { transform: scale(1.2) rotate(2deg); } 65% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0); } }
     @keyframes rewardPop { 0% { opacity: 0; transform: translateY(11px) scale(.8); } 25% { opacity: 1; transform: translateY(0) scale(1.1); } 75% { opacity: 1; transform: translateY(-5px) scale(1); } 100% { opacity: 0; transform: translateY(-18px) scale(.96); } }
+    .game-active { place-items: start center; padding: 0; }
+    .game-active .app { width: 100%; }
+    .game-active .card { min-height: 100vh; border: 0; border-radius: 0; box-shadow: none; }
+    .game-active .top { position: fixed; top: 20px; right: 20px; z-index: 20; padding: 0; }
+    .game-active .top-row > div:first-child, .game-active .subtitle, .game-active .profile-bar { display: none; }
+    .game-active .top-row { display: block; }
     .result { text-align: center; padding-top: 34px; }
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } }
+    @media (max-width: 520px) { body { padding: 12px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } .game-active .top { top: 12px; right: 12px; } .game-screen { padding-top: 74px; } .quiz-details { margin-top: 22px; } }
   </style>
 </head>
 <body>
@@ -239,22 +248,26 @@
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
-        <div class="game-top"><span id="modeBadge" class="mode-badge">Простое сложение</span></div>
-        <div class="stats">
-          <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
-          <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
-          <div class="stat"><span class="stat-label">Счёт</span><span id="score" class="stat-value">0</span></div>
-          <div class="stat"><span class="stat-label">Серия</span><span id="streak" class="stat-value">0</span></div>
+        <div class="quiz-primary">
+          <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
+          <div class="problem-box">
+            <div id="problem" class="problem">—</div>
+            <form id="answerForm" class="answer-row" autocomplete="off">
+              <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
+              <button id="submitBtn" class="submit" type="submit">Ответить</button>
+            </form>
+            <div id="feedback" class="feedback" role="status"></div>
+            <div id="reward" class="reward" aria-hidden="true"></div>
+          </div>
         </div>
-        <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
-        <div class="problem-box">
-          <div id="problem" class="problem">—</div>
-          <form id="answerForm" class="answer-row" autocomplete="off">
-            <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
-            <button id="submitBtn" class="submit" type="submit">Ответить</button>
-          </form>
-          <div id="feedback" class="feedback" role="status"></div>
-          <div id="reward" class="reward" aria-hidden="true"></div>
+        <div class="quiz-details">
+          <div class="game-top"><span id="modeBadge" class="mode-badge">Простое сложение</span></div>
+          <div class="stats">
+            <div class="stat"><span class="stat-label">Время</span><span id="timer" class="stat-value timer">30</span></div>
+            <div class="stat"><span class="stat-label">Решено</span><span id="solved" class="stat-value">0</span></div>
+            <div class="stat"><span class="stat-label">Счёт</span><span id="score" class="stat-value">0</span></div>
+            <div class="stat"><span class="stat-label">Серия</span><span id="streak" class="stat-value">0</span></div>
+          </div>
         </div>
       </section>
 
@@ -594,6 +607,7 @@
         timerId = null;
         gameActive = false;
         canAnswer = false;
+        document.body.classList.remove('game-active');
         $('exitBtn').classList.remove('visible');
         $('finalScore').textContent = score;
         $('resultNote').textContent = languageData[currentLanguage].resultNote(score, solved);
@@ -670,6 +684,7 @@
         solved = 0; score = 0; streak = 0;
         gameActive = true;
         initAudio();
+        document.body.classList.add('game-active');
         menuScreen.classList.add('hidden');
         resultScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
@@ -842,6 +857,7 @@
         timerId = null;
         gameActive = false;
         canAnswer = false;
+        document.body.classList.remove('game-active');
         $('exitBtn').classList.remove('visible');
         resultScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
