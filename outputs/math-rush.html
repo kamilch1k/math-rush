@@ -107,6 +107,10 @@
     .quiz-primary, .quiz-details { width: min(100%, 820px); margin-right: auto; margin-left: auto; }
     .quiz-details { margin-top: auto; padding-top: 26px; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 0; }
+    .quiz-completion { margin-top: 17px; }
+    .quiz-completion-row { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 7px; color: var(--good); font-size: 12px; font-weight: 850; }
+    .quiz-completion-track { height: 10px; overflow: hidden; border-radius: 99px; background: #d9f5e6; }
+    .quiz-completion-track > div { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #12b76a, #079455); transition: width .3s ease; }
     .game-top { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 13px; }
     .game-top .mode-badge { margin-bottom: 0; }
     .exit-button { position: fixed; top: 20px; left: 20px; z-index: 20; display: none; min-height: 44px; align-items: center; gap: 7px; padding: 10px 15px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 10px 28px rgba(16,24,40,.14); font-size: 14px; font-weight: 850; line-height: 1; }
@@ -268,6 +272,10 @@
             <div class="stat"><span class="stat-label">Счёт</span><span id="score" class="stat-value">0</span></div>
             <div class="stat"><span class="stat-label">Серия</span><span id="streak" class="stat-value">0</span></div>
           </div>
+          <div id="quizCompletion" class="quiz-completion hidden">
+            <div class="quiz-completion-row"><span id="quizCompletionLabel">Прогресс теста</span><strong id="quizCompletionCount">0 / 20</strong></div>
+            <div id="quizCompletionTrack" class="quiz-completion-track" aria-label="Прогресс теста"><div id="quizCompletionBar"></div></div>
+          </div>
         </div>
       </section>
 
@@ -289,6 +297,7 @@
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
+      const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
       const answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback'), reward = $('reward');
       const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
       const globalSettingsBtn = $('globalSettingsBtn'), languageSelect = $('languageSelect'), languageLabel = $('languageLabel');
@@ -312,17 +321,27 @@
       languageData.ru.exitLabel = 'В меню';
       languageData.ru.languageMenu = 'Язык';
       languageData.ru.timeRemaining = 'Оставшееся время игры';
-      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
+      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', taskLimit: 'Количество заданий', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
+      languageData.ru.quizCompletion = 'Прогресс теста';
+      languageData.ru.taskLimitOptions = { 0: 'Без лимита', 10: '10 заданий', 20: '20 заданий', 30: '30 заданий' };
       languageData.en.exitLabel = 'Menu';
       languageData.en.languageMenu = 'Language';
       languageData.en.timeRemaining = 'Time remaining';
-      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
+      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', taskLimit: 'Question limit', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
+      languageData.en.quizCompletion = 'Quiz progress';
+      languageData.en.taskLimitOptions = { 0: 'No limit', 10: '10 tasks', 20: '20 tasks', 30: '30 tasks' };
       languageData.fr.exitLabel = 'Menu';
-      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', button: 'Configurer le mode', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
+      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', taskLimit: 'Nombre d’exercices', button: 'Configurer le mode', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
+      languageData.fr.quizCompletion = 'Progression du quiz';
+      languageData.fr.taskLimitOptions = { 0: 'Sans limite', 10: '10 exercices', 20: '20 exercices', 30: '30 exercices' };
       languageData.es.exitLabel = 'Menú';
-      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', button: 'Configurar modo', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
+      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', taskLimit: 'Cantidad de ejercicios', button: 'Configurar modo', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
+      languageData.es.quizCompletion = 'Progreso del cuestionario';
+      languageData.es.taskLimitOptions = { 0: 'Sin límite', 10: '10 ejercicios', 20: '20 ejercicios', 30: '30 ejercicios' };
       languageData.de.exitLabel = 'Menü';
-      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', button: 'Modus einstellen', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
+      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', taskLimit: 'Aufgabenanzahl', button: 'Modus einstellen', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
+      languageData.de.quizCompletion = 'Quizfortschritt';
+      languageData.de.taskLimitOptions = { 0: 'Ohne Limit', 10: '10 Aufgaben', 20: '20 Aufgaben', 30: '30 Aufgaben' };
       const settingsLabels = {
         ru: { factorFrom: 'Диапазон множителей от', factorTo: 'Диапазон множителей до', startTime: 'Стартовое время', timeBonus: 'Бонус за правильный ответ', streakGoal: 'Длина серии', difficulty: 'Сложность чисел', mix: { tables: 'Таблица', equations: 'Уравнения', addition: 'Сложение', multiplication: 'Умножение', 'fractions-simplify': 'Сокращение дробей', 'fractions-compare': 'Сравнение дробей', 'fractions-calculate': 'Действия с дробями' }, difficultyValues: { simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' } },
         en: { factorFrom: 'Multiplier range from', factorTo: 'Multiplier range to', startTime: 'Starting time', timeBonus: 'Correct answer bonus', streakGoal: 'Streak length', difficulty: 'Number difficulty', mix: { tables: 'Table', equations: 'Equations', addition: 'Addition', multiplication: 'Multiplication', 'fractions-simplify': 'Simplify fractions', 'fractions-compare': 'Compare fractions', 'fractions-calculate': 'Fraction operations' }, difficultyValues: { simple: 'Simple', advanced: 'Advanced', expert: 'Expert' } }
@@ -337,17 +356,17 @@
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
-      let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
+      let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
-        tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10 },
-        multiplication: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        'fractions-simplify': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        'fractions-compare': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        'fractions-calculate': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        'fractions-mixed': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 },
-        mixed: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10 }
+        tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        multiplication: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        'fractions-simplify': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        'fractions-compare': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        'fractions-calculate': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        'fractions-mixed': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
+        mixed: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 }
       };
       let profile = { totalScore: 0 };
 
@@ -412,7 +431,8 @@
       const modeControlOptions = {
         startTime: [15, 20, 30, 40, 60, 90],
         timeBonus: [0, 1, 2, 3, 5, 10],
-        streakGoal: [5, 10, 15, 20]
+        streakGoal: [5, 10, 15, 20],
+        taskLimit: [0, 10, 20, 30]
       };
 
       function makeModeControl(mode, key, values) {
@@ -599,6 +619,19 @@
         streakEl.textContent = streak;
         progressBar.style.width = `${Math.min(100, Math.max(0, (timeLeft / settings.startTime) * 100))}%`;
         timerEl.classList.toggle('low', timeLeft <= 10);
+        updateQuizCompletion();
+      }
+
+      function updateQuizCompletion() {
+        const total = settings.taskLimit;
+        const language = languageData[currentLanguage];
+        quizCompletion.classList.toggle('hidden', !total);
+        if (!total) return;
+        const completed = Math.min(solved, total);
+        quizCompletionLabel.textContent = language.quizCompletion;
+        quizCompletionCount.textContent = `${completed} / ${total}`;
+        quizCompletionBar.style.width = `${(completed / total) * 100}%`;
+        quizCompletionTrack.setAttribute('aria-label', `${language.quizCompletion}: ${completed} / ${total}`);
       }
 
       function finishGame() {
@@ -702,7 +735,7 @@
         factorTo.value = to;
         const mixTypes = [...document.querySelectorAll('.mix-options input:checked')].map((box) => box.value);
         const modeConfig = configFor(selectedMode);
-        settings = { factorFrom: from, factorTo: to, startTime: modeConfig.startTime, timeBonus: modeConfig.timeBonus, streakGoal: modeConfig.streakGoal, difficulty: modeConfig.difficulty, mixTypes };
+        settings = { factorFrom: from, factorTo: to, startTime: modeConfig.startTime, timeBonus: modeConfig.timeBonus, streakGoal: modeConfig.streakGoal, taskLimit: modeConfig.taskLimit, difficulty: modeConfig.difficulty, mixTypes };
         settingsSummary.textContent = languageData[currentLanguage].summary(languageData[currentLanguage].modes[selectedMode][0], settings.startTime, settings.timeBonus, settings.streakGoal);
       }
 
@@ -762,6 +795,7 @@
           card.querySelectorAll('[data-mode-config]').forEach((control) => {
             control.value = String(configFor(mode)[control.dataset.modeConfig]);
             if (control.dataset.modeConfig === 'difficulty') control.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
+            if (control.dataset.modeConfig === 'taskLimit') control.querySelectorAll('option').forEach((option) => { option.textContent = language.taskLimitOptions[option.value]; });
           });
           modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
@@ -773,6 +807,7 @@
         difficultySelect.querySelectorAll('option').forEach((option) => { option.textContent = labels.difficultyValues[option.value]; });
         syncGlobalSettingsControls();
         readSettings();
+        updateQuizCompletion();
         $('resultNote').textContent = language.resultNote(score, solved);
       }
 
@@ -805,7 +840,11 @@
           playSound('wrong');
         }
         updateStats();
-        queueNextProblem(180);
+        if (settings.taskLimit && solved >= settings.taskLimit) {
+          nextProblemTimeout = setTimeout(() => { if (gameActive) finishGame(); }, 420);
+        } else {
+          queueNextProblem(180);
+        }
       }
 
       function selectMode(card) {
