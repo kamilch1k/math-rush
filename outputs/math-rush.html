@@ -231,7 +231,7 @@
           </article>
         </div>
         <p id="modeDescription" class="mode-description">Вся таблица умножения: оба множителя случайно выбираются от 1 до 10.</p>
-        <button id="startBtn" class="primary" type="button">Начать игру</button>
+        <button id="startBtn" class="primary" type="button" hidden aria-hidden="true">Начать игру</button>
         <p id="settingsSummary" class="settings-summary">Множители 1–10 · старт: 30 сек · +3 сек · серия: 10</p>
         <p id="menuHintText" class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
       </section>
@@ -794,7 +794,10 @@
       }
 
       ensureModeSettingsControls();
-      document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => selectMode(button.closest('.mode-card'))));
+      document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => {
+        selectMode(button.closest('.mode-card'));
+        startGame();
+      }));
       document.querySelectorAll('.mode-settings-button').forEach((button) => button.addEventListener('click', (event) => { event.stopPropagation(); toggleModeSettings(button); }));
       document.querySelectorAll('[data-mode-config]').forEach((control) => control.addEventListener('change', () => {
         const mode = control.dataset.mode;
