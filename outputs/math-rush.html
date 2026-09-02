@@ -356,17 +356,17 @@
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
-      let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
+      let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
-        tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        multiplication: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        'fractions-simplify': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        'fractions-compare': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        'fractions-calculate': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        'fractions-mixed': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 },
-        mixed: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 0 }
+        tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        multiplication: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'fractions-simplify': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'fractions-compare': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'fractions-calculate': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'fractions-mixed': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        mixed: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
       };
       let profile = { totalScore: 0 };
 
