@@ -187,7 +187,7 @@
         <div class="settings-grid">
           <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
           <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
-          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option selected>30</option><option>40</option><option>60</option><option>90</option></select></div>
+          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option>20</option><option selected>30</option><option>40</option><option>60</option><option>90</option></select></div>
           <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
           <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
           <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
@@ -199,6 +199,11 @@
       <section id="menuScreen" class="screen menu-screen">
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
+          <article class="mode-card" data-mode="addition-ten">
+            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Самое простое сложение</strong><small>Числа от 1 до 10 включительно</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="addition-ten" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple">Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
           <article class="mode-card" data-mode="addition">
             <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Простое сложение</strong><small>Числа от 1 до 19 · 40 секунд</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
@@ -351,13 +356,25 @@
         es: { factorFrom: 'Multiplicadores desde', factorTo: 'Multiplicadores hasta', startTime: 'Tiempo inicial', timeBonus: 'Bonificación por respuesta', streakGoal: 'Longitud de racha', difficulty: 'Dificultad de números', mix: { tables: 'Tabla', equations: 'Ecuaciones', addition: 'Suma', multiplication: 'Multiplicación', 'fractions-simplify': 'Simplificar fracciones', 'fractions-compare': 'Comparar fracciones', 'fractions-calculate': 'Operaciones con fracciones' }, difficultyValues: { simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' } },
         de: { factorFrom: 'Faktoren von', factorTo: 'Faktoren bis', startTime: 'Startzeit', timeBonus: 'Bonus pro richtiger Antwort', streakGoal: 'Serienlänge', difficulty: 'Zahlenschwierigkeit', mix: { tables: 'Einmaleins', equations: 'Gleichungen', addition: 'Addition', multiplication: 'Multiplikation', 'fractions-simplify': 'Brüche kürzen', 'fractions-compare': 'Brüche vergleichen', 'fractions-calculate': 'Bruchrechnen' }, difficultyValues: { simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' } }
       });
-      let selectedMode = 'addition';
-      let currentQuestionMode = 'addition';
+      const easyAdditionText = {
+        ru: ['Самое простое сложение', 'Числа от 1 до 10 включительно', 'Складывай два числа от 1 до 10 включительно.'],
+        en: ['Beginner addition', 'Numbers from 1 to 10 inclusive', 'Add two numbers from 1 to 10 inclusive.'],
+        fr: ['Addition débutant', 'Nombres de 1 à 10 inclus', 'Additionne deux nombres de 1 à 10 inclus.'],
+        es: ['Suma para principiantes', 'Números del 1 al 10 inclusive', 'Suma dos números del 1 al 10 inclusive.'],
+        de: ['Addition für Anfänger', 'Zahlen von 1 bis einschließlich 10', 'Addiere zwei Zahlen von 1 bis einschließlich 10.']
+      };
+      Object.keys(languageData).forEach((key) => {
+        languageData[key].modes['addition-ten'] = easyAdditionText[key];
+        for (const field of ['startTime', 'timeBonus', 'streakGoal']) languageData[key].modeSettings[field] = settingsLabels[key][field];
+      });
+      let selectedMode = 'addition-ten';
+      let currentQuestionMode = 'addition-ten';
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
       let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
+        'addition-ten': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -464,6 +481,7 @@
           difficultyText.dataset.modeSettingLabel = 'difficulty';
           difficultyControl.dataset.mode = mode;
           difficultyControl.dataset.modeConfig = 'difficulty';
+          if (mode === 'addition-ten') difficultyLabel.classList.add('hidden');
           const grid = document.createElement('div');
           grid.className = 'mode-settings-grid';
           grid.append(difficultyLabel);
@@ -487,13 +505,11 @@
         streakGoalSelect.value = String(config.streakGoal);
       }
 
-      function updateSelectedModeConfigFromGlobalControls() {
-        const config = configFor(selectedMode);
-        config.difficulty = difficultySelect.value;
-        config.startTime = Number(startTimeSelect.value);
-        config.timeBonus = Number(timeBonusSelect.value);
-        config.streakGoal = Number(streakGoalSelect.value);
-        syncModeCardControls(selectedMode);
+      function updateSelectedModeConfigFromGlobalControls(control) {
+        const key = control.id;
+        const value = key === 'difficulty' ? control.value : Number(control.value);
+        const modes = !gameActive && key === 'startTime' ? Object.keys(modeConfigs) : [selectedMode];
+        modes.forEach((mode) => { configFor(mode)[key] = value; syncModeCardControls(mode); });
       }
 
       function gcd(a, b) { while (b) [a, b] = [b, a % b]; return Math.abs(a); }
@@ -564,8 +580,10 @@
           return { text: `x + ${number} = ${x + number}`, answer: x };
         }
         const range = difficultyRange(mode);
-        if (mode === 'addition') {
-          const a = randomInt(range.min, range.max), b = randomInt(range.min, range.max);
+        if (mode === 'addition' || mode === 'addition-ten') {
+          const min = mode === 'addition-ten' ? 1 : range.min;
+          const max = mode === 'addition-ten' ? 10 : range.max;
+          const a = randomInt(min, max), b = randomInt(min, max);
           return { text: `${a} + ${b} = ?`, answer: a + b };
         }
         if (mode === 'multiplication') {
@@ -735,7 +753,13 @@
         factorTo.value = to;
         const mixTypes = [...document.querySelectorAll('.mix-options input:checked')].map((box) => box.value);
         const modeConfig = configFor(selectedMode);
+        const previousStartTime = settings.startTime;
         settings = { factorFrom: from, factorTo: to, startTime: modeConfig.startTime, timeBonus: modeConfig.timeBonus, streakGoal: modeConfig.streakGoal, taskLimit: modeConfig.taskLimit, difficulty: modeConfig.difficulty, mixTypes };
+        if (gameActive && previousStartTime !== settings.startTime) {
+          timeLeft = Math.max(0, Math.min(settings.startTime, timeLeft + settings.startTime - previousStartTime));
+          updateStats();
+          if (timeLeft === 0) finishGame();
+        }
         settingsSummary.textContent = languageData[currentLanguage].summary(languageData[currentLanguage].modes[selectedMode][0], settings.startTime, settings.timeBonus, settings.streakGoal);
       }
 
@@ -912,9 +936,9 @@
       $('menuBtn').addEventListener('click', goToMenu);
       globalSettingsBtn.addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
       languageSelect.addEventListener('change', () => { currentLanguage = languageSelect.value; applyLanguage(); });
-      $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); $('startBtn').focus(); });
+      $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); if (gameActive) answerInput.focus({ preventScroll: true }); });
       [factorFrom, factorTo].forEach((control) => control.addEventListener('change', readSettings));
-      [startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', () => { updateSelectedModeConfigFromGlobalControls(); readSettings(); }));
+      [startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', () => { updateSelectedModeConfigFromGlobalControls(control); readSettings(); }));
       document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
       loadProfile();
       applyLanguage();
