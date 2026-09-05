@@ -127,12 +127,13 @@
     .progress { height: 10px; margin: 0 0 38px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
     .progress > div { height: 100%; width: 100%; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width .3s ease; }
     .problem-box { position: relative; text-align: center; }
-    .pixel-cat { width: 80px; height: 70px; margin: 4px auto 8px; image-rendering: pixelated; animation: catIdle 1.7s steps(2, end) infinite; transform-origin: 50% 100%; }
-    .pixel-cat svg { display: block; width: 100%; height: 100%; overflow: visible; shape-rendering: crispEdges; }
-    .pixel-cat .cat-tail { transform-box: fill-box; transform-origin: left bottom; animation: catTail 1.1s steps(3, end) infinite alternate; }
-    .pixel-cat.jump { animation: catJump .72s cubic-bezier(.2,.8,.2,1); }
-    .pixel-cat.celebrate { animation: catCelebrate .9s steps(5, end); }
-    .pixel-cat.oops { animation: catOops .55s steps(4, end); filter: saturate(.55); }
+    .voxel-companion { position: fixed; right: max(10px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom)); width: 160px; height: 190px; pointer-events: none; z-index: 5; }
+    .voxel-companion canvas { display:block; width:100%; height:100%; }
+    .voxel-companion[hidden] { display:none; }
+    @media (max-width: 1180px) {
+      .game-screen { position:relative; padding-bottom:160px; }
+      .voxel-companion { position:absolute; width:120px; height:145px; right:12px; bottom:6px; }
+    }
     .mode-badge { display: inline-block; margin-bottom: 5px; padding: 4px 9px; border-radius: 99px; color: var(--accent-dark); background: #eeecff; font-size: 12px; font-weight: 800; }
     .problem { min-height: 90px; display: grid; place-items: center; margin-bottom: 17px; font-size: clamp(40px, 11vw, 66px); font-weight: 900; letter-spacing: -.06em; }
     .answer-row { display: flex; gap: 10px; }
@@ -303,20 +304,10 @@
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
+        <div id="pixelCat" class="voxel-companion" aria-hidden="true"></div>
         <div class="quiz-primary">
           <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
           <div class="problem-box">
-            <div id="pixelCat" class="pixel-cat" aria-hidden="true">
-              <svg viewBox="0 0 16 14" role="img" aria-label="Пиксельный котёнок">
-                <g class="cat-tail"><rect x="12" y="7" width="2" height="2" fill="#d96b27"/><rect x="14" y="5" width="2" height="3" fill="#f28b3c"/><rect x="13" y="4" width="2" height="2" fill="#f28b3c"/></g>
-                <rect x="4" y="2" width="2" height="2" fill="#d96b27"/><rect x="10" y="2" width="2" height="2" fill="#d96b27"/>
-                <rect x="3" y="3" width="10" height="7" fill="#f28b3c"/><rect x="4" y="2" width="8" height="3" fill="#f28b3c"/>
-                <rect x="5" y="5" width="2" height="2" fill="#fff7ed"/><rect x="9" y="5" width="2" height="2" fill="#fff7ed"/>
-                <rect x="6" y="5" width="1" height="1" fill="#101828"/><rect x="9" y="5" width="1" height="1" fill="#101828"/>
-                <rect x="7" y="7" width="2" height="1" fill="#8a3f22"/><rect x="5" y="8" width="2" height="1" fill="#fff7ed"/><rect x="9" y="8" width="2" height="1" fill="#fff7ed"/>
-                <rect x="4" y="10" width="8" height="3" fill="#f28b3c"/><rect x="3" y="12" width="4" height="2" fill="#d96b27"/><rect x="9" y="12" width="4" height="2" fill="#d96b27"/>
-              </svg>
-            </div>
             <div id="problem" class="problem">—</div>
             <form id="answerForm" class="answer-row" autocomplete="off">
               <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
@@ -814,10 +805,7 @@
       }
 
       function animateCat(kind) {
-        pixelCat.classList.remove('jump', 'celebrate', 'oops');
-        void pixelCat.offsetWidth;
-        pixelCat.classList.add(kind);
-        setTimeout(() => pixelCat.classList.remove(kind), kind === 'celebrate' ? 900 : 720);
+        if (pixelCat.react) pixelCat.react(kind);
       }
 
       function queueNextProblem(delay = 180) {
@@ -1057,5 +1045,160 @@
       document.addEventListener('keydown', (event) => { const tagName = event.target && event.target.tagName; const isControl = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(tagName); if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && !isControl) startGame(); });
     })();
   </script>
+<script type="module">
+
+const host = document.getElementById('pixelCat');
+try {
+  const THREE = await import('https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js');
+  const cats = [];
+  const palettes = [
+    {fur:0xeda345, light:0xffbf65, dark:0xb9632d, cream:0xffedcd, eye:0xb77924},
+    {fur:0xaaa0c4, light:0xcac2dc, dark:0x7e739d, cream:0xfff3e9, eye:0x548fb9},
+    {fur:0x303039, light:0x494954, dark:0x23232d, cream:0xfff1df, eye:0x91b875}
+  ];
+  for (const index of [1]) {
+    const p = palettes[index];
+    const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    renderer.setClearColor(0,0);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    host.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    scene.add(new THREE.HemisphereLight(0xffffff,0xb5a5bc,2.4));
+    const key = new THREE.DirectionalLight(0xffefda,3.2); key.position.set(-15,30,25); scene.add(key);
+    const rim = new THREE.DirectionalLight(0xc3d0ff,1.6); rim.position.set(15,18,-15); scene.add(rim);
+    const camera = new THREE.OrthographicCamera(-16,16,16,-16,.1,200);
+    camera.position.set(25,21,48); camera.lookAt(0,11,0);
+    const eyes = [];
+    const turn = new THREE.Group(), cat = new THREE.Group(); scene.add(turn); turn.add(cat);
+    const geom = new THREE.BoxGeometry(1,1,1);
+    const materials = new Map();
+    function mat(color) { if(!materials.has(color)) materials.set(color,new THREE.MeshStandardMaterial({color,roughness:1})); return materials.get(color); }
+    function box(parent,x,y,z,w,h,d,color) { const m = new THREE.Mesh(geom,mat(color)); m.position.set(x,y,z); m.scale.set(w,h,d); parent.add(m); return m; }
+    function volume(parent,cx,cy,cz,rx,ry,rz,colorFn,power=3) {
+      const cells=[];
+      const inside=(x,y,z)=>Math.pow(Math.abs(x/rx),power)+Math.pow(Math.abs(y/ry),power)+Math.pow(Math.abs(z/rz),power)<=1;
+      for(let x=-Math.ceil(rx);x<=rx;x++) for(let y=-Math.ceil(ry);y<=ry;y++) for(let z=-Math.ceil(rz);z<=rz;z++) {
+        if(!inside(x,y,z)) continue;
+        if([[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]].every(([a,b,c])=>inside(x+a,y+b,z+c))) continue;
+        cells.push({x:cx+x,y:cy+y,z:cz+z,color:colorFn(x,y,z)});
+      }
+      const mesh = new THREE.InstancedMesh(geom,new THREE.MeshStandardMaterial({roughness:1}),cells.length);
+      const dummy = new THREE.Object3D();
+      cells.forEach((v,i)=>{dummy.position.set(v.x,v.y,v.z); dummy.scale.setScalar(.99); dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);mesh.setColorAt(i,new THREE.Color(v.color));});
+      parent.add(mesh);
+    }
+    const fur=(x,y,z)=> ((x*7+y*11+z*3)%13===0 ? p.light:p.fur);
+    volume(cat,0,5,0,4,4.7,3.6,(x,y,z)=>z>=3 && Math.abs(x)<2 && y>0 ? p.cream:fur(x,y,z));
+    volume(cat,0,13,0,6.5,4.7,4.1,(x,y,z)=>{
+      if(z>=3 && Math.abs(x)<1.5 && y<1) return p.cream;
+      if(index===0 && y>=2 && (x===0 || Math.abs(x)===3)) return p.dark;
+      return fur(x,y,z);
+    });
+    // Stepped triangular ears, with pink inset faces.
+    for(const side of [-1,1]) {
+      for(let level=0;level<5;level++) {
+        const width=4-level*.65;
+        box(cat,side*(3.5+level*.26),17+level,0,width,1,3.2-level*.35,p.fur);
+        if(level<4) box(cat,side*(3.5+level*.26),17+level,1.66-level*.17,Math.max(.6,width-1.4),.92,.22,level<2?0xf3acb1:0xdf879e);
+      }
+    }
+    // Cream muzzle and cheeks project out from the face.
+    volume(cat,-1.6,10.7,3.9,2.2,1.35,1.0,()=>p.cream);
+    volume(cat,1.6,10.7,3.9,2.2,1.35,1.0,()=>p.cream);
+    for(const side of [-1,1]) {
+      const eye = new THREE.Group(); eye.position.y = 13.5; cat.add(eye); eyes.push(eye);
+      box(eye,side*3.05,0,4.7,2.45,3.15,.55,0x28242d);
+      box(eye,side*3.05,-.7,5.03,1.6,.8,.13,p.eye);
+      box(eye,side*3.05-.4,.8,5.08,.7,.7,.15,0xffffff);
+      box(eye,side*3.05+.45,-.45,5.1,.3,.3,.15,0xffffff);
+      box(cat,side*4.15,11.6,4.27,1,.45,.12,0xeeb0aa);
+      box(cat,side*5.1,10.7,4.55,2.2,.19,.18,p.cream);
+      box(cat,side*5.25,11.35,4.5,2,.19,.18,p.cream);
+      volume(cat,side*2.1,.9,2,1.6,.8,2.15,()=>p.cream);
+      box(cat,side*2.1,1.05,4.12,.15,.45,.08,p.dark);
+    }
+    box(cat,0,11.65,5.1,1.15,.65,.45,0xde8595);
+    box(cat,0,11.1,5.1,.35,.5,.3,0x734a50);
+    box(cat,-.6,10.65,5,.65,.25,.25,0x734a50);
+    box(cat,.6,10.65,5,.65,.25,.25,0x734a50);
+    volume(cat,0,6.6,3.25,2.2,2.4,.6,()=>p.cream);
+    // Front legs; tuxedo kitten has a raised waving paw.
+    const paw = new THREE.Group(); cat.add(paw); paw.position.set(-3.4,5,2.2);
+    if(index===2) {
+      box(paw,-.9,1,0,2.1,3,2,p.fur);
+      box(paw,-1.6,3,0,2.4,2.4,2,p.cream);
+      box(paw,-1.6,3,1.08,.8,.85,.15,0xe6a2b1);
+      for(const x of [-2.25,-1.5,-.8]) box(paw,x,3.8,1.08,.35,.35,.15,0xe6a2b1);
+    } else box(cat,-2.25,3.1,2.6,2.1,3.5,2,p.fur);
+    box(cat,2.25,3.1,2.6,2.1,3.5,2,p.fur);
+    const tail = new THREE.Group(); tail.position.set(3,2,-1.6); cat.add(tail);
+    [[0,0,0],[1,0,0],[2,0,0],[3,1,0],[4,2,0],[4,3,0],[4,4,0],[3,5,0]].forEach(([x,y,z],i)=>{
+      box(tail,x,y,z,2.1,2.1,2.1,i>5?p.cream:(index===0&&i%3===0?p.dark:p.fur));
+    });
+    const render=()=>renderer.render(scene,camera);
+
+    function resize(){
+      const w=host.clientWidth, h=host.clientHeight;
+      if(!w || !h) return;
+      renderer.setSize(w,h,false);
+      camera.left=-15*w/h;camera.right=15*w/h;
+      camera.updateProjectionMatrix();render();
+    }
+    const observer=new ResizeObserver(resize);observer.observe(host);resize();
+    let animation=0;
+    function reset() {
+      cat.position.set(0,0,0);cat.rotation.set(0,0,0);
+      eyes.forEach(eye=>eye.scale.y=1);tail.rotation.y=0;
+      host.dataset.reaction='idle';
+      render();
+    }
+    host.react = (kind) => {
+      cancelAnimationFrame(animation);
+      reset();
+      if(!document.body.classList.contains('game-active') || document.hidden) return;
+      const correct=kind!=='oops';
+      const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const beginning=performance.now();
+      host.dataset.reaction=correct?'wink':'oops';
+      function frame(now) {
+        const t=Math.min((now-beginning)/720,1);
+        if(!document.body.classList.contains('game-active') || document.hidden){reset();return;}
+        if(correct) {
+          // Close one eye, hold a friendly wink, then reopen it.
+          const wink=Math.max(0,Math.min(1,(t-.12)/.12,(.8-t)/.15));
+          eyes[1].scale.y=1-wink*.94;
+        }
+        if(!reduced) {
+          const envelope=Math.sin(Math.PI*t);
+          cat.position.y=correct?envelope*1.2:0;
+          cat.position.x=Math.sin(t*Math.PI*6)*envelope*.3;
+          cat.rotation.z=Math.sin(t*Math.PI*4)*envelope*.045;
+          tail.rotation.y=Math.sin(t*Math.PI*2)*.14;
+        }
+        render();
+        if(t<1) animation=requestAnimationFrame(frame); else reset();
+      }
+      animation=requestAnimationFrame(frame);
+    };
+    const visibility=new MutationObserver(()=>{
+      if(!document.body.classList.contains('game-active')){cancelAnimationFrame(animation);reset();}
+      else resize();
+    });
+    visibility.observe(document.body,{attributes:true,attributeFilter:['class']});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(animation);reset();}});
+    renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(animation);});
+    renderer.domElement.addEventListener('webglcontextrestored',resize);
+    host.dataset.ready='true';
+  }
+} catch(error) {
+  // The quiz remains fully usable if WebGL or the optional CDN is unavailable.
+  host.hidden=true;
+  console.warn('Optional kitten unavailable:',error.message);
+}
+
+</script>
 </body>
 </html>
