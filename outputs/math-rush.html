@@ -73,9 +73,9 @@
     .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
     .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
     .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.85); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s; }
-    .mode-settings-button::before { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .16s; }
+    .mode-settings-button::before { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(1px) rotate(45deg); transform-origin: center; transition: transform .16s; }
     .mode-settings-button:hover, .mode-settings-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
-    .mode-settings-button.open::before { transform: translateY(2px) rotate(225deg); }
+    .mode-settings-button.open::before { transform: translateY(-1px) rotate(225deg); }
     .mode-settings { margin: -4px 12px 12px; padding: 10px 11px 11px; border-top: 1px solid var(--line); border-radius: 0 0 11px 11px; background: rgba(255,255,255,.56); }
     .mode-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
@@ -190,7 +190,7 @@
         <div class="settings-grid">
           <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
           <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
-          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option>20</option><option selected>30</option><option>40</option><option>60</option><option>90</option></select></div>
+          <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option>20</option><option selected>30</option><option>40</option><option>60</option><option>90</option><option>120</option><option>180</option><option>240</option><option>300</option></select></div>
           <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
           <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
           <div class="setting"><label for="difficulty">Сложность чисел</label><select id="difficulty"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></div>
@@ -507,7 +507,7 @@
       }
 
       const modeControlOptions = {
-        startTime: [15, 20, 30, 40, 60, 90],
+        startTime: [15, 20, 30, 40, 60, 90, 120, 180, 240, 300],
         timeBonus: [0, 1, 2, 3, 5, 10],
         streakGoal: [5, 10, 15, 20],
         taskLimit: [0, 10, 20, 30]
