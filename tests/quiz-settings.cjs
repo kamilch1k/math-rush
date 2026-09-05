@@ -23,6 +23,13 @@ const document = {
 const context = { document };
 vm.runInNewContext(script, context);
 const q = context.quiz;
+assert.ok(Object.values(q.configs).every(c => c.startTime === 90), 'Every quiz defaults to 90 seconds');
+let zeroProblems = 0;
+for (let i = 0; i < 2000; i++) {
+  const p = q.build('addition-ten');
+  if (/(^|[^0-9])0([^0-9]|$)/.test(p.text) || p.answer === 0) zeroProblems++;
+}
+assert.ok(zeroProblems < 240, 'Zero problems are uncommon (under 12%)');
 q.read();
 q.configure({ id: 'startTime', value: '20' });
 q.read();
