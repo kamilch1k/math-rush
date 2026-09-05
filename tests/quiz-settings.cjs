@@ -44,7 +44,15 @@ assert.equal(q.configs.addition.startTime, 20, 'In-game changes affect only acti
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-ten');
   const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);
-  assert.ok(+a >= 1 && +a <= 10 && +b >= 1 && +b <= 10);
+  assert.ok(+a >= 0 && +a <= 10 && +b >= 0 && +b <= 10);
+  assert.ok(p.answer <= 10);
   assert.equal(p.answer, +a + +b);
 }
-console.log('PASS: menu timer, per-card timer, live timer adjustment, bonus independence, 1000 beginner additions');
+for (let i = 0; i < 1000; i++) {
+  const p = q.build('subtraction-ten');
+  const [, a, b] = p.text.match(/^(\d+) − (\d+) = \?$/);
+  assert.ok(+a >= 0 && +a <= 10 && +b >= 0 && +b <= 10);
+  assert.ok(p.answer >= 0 && p.answer <= 10);
+  assert.equal(p.answer, +a - +b);
+}
+console.log('PASS: timers, 1000 capped additions, 1000 beginner subtractions');

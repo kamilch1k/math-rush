@@ -80,7 +80,8 @@
     .mode-settings-label select { width: 100%; margin-top: 5px; padding: 7px 9px; font-size: 13px; }
     .mode-icon { display: grid; width: 35px; height: 35px; place-items: center; margin-bottom: 11px; border-radius: 11px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); font-size: 19px; font-weight: 900; }
     .mode-card[data-mode="equations"] .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
-    .mode-card[data-mode="addition"] .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
+    .mode-card[data-mode^="addition"], .mode-card[data-mode^="subtraction"] { }
+    .mode-card[data-mode^="addition"] .mode-icon, .mode-card[data-mode^="subtraction"] .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
     .mode-card[data-mode="multiplication"] .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
     .mode-card[data-mode^="fractions"] .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
     .mode-card strong { display: block; font-size: 15px; }
@@ -200,7 +201,7 @@
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
           <article class="mode-card" data-mode="addition-ten">
-            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Самое простое сложение</strong><small>Числа от 1 до 10 включительно</small></button>
+            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Самое простое сложение</strong><small>Слагаемые и результат до 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="addition-ten" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple">Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
@@ -208,6 +209,16 @@
             <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Простое сложение</strong><small>Числа от 1 до 19 · 40 секунд</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text" data-mode-setting-label="difficulty">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition" data-mode-config="difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="subtraction-ten">
+            <button class="mode-card-main" type="button"><span class="mode-icon">−</span><strong>Самое простое вычитание</strong><small>Числа и результат от 0 до 10</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="subtraction-ten" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple">Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="subtraction">
+            <button class="mode-card-main" type="button"><span class="mode-icon">−</span><strong>Простое вычитание</strong><small>Без отрицательных ответов</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="subtraction" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <article class="mode-card" data-mode="tables">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
@@ -357,14 +368,23 @@
         de: { factorFrom: 'Faktoren von', factorTo: 'Faktoren bis', startTime: 'Startzeit', timeBonus: 'Bonus pro richtiger Antwort', streakGoal: 'Serienlänge', difficulty: 'Zahlenschwierigkeit', mix: { tables: 'Einmaleins', equations: 'Gleichungen', addition: 'Addition', multiplication: 'Multiplikation', 'fractions-simplify': 'Brüche kürzen', 'fractions-compare': 'Brüche vergleichen', 'fractions-calculate': 'Bruchrechnen' }, difficultyValues: { simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' } }
       });
       const easyAdditionText = {
-        ru: ['Самое простое сложение', 'Числа от 1 до 10 включительно', 'Складывай два числа от 1 до 10 включительно.'],
-        en: ['Beginner addition', 'Numbers from 1 to 10 inclusive', 'Add two numbers from 1 to 10 inclusive.'],
-        fr: ['Addition débutant', 'Nombres de 1 à 10 inclus', 'Additionne deux nombres de 1 à 10 inclus.'],
-        es: ['Suma para principiantes', 'Números del 1 al 10 inclusive', 'Suma dos números del 1 al 10 inclusive.'],
-        de: ['Addition für Anfänger', 'Zahlen von 1 bis einschließlich 10', 'Addiere zwei Zahlen von 1 bis einschließlich 10.']
+        ru: ['Самое простое сложение', 'Слагаемые и результат до 10', 'Складывай числа так, чтобы результат всегда был не больше 10.'],
+        en: ['Beginner addition', 'Numbers and result up to 10', 'Add numbers whose sum is never greater than 10.'],
+        fr: ['Addition débutant', 'Nombres et résultat jusqu’à 10', 'Additionne des nombres dont la somme ne dépasse jamais 10.'],
+        es: ['Suma para principiantes', 'Números y resultado hasta 10', 'Suma números cuyo resultado nunca supera 10.'],
+        de: ['Addition für Anfänger', 'Zahlen und Ergebnis bis 10', 'Addiere Zahlen, deren Summe nie größer als 10 ist.']
+      };
+      const subtractionText = {
+        ru: { easy: ['Самое простое вычитание', 'Числа и результат от 0 до 10', 'Вычитай в пределах 10 без отрицательных ответов.'], normal: ['Простое вычитание', 'Без отрицательных ответов', 'Решай примеры на вычитание; ответ всегда неотрицательный.'] },
+        en: { easy: ['Beginner subtraction', 'Numbers and result from 0 to 10', 'Subtract within 10 with no negative answers.'], normal: ['Simple subtraction', 'No negative answers', 'Solve subtraction problems with non-negative answers.'] },
+        fr: { easy: ['Soustraction débutant', 'Nombres et résultat de 0 à 10', 'Soustrais jusqu’à 10 sans résultat négatif.'], normal: ['Soustraction simple', 'Sans résultat négatif', 'Résous des soustractions dont le résultat reste positif ou nul.'] },
+        es: { easy: ['Resta para principiantes', 'Números y resultado de 0 a 10', 'Resta hasta 10 sin respuestas negativas.'], normal: ['Resta sencilla', 'Sin respuestas negativas', 'Resuelve restas con resultados no negativos.'] },
+        de: { easy: ['Subtraktion für Anfänger', 'Zahlen und Ergebnis von 0 bis 10', 'Subtrahiere bis 10 ohne negative Ergebnisse.'], normal: ['Einfache Subtraktion', 'Keine negativen Ergebnisse', 'Löse Subtraktionsaufgaben mit nichtnegativen Ergebnissen.'] }
       };
       Object.keys(languageData).forEach((key) => {
         languageData[key].modes['addition-ten'] = easyAdditionText[key];
+        languageData[key].modes['subtraction-ten'] = subtractionText[key].easy;
+        languageData[key].modes.subtraction = subtractionText[key].normal;
         for (const field of ['startTime', 'timeBonus', 'streakGoal']) languageData[key].modeSettings[field] = settingsLabels[key][field];
       });
       let selectedMode = 'addition-ten';
@@ -375,6 +395,8 @@
       let settings = { factorFrom: 1, factorTo: 10, startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
         'addition-ten': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'subtraction-ten': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        subtraction: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -481,7 +503,7 @@
           difficultyText.dataset.modeSettingLabel = 'difficulty';
           difficultyControl.dataset.mode = mode;
           difficultyControl.dataset.modeConfig = 'difficulty';
-          if (mode === 'addition-ten') difficultyLabel.classList.add('hidden');
+          if (mode === 'addition-ten' || mode === 'subtraction-ten') difficultyLabel.classList.add('hidden');
           const grid = document.createElement('div');
           grid.className = 'mode-settings-grid';
           grid.append(difficultyLabel);
@@ -580,11 +602,21 @@
           return { text: `x + ${number} = ${x + number}`, answer: x };
         }
         const range = difficultyRange(mode);
-        if (mode === 'addition' || mode === 'addition-ten') {
-          const min = mode === 'addition-ten' ? 1 : range.min;
-          const max = mode === 'addition-ten' ? 10 : range.max;
-          const a = randomInt(min, max), b = randomInt(min, max);
+        if (mode === 'addition-ten') {
+          const a = randomInt(0, 10), b = randomInt(0, 10 - a);
           return { text: `${a} + ${b} = ?`, answer: a + b };
+        }
+        if (mode === 'addition') {
+          const a = randomInt(range.min, range.max), b = randomInt(range.min, range.max);
+          return { text: `${a} + ${b} = ?`, answer: a + b };
+        }
+        if (mode === 'subtraction-ten') {
+          const a = randomInt(0, 10), b = randomInt(0, a);
+          return { text: `${a} − ${b} = ?`, answer: a - b };
+        }
+        if (mode === 'subtraction') {
+          const a = randomInt(range.min, range.max), b = randomInt(range.min, a);
+          return { text: `${a} − ${b} = ?`, answer: a - b };
         }
         if (mode === 'multiplication') {
           const difficulty = difficultyFor(mode);
