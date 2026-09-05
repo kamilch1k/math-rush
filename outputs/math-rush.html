@@ -66,6 +66,8 @@
     .menu-heading h2, .result h2 { margin: 0; font-size: 26px; letter-spacing: -.03em; }
     .menu-heading p { margin: 0; color: var(--muted); font-size: 13px; text-align: right; }
     .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
+    .mode-category { grid-column: 1 / -1; margin: 18px 2px 0; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 17px; letter-spacing: -.02em; }
+    .mode-category:first-child { margin-top: 0; }
     .mode-card { position: relative; min-height: 120px; padding: 0; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
     .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
     .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
@@ -79,7 +81,7 @@
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
     .mode-settings-label select { width: 100%; margin-top: 5px; padding: 7px 9px; font-size: 13px; }
     .mode-icon { display: grid; width: 35px; height: 35px; place-items: center; margin-bottom: 11px; border-radius: 11px; color: white; background: linear-gradient(145deg, #837bff, var(--accent-dark)); font-size: 19px; font-weight: 900; }
-    .mode-card[data-mode="equations"] .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
+    .mode-card[data-mode^="equations"] .mode-icon { background: linear-gradient(145deg, #4cc9a0, #079455); }
     .mode-card[data-mode^="addition"], .mode-card[data-mode^="subtraction"] { }
     .mode-card[data-mode^="addition"] .mode-icon, .mode-card[data-mode^="subtraction"] .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
     .mode-card[data-mode="multiplication"] .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
@@ -200,6 +202,7 @@
       <section id="menuScreen" class="screen menu-screen">
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
         <div class="mode-grid">
+          <h3 class="mode-category" data-category="addition">Сложение</h3>
           <article class="mode-card" data-mode="addition-ten">
             <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Самое простое сложение</strong><small>Слагаемые и результат до 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="addition-ten" aria-label="Настроить режим" aria-expanded="false">⌄</button>
@@ -210,6 +213,7 @@
             <button class="mode-settings-button" type="button" data-mode-settings="addition" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text" data-mode-setting-label="difficulty">Сложность</span><select class="mode-difficulty" data-mode-difficulty="addition" data-mode-config="difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <h3 class="mode-category" data-category="subtraction">Вычитание</h3>
           <article class="mode-card" data-mode="subtraction-ten">
             <button class="mode-card-main" type="button"><span class="mode-icon">−</span><strong>Самое простое вычитание</strong><small>Числа и результат от 0 до 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="subtraction-ten" aria-label="Настроить режим" aria-expanded="false">⌄</button>
@@ -220,21 +224,40 @@
             <button class="mode-settings-button" type="button" data-mode-settings="subtraction" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <h3 class="mode-category" data-category="combined">Сложение и вычитание</h3>
+          <article class="mode-card" data-mode="addition-subtraction">
+            <button class="mode-card-main" type="button"><span class="mode-icon">±</span><strong>Комбинированные действия</strong><small>Примеры с + и − вместе</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="addition-subtraction" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <h3 class="mode-category" data-category="multiplication">Умножение</h3>
           <article class="mode-card" data-mode="tables">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="tables" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="tables"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
-          </article>
-          <article class="mode-card" data-mode="equations">
-            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения</strong><small>x +, −, × или / число</small></button>
-            <button class="mode-settings-button" type="button" data-mode-settings="equations" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
-            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="equations"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <article class="mode-card" data-mode="multiplication">
             <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Сложное умножение</strong><small>От однозначных до двузначных</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="multiplication" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="multiplication"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <h3 class="mode-category" data-category="equations">Уравнения</h3>
+          <article class="mode-card" data-mode="equations-addition">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения со сложением</strong><small>Например: x + 2 = 10</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="equations-addition" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="equations-subtraction">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения с вычитанием</strong><small>Например: x − 2 = 8</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="equations-subtraction" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="equations">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Все уравнения</strong><small>x +, −, × или / число</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="equations" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="equations"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <h3 class="mode-category" data-category="fractions">Дроби</h3>
           <article class="mode-card" data-mode="fractions-simplify">
             <button class="mode-card-main" type="button"><span class="mode-icon">½</span><strong>Сокращение дробей</strong><small>Например: 6/8 = 3/4</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="fractions-simplify" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
@@ -255,6 +278,7 @@
             <button class="mode-settings-button" type="button" data-mode-settings="fractions-mixed" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="fractions-mixed"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <h3 class="mode-category" data-category="mixed">Смешанная тренировка</h3>
           <article class="mode-card" data-mode="mixed">
             <button class="mode-card-main" type="button"><span class="mode-icon">★</span><strong>Смешанный режим</strong><small>Все выбранные типы вперемешку</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="mixed" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
@@ -381,10 +405,22 @@
         es: { easy: ['Resta para principiantes', 'Números y resultado de 0 a 10', 'Resta hasta 10 sin respuestas negativas.'], normal: ['Resta sencilla', 'Sin respuestas negativas', 'Resuelve restas con resultados no negativos.'] },
         de: { easy: ['Subtraktion für Anfänger', 'Zahlen und Ergebnis von 0 bis 10', 'Subtrahiere bis 10 ohne negative Ergebnisse.'], normal: ['Einfache Subtraktion', 'Keine negativen Ergebnisse', 'Löse Subtraktionsaufgaben mit nichtnegativen Ergebnissen.'] }
       };
+      const expandedModeText = {
+        ru: { combined: ['Комбинированные действия', 'Примеры с + и − вместе', 'Решай выражения, в которых сложение и вычитание встречаются вместе.'], equationAdd: ['Уравнения со сложением', 'Например: x + 2 = 10', 'Найди x в простых уравнениях со сложением.'], equationSubtract: ['Уравнения с вычитанием', 'Например: x − 2 = 8', 'Найди x в простых уравнениях с вычитанием.'], allEquations: ['Все уравнения', 'Сложение, вычитание, × и /', 'Решай уравнения со всеми четырьмя действиями.'], categories: ['Сложение', 'Вычитание', 'Сложение и вычитание', 'Умножение', 'Уравнения', 'Дроби', 'Смешанная тренировка'] },
+        en: { combined: ['Combined operations', 'Addition and subtraction together', 'Solve expressions that combine addition and subtraction.'], equationAdd: ['Addition equations', 'Example: x + 2 = 10', 'Find x in simple addition equations.'], equationSubtract: ['Subtraction equations', 'Example: x − 2 = 8', 'Find x in simple subtraction equations.'], allEquations: ['All equations', 'Addition, subtraction, × and /', 'Solve equations using all four operations.'], categories: ['Addition', 'Subtraction', 'Addition and subtraction', 'Multiplication', 'Equations', 'Fractions', 'Mixed practice'] },
+        fr: { combined: ['Opérations combinées', 'Addition et soustraction ensemble', 'Résous des expressions avec addition et soustraction.'], equationAdd: ['Équations avec addition', 'Exemple : x + 2 = 10', 'Trouve x dans des équations simples avec addition.'], equationSubtract: ['Équations avec soustraction', 'Exemple : x − 2 = 8', 'Trouve x dans des équations simples avec soustraction.'], allEquations: ['Toutes les équations', 'Addition, soustraction, × et /', 'Résous des équations avec les quatre opérations.'], categories: ['Addition', 'Soustraction', 'Addition et soustraction', 'Multiplication', 'Équations', 'Fractions', 'Entraînement mixte'] },
+        es: { combined: ['Operaciones combinadas', 'Suma y resta juntas', 'Resuelve expresiones que combinan suma y resta.'], equationAdd: ['Ecuaciones con suma', 'Ejemplo: x + 2 = 10', 'Encuentra x en ecuaciones sencillas con suma.'], equationSubtract: ['Ecuaciones con resta', 'Ejemplo: x − 2 = 8', 'Encuentra x en ecuaciones sencillas con resta.'], allEquations: ['Todas las ecuaciones', 'Suma, resta, × y /', 'Resuelve ecuaciones con las cuatro operaciones.'], categories: ['Suma', 'Resta', 'Suma y resta', 'Multiplicación', 'Ecuaciones', 'Fracciones', 'Práctica mixta'] },
+        de: { combined: ['Kombinierte Aufgaben', 'Addition und Subtraktion zusammen', 'Löse Ausdrücke mit Addition und Subtraktion.'], equationAdd: ['Additionsgleichungen', 'Beispiel: x + 2 = 10', 'Finde x in einfachen Additionsgleichungen.'], equationSubtract: ['Subtraktionsgleichungen', 'Beispiel: x − 2 = 8', 'Finde x in einfachen Subtraktionsgleichungen.'], allEquations: ['Alle Gleichungen', 'Addition, Subtraktion, × und /', 'Löse Gleichungen mit allen vier Rechenarten.'], categories: ['Addition', 'Subtraktion', 'Addition und Subtraktion', 'Multiplikation', 'Gleichungen', 'Brüche', 'Gemischtes Training'] }
+      };
       Object.keys(languageData).forEach((key) => {
         languageData[key].modes['addition-ten'] = easyAdditionText[key];
         languageData[key].modes['subtraction-ten'] = subtractionText[key].easy;
         languageData[key].modes.subtraction = subtractionText[key].normal;
+        languageData[key].modes['addition-subtraction'] = expandedModeText[key].combined;
+        languageData[key].modes['equations-addition'] = expandedModeText[key].equationAdd;
+        languageData[key].modes['equations-subtraction'] = expandedModeText[key].equationSubtract;
+        languageData[key].modes.equations = expandedModeText[key].allEquations;
+        languageData[key].categories = Object.fromEntries(['addition', 'subtraction', 'combined', 'multiplication', 'equations', 'fractions', 'mixed'].map((name, index) => [name, expandedModeText[key].categories[index]]));
         for (const field of ['startTime', 'timeBonus', 'streakGoal']) languageData[key].modeSettings[field] = settingsLabels[key][field];
       });
       let selectedMode = 'addition-ten';
@@ -397,8 +433,11 @@
         'addition-ten': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'subtraction-ten': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         subtraction: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'addition-subtraction': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         tables: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         equations: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'equations-addition': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'equations-subtraction': { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         addition: { difficulty: 'simple', startTime: 40, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         multiplication: { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'fractions-simplify': { difficulty: 'advanced', startTime: 30, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -575,17 +614,17 @@
           const b = randomInt(settings.factorFrom, settings.factorTo);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
-        if (mode === 'equations') {
+        if (mode === 'equations' || mode === 'equations-addition' || mode === 'equations-subtraction') {
           const difficulty = difficultyFor(mode);
-          const equationMax = difficulty === 'simple' ? Math.min(settings.factorTo, 5) : difficulty === 'expert' ? Math.max(settings.factorTo, 20) : settings.factorTo;
-          const x = randomInt(settings.factorFrom, Math.max(settings.factorFrom, equationMax));
-          const operation = ['+', '-', '×', '/'][randomInt(0, 3)];
+          const equationMax = difficulty === 'simple' ? 10 : difficulty === 'expert' ? 999 : 99;
+          const x = randomInt(0, equationMax);
+          const operation = mode === 'equations-addition' ? '+' : mode === 'equations-subtraction' ? '-' : ['+', '-', '×', '/'][randomInt(0, 3)];
           if (operation === '+') {
-            const number = randomInt(1, 10);
+            const number = randomInt(1, difficulty === 'simple' ? 10 : equationMax);
             return { text: `x + ${number} = ${x + number}`, answer: x };
           }
           if (operation === '-') {
-            const number = randomInt(1, Math.max(1, x));
+            const number = randomInt(0, Math.max(0, x));
             return { text: `x - ${number} = ${x - number}`, answer: x };
           }
           if (operation === '×') {
@@ -617,6 +656,14 @@
         if (mode === 'subtraction') {
           const a = randomInt(range.min, range.max), b = randomInt(range.min, a);
           return { text: `${a} − ${b} = ?`, answer: a - b };
+        }
+        if (mode === 'addition-subtraction') {
+          const max = range.max;
+          const a = randomInt(range.min, max);
+          const b = randomInt(range.min, max);
+          const subtotal = a + b;
+          const c = randomInt(0, subtotal);
+          return { text: `${a} + ${b} − ${c} = ?`, answer: subtotal - c };
         }
         if (mode === 'multiplication') {
           const difficulty = difficultyFor(mode);
@@ -855,6 +902,7 @@
           });
           modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
+        document.querySelectorAll('[data-category]').forEach((heading) => { heading.textContent = language.categories[heading.dataset.category]; });
         $('modeDescription').textContent = language.modes[selectedMode][2];
         $('modeBadge').textContent = language.modes[currentQuestionMode][0];
         const labelMap = { factorFrom: 'factorFrom', factorTo: 'factorTo', startTime: 'startTime', timeBonus: 'timeBonus', streakGoal: 'streakGoal', difficulty: 'difficulty' };

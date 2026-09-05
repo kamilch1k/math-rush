@@ -55,4 +55,18 @@ for (let i = 0; i < 1000; i++) {
   assert.ok(p.answer >= 0 && p.answer <= 10);
   assert.equal(p.answer, +a - +b);
 }
-console.log('PASS: timers, 1000 capped additions, 1000 beginner subtractions');
+for (let i = 0; i < 1000; i++) {
+  const p = q.build('addition-subtraction');
+  const [, a, b, c] = p.text.match(/^(\d+) \+ (\d+) − (\d+) = \?$/);
+  assert.equal(p.answer, +a + +b - +c);
+  assert.ok(p.answer >= 0);
+}
+for (let i = 0; i < 1000; i++) {
+  const addition = q.build('equations-addition');
+  const subtraction = q.build('equations-subtraction');
+  assert.match(addition.text, /^x \+ \d+ = \d+$/);
+  assert.match(subtraction.text, /^x - \d+ = \d+$/);
+  assert.ok(addition.answer >= 0 && addition.answer <= 10);
+  assert.ok(subtraction.answer >= 0 && subtraction.answer <= 10);
+}
+console.log('PASS: timers and 4000 generated problems across new beginner modes');
