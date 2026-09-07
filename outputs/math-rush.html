@@ -66,6 +66,8 @@
     .menu-heading h2, .result h2 { margin: 0; font-size: 26px; letter-spacing: -.03em; }
     .menu-heading p { margin: 0; color: var(--muted); font-size: 13px; text-align: right; }
     .mode-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 11px; }
+    .subject-title { grid-column: 1 / -1; margin: 34px 0 2px; padding: 14px 16px; border-radius: 17px; background: linear-gradient(135deg, #f0eeff, #f8f8ff); color: var(--accent-dark); font-size: 23px; letter-spacing: -.03em; }
+    .subject-title:first-child { margin-top: 0; }
     .mode-category { grid-column: 1 / -1; margin: 18px 2px 0; padding-bottom: 7px; border-bottom: 1px solid var(--line); font-size: 17px; letter-spacing: -.02em; }
     .mode-category:first-child { margin-top: 0; }
     .mode-card { position: relative; min-height: 120px; padding: 0; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
@@ -87,6 +89,7 @@
     .mode-card[data-mode="multiplication"] .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
     .mode-card[data-mode^="fractions"] .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
     .mode-card[data-mode^="skills"] .mode-icon { background: linear-gradient(145deg, #a977ff, #6941c6); }
+    .mode-card[data-mode^="geometry"] .mode-icon { background: linear-gradient(145deg, #46c6db, #087e8b); }
     .mode-card strong { display: block; font-size: 15px; }
     .mode-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.35; }
     .mode-description { min-height: 25px; margin: 14px 0 18px; color: var(--muted); font-size: 13px; }
@@ -137,6 +140,8 @@
     }
     .mode-badge { display: inline-block; margin-bottom: 5px; padding: 4px 9px; border-radius: 99px; color: var(--accent-dark); background: #eeecff; font-size: 12px; font-weight: 800; }
     .problem { min-height: 90px; display: grid; place-items: center; margin-bottom: 17px; font-size: clamp(40px, 11vw, 66px); font-weight: 900; letter-spacing: -.06em; }
+    .problem.word-problem { max-width: 720px; min-height: 105px; margin: 0 auto 10px; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; letter-spacing: -.02em; font-weight: 800; }
+    .problem-help { min-height: 24px; margin: 0 0 15px; color: var(--accent-dark); font-size: 13px; font-weight: 700; }
     .answer-row { display: flex; gap: 10px; }
     input { min-width: 0; flex: 1; padding: 15px 16px; border: 2px solid var(--line); border-radius: 15px; outline: 0; background: white; color: var(--ink); font-size: 20px; text-align: center; transition: border-color .15s, box-shadow .15s; }
     input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(99,91,255,.12); }
@@ -318,6 +323,40 @@
             <button class="mode-settings-button" type="button" data-mode-settings="skills-compare" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="skills-compare"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <article class="mode-card" data-mode="equations-missing">
+            <button class="mode-card-main" type="button"><span class="mode-icon">□</span><strong>Пропущенное число</strong><small>Подготовка к уравнениям</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="equations-multiplication">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения с умножением</strong><small>Например: x × 4 = 24</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="equations-division">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения с делением</strong><small>Например: x / 5 = 7</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="equations-two-step">
+            <button class="mode-card-main" type="button"><span class="mode-icon">2x</span><strong>Двухшаговые уравнения</strong><small>Например: 2 × x + 3 = 13</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="geometry-perimeter">
+            <button class="mode-card-main" type="button"><span class="mode-icon">▭</span><strong>Периметр</strong><small>Прямоугольники и квадраты</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="geometry-area">
+            <button class="mode-card-main" type="button"><span class="mode-icon">▦</span><strong>Площадь</strong><small>Площадь прямоугольника</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="geometry-side">
+            <button class="mode-card-main" type="button"><span class="mode-icon">?</span><strong>Неизвестная сторона</strong><small>Найди сторону по периметру</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
         </div>
         <p id="modeDescription" class="mode-description">Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.</p>
         <button id="startBtn" class="primary" type="button" hidden aria-hidden="true">Начать игру</button>
@@ -331,6 +370,7 @@
           <div class="progress" aria-label="Оставшееся время игры"><div id="progressBar"></div></div>
           <div class="problem-box">
             <div id="problem" class="problem">—</div>
+            <div id="problemHelp" class="problem-help"></div>
             <form id="answerForm" class="answer-row" autocomplete="off">
               <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
               <button id="submitBtn" class="submit" type="submit">Ответить</button>
@@ -371,7 +411,7 @@
       const $ = (id) => document.getElementById(id);
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
-      const problemEl = $('problem'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
+      const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
       const answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback'), reward = $('reward');
       const pixelCat = $('pixelCat');
@@ -472,6 +512,29 @@
         languageData[key].modes['skills-story-equation'] = skillsText[key].story;
         languageData[key].modes['skills-compare'] = skillsText[key].compare;
       });
+      const curriculumText = {
+        ru: { subjects: ['Арифметика', 'Алгебра', 'Геометрия'], skills: 'Проценты и скорость', geometry: 'Фигуры и измерения', modes: {
+          'equations-missing': ['Пропущенное число', 'Подготовка к уравнениям', 'Найди число в окошке — это первый шаг к пониманию x.'],
+          'equations-multiplication': ['Уравнения с умножением', 'Например: x × 4 = 24', 'Находи x с помощью обратного действия — деления.'],
+          'equations-division': ['Уравнения с делением', 'Например: x / 5 = 7', 'Находи x с помощью обратного действия — умножения.'],
+          'equations-two-step': ['Двухшаговые уравнения', 'Например: 2 × x + 3 = 13', 'Сначала убери сложение или вычитание, затем умножение.'],
+          'geometry-perimeter': ['Периметр', 'Прямоугольники и квадраты', 'Сложи длины всех сторон фигуры.'],
+          'geometry-area': ['Площадь', 'Площадь прямоугольника', 'Умножь длину прямоугольника на его ширину.'],
+          'geometry-side': ['Неизвестная сторона', 'Найди сторону по периметру', 'Используй периметр, чтобы найти неизвестную сторону.'] } },
+        en: { subjects: ['Arithmetic', 'Algebra', 'Geometry'], skills: 'Percentages and speed', geometry: 'Shapes and measurement', modes: {
+          'equations-missing': ['Missing number', 'Preparation for equations', 'Find the number in the box — the first step toward understanding x.'], 'equations-multiplication': ['Multiplication equations', 'Example: x × 4 = 24', 'Find x using division.'], 'equations-division': ['Division equations', 'Example: x / 5 = 7', 'Find x using multiplication.'], 'equations-two-step': ['Two-step equations', 'Example: 2 × x + 3 = 13', 'Undo addition or subtraction first, then multiplication.'], 'geometry-perimeter': ['Perimeter', 'Rectangles and squares', 'Add the lengths of all sides.'], 'geometry-area': ['Area', 'Area of a rectangle', 'Multiply length by width.'], 'geometry-side': ['Unknown side', 'Find a side from the perimeter', 'Use the perimeter to find the missing side.'] } },
+        fr: { subjects: ['Arithmétique', 'Algèbre', 'Géométrie'], skills: 'Pourcentages et vitesse', geometry: 'Figures et mesures', modes: {
+          'equations-missing': ['Nombre manquant', 'Préparation aux équations', 'Trouve le nombre dans la case.'], 'equations-multiplication': ['Équations avec multiplication', 'Exemple : x × 4 = 24', 'Trouve x avec la division.'], 'equations-division': ['Équations avec division', 'Exemple : x / 5 = 7', 'Trouve x avec la multiplication.'], 'equations-two-step': ['Équations en deux étapes', 'Exemple : 2 × x + 3 = 13', 'Annule d’abord l’addition, puis la multiplication.'], 'geometry-perimeter': ['Périmètre', 'Rectangles et carrés', 'Additionne les longueurs des côtés.'], 'geometry-area': ['Aire', 'Aire d’un rectangle', 'Multiplie la longueur par la largeur.'], 'geometry-side': ['Côté inconnu', 'Trouve un côté avec le périmètre', 'Utilise le périmètre pour trouver le côté.'] } },
+        es: { subjects: ['Aritmética', 'Álgebra', 'Geometría'], skills: 'Porcentajes y velocidad', geometry: 'Figuras y medidas', modes: {
+          'equations-missing': ['Número que falta', 'Preparación para ecuaciones', 'Encuentra el número del recuadro.'], 'equations-multiplication': ['Ecuaciones con multiplicación', 'Ejemplo: x × 4 = 24', 'Encuentra x usando la división.'], 'equations-division': ['Ecuaciones con división', 'Ejemplo: x / 5 = 7', 'Encuentra x usando la multiplicación.'], 'equations-two-step': ['Ecuaciones de dos pasos', 'Ejemplo: 2 × x + 3 = 13', 'Deshaz primero la suma y después la multiplicación.'], 'geometry-perimeter': ['Perímetro', 'Rectángulos y cuadrados', 'Suma las longitudes de todos los lados.'], 'geometry-area': ['Área', 'Área de un rectángulo', 'Multiplica largo por ancho.'], 'geometry-side': ['Lado desconocido', 'Encuentra un lado por el perímetro', 'Usa el perímetro para encontrar el lado.'] } },
+        de: { subjects: ['Arithmetik', 'Algebra', 'Geometrie'], skills: 'Prozente und Tempo', geometry: 'Formen und Maße', modes: {
+          'equations-missing': ['Fehlende Zahl', 'Vorbereitung auf Gleichungen', 'Finde die Zahl im Kästchen.'], 'equations-multiplication': ['Multiplikationsgleichungen', 'Beispiel: x × 4 = 24', 'Finde x durch Division.'], 'equations-division': ['Divisionsgleichungen', 'Beispiel: x / 5 = 7', 'Finde x durch Multiplikation.'], 'equations-two-step': ['Gleichungen in zwei Schritten', 'Beispiel: 2 × x + 3 = 13', 'Entferne zuerst Addition, dann Multiplikation.'], 'geometry-perimeter': ['Umfang', 'Rechtecke und Quadrate', 'Addiere alle Seitenlängen.'], 'geometry-area': ['Fläche', 'Fläche eines Rechtecks', 'Multipliziere Länge und Breite.'], 'geometry-side': ['Unbekannte Seite', 'Seite aus dem Umfang finden', 'Nutze den Umfang, um die Seite zu finden.'] } }
+      };
+      Object.keys(languageData).forEach((key) => {
+        Object.assign(languageData[key].modes, curriculumText[key].modes);
+        languageData[key].categories.skills = curriculumText[key].skills;
+        languageData[key].categories.geometry = curriculumText[key].geometry;
+      });
       let selectedMode = 'addition-ten';
       let currentQuestionMode = 'addition-ten';
       let currentLanguage = 'ru';
@@ -487,6 +550,10 @@
         equations: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-subtraction': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'equations-missing': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'equations-multiplication': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'equations-division': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'equations-two-step': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         addition: { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         multiplication: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'fractions-simplify': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -496,6 +563,9 @@
         'skills-percent': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'skills-story-equation': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'skills-compare': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-perimeter': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-area': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-side': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         mixed: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
       };
       let profile = { totalScore: 0 };
@@ -582,6 +652,47 @@
         });
         label.append(labelText, control);
         return label;
+      }
+
+      function organizeMenu() {
+        const grid = document.querySelector('.mode-grid');
+        if (!grid) return;
+        const category = (name) => {
+          let heading = grid.querySelector(`[data-category="${name}"]`);
+          if (!heading) {
+            heading = document.createElement('h3');
+            heading.className = 'mode-category';
+            heading.dataset.category = name;
+          }
+          return heading;
+        };
+        const card = (mode) => grid.querySelector(`.mode-card[data-mode="${mode}"]`);
+        const plans = [
+          ['arithmetic', [
+            ['addition', ['addition-ten', 'addition']],
+            ['subtraction', ['subtraction-ten', 'subtraction']],
+            ['combined', ['addition-subtraction']],
+            ['multiplication', ['tables', 'multiplication']],
+            ['fractions', ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed']],
+            ['skills', ['skills-percent', 'skills-compare']],
+            ['mixed', ['mixed']]
+          ]],
+          ['algebra', [
+            ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation']]
+          ]],
+          ['geometry', [['geometry', ['geometry-perimeter', 'geometry-area', 'geometry-side']]]]
+        ];
+        grid.querySelectorAll('.subject-title').forEach((element) => element.remove());
+        plans.forEach(([subject, groups]) => {
+          const title = document.createElement('h2');
+          title.className = 'subject-title';
+          title.dataset.subject = subject;
+          grid.append(title);
+          groups.forEach(([name, modes]) => {
+            grid.append(category(name));
+            modes.forEach((mode) => { const element = card(mode); if (element) grid.append(element); });
+          });
+        });
       }
 
       function ensureModeSettingsControls() {
@@ -682,16 +793,16 @@
           const difficulty = difficultyFor(mode);
           const received = randomInt(2, difficulty === 'simple' ? 10 : 25);
           const total = randomInt(Math.max(received + 5, 15), difficulty === 'expert' ? 120 : 60);
-          const start = total - received;
-          const person = currentLanguage === 'ru' ? ['Пете', 'Ане', 'Максу'][randomInt(0, 2)] : currentLanguage === 'fr' ? 'Alex' : currentLanguage === 'es' ? 'Alex' : currentLanguage === 'de' ? 'Alex' : 'Alex';
+          const people = [{ name: 'Пете', pronoun: 'него' }, { name: 'Ане', pronoun: 'неё' }, { name: 'Максу', pronoun: 'него' }];
+          const person = people[randomInt(0, people.length - 1)];
           const unit = currentLanguage === 'ru' ? 'евро' : currentLanguage === 'de' ? 'Euro' : 'euros';
           const text = currentLanguage === 'ru'
-            ? `${person} подарили ${received} ${unit}. У него стало ${total} ${unit}. Составь уравнение для суммы до подарка (x).`
+            ? `${person.name} подарили ${received} ${unit}. У ${person.pronoun} стало ${total} ${unit}. Составь уравнение: сколько было сначала (x)?`
             : currentLanguage === 'fr' ? `Alex a reçu ${received} ${unit} et en a maintenant ${total}. Écris l’équation pour la somme initiale (x).`
             : currentLanguage === 'es' ? `Alex recibió ${received} ${unit} y ahora tiene ${total}. Escribe la ecuación para la cantidad inicial (x).`
             : currentLanguage === 'de' ? `Alex bekam ${received} ${unit} und hat jetzt ${total}. Stelle die Gleichung für den Anfangsbetrag (x) auf.`
             : `Alex received ${received} ${unit} and now has ${total}. Write the equation for the starting amount (x).`;
-          return { text, answer: `x+${received}=${total}`, kind: 'equation' };
+          return { text, answer: `x+${received}=${total}`, kind: 'equation', hint: skillsText[currentLanguage].equationHint };
         }
         if (mode === 'skills-compare') {
           const difficulty = difficultyFor(mode);
@@ -701,33 +812,57 @@
           const left = a + b, right = c * d;
           return { text: `${a} + ${b}  ?  ${c} × ${d}`, answer: left === right ? '=' : (left > right ? '>' : '<'), kind: 'comparison' };
         }
+        if (mode === 'equations-missing') {
+          const limit = difficultyFor(mode) === 'simple' ? 20 : difficultyFor(mode) === 'expert' ? 500 : 100;
+          const x = randomInt(1, limit), n = randomInt(1, Math.max(2, Math.floor(limit / 2)));
+          return Math.random() < .5
+            ? { text: `□ + ${n} = ${x + n}`, answer: x, hint: currentLanguage === 'ru' ? 'Какое число спряталось в окошке?' : 'What number is hidden in the box?' }
+            : { text: `${x + n} − □ = ${n}`, answer: x, hint: currentLanguage === 'ru' ? 'Какое число спряталось в окошке?' : 'What number is hidden in the box?' };
+        }
+        if (mode === 'equations-two-step') {
+          const limit = difficultyFor(mode) === 'simple' ? 10 : difficultyFor(mode) === 'expert' ? 80 : 30;
+          const x = randomInt(1, limit), factor = randomInt(2, difficultyFor(mode) === 'simple' ? 5 : 12), extra = randomInt(1, limit);
+          return { text: `${factor} × x + ${extra} = ${factor * x + extra}`, answer: x, hint: currentLanguage === 'ru' ? `Сначала вычти ${extra}, затем раздели на ${factor}.` : `Subtract ${extra} first, then divide by ${factor}.` };
+        }
+        if (mode === 'geometry-perimeter' || mode === 'geometry-area' || mode === 'geometry-side') {
+          const limit = difficultyFor(mode) === 'simple' ? 12 : difficultyFor(mode) === 'expert' ? 80 : 30;
+          const width = randomInt(2, limit), height = randomInt(2, limit), perimeter = 2 * (width + height);
+          if (mode === 'geometry-perimeter') return { text: currentLanguage === 'ru' ? `Прямоугольник: длина ${width} см, ширина ${height} см. Найди периметр.` : `Rectangle: length ${width} cm, width ${height} cm. Find the perimeter.`, answer: perimeter, kind: 'word', hint: 'P = 2 × (a + b)' };
+          if (mode === 'geometry-area') return { text: currentLanguage === 'ru' ? `Прямоугольник: длина ${width} см, ширина ${height} см. Найди площадь.` : `Rectangle: length ${width} cm, width ${height} cm. Find the area.`, answer: width * height, kind: 'word', hint: 'S = a × b' };
+          return { text: currentLanguage === 'ru' ? `Периметр прямоугольника ${perimeter} см, одна сторона ${width} см. Найди другую сторону.` : `A rectangle has perimeter ${perimeter} cm and one side ${width} cm. Find the other side.`, answer: height, kind: 'word', hint: currentLanguage === 'ru' ? `Сначала раздели периметр на 2, затем вычти ${width}.` : `Divide the perimeter by 2, then subtract ${width}.` };
+        }
         if (mode === 'tables') {
           const a = randomInt(settings.factorFrom, settings.factorTo);
           const b = randomInt(settings.factorFrom, settings.factorTo);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
-        if (mode === 'equations' || mode === 'equations-addition' || mode === 'equations-subtraction') {
+        if (mode === 'equations' || mode === 'equations-addition' || mode === 'equations-subtraction' || mode === 'equations-multiplication' || mode === 'equations-division') {
           const difficulty = difficultyFor(mode);
           const equationMax = difficulty === 'simple' ? 10 : difficulty === 'expert' ? 999 : 99;
           const x = randomInt(0, equationMax);
-          const operation = mode === 'equations-addition' ? '+' : mode === 'equations-subtraction' ? '-' : ['+', '-', '×', '/'][randomInt(0, 3)];
+          const operation = mode === 'equations-addition' ? '+' : mode === 'equations-subtraction' ? '-' : mode === 'equations-multiplication' ? '×' : mode === 'equations-division' ? '/' : ['+', '-', '×', '/'][randomInt(0, 3)];
           if (operation === '+') {
             const number = randomInt(1, difficulty === 'simple' ? 10 : equationMax);
-            return { text: `x + ${number} = ${x + number}`, answer: x };
+            return { text: `x + ${number} = ${x + number}`, answer: x, hint: currentLanguage === 'ru' ? `Вычти ${number} из правой части.` : `Subtract ${number} from the right side.` };
           }
           if (operation === '-') {
             const number = randomInt(0, Math.max(0, x));
-            return { text: `x - ${number} = ${x - number}`, answer: x };
+            return { text: `x - ${number} = ${x - number}`, answer: x, hint: currentLanguage === 'ru' ? `Прибавь ${number} к правой части.` : `Add ${number} to the right side.` };
           }
           if (operation === '×') {
             const number = randomInt(2, 10);
-            return { text: `x × ${number} = ${x * number}`, answer: x };
+            return { text: `x × ${number} = ${x * number}`, answer: x, hint: currentLanguage === 'ru' ? `Раздели правую часть на ${number}.` : `Divide the right side by ${number}.` };
+          }
+          if (mode === 'equations-division') {
+            const number = randomInt(2, 10);
+            const quotient = randomInt(1, Math.max(2, Math.floor(equationMax / number)));
+            return { text: `x / ${number} = ${quotient}`, answer: quotient * number, hint: currentLanguage === 'ru' ? `Умножь ${quotient} на ${number}.` : `Multiply ${quotient} by ${number}.` };
           }
           const divisors = [];
           for (let number = 2; number <= 10; number += 1) if (x % number === 0) divisors.push(number);
           if (divisors.length) {
             const number = divisors[randomInt(0, divisors.length - 1)];
-            return { text: `x / ${number} = ${x / number}`, answer: x };
+            return { text: `x / ${number} = ${x / number}`, answer: x, hint: currentLanguage === 'ru' ? `Умножь правую часть на ${number}.` : `Multiply the right side by ${number}.` };
           }
           const number = randomInt(1, 10);
           return { text: `x + ${number} = ${x + number}`, answer: x };
@@ -796,10 +931,13 @@
         answerKind = built.kind || (typeof answer === 'number' ? 'number' : ['<', '>', '='].includes(answer) ? 'comparison' : 'fraction');
         modeBadge.textContent = languageData[currentLanguage].modes[mode][0];
         problemEl.textContent = built.text;
+        problemEl.classList.toggle('word-problem', built.kind === 'word' || built.kind === 'equation');
+        problemHelp.textContent = built.hint || '';
         answerInput.value = '';
         const equation = answerKind === 'equation';
-        answerInput.inputMode = equation ? 'text' : 'numeric';
-        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : '-?[0-9]*';
+        const textual = equation || answerKind === 'comparison' || answerKind === 'fraction';
+        answerInput.inputMode = textual ? 'text' : 'numeric';
+        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : answerKind === 'comparison' ? '[<>=]*' : answerKind === 'fraction' ? '-?[0-9/]*' : '-?[0-9]*';
         answerInput.placeholder = equation ? skillsText[currentLanguage].equationHint : languageData[currentLanguage].placeholder;
         answerInput.setAttribute('aria-label', answerInput.placeholder);
         canAnswer = true;
@@ -1025,6 +1163,7 @@
           modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
         document.querySelectorAll('[data-category]').forEach((heading) => { heading.textContent = language.categories[heading.dataset.category]; });
+        document.querySelectorAll('[data-subject]').forEach((heading, index) => { heading.textContent = curriculumText[currentLanguage].subjects[index]; });
         $('modeDescription').textContent = language.modes[selectedMode][2];
         $('modeBadge').textContent = language.modes[currentQuestionMode][0];
         const labelMap = { factorFrom: 'factorFrom', factorTo: 'factorTo', startTime: 'startTime', timeBonus: 'timeBonus', streakGoal: 'streakGoal', difficulty: 'difficulty' };
@@ -1100,6 +1239,7 @@
         }
       }
 
+      organizeMenu();
       ensureModeSettingsControls();
       document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => {
         selectMode(button.closest('.mode-card'));

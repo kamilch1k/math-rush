@@ -89,5 +89,21 @@ for (let i = 0; i < 500; i++) {
   assert.match(story.answer, /^x\+\d+=\d+$/, 'Story task produces a canonical equation');
   const comparison = q.build('skills-compare');
   assert.ok(['<', '>', '='].includes(comparison.answer), 'Speed comparison has a valid relation');
+  const missing = q.build('equations-missing');
+  assert.ok(Number.isInteger(missing.answer) && missing.answer > 0, 'Missing-number task has a positive integer answer');
+  const multiply = q.build('equations-multiplication');
+  assert.match(multiply.text, /^x × \d+ = \d+$/, 'Multiplication equation is generated');
+  const divide = q.build('equations-division');
+  assert.match(divide.text, /^x \/ \d+ = \d+$/, 'Division equation is generated');
+  const twoStep = q.build('equations-two-step');
+  assert.match(twoStep.text, /^\d+ × x \+ \d+ = \d+$/, 'Two-step equation is generated');
+  for (const mode of ['geometry-perimeter', 'geometry-area', 'geometry-side']) {
+    assert.ok(Number.isInteger(q.build(mode).answer), `${mode} has an integer answer`);
+  }
+}
+for (let i = 0; i < 300; i++) {
+  const story = q.build('skills-story-equation').text;
+  assert.ok(!/Ане.*У него/.test(story), 'Anna uses the feminine pronoun');
+  assert.ok(!/(?:Пете|Максу).*У неё/.test(story), 'Male names use the masculine pronoun');
 }
 console.log('PASS: timers and 4000 generated problems across new beginner modes');
