@@ -81,4 +81,13 @@ for (let i = 0; i < 1000; i++) {
   assert.ok(addition.answer >= 0 && addition.answer <= 10);
   assert.ok(subtraction.answer >= 0 && subtraction.answer <= 10);
 }
+for (let i = 0; i < 500; i++) {
+  const percent = q.build('skills-percent');
+  const [, rate, base] = percent.text.match(/^(\d+)% .* (\d+) = \?$/);
+  assert.equal(percent.answer, (+rate * +base) / 100, 'Percentage answer is exact');
+  const story = q.build('skills-story-equation');
+  assert.match(story.answer, /^x\+\d+=\d+$/, 'Story task produces a canonical equation');
+  const comparison = q.build('skills-compare');
+  assert.ok(['<', '>', '='].includes(comparison.answer), 'Speed comparison has a valid relation');
+}
 console.log('PASS: timers and 4000 generated problems across new beginner modes');

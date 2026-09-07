@@ -86,6 +86,7 @@
     .mode-card[data-mode^="addition"] .mode-icon, .mode-card[data-mode^="subtraction"] .mode-icon { background: linear-gradient(145deg, #ff9f6e, #d94e21); }
     .mode-card[data-mode="multiplication"] .mode-icon { background: linear-gradient(145deg, #4ea9ff, #175cd3); }
     .mode-card[data-mode^="fractions"] .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
+    .mode-card[data-mode^="skills"] .mode-icon { background: linear-gradient(145deg, #a977ff, #6941c6); }
     .mode-card strong { display: block; font-size: 15px; }
     .mode-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.35; }
     .mode-description { min-height: 25px; margin: 14px 0 18px; color: var(--muted); font-size: 13px; }
@@ -301,6 +302,22 @@
             <button class="mode-settings-button" type="button" data-mode-settings="mixed" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="mixed"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <h3 class="mode-category" data-category="skills">Логика и скорость</h3>
+          <article class="mode-card" data-mode="skills-percent">
+            <button class="mode-card-main" type="button"><span class="mode-icon">%</span><strong>Проценты</strong><small>Найди процент от числа</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="skills-percent" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="skills-percent"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="skills-story-equation">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Составь уравнение</strong><small>Понимание задач словами</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="skills-story-equation" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="skills-story-equation"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="skills-compare">
+            <button class="mode-card-main" type="button"><span class="mode-icon">⚡</span><strong>Быстрое сравнение</strong><small>Введи &lt;, &gt; или =</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="skills-compare" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="skills-compare"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
         </div>
         <p id="modeDescription" class="mode-description">Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.</p>
         <button id="startBtn" class="primary" type="button" hidden aria-hidden="true">Начать игру</button>
@@ -442,11 +459,24 @@
         languageData[key].categories = Object.fromEntries(['addition', 'subtraction', 'combined', 'multiplication', 'equations', 'fractions', 'mixed'].map((name, index) => [name, expandedModeText[key].categories[index]]));
         for (const field of ['startTime', 'timeBonus', 'streakGoal']) languageData[key].modeSettings[field] = settingsLabels[key][field];
       });
+      const skillsText = {
+        ru: { category: 'Логика и скорость', percent: ['Проценты', 'Найди процент от числа', 'Решай задачи вида «15% от 80».'], story: ['Составь уравнение', 'Понимание задач словами', 'Прочитай условие и введи уравнение, например: x + 5 = 25.'], compare: ['Быстрое сравнение', 'Введи <, > или =', 'Сравни два выражения как можно быстрее.'], equationHint: 'Введи уравнение, например x+5=25' },
+        en: { category: 'Logic and speed', percent: ['Percentages', 'Find a percentage of a number', 'Solve questions such as “15% of 80”.'], story: ['Build an equation', 'Understand word problems', 'Read the story and enter an equation, for example: x + 5 = 25.'], compare: ['Fast comparison', 'Enter <, >, or =', 'Compare two expressions as quickly as you can.'], equationHint: 'Enter an equation, e.g. x+5=25' },
+        fr: { category: 'Logique et vitesse', percent: ['Pourcentages', 'Trouve un pourcentage d’un nombre', 'Résous des exercices comme « 15% de 80 ».'], story: ['Construis une équation', 'Comprendre les problèmes', 'Lis l’énoncé et saisis une équation, par exemple : x + 5 = 25.'], compare: ['Comparaison rapide', 'Saisis <, > ou =', 'Compare deux expressions rapidement.'], equationHint: 'Saisis une équation, ex. x+5=25' },
+        es: { category: 'Lógica y velocidad', percent: ['Porcentajes', 'Calcula un porcentaje', 'Resuelve ejercicios como «15% de 80».'], story: ['Crea una ecuación', 'Entender problemas', 'Lee el problema y escribe una ecuación, por ejemplo: x + 5 = 25.'], compare: ['Comparación rápida', 'Escribe <, > o =', 'Compara dos expresiones rápidamente.'], equationHint: 'Escribe una ecuación, ej. x+5=25' },
+        de: { category: 'Logik und Tempo', percent: ['Prozentrechnung', 'Berechne einen Prozentsatz', 'Löse Aufgaben wie „15% von 80“.'], story: ['Gleichung aufstellen', 'Textaufgaben verstehen', 'Lies die Aufgabe und gib eine Gleichung ein, z. B. x + 5 = 25.'], compare: ['Schneller Vergleich', 'Gib <, > oder = ein', 'Vergleiche zwei Ausdrücke so schnell wie möglich.'], equationHint: 'Gib eine Gleichung ein, z. B. x+5=25' }
+      };
+      Object.keys(languageData).forEach((key) => {
+        languageData[key].categories.skills = skillsText[key].category;
+        languageData[key].modes['skills-percent'] = skillsText[key].percent;
+        languageData[key].modes['skills-story-equation'] = skillsText[key].story;
+        languageData[key].modes['skills-compare'] = skillsText[key].compare;
+      });
       let selectedMode = 'addition-ten';
       let currentQuestionMode = 'addition-ten';
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
-      let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null;
+      let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
       let settings = { factorFrom: 1, factorTo: 10, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
         'addition-ten': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -463,6 +493,9 @@
         'fractions-compare': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'fractions-calculate': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'fractions-mixed': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'skills-percent': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'skills-story-equation': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'skills-compare': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         mixed: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
       };
       let profile = { totalScore: 0 };
@@ -639,6 +672,35 @@
       }
 
       function buildRawProblem(mode) {
+        if (mode === 'skills-percent') {
+          const difficulty = difficultyFor(mode);
+          const percent = difficulty === 'simple' ? [10, 25, 50][randomInt(0, 2)] : [5, 10, 15, 20, 25, 30, 40, 50, 75][randomInt(0, 8)];
+          const base = difficulty === 'simple' ? randomInt(2, 12) * 20 : randomInt(4, difficulty === 'expert' ? 50 : 25) * 20;
+          return { text: `${percent}% ${currentLanguage === 'ru' ? 'от' : currentLanguage === 'fr' ? 'de' : currentLanguage === 'es' ? 'de' : currentLanguage === 'de' ? 'von' : 'of'} ${base} = ?`, answer: (percent * base) / 100 };
+        }
+        if (mode === 'skills-story-equation') {
+          const difficulty = difficultyFor(mode);
+          const received = randomInt(2, difficulty === 'simple' ? 10 : 25);
+          const total = randomInt(Math.max(received + 5, 15), difficulty === 'expert' ? 120 : 60);
+          const start = total - received;
+          const person = currentLanguage === 'ru' ? ['Пете', 'Ане', 'Максу'][randomInt(0, 2)] : currentLanguage === 'fr' ? 'Alex' : currentLanguage === 'es' ? 'Alex' : currentLanguage === 'de' ? 'Alex' : 'Alex';
+          const unit = currentLanguage === 'ru' ? 'евро' : currentLanguage === 'de' ? 'Euro' : 'euros';
+          const text = currentLanguage === 'ru'
+            ? `${person} подарили ${received} ${unit}. У него стало ${total} ${unit}. Составь уравнение для суммы до подарка (x).`
+            : currentLanguage === 'fr' ? `Alex a reçu ${received} ${unit} et en a maintenant ${total}. Écris l’équation pour la somme initiale (x).`
+            : currentLanguage === 'es' ? `Alex recibió ${received} ${unit} y ahora tiene ${total}. Escribe la ecuación para la cantidad inicial (x).`
+            : currentLanguage === 'de' ? `Alex bekam ${received} ${unit} und hat jetzt ${total}. Stelle die Gleichung für den Anfangsbetrag (x) auf.`
+            : `Alex received ${received} ${unit} and now has ${total}. Write the equation for the starting amount (x).`;
+          return { text, answer: `x+${received}=${total}`, kind: 'equation' };
+        }
+        if (mode === 'skills-compare') {
+          const difficulty = difficultyFor(mode);
+          const limit = difficulty === 'simple' ? 20 : difficulty === 'expert' ? 250 : 80;
+          const a = randomInt(2, limit), b = randomInt(2, limit);
+          const c = randomInt(2, difficulty === 'simple' ? 12 : 30), d = randomInt(2, difficulty === 'simple' ? 12 : 30);
+          const left = a + b, right = c * d;
+          return { text: `${a} + ${b}  ?  ${c} × ${d}`, answer: left === right ? '=' : (left > right ? '>' : '<'), kind: 'comparison' };
+        }
         if (mode === 'tables') {
           const a = randomInt(settings.factorFrom, settings.factorTo);
           const b = randomInt(settings.factorFrom, settings.factorTo);
@@ -731,9 +793,15 @@
         const built = buildProblem(mode);
         currentQuestionMode = mode;
         answer = built.answer;
+        answerKind = built.kind || (typeof answer === 'number' ? 'number' : ['<', '>', '='].includes(answer) ? 'comparison' : 'fraction');
         modeBadge.textContent = languageData[currentLanguage].modes[mode][0];
         problemEl.textContent = built.text;
         answerInput.value = '';
+        const equation = answerKind === 'equation';
+        answerInput.inputMode = equation ? 'text' : 'numeric';
+        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : '-?[0-9]*';
+        answerInput.placeholder = equation ? skillsText[currentLanguage].equationHint : languageData[currentLanguage].placeholder;
+        answerInput.setAttribute('aria-label', answerInput.placeholder);
         canAnswer = true;
         updateStats();
         answerInput.focus({ preventScroll: true });
@@ -890,9 +958,14 @@
       }
 
       function answerMatches(value) {
+        if (answerKind === 'equation') return normalizeEquation(value) === answer;
         if (typeof answer === 'number') return Number(value) === answer;
         if (['<', '>', '='].includes(answer)) return value.trim().replace('==', '=') === answer;
         return normalizeFractionAnswer(value) === answer;
+      }
+
+      function normalizeEquation(value) {
+        return value.toLowerCase().replace(/\s+/g, '').replace(/[−–]/g, '-').replace(/[×]/g, '*').replace(/[÷]/g, '/');
       }
 
       function applyLanguage() {
@@ -924,7 +997,7 @@
         $('settingsTitle').textContent = language.settingsTitle;
         $('closeSettingsBtn').textContent = language.ready;
         $('submitBtn').textContent = language.submit;
-        $('answerInput').placeholder = language.placeholder;
+        $('answerInput').placeholder = answerKind === 'equation' ? skillsText[currentLanguage].equationHint : language.placeholder;
         $('answerInput').setAttribute('aria-label', language.placeholder);
         $('exitBtn').textContent = language.exit;
         $('exitBtn').setAttribute('aria-label', language.exitLabel || language.exit.replace('←', '').trim());
