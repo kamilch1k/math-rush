@@ -100,10 +100,19 @@ for (let i = 0; i < 500; i++) {
   for (const mode of ['geometry-perimeter', 'geometry-area', 'geometry-side']) {
     assert.ok(Number.isInteger(q.build(mode).answer), `${mode} has an integer answer`);
   }
+  const parity = q.build('olympiad-parity');
+  assert.ok(['even', 'odd'].includes(parity.answer), 'Parity task has a canonical answer');
+  assert.equal(parity.kind, 'parity', 'Parity task accepts a textual answer');
+  const coloring = q.build('olympiad-coloring');
+  assert.ok(Number.isInteger(coloring.answer) && coloring.answer > 0, 'Coloring task has a positive integer answer');
+  const pattern = q.build('olympiad-patterns');
+  assert.ok(Number.isInteger(pattern.answer), 'Pattern task has an integer continuation');
+  const logic = q.build('olympiad-logic');
+  assert.ok(Number.isInteger(logic.answer) && logic.answer > 0, 'Logic task has a positive integer answer');
 }
 for (let i = 0; i < 300; i++) {
   const story = q.build('skills-story-equation').text;
   assert.ok(!/Ане.*У него/.test(story), 'Anna uses the feminine pronoun');
   assert.ok(!/(?:Пете|Максу).*У неё/.test(story), 'Male names use the masculine pronoun');
 }
-console.log('PASS: timers and 4000 generated problems across new beginner modes');
+console.log('PASS: timers and generated problems across arithmetic, algebra, geometry, and olympiad modes');

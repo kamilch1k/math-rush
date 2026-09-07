@@ -90,6 +90,7 @@
     .mode-card[data-mode^="fractions"] .mode-icon { background: linear-gradient(145deg, #f9c74f, #b54708); }
     .mode-card[data-mode^="skills"] .mode-icon { background: linear-gradient(145deg, #a977ff, #6941c6); }
     .mode-card[data-mode^="geometry"] .mode-icon { background: linear-gradient(145deg, #46c6db, #087e8b); }
+    .mode-card[data-mode^="olympiad"] .mode-icon { background: linear-gradient(145deg, #f5a742, #b54708); }
     .mode-card strong { display: block; font-size: 15px; }
     .mode-card small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.35; }
     .mode-description { min-height: 25px; margin: 14px 0 18px; color: var(--muted); font-size: 13px; }
@@ -357,6 +358,27 @@
             <button class="mode-card-main" type="button"><span class="mode-icon">?</span><strong>Неизвестная сторона</strong><small>Найди сторону по периметру</small></button>
             <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="olympiad-parity">
+            <button class="mode-card-main" type="button"><span class="mode-icon">±</span><strong>Чётность</strong><small>Чётное или нечётное?</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="olympiad-coloring">
+            <button class="mode-card-main" type="button"><span class="mode-icon">▦</span><strong>Раскраски</strong><small>Посчитай число вариантов</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="olympiad-patterns">
+            <button class="mode-card-main" type="button"><span class="mode-icon">…</span><strong>Закономерности</strong><small>Продолжи последовательность</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="olympiad-logic">
+            <button class="mode-card-main" type="button"><span class="mode-icon">◆</span><strong>Логические задачи</strong><small>Гарантии, пары и подсчёт</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
         </div>
         <p id="modeDescription" class="mode-description">Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.</p>
         <button id="startBtn" class="primary" type="button" hidden aria-hidden="true">Начать игру</button>
@@ -530,10 +552,29 @@
         de: { subjects: ['Arithmetik', 'Algebra', 'Geometrie'], skills: 'Prozente und Tempo', geometry: 'Formen und Maße', modes: {
           'equations-missing': ['Fehlende Zahl', 'Vorbereitung auf Gleichungen', 'Finde die Zahl im Kästchen.'], 'equations-multiplication': ['Multiplikationsgleichungen', 'Beispiel: x × 4 = 24', 'Finde x durch Division.'], 'equations-division': ['Divisionsgleichungen', 'Beispiel: x / 5 = 7', 'Finde x durch Multiplikation.'], 'equations-two-step': ['Gleichungen in zwei Schritten', 'Beispiel: 2 × x + 3 = 13', 'Entferne zuerst Addition, dann Multiplikation.'], 'geometry-perimeter': ['Umfang', 'Rechtecke und Quadrate', 'Addiere alle Seitenlängen.'], 'geometry-area': ['Fläche', 'Fläche eines Rechtecks', 'Multipliziere Länge und Breite.'], 'geometry-side': ['Unbekannte Seite', 'Seite aus dem Umfang finden', 'Nutze den Umfang, um die Seite zu finden.'] } }
       };
+      const olympiadText = {
+        ru: { subject: 'Олимпиадные задачи', patterns: 'Чётность и закономерности', logic: 'Комбинаторика и логика', parityPlaceholder: 'чётное или нечётное', modes: {
+          'olympiad-parity': ['Чётность', 'Чётное или нечётное?', 'Определи чётность результата, не выполняя лишних вычислений.'],
+          'olympiad-coloring': ['Раскраски', 'Посчитай число вариантов', 'Считай способы выбрать клетки для раскрашивания.'],
+          'olympiad-patterns': ['Закономерности', 'Продолжи последовательность', 'Найди правило и введи следующее число.'],
+          'olympiad-logic': ['Логические задачи', 'Гарантии, пары и подсчёт', 'Решай короткие задачи на принцип Дирихле и комбинаторику.'] } },
+        en: { subject: 'Olympiad challenges', patterns: 'Parity and patterns', logic: 'Combinatorics and logic', parityPlaceholder: 'even or odd', modes: {
+          'olympiad-parity': ['Parity', 'Even or odd?', 'Determine whether the result is even or odd.'], 'olympiad-coloring': ['Colorings', 'Count the possibilities', 'Count ways to choose cells to color.'], 'olympiad-patterns': ['Patterns', 'Continue the sequence', 'Find the rule and enter the next number.'], 'olympiad-logic': ['Logic challenges', 'Guarantees, pairs, and counting', 'Solve short pigeonhole and combinatorics problems.'] } },
+        fr: { subject: 'Défis olympiques', patterns: 'Parité et suites', logic: 'Combinatoire et logique', parityPlaceholder: 'pair ou impair', modes: {
+          'olympiad-parity': ['Parité', 'Pair ou impair ?', 'Détermine si le résultat est pair ou impair.'], 'olympiad-coloring': ['Coloriages', 'Compte les possibilités', 'Compte les façons de choisir les cases à colorier.'], 'olympiad-patterns': ['Suites logiques', 'Continue la suite', 'Trouve la règle et saisis le nombre suivant.'], 'olympiad-logic': ['Défis logiques', 'Garanties, paires et comptage', 'Résous de courts problèmes de combinatoire.'] } },
+        es: { subject: 'Problemas de olimpiada', patterns: 'Paridad y patrones', logic: 'Combinatoria y lógica', parityPlaceholder: 'par o impar', modes: {
+          'olympiad-parity': ['Paridad', '¿Par o impar?', 'Decide si el resultado es par o impar.'], 'olympiad-coloring': ['Coloreados', 'Cuenta las posibilidades', 'Cuenta las formas de elegir casillas para colorear.'], 'olympiad-patterns': ['Patrones', 'Continúa la secuencia', 'Encuentra la regla y escribe el número siguiente.'], 'olympiad-logic': ['Retos de lógica', 'Garantías, parejas y conteo', 'Resuelve problemas cortos de combinatoria.'] } },
+        de: { subject: 'Olympiade-Aufgaben', patterns: 'Gerade Zahlen und Muster', logic: 'Kombinatorik und Logik', parityPlaceholder: 'gerade oder ungerade', modes: {
+          'olympiad-parity': ['Gerade oder ungerade', 'Welche Parität?', 'Bestimme, ob das Ergebnis gerade oder ungerade ist.'], 'olympiad-coloring': ['Färbungen', 'Zähle die Möglichkeiten', 'Zähle, wie viele Zellenauswahlen es gibt.'], 'olympiad-patterns': ['Zahlenmuster', 'Setze die Folge fort', 'Finde die Regel und gib die nächste Zahl ein.'], 'olympiad-logic': ['Logikaufgaben', 'Garantien, Paare und Zählen', 'Löse kurze Aufgaben aus Kombinatorik und Logik.'] } }
+      };
       Object.keys(languageData).forEach((key) => {
         Object.assign(languageData[key].modes, curriculumText[key].modes);
+        Object.assign(languageData[key].modes, olympiadText[key].modes);
+        curriculumText[key].subjects.push(olympiadText[key].subject);
         languageData[key].categories.skills = curriculumText[key].skills;
         languageData[key].categories.geometry = curriculumText[key].geometry;
+        languageData[key].categories['olympiad-patterns'] = olympiadText[key].patterns;
+        languageData[key].categories['olympiad-logic'] = olympiadText[key].logic;
       });
       let selectedMode = 'addition-ten';
       let currentQuestionMode = 'addition-ten';
@@ -566,6 +607,10 @@
         'geometry-perimeter': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-area': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-side': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'olympiad-parity': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'olympiad-coloring': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'olympiad-patterns': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'olympiad-logic': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         mixed: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
       };
       let profile = { totalScore: 0 };
@@ -680,7 +725,11 @@
           ['algebra', [
             ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation']]
           ]],
-          ['geometry', [['geometry', ['geometry-perimeter', 'geometry-area', 'geometry-side']]]]
+          ['geometry', [['geometry', ['geometry-perimeter', 'geometry-area', 'geometry-side']]]],
+          ['olympiad', [
+            ['olympiad-patterns', ['olympiad-parity', 'olympiad-patterns']],
+            ['olympiad-logic', ['olympiad-coloring', 'olympiad-logic']]
+          ]]
         ];
         grid.querySelectorAll('.subject-title').forEach((element) => element.remove());
         plans.forEach(([subject, groups]) => {
@@ -737,6 +786,15 @@
       }
 
       function gcd(a, b) { while (b) [a, b] = [b, a % b]; return Math.abs(a); }
+
+      function choose(total, selected) {
+        const k = Math.min(selected, total - selected);
+        let result = 1;
+        for (let index = 1; index <= k; index += 1) result = result * (total - k + index) / index;
+        return result;
+      }
+
+      function localized(copy) { return copy[currentLanguage] || copy.en; }
 
       function simplifyFraction(numerator, denominator) {
         if (denominator < 0) { numerator *= -1; denominator *= -1; }
@@ -823,6 +881,48 @@
           const limit = difficultyFor(mode) === 'simple' ? 10 : difficultyFor(mode) === 'expert' ? 80 : 30;
           const x = randomInt(1, limit), factor = randomInt(2, difficultyFor(mode) === 'simple' ? 5 : 12), extra = randomInt(1, limit);
           return { text: `${factor} × x + ${extra} = ${factor * x + extra}`, answer: x, hint: currentLanguage === 'ru' ? `Сначала вычти ${extra}, затем раздели на ${factor}.` : `Subtract ${extra} first, then divide by ${factor}.` };
+        }
+        if (mode === 'olympiad-parity') {
+          const difficulty = difficultyFor(mode);
+          const limit = difficulty === 'simple' ? 20 : difficulty === 'expert' ? 200 : 80;
+          const a = randomInt(1, limit), b = randomInt(1, limit), c = randomInt(1, limit);
+          const value = difficulty === 'simple' ? a + b : difficulty === 'advanced' ? a + b + c : a * b + c;
+          const expression = difficulty === 'simple' ? `${a} + ${b}` : difficulty === 'advanced' ? `${a} + ${b} + ${c}` : `${a} × ${b} + ${c}`;
+          return {
+            text: localized({ ru: `Не вычисляя полностью, определи: ${expression} — чётное или нечётное?`, en: `Without fully calculating, is ${expression} even or odd?`, fr: `Sans tout calculer, ${expression} est-il pair ou impair ?`, es: `Sin calcularlo todo, ¿${expression} es par o impar?`, de: `Ohne vollständig zu rechnen: Ist ${expression} gerade oder ungerade?` }),
+            answer: value % 2 === 0 ? 'even' : 'odd', kind: 'parity',
+            hint: localized({ ru: 'Чётное ± чётное — чётное; чётное ± нечётное — нечётное.', en: 'Even ± even is even; even ± odd is odd.', fr: 'Pair ± pair donne pair ; pair ± impair donne impair.', es: 'Par ± par es par; par ± impar es impar.', de: 'Gerade ± gerade ist gerade; gerade ± ungerade ist ungerade.' })
+          };
+        }
+        if (mode === 'olympiad-coloring') {
+          const difficulty = difficultyFor(mode);
+          const total = randomInt(difficulty === 'simple' ? 4 : 6, difficulty === 'simple' ? 6 : difficulty === 'expert' ? 12 : 9);
+          const selected = randomInt(1, Math.min(total - 1, difficulty === 'simple' ? 2 : 4));
+          return {
+            text: localized({ ru: `В ряд расположены ${total} клеток. Сколькими способами можно раскрасить ровно ${selected} из них в красный цвет?`, en: `${total} cells are in a row. In how many ways can exactly ${selected} be colored red?`, fr: `${total} cases sont alignées. De combien de façons peut-on en colorier exactement ${selected} en rouge ?`, es: `Hay ${total} casillas en fila. ¿De cuántas formas se pueden colorear exactamente ${selected} de rojo?`, de: `${total} Felder liegen in einer Reihe. Auf wie viele Arten können genau ${selected} rot gefärbt werden?` }),
+            answer: choose(total, selected), kind: 'word',
+            hint: localized({ ru: `Выбери ${selected} места из ${total}; порядок выбора не важен.`, en: `Choose ${selected} positions out of ${total}; order does not matter.`, fr: `Choisis ${selected} positions parmi ${total} ; l’ordre ne compte pas.`, es: `Elige ${selected} posiciones de ${total}; el orden no importa.`, de: `Wähle ${selected} von ${total} Positionen; die Reihenfolge ist egal.` })
+          };
+        }
+        if (mode === 'olympiad-patterns') {
+          const difficulty = difficultyFor(mode);
+          if (difficulty === 'expert') {
+            const start = randomInt(1, 8), firstStep = randomInt(2, 6), secondStep = randomInt(firstStep + 1, firstStep + 6);
+            const sequence = [start, start + firstStep, start + firstStep + secondStep, start + 2 * firstStep + secondStep];
+            return { text: `${sequence.join(', ')}, ?`, answer: sequence[3] + secondStep, hint: localized({ ru: `Прибавления чередуются: +${firstStep}, +${secondStep}.`, en: `The increases alternate: +${firstStep}, +${secondStep}.`, fr: `Les écarts alternent : +${firstStep}, +${secondStep}.`, es: `Los incrementos alternan: +${firstStep}, +${secondStep}.`, de: `Die Schritte wechseln: +${firstStep}, +${secondStep}.` }) };
+          }
+          const start = randomInt(1, difficulty === 'simple' ? 10 : 25), step = randomInt(2, difficulty === 'simple' ? 6 : 12);
+          const sequence = [start, start + step, start + 2 * step, start + 3 * step];
+          return { text: `${sequence.join(', ')}, ?`, answer: start + 4 * step, hint: localized({ ru: `Каждый раз прибавляется ${step}.`, en: `Add ${step} each time.`, fr: `Ajoute ${step} à chaque fois.`, es: `Suma ${step} cada vez.`, de: `Addiere jedes Mal ${step}.` }) };
+        }
+        if (mode === 'olympiad-logic') {
+          const difficulty = difficultyFor(mode);
+          if (difficulty === 'simple' || Math.random() < .5) {
+            const colors = randomInt(3, difficulty === 'expert' ? 12 : 7);
+            return { text: localized({ ru: `В ящике лежат носки ${colors} цветов. Сколько носков нужно достать вслепую, чтобы гарантированно получить два носка одного цвета?`, en: `A drawer contains socks of ${colors} colors. How many socks guarantee two of the same color?`, fr: `Un tiroir contient des chaussettes de ${colors} couleurs. Combien faut-il en prendre pour garantir une paire de même couleur ?`, es: `Hay calcetines de ${colors} colores. ¿Cuántos hay que sacar para garantizar dos del mismo color?`, de: `In einer Schublade liegen Socken in ${colors} Farben. Wie viele garantieren zwei derselben Farbe?` }), answer: colors + 1, kind: 'word', hint: localized({ ru: `В худшем случае сначала попадётся по одному носку каждого из ${colors} цветов.`, en: `In the worst case, the first ${colors} socks all have different colors.`, fr: `Au pire, les ${colors} premières chaussettes ont toutes une couleur différente.`, es: `En el peor caso, los primeros ${colors} calcetines son de colores distintos.`, de: `Im schlimmsten Fall haben die ersten ${colors} Socken verschiedene Farben.` }) };
+          }
+          const people = randomInt(5, difficulty === 'expert' ? 18 : 10);
+          return { text: localized({ ru: `В комнате ${people} человек. Каждый пожал руку каждому ровно один раз. Сколько было рукопожатий?`, en: `${people} people are in a room. Each pair shakes hands once. How many handshakes occur?`, fr: `${people} personnes sont dans une pièce. Chaque paire se serre la main une fois. Combien de poignées de main ?`, es: `Hay ${people} personas. Cada pareja se da la mano una vez. ¿Cuántos apretones hay?`, de: `${people} Personen sind in einem Raum. Jedes Paar gibt sich einmal die Hand. Wie viele Händedrücke gibt es?` }), answer: people * (people - 1) / 2, kind: 'word', hint: localized({ ru: `Каждый человек встречается с ${people - 1} другими, но каждую пару нельзя считать дважды.`, en: `Each person meets ${people - 1} others, but do not count a pair twice.`, fr: `Chaque personne rencontre ${people - 1} autres, sans compter chaque paire deux fois.`, es: `Cada persona saluda a otras ${people - 1}, pero no cuentes cada pareja dos veces.`, de: `Jede Person trifft ${people - 1} andere; zähle jedes Paar nur einmal.` }) };
         }
         if (mode === 'geometry-perimeter' || mode === 'geometry-area' || mode === 'geometry-side') {
           const limit = difficultyFor(mode) === 'simple' ? 12 : difficultyFor(mode) === 'expert' ? 80 : 30;
@@ -935,10 +1035,10 @@
         problemHelp.textContent = built.hint || '';
         answerInput.value = '';
         const equation = answerKind === 'equation';
-        const textual = equation || answerKind === 'comparison' || answerKind === 'fraction';
+        const textual = equation || answerKind === 'comparison' || answerKind === 'fraction' || answerKind === 'parity';
         answerInput.inputMode = textual ? 'text' : 'numeric';
-        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : answerKind === 'comparison' ? '[<>=]*' : answerKind === 'fraction' ? '-?[0-9/]*' : '-?[0-9]*';
-        answerInput.placeholder = equation ? skillsText[currentLanguage].equationHint : languageData[currentLanguage].placeholder;
+        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : answerKind === 'comparison' ? '[<>=]*' : answerKind === 'fraction' ? '-?[0-9/]*' : answerKind === 'parity' ? '.*' : '-?[0-9]*';
+        answerInput.placeholder = equation ? skillsText[currentLanguage].equationHint : answerKind === 'parity' ? olympiadText[currentLanguage].parityPlaceholder : languageData[currentLanguage].placeholder;
         answerInput.setAttribute('aria-label', answerInput.placeholder);
         canAnswer = true;
         updateStats();
@@ -1095,8 +1195,26 @@
         return simplifyFraction(Number(match[1]), Number(match[2]));
       }
 
+      function normalizeParity(value) {
+        const cleaned = value.trim().toLowerCase().replace(/ё/g, 'е');
+        if (['even', 'четное', 'четный', 'pair', 'par', 'gerade'].includes(cleaned)) return 'even';
+        if (['odd', 'нечетное', 'нечетный', 'impair', 'impar', 'ungerade'].includes(cleaned)) return 'odd';
+        return '';
+      }
+
+      function displayAnswer(value) {
+        if (answerKind !== 'parity') return value;
+        const labels = {
+          ru: { even: 'чётное', odd: 'нечётное' }, en: { even: 'even', odd: 'odd' },
+          fr: { even: 'pair', odd: 'impair' }, es: { even: 'par', odd: 'impar' },
+          de: { even: 'gerade', odd: 'ungerade' }
+        };
+        return labels[currentLanguage][value];
+      }
+
       function answerMatches(value) {
         if (answerKind === 'equation') return normalizeEquation(value) === answer;
+        if (answerKind === 'parity') return normalizeParity(value) === answer;
         if (typeof answer === 'number') return Number(value) === answer;
         if (['<', '>', '='].includes(answer)) return value.trim().replace('==', '=') === answer;
         return normalizeFractionAnswer(value) === answer;
@@ -1135,8 +1253,8 @@
         $('settingsTitle').textContent = language.settingsTitle;
         $('closeSettingsBtn').textContent = language.ready;
         $('submitBtn').textContent = language.submit;
-        $('answerInput').placeholder = answerKind === 'equation' ? skillsText[currentLanguage].equationHint : language.placeholder;
-        $('answerInput').setAttribute('aria-label', language.placeholder);
+        $('answerInput').placeholder = answerKind === 'equation' ? skillsText[currentLanguage].equationHint : answerKind === 'parity' ? olympiadText[currentLanguage].parityPlaceholder : language.placeholder;
+        $('answerInput').setAttribute('aria-label', $('answerInput').placeholder);
         $('exitBtn').textContent = language.exit;
         $('exitBtn').setAttribute('aria-label', language.exitLabel || language.exit.replace('←', '').trim());
         $('exitBtn').title = language.exitLabel || language.exit.replace('←', '').trim();
@@ -1199,7 +1317,7 @@
           playSound(levelUp || milestone ? 'milestone' : 'correct');
         } else {
           streak = 0;
-          feedback.textContent = languageData[currentLanguage].feedback.wrong(answer);
+          feedback.textContent = languageData[currentLanguage].feedback.wrong(displayAnswer(answer));
           feedback.className = 'feedback bad';
           showFlash('flash-bad');
           showReward('✕ Ошибка', 'bad');
@@ -1260,7 +1378,7 @@
         if (!gameActive || !canAnswer || event?.isComposing) return;
         const value = answerInput.value;
         if (settings.challenge === 'strict') {
-          const target = String(answer);
+          const target = String(displayAnswer(answer));
           const editing = /^(delete|history)/.test(event?.inputType || '');
           if (editing || !target.startsWith(value)) { submitAnswer(null, true); return; }
           if (value === target) submitAnswer();
