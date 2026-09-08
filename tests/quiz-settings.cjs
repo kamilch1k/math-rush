@@ -61,6 +61,18 @@ for (let i = 0; i < 1000; i++) {
   assert.equal(p.answer, +a + +b);
 }
 for (let i = 0; i < 1000; i++) {
+  const p = q.build('addition-twenty');
+  const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);
+  assert.equal(p.answer, +a + +b);
+  assert.ok(p.answer >= 11 && p.answer <= 20, 'Second addition level stays between 11 and 20');
+}
+for (let i = 0; i < 1000; i++) {
+  const p = q.build('addition');
+  const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);
+  assert.equal(p.answer, +a + +b);
+  assert.ok(p.answer > 20, 'Third addition level always exceeds 20');
+}
+for (let i = 0; i < 1000; i++) {
   const p = q.build('subtraction-ten');
   const [, a, b] = p.text.match(/^(\d+) − (\d+) = \?$/);
   assert.ok(+a >= 0 && +a <= 10 && +b >= 0 && +b <= 10);
