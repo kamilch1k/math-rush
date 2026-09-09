@@ -46,7 +46,9 @@ export default {
     const upstream = await fetch(`${RAW_ROOT}/${file}`, { cf: { cacheTtl: 300, cacheEverything: true } });
     if (!upstream.ok) return new Response('Site asset unavailable', { status: 502 });
     const extension = file.split('.').pop();
-    const headers = new Headers(upstream.headers);
+    // Do not forward GitHub Raw's CSP/sandbox headers. They are intended for
+    // raw file previews and would disable this site's inline JavaScript.
+    const headers = new Headers();
     headers.set('content-type', CONTENT_TYPES[extension] || 'application/octet-stream');
     headers.set('cache-control', extension === 'html' ? 'public, max-age=60' : 'public, max-age=300');
     headers.set('x-math-rush-release', RELEASE);
