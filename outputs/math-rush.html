@@ -134,12 +134,13 @@
     .view-heading p { margin: 0; color: var(--muted); font-size: 13px; }
     .map-layout { display: block; }
     .skill-map { position: relative; display: grid; grid-template-columns: 76px repeat(3, minmax(0, 1fr)); gap: 14px clamp(12px, 3vw, 34px); min-height: 720px; padding: 42px 24px 100px; overflow: hidden; border: 1px solid var(--line); border-radius: 28px; background: radial-gradient(circle at 50% 100%, rgba(99,91,255,.14), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,255,.9)); }
-    .trident-lines { position: absolute; inset: 20px 3% 20px; z-index: 0; width: 94%; height: calc(100% - 40px); pointer-events: none; }
-    .trident-path { fill: none; stroke-width: 12; stroke-linecap: round; opacity: .2; }
+    .trident-lines { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+    .trident-path { fill: none; stroke-width: 3; stroke-linecap: round; opacity: .2; }
     .trident-path.arithmetic { stroke: #f7904a; }
     .trident-path.algebra { stroke: #635bff; }
     .trident-path.geometry { stroke: #2e90fa; }
-    .trident-tip { stroke: #fff; stroke-width: 7; }
+    .dependency-path { fill: none; stroke: #98a2b3; stroke-width: 1.5; stroke-linecap: round; opacity: .58; }
+    .dependency-path.cross-branch { stroke: #7f78e8; stroke-dasharray: 5 5; opacity: .72; }
     .branch-heading { position: relative; z-index: 2; padding: 9px 12px; border-radius: 999px; color: #fff; background: var(--branch-color); box-shadow: 0 8px 22px color-mix(in srgb, var(--branch-color) 28%, transparent); font-size: 15px; font-weight: 850; text-align: center; }
     .branch-heading.arithmetic, .skill-slot.arithmetic { --branch-color: #e66b2c; }
     .branch-heading.algebra, .skill-slot.algebra { --branch-color: #635bff; }
@@ -684,6 +685,7 @@
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
+      let mapLineFrame = null;
       let settings = { factorFrom: 1, factorTo: 10, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', answerMode: 'text', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
         'addition-ten': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -1525,6 +1527,55 @@
         if (!open && gameActive) answerInput.focus({ preventScroll: true });
       }
 
+      function drawMapConnections(branches) {
+        const lines = branches.querySelector('.trident-lines');
+        if (!lines || branches.classList.contains('hidden')) return;
+        const root = branches.getBoundingClientRect();
+        if (!root.width || !root.height) return;
+        lines.setAttribute('viewBox', `0 0 ${root.width} ${root.height}`);
+        lines.innerHTML = '<defs><marker id="mapArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#98a2b3"/></marker><marker id="mapArrowCross" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7f78e8"/></marker></defs>';
+        const point = (element, edge) => {
+          const rect = element.getBoundingClientRect();
+          return { x: rect.left - root.left + rect.width / 2, y: (edge === 'top' ? rect.top : rect.bottom) - root.top };
+        };
+        ['arithmetic', 'algebra', 'geometry'].forEach((category) => {
+          const nodes = [...branches.querySelectorAll(`.skill-slot.${category} .skill-node`)];
+          if (!nodes.length) return;
+          const start = point(nodes[0], 'top'), end = point(nodes[nodes.length - 1], 'bottom');
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('class', `trident-path ${category}`);
+          path.setAttribute('d', `M ${start.x} ${start.y - 28} L ${end.x} ${end.y + 28}`);
+          lines.appendChild(path);
+        });
+        MathRushProgress.skills.forEach((skill) => {
+          const target = branches.querySelector(`[data-skill-id="${skill.id}"]`);
+          if (!target) return;
+          skill.prerequisites.forEach((prerequisiteId) => {
+            const source = branches.querySelector(`[data-skill-id="${prerequisiteId}"]`);
+            if (!source) return;
+            const sourceRect = source.getBoundingClientRect(), targetRect = target.getBoundingClientRect();
+            const crossBranch = source.closest('.skill-slot').dataset.branch !== target.closest('.skill-slot').dataset.branch;
+            let start, end, d;
+            if (targetRect.top > sourceRect.bottom + 8) {
+              start = point(source, 'bottom'); end = point(target, 'top');
+              const middleY = (start.y + end.y) / 2;
+              d = `M ${start.x} ${start.y} C ${start.x} ${middleY}, ${end.x} ${middleY}, ${end.x} ${end.y - 5}`;
+            } else {
+              const direction = targetRect.left > sourceRect.left ? 1 : -1;
+              start = { x: (direction > 0 ? sourceRect.right : sourceRect.left) - root.left, y: sourceRect.top - root.top + sourceRect.height / 2 };
+              end = { x: (direction > 0 ? targetRect.left : targetRect.right) - root.left, y: targetRect.top - root.top + targetRect.height / 2 };
+              const middleX = (start.x + end.x) / 2;
+              d = `M ${start.x} ${start.y} C ${middleX} ${start.y}, ${middleX} ${end.y}, ${end.x - direction * 5} ${end.y}`;
+            }
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('class', `dependency-path${crossBranch ? ' cross-branch' : ''}`);
+            path.setAttribute('marker-end', crossBranch ? 'url(#mapArrowCross)' : 'url(#mapArrow)');
+            path.setAttribute('d', d);
+            lines.appendChild(path);
+          });
+        });
+      }
+
       function renderSpaMap() {
         if (!globalThis.MathRushProgress) return;
         const data = MathRushProgress.load();
@@ -1536,10 +1587,8 @@
         branches.textContent = '';
         const lines = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         lines.setAttribute('class', 'trident-lines');
-        lines.setAttribute('viewBox', '0 0 1000 760');
         lines.setAttribute('preserveAspectRatio', 'none');
         lines.setAttribute('aria-hidden', 'true');
-        lines.innerHTML = '<path class="trident-path arithmetic" d="M535 735 V650 C535 575 235 585 235 465 V54"/><path class="trident-path algebra" d="M535 735 V54"/><path class="trident-path geometry" d="M535 650 C535 575 835 585 835 465 V54"/><circle class="trident-tip" cx="235" cy="50" r="17" fill="#e66b2c"/><circle class="trident-tip" cx="535" cy="50" r="17" fill="#635bff"/><circle class="trident-tip" cx="835" cy="50" r="17" fill="#1570ef"/>';
         branches.appendChild(lines);
         const corner = document.createElement('div');
         corner.className = 'map-corner';
@@ -1573,6 +1622,7 @@
             const button = document.createElement('button');
             button.type = 'button';
             button.className = `skill-node ${state}`;
+            button.dataset.skillId = skill.id;
             button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
             button.querySelector('strong').textContent = localizedSkillTitle(skill);
             button.querySelector('em').textContent = ui.status[state];
@@ -1593,6 +1643,8 @@
             branches.appendChild(slot);
           });
         }
+        cancelAnimationFrame(mapLineFrame);
+        mapLineFrame = requestAnimationFrame(() => drawMapConnections(branches));
       }
 
       function renderSpaProfile() {
@@ -1737,6 +1789,11 @@
         const tagName = event.target && event.target.tagName;
         const isControl = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(tagName);
         if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && !isControl) startGame();
+      });
+      window.addEventListener('resize', () => {
+        if (mapView.classList.contains('hidden')) return;
+        cancelAnimationFrame(mapLineFrame);
+        mapLineFrame = requestAnimationFrame(() => drawMapConnections($('spaBranches')));
       });
     })();
   </script>
