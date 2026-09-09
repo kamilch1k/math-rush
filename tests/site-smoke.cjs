@@ -29,5 +29,7 @@ assert.match(quizPage, /languageButton\.addEventListener\('mouseenter'/, 'Langua
 assert.match(quizPage, /mode-settings-button'[\s\S]*button\.addEventListener\('mouseenter'/, 'Card settings open on pointer hover');
 assert.match(quizPage, /progressState === 'locked' \? 'available'/, 'Every map node is available for navigation');
 assert.match(quizPage, /card\.scrollIntoView\(\{ behavior: 'smooth', block: 'center' \}\)/, 'Map nodes navigate to their quiz card');
+for (const language of ['ru', 'en', 'fr', 'es', 'de']) assert.match(quizPage, new RegExp(`${language}: \\{ mapTitle:`), `SPA views include ${language} translations`);
+assert.match(quizPage, /\.game-screen \.stat-label/, 'Game stat translation is scoped away from profile statistics');
 assert.doesNotMatch(quizPage, /href="settings\.html"/, 'Settings no longer navigate away from the app');
 console.log('Site smoke tests passed');

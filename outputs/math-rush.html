@@ -457,14 +457,14 @@
       </section>
 
       <section id="mapView" class="screen spa-view hidden">
-        <div class="view-heading"><div><h2>Карта знаний</h2><p>Три направления развития: арифметика, алгебра и геометрия.</p></div></div>
+        <div class="view-heading"><div><h2 id="mapViewTitle">Карта знаний</h2><p id="mapViewSubtitle">Три направления развития: арифметика, алгебра и геометрия.</p></div></div>
         <div class="map-layout"><div id="spaBranches" class="skill-map"></div></div>
       </section>
 
       <section id="profileView" class="screen spa-view hidden">
-        <div class="view-heading"><div><h2>Профиль</h2><p>Весь прогресс хранится в этом браузере.</p></div></div>
-        <div class="profile-summary"><div class="stat"><span class="stat-label">Уровень</span><strong id="spaProfileLevel" class="stat-value">1</strong></div><div class="stat"><span class="stat-label">Опыт</span><strong id="spaProfileXp" class="stat-value">0 XP</strong></div><div class="stat"><span class="stat-label">Решено</span><strong id="spaAttempts" class="stat-value">0</strong></div><div class="stat"><span class="stat-label">Точность</span><strong id="spaAccuracy" class="stat-value">0%</strong></div></div>
-        <div class="profile-panels"><section class="profile-panel"><h3>Направления</h3><div id="spaCategories"></div></section><section class="profile-panel"><h3>Навыки</h3><div id="spaSkills"></div></section></div>
+        <div class="view-heading"><div><h2 id="profileViewTitle">Профиль</h2><p id="profileViewSubtitle">Весь прогресс хранится в этом браузере.</p></div></div>
+        <div class="profile-summary"><div class="stat"><span class="stat-label" data-profile-stat="level">Уровень</span><strong id="spaProfileLevel" class="stat-value">1</strong></div><div class="stat"><span class="stat-label" data-profile-stat="xp">Опыт</span><strong id="spaProfileXp" class="stat-value">0 XP</strong></div><div class="stat"><span class="stat-label" data-profile-stat="attempts">Решено</span><strong id="spaAttempts" class="stat-value">0</strong></div><div class="stat"><span class="stat-label" data-profile-stat="accuracy">Точность</span><strong id="spaAccuracy" class="stat-value">0%</strong></div></div>
+        <div class="profile-panels"><section class="profile-panel"><h3 id="profileDirectionsTitle">Направления</h3><div id="spaCategories"></div></section><section class="profile-panel"><h3 id="profileSkillsTitle">Навыки</h3><div id="spaSkills"></div></section></div>
       </section>
 
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
@@ -669,6 +669,16 @@
         languageData[key].categories['olympiad-patterns'] = olympiadText[key].patterns;
         languageData[key].categories['olympiad-logic'] = olympiadText[key].logic;
       });
+      const interfaceText = {
+        ru: { mapTitle: 'Карта знаний', mapSubtitle: 'Три направления развития: арифметика, алгебра и геометрия.', profileTitle: 'Профиль', profileSubtitle: 'Весь прогресс хранится в этом браузере.', level: 'Уровень', xp: 'Опыт', attempts: 'Решено', accuracy: 'Точность', directions: 'Направления', skills: 'Навыки', stage: 'Этап', categories: { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' }, status: { mastered: 'Освоено', learning: 'Изучается', available: 'Доступно' }, skillNames: { derivatives: 'Производные', angles: 'Углы', triangles: 'Треугольники' }, reward: { level: 'Уровень', streak: 'подряд!', seconds: 'сек', correct: 'Верно', wrong: 'Ошибка' }, missing: 'Какое число спряталось в окошке?', twoStep: (extra, factor) => `Сначала вычти ${extra}, затем раздели на ${factor}.` },
+        en: { mapTitle: 'Knowledge map', mapSubtitle: 'Three learning paths: arithmetic, algebra, and geometry.', profileTitle: 'Profile', profileSubtitle: 'Your progress is stored in this browser.', level: 'Level', xp: 'Experience', attempts: 'Solved', accuracy: 'Accuracy', directions: 'Learning paths', skills: 'Skills', stage: 'Stage', categories: { arithmetic: 'Arithmetic', algebra: 'Algebra', geometry: 'Geometry' }, status: { mastered: 'Mastered', learning: 'Learning', available: 'Available' }, skillNames: { derivatives: 'Derivatives', angles: 'Angles', triangles: 'Triangles' }, reward: { level: 'Level', streak: 'in a row!', seconds: 'sec', correct: 'Correct', wrong: 'Wrong' }, missing: 'What number is hidden in the box?', twoStep: (extra, factor) => `Subtract ${extra} first, then divide by ${factor}.` },
+        fr: { mapTitle: 'Carte des connaissances', mapSubtitle: 'Trois parcours : arithmétique, algèbre et géométrie.', profileTitle: 'Profil', profileSubtitle: 'Ta progression est enregistrée dans ce navigateur.', level: 'Niveau', xp: 'Expérience', attempts: 'Résolus', accuracy: 'Précision', directions: 'Parcours', skills: 'Compétences', stage: 'Étape', categories: { arithmetic: 'Arithmétique', algebra: 'Algèbre', geometry: 'Géométrie' }, status: { mastered: 'Maîtrisé', learning: 'En cours', available: 'Disponible' }, skillNames: { derivatives: 'Dérivées', angles: 'Angles', triangles: 'Triangles' }, reward: { level: 'Niveau', streak: 'de suite !', seconds: 's', correct: 'Correct', wrong: 'Erreur' }, missing: 'Quel nombre se cache dans la case ?', twoStep: (extra, factor) => `Soustrais d’abord ${extra}, puis divise par ${factor}.` },
+        es: { mapTitle: 'Mapa de conocimientos', mapSubtitle: 'Tres rutas: aritmética, álgebra y geometría.', profileTitle: 'Perfil', profileSubtitle: 'Tu progreso se guarda en este navegador.', level: 'Nivel', xp: 'Experiencia', attempts: 'Resueltos', accuracy: 'Precisión', directions: 'Rutas', skills: 'Habilidades', stage: 'Etapa', categories: { arithmetic: 'Aritmética', algebra: 'Álgebra', geometry: 'Geometría' }, status: { mastered: 'Dominado', learning: 'Aprendiendo', available: 'Disponible' }, skillNames: { derivatives: 'Derivadas', angles: 'Ángulos', triangles: 'Triángulos' }, reward: { level: 'Nivel', streak: 'seguidas!', seconds: 's', correct: 'Correcto', wrong: 'Error' }, missing: '¿Qué número está oculto en la casilla?', twoStep: (extra, factor) => `Primero resta ${extra} y después divide entre ${factor}.` },
+        de: { mapTitle: 'Wissenskarte', mapSubtitle: 'Drei Lernpfade: Arithmetik, Algebra und Geometrie.', profileTitle: 'Profil', profileSubtitle: 'Dein Fortschritt wird in diesem Browser gespeichert.', level: 'Stufe', xp: 'Erfahrung', attempts: 'Gelöst', accuracy: 'Genauigkeit', directions: 'Lernpfade', skills: 'Fähigkeiten', stage: 'Stufe', categories: { arithmetic: 'Arithmetik', algebra: 'Algebra', geometry: 'Geometrie' }, status: { mastered: 'Gemeistert', learning: 'In Arbeit', available: 'Verfügbar' }, skillNames: { derivatives: 'Ableitungen', angles: 'Winkel', triangles: 'Dreiecke' }, reward: { level: 'Stufe', streak: 'in Folge!', seconds: 'Sek.', correct: 'Richtig', wrong: 'Fehler' }, missing: 'Welche Zahl ist im Kästchen versteckt?', twoStep: (extra, factor) => `Ziehe zuerst ${extra} ab und teile dann durch ${factor}.` }
+      };
+      function localizedSkillTitle(skill) {
+        return interfaceText[currentLanguage].skillNames[skill.id] || languageData[currentLanguage].modes[skill.mode]?.[0] || skill.title;
+      }
       let selectedMode = 'addition-ten';
       let currentQuestionMode = 'addition-ten';
       let currentLanguage = 'ru';
@@ -989,13 +999,13 @@
           const limit = difficultyFor(mode) === 'simple' ? 20 : difficultyFor(mode) === 'expert' ? 500 : 100;
           const x = randomInt(1, limit), n = randomInt(1, Math.max(2, Math.floor(limit / 2)));
           return Math.random() < .5
-            ? { text: `□ + ${n} = ${x + n}`, answer: x, hint: currentLanguage === 'ru' ? 'Какое число спряталось в окошке?' : 'What number is hidden in the box?' }
-            : { text: `${x + n} − □ = ${n}`, answer: x, hint: currentLanguage === 'ru' ? 'Какое число спряталось в окошке?' : 'What number is hidden in the box?' };
+            ? { text: `□ + ${n} = ${x + n}`, answer: x, hint: interfaceText[currentLanguage].missing }
+            : { text: `${x + n} − □ = ${n}`, answer: x, hint: interfaceText[currentLanguage].missing };
         }
         if (mode === 'equations-two-step') {
           const limit = difficultyFor(mode) === 'simple' ? 10 : difficultyFor(mode) === 'expert' ? 80 : 30;
           const x = randomInt(1, limit), factor = randomInt(2, difficultyFor(mode) === 'simple' ? 5 : 12), extra = randomInt(1, limit);
-          return { text: `${factor} × x + ${extra} = ${factor * x + extra}`, answer: x, hint: currentLanguage === 'ru' ? `Сначала вычти ${extra}, затем раздели на ${factor}.` : `Subtract ${extra} first, then divide by ${factor}.` };
+          return { text: `${factor} × x + ${extra} = ${factor * x + extra}`, answer: x, hint: interfaceText[currentLanguage].twoStep(extra, factor) };
         }
         if (mode === 'olympiad-parity') {
           const difficulty = difficultyFor(mode);
@@ -1353,6 +1363,7 @@
       function applyLanguage() {
         const language = languageData[currentLanguage];
         const labels = settingsLabels[currentLanguage];
+        const ui = interfaceText[currentLanguage];
         const rules = {
           ru: ['Правила раунда', 'Тренировка', 'На счёт', 'На счёт — без ошибок ввода', 'На счёт: без бонусного времени и лимита заданий. Строгий ввод: неверный символ или исправление — ошибка. Дроби вводи сокращёнными (1/2).'],
           en: ['Round rules', 'Practice', 'Score attack', 'Score attack — strict typing', 'Score attack: no time bonuses or task limit. Strict typing: a wrong character or correction counts as a mistake. Use reduced fractions (1/2).'],
@@ -1383,6 +1394,13 @@
           fr: ['Exercices', 'Carte', 'Profil'], es: ['Ejercicios', 'Mapa', 'Perfil'], de: ['Aufgaben', 'Karte', 'Profil']
         }[currentLanguage];
         document.querySelectorAll('[data-app-view]').forEach((button, index) => { button.textContent = shell[index]; });
+        $('mapViewTitle').textContent = ui.mapTitle;
+        $('mapViewSubtitle').textContent = ui.mapSubtitle;
+        $('profileViewTitle').textContent = ui.profileTitle;
+        $('profileViewSubtitle').textContent = ui.profileSubtitle;
+        $('profileDirectionsTitle').textContent = ui.directions;
+        $('profileSkillsTitle').textContent = ui.skills;
+        document.querySelectorAll('[data-profile-stat]').forEach((label) => { label.textContent = ui[label.dataset.profileStat]; });
         languageSelect.value = currentLanguage;
         languageSelect.setAttribute('aria-label', language.languageLabel);
         $('settingsTitle').textContent = language.settingsTitle;
@@ -1397,7 +1415,7 @@
         $('resultTitle').textContent = language.resultTitle;
         $('againBtn').textContent = language.again;
         $('menuBtn').textContent = language.menu;
-        document.querySelectorAll('.stat-label').forEach((label, index) => { label.textContent = [language.stats.time, language.stats.solved, language.stats.score, language.stats.streak][index]; });
+        document.querySelectorAll('.game-screen .stat-label').forEach((label, index) => { label.textContent = [language.stats.time, language.stats.solved, language.stats.score, language.stats.streak][index]; });
         updateProfileUI();
         document.querySelectorAll('.mode-card').forEach((card) => {
           const mode = card.dataset.mode;
@@ -1432,6 +1450,8 @@
         readSettings();
         updateQuizCompletion();
         $('resultNote').textContent = language.resultNote(score, solved);
+        if (!mapView.classList.contains('hidden')) renderSpaMap();
+        if (!profileView.classList.contains('hidden')) renderSpaProfile();
       }
 
       function submitAnswer(event, forceWrong = false) {
@@ -1453,7 +1473,8 @@
           feedback.textContent = levelUp ? languageData[currentLanguage].profile.levelUp(levelFor(profile.totalScore)) : (milestone ? languageData[currentLanguage].feedback.milestone(streak, earnedTime) : languageData[currentLanguage].feedback.correct(earnedTime));
           feedback.className = levelUp || milestone ? 'feedback milestone' : 'feedback good';
           showFlash(levelUp || milestone ? 'flash-milestone' : 'flash-good');
-          showReward(levelUp ? `⬆ Уровень ${levelFor(profile.totalScore)}` : (milestone ? `🔥 ${streak} подряд!` : (earnedTime ? `+${earnedTime} сек` : (currentLanguage === 'ru' ? '✓ Верно' : '✓ Correct'))), levelUp || milestone ? 'milestone' : 'good');
+          const rewardText = interfaceText[currentLanguage].reward;
+          showReward(levelUp ? `⬆ ${rewardText.level} ${levelFor(profile.totalScore)}` : (milestone ? `🔥 ${streak} ${rewardText.streak}` : (earnedTime ? `+${earnedTime} ${rewardText.seconds}` : `✓ ${rewardText.correct}`)), levelUp || milestone ? 'milestone' : 'good');
           animateCat(levelUp || milestone ? 'celebrate' : 'jump');
           playSound(levelUp || milestone ? 'milestone' : 'correct');
         } else {
@@ -1461,7 +1482,7 @@
           feedback.textContent = languageData[currentLanguage].feedback.wrong(displayAnswer(answer));
           feedback.className = 'feedback bad';
           showFlash('flash-bad');
-          showReward('✕ Ошибка', 'bad');
+          showReward(`✕ ${interfaceText[currentLanguage].reward.wrong}`, 'bad');
           animateCat('oops');
           playSound('wrong');
         }
@@ -1508,7 +1529,8 @@
         if (!globalThis.MathRushProgress) return;
         const data = MathRushProgress.load();
         const branches = $('spaBranches');
-        const categories = { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' };
+        const ui = interfaceText[currentLanguage];
+        const categories = ui.categories;
         const skillsByCategory = Object.fromEntries(Object.keys(categories).map((category) => [category, MathRushProgress.skills.filter((skill) => skill.category === category)]));
         const levelCount = Math.max(...Object.values(skillsByCategory).map((skills) => skills.length));
         branches.textContent = '';
@@ -1521,7 +1543,7 @@
         branches.appendChild(lines);
         const corner = document.createElement('div');
         corner.className = 'map-corner';
-        corner.textContent = 'Этап';
+        corner.textContent = ui.stage;
         branches.appendChild(corner);
         Object.entries(categories).forEach(([category, title]) => {
           const heading = document.createElement('div');
@@ -1532,7 +1554,7 @@
         for (let level = 0; level < levelCount; level += 1) {
           const label = document.createElement('div');
           label.className = 'level-label';
-          label.innerHTML = 'Уровень <strong></strong>';
+          label.innerHTML = `${ui.level} <strong></strong>`;
           label.querySelector('strong').textContent = level + 1;
           branches.appendChild(label);
           Object.entries(categories).forEach(([category, branchTitle]) => {
@@ -1552,8 +1574,8 @@
             button.type = 'button';
             button.className = `skill-node ${state}`;
             button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
-            button.querySelector('strong').textContent = skill.title;
-            button.querySelector('em').textContent = state === 'mastered' ? 'Освоено' : state === 'learning' ? 'Изучается' : 'Доступно';
+            button.querySelector('strong').textContent = localizedSkillTitle(skill);
+            button.querySelector('em').textContent = ui.status[state];
             button.querySelector('b').textContent = `${mastery}%`;
             button.addEventListener('click', () => {
               const targetMode = skill.mode || (skill.id === 'derivatives' ? 'equations' : '');
@@ -1576,13 +1598,14 @@
       function renderSpaProfile() {
         if (!globalThis.MathRushProgress) return;
         const data = MathRushProgress.load();
+        const ui = interfaceText[currentLanguage];
         const attempts = data.attempts || [];
         const correct = attempts.filter((attempt) => attempt.isCorrect).length;
         $('spaProfileLevel').textContent = MathRushProgress.levelForXp(data.totalXp);
         $('spaProfileXp').textContent = `${data.totalXp} XP`;
         $('spaAttempts').textContent = attempts.length;
         $('spaAccuracy').textContent = `${attempts.length ? Math.round(correct / attempts.length * 100) : 0}%`;
-        const categoryNames = { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' };
+        const categoryNames = ui.categories;
         $('spaCategories').textContent = '';
         Object.entries(categoryNames).forEach(([key, title]) => {
           const mastery = MathRushProgress.categorySummary(key, data).mastery;
@@ -1596,7 +1619,7 @@
           const mastery = MathRushProgress.masteryFor(skill.id, data);
           const row = document.createElement('div'); row.className = 'profile-skill-row';
           row.innerHTML = '<strong></strong><span></span>';
-          row.querySelector('strong').textContent = skill.title; row.querySelector('span').textContent = `${mastery}%`;
+          row.querySelector('strong').textContent = localizedSkillTitle(skill); row.querySelector('span').textContent = `${mastery}%`;
           $('spaSkills').appendChild(row);
         });
       }
