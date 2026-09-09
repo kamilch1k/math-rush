@@ -1,0 +1,131 @@
+(function (global) {
+  'use strict';
+
+  const STORAGE_KEY = 'mathRushLearningV2';
+  const LEGACY_KEY = 'mathRushProfileV1';
+  const MAX_ATTEMPTS = 500;
+
+  const skills = [
+    { id: 'addition', title: 'Сложение', category: 'arithmetic', prerequisites: [], mode: 'addition-ten' },
+    { id: 'subtraction', title: 'Вычитание', category: 'arithmetic', prerequisites: ['addition'], mode: 'subtraction-ten' },
+    { id: 'multiplication', title: 'Умножение', category: 'arithmetic', prerequisites: ['addition'], mode: 'tables' },
+    { id: 'division', title: 'Деление', category: 'arithmetic', prerequisites: ['multiplication'], mode: 'equations-division' },
+    { id: 'fractions', title: 'Дроби', category: 'arithmetic', prerequisites: ['division'], mode: 'fractions-simplify' },
+    { id: 'expressions', title: 'Простые выражения', category: 'algebra', prerequisites: ['addition', 'subtraction'], mode: 'equations-missing' },
+    { id: 'equation-add', title: 'x + a = b', category: 'algebra', prerequisites: ['expressions'], mode: 'equations-addition' },
+    { id: 'equation-multiply', title: 'ax = b', category: 'algebra', prerequisites: ['multiplication', 'division', 'equation-add'], mode: 'equations-multiplication' },
+    { id: 'equation-two-step', title: 'ax + b = c', category: 'algebra', prerequisites: ['equation-add', 'equation-multiply'], mode: 'equations-two-step' },
+    { id: 'linear-equations', title: 'Линейные уравнения', category: 'algebra', prerequisites: ['equation-two-step'], mode: 'equations' },
+    { id: 'derivatives', title: 'Производные', category: 'algebra', prerequisites: ['linear-equations'], href: 'derivatives.html' },
+    { id: 'angles', title: 'Углы', category: 'geometry', prerequisites: [], mode: 'geometry-perimeter' },
+    { id: 'triangles', title: 'Треугольники', category: 'geometry', prerequisites: ['angles'], mode: 'geometry-perimeter' },
+    { id: 'perimeter', title: 'Периметр', category: 'geometry', prerequisites: ['addition'], mode: 'geometry-perimeter' },
+    { id: 'area', title: 'Площадь', category: 'geometry', prerequisites: ['multiplication', 'perimeter'], mode: 'geometry-area' }
+  ];
+
+  const modeToSkill = {
+    'addition-ten': 'addition', 'addition-twenty': 'addition', addition: 'addition',
+    'subtraction-ten': 'subtraction', subtraction: 'subtraction', 'addition-subtraction': 'subtraction',
+    tables: 'multiplication', multiplication: 'multiplication',
+    'fractions-simplify': 'fractions', 'fractions-compare': 'fractions', 'fractions-calculate': 'fractions', 'fractions-mixed': 'fractions',
+    'equations-missing': 'expressions', 'equations-addition': 'equation-add', 'equations-subtraction': 'equation-add',
+    'equations-multiplication': 'equation-multiply', 'equations-division': 'division',
+    'equations-two-step': 'equation-two-step', equations: 'linear-equations', 'skills-story-equation': 'equation-add',
+    'geometry-perimeter': 'perimeter', 'geometry-side': 'perimeter', 'geometry-area': 'area',
+    'derivatives-whiteboard': 'derivatives'
+  };
+
+  function emptyData() {
+    return { version: 2, totalXp: 0, attempts: [], skills: {}, streakDays: 0, lastActiveDate: null };
+  }
+
+  function load() {
+    let data = emptyData();
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (parsed && parsed.version === 2) data = Object.assign(data, parsed);
+    } catch (_) { /* Local storage can be unavailable. */ }
+    if (!data.totalXp) {
+      try {
+        const legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
+        if (legacy && Number.isFinite(Number(legacy.totalScore))) data.totalXp = Math.max(0, Math.floor(Number(legacy.totalScore)) * 10);
+      } catch (_) { /* Ignore malformed legacy data. */ }
+    }
+    return data;
+  }
+
+  function save(data) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (_) { /* Keep the session usable without persistence. */ }
+    return data;
+  }
+
+  function masteryFor(skillId, data = load()) {
+    const attempts = data.attempts.filter((attempt) => attempt.skillId === skillId);
+    if (!attempts.length) return 0;
+    const recent = attempts.slice(-20);
+    let weight = 0;
+    let earned = 0;
+    recent.forEach((attempt, index) => {
+      const recency = 1 + index / Math.max(1, recent.length - 1);
+      const difficulty = { simple: 0.9, advanced: 1, expert: 1.1 }[attempt.difficulty] || 1;
+      weight += recency;
+      if (attempt.isCorrect) earned += recency * difficulty;
+    });
+    const confidence = 0.35 + 0.65 * Math.min(1, attempts.length / 20);
+    return Math.min(100, Math.round((earned / weight) * confidence * 100));
+  }
+
+  function readinessFor(skill, data = load()) {
+    if (!skill.prerequisites.length) return 100;
+    return Math.round(skill.prerequisites.reduce((sum, id) => sum + masteryFor(id, data), 0) / skill.prerequisites.length);
+  }
+
+  function stateFor(skill, data = load()) {
+    const mastery = masteryFor(skill.id, data);
+    const attempts = data.attempts.filter((attempt) => attempt.skillId === skill.id).length;
+    if (mastery >= 80) return 'mastered';
+    if (attempts) return 'learning';
+    if (readinessFor(skill, data) < 35) return 'locked';
+    return 'available';
+  }
+
+  function updateDailyStreak(data, date = new Date()) {
+    const today = date.toISOString().slice(0, 10);
+    if (data.lastActiveDate === today) return;
+    const yesterday = new Date(date);
+    yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+    data.streakDays = data.lastActiveDate === yesterday.toISOString().slice(0, 10) ? (data.streakDays || 0) + 1 : 1;
+    data.lastActiveDate = today;
+  }
+
+  function recordAttempt(mode, isCorrect, durationMs, difficulty = 'simple') {
+    const skillId = modeToSkill[mode] || mode;
+    if (!skills.some((skill) => skill.id === skillId)) return load();
+    const data = load();
+    const xp = isCorrect ? 10 + ({ simple: 0, advanced: 3, expert: 6 }[difficulty] || 0) : 0;
+    data.attempts.push({ skillId, problemType: mode, isCorrect: Boolean(isCorrect), duration: Math.max(0, Math.round(Number(durationMs) || 0)), difficulty, xp, createdAt: new Date().toISOString() });
+    if (data.attempts.length > MAX_ATTEMPTS) data.attempts = data.attempts.slice(-MAX_ATTEMPTS);
+    data.totalXp += xp;
+    const summary = data.skills[skillId] || { xp: 0, attempts: 0, correctAttempts: 0, lastPracticedAt: null };
+    summary.xp += xp;
+    summary.attempts += 1;
+    if (isCorrect) summary.correctAttempts += 1;
+    summary.lastPracticedAt = new Date().toISOString();
+    data.skills[skillId] = summary;
+    updateDailyStreak(data);
+    return save(data);
+  }
+
+  function skillById(id) { return skills.find((skill) => skill.id === id) || null; }
+  function modeForSkill(id) { return skillById(id)?.mode || null; }
+  function hrefForSkill(skill) { return skill.href || `math-rush.html?skill=${encodeURIComponent(skill.id)}`; }
+  function levelForXp(xp) { return Math.floor(Math.sqrt(Math.max(0, Number(xp) || 0) / 50)) + 1; }
+
+  function categorySummary(category, data = load()) {
+    const categorySkills = skills.filter((skill) => skill.category === category);
+    const mastery = categorySkills.length ? Math.round(categorySkills.reduce((sum, skill) => sum + masteryFor(skill.id, data), 0) / categorySkills.length) : 0;
+    return { mastery, skills: categorySkills.length };
+  }
+
+  global.MathRushProgress = { STORAGE_KEY, skills, modeToSkill, load, save, recordAttempt, masteryFor, readinessFor, stateFor, skillById, modeForSkill, hrefForSkill, levelForXp, categorySummary };
+})(window);

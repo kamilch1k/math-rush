@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f6fb">
+  <title>Карта математики — Math Rush</title>
+  <link rel="stylesheet" href="app-shell.css">
+  <style>
+    .map-wrap{overflow-x:auto;padding:10px 0 4px}.math-map{position:relative;min-width:850px;padding:10px 20px 28px}.root-node{position:relative;z-index:2;width:210px;margin:0 auto 58px;padding:17px;border-radius:18px;color:#fff;background:linear-gradient(145deg,#837bff,#4f46e5);box-shadow:0 14px 28px rgba(99,91,255,.25);text-align:center;font-size:18px;font-weight:950}.root-node::after{content:"";position:absolute;top:100%;left:50%;width:2px;height:30px;background:#b9b4ff}.branches{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:38px}.branches::before{content:"";position:absolute;left:16.66%;right:16.66%;top:-29px;height:2px;background:#b9b4ff}.branch{position:relative;padding:0 8px}.branch::before{content:"";position:absolute;bottom:100%;left:50%;width:2px;height:30px;background:#b9b4ff}.branch-title{position:relative;z-index:2;margin:0 0 17px;padding:13px 10px;border:1px solid #d6d2ff;border-radius:15px;background:#f0eeff;color:#4f46e5;text-align:center;font-size:15px;font-weight:950;letter-spacing:.04em}.skill-list{display:grid;gap:12px}.skill-node{position:relative;width:100%;padding:14px 42px 14px 15px;border:1px solid var(--line);border-radius:15px;background:#fff;color:var(--ink);text-align:left;cursor:pointer;box-shadow:0 6px 16px rgba(16,24,40,.05)}.skill-node:not(:last-child)::after{content:"";position:absolute;top:100%;left:50%;width:2px;height:13px;background:#d0d5dd}.skill-node strong,.skill-node small{display:block}.skill-node small{margin-top:3px;color:var(--muted)}.skill-node .state{position:absolute;top:13px;right:13px;width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#f2f4f7;font-size:12px}.skill-node.mastered{border-color:#6ce9a6;background:#ecfdf3}.skill-node.mastered .state{color:#fff;background:var(--good)}.skill-node.learning{border-color:#a49fff;background:#f7f6ff}.skill-node.learning .state{color:#fff;background:var(--accent)}.skill-node.locked{opacity:.62}.skill-detail{display:grid;grid-template-columns:1.3fr .7fr;gap:22px;align-items:start}.detail-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.detail-metric{padding:13px;border:1px solid var(--line);border-radius:14px;background:#f9fafb}.detail-metric span,.detail-metric strong{display:block}.detail-metric span{font-size:11px;color:var(--muted)}.detail-metric strong{font-size:22px}.requirements{margin:14px 0 0;padding:0;list-style:none}.requirements li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f1f3}.detail-actions{display:flex;gap:9px;margin-top:18px}@media(max-width:700px){.skill-detail{grid-template-columns:1fr}.map-wrap{margin-inline:-16px;padding-inline:16px;overflow:visible}.math-map{min-width:0;padding-inline:0}.root-node{margin-bottom:34px}.root-node::after{height:18px}.branches{grid-template-columns:1fr;gap:28px}.branches::before{display:none}.branch::before{height:29px}.detail-metrics{grid-template-columns:1fr 1fr}.detail-metric:last-child{grid-column:1/-1}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a class="active" href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
+    <header class="hero"><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Три направления, понятные зависимости и живой прогресс по каждой теме. Закрытые темы можно открыть — карта лишь подскажет, что стоит повторить.</p></header>
+    <section class="panel map-wrap" aria-label="Карта навыков"><div class="math-map"><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></section>
+    <section id="skillDetail" class="panel" aria-live="polite"></section>
+  </main>
+  <script src="progress.js"></script>
+  <script>
+    (() => {
+      const progress = window.MathRushProgress;
+      const data = progress.load();
+      const categories = { arithmetic: 'АРИФМЕТИКА', algebra: 'АЛГЕБРА', geometry: 'ГЕОМЕТРИЯ' };
+      const branchHost = document.getElementById('branches');
+      const detail = document.getElementById('skillDetail');
+      const icon = { mastered: '✓', learning: '◐', available: '●', locked: '🔒' };
+      function renderDetail(skill) {
+        const summary = data.skills[skill.id] || { xp: 0, attempts: 0, correctAttempts: 0 };
+        const mastery = progress.masteryFor(skill.id, data);
+        const readiness = progress.readinessFor(skill, data);
+        const accuracy = summary.attempts ? Math.round(summary.correctAttempts / summary.attempts * 100) : 0;
+        const requirements = skill.prerequisites.length ? skill.prerequisites.map((id) => { const item = progress.skillById(id); const value = progress.masteryFor(id, data); return `<li><span>${value >= 60 ? '✓' : '⚠'} ${item.title}</span><strong>${value}%</strong></li>`; }).join('') : '<li><span>Начальная тема</span><strong>Готово</strong></li>';
+        detail.innerHTML = `<div class="skill-detail"><div><p class="eyebrow">Навык</p><h2>${skill.title}</h2><div class="detail-metrics"><div class="detail-metric"><span>Освоение</span><strong>${mastery}%</strong></div><div class="detail-metric"><span>XP</span><strong>${summary.xp || 0}</strong></div><div class="detail-metric"><span>Точность</span><strong>${accuracy}%</strong></div></div><div class="progress-track" style="margin-top:12px"><span style="width:${mastery}%"></span></div><div class="detail-actions"><a class="button" href="${progress.hrefForSkill(skill)}">Практиковаться</a></div></div><div><h3>Готовность: ${readiness}%</h3><p class="muted">Рекомендуемые навыки перед этой темой:</p><ul class="requirements">${requirements}</ul></div></div>`;
+      }
+      Object.entries(categories).forEach(([category, title]) => {
+        const branch = document.createElement('section'); branch.className = 'branch';
+        branch.innerHTML = `<h2 class="branch-title">${title}</h2><div class="skill-list"></div>`;
+        progress.skills.filter((skill) => skill.category === category).forEach((skill) => {
+          const state = progress.stateFor(skill, data); const mastery = progress.masteryFor(skill.id, data);
+          const button = document.createElement('button'); button.className = `skill-node ${state}`; button.type = 'button'; button.innerHTML = `<strong>${skill.title}</strong><small>Освоение ${mastery}%</small><span class="state">${icon[state]}</span>`; button.addEventListener('click', () => renderDetail(skill)); branch.querySelector('.skill-list').append(button);
+        });
+        branchHost.append(branch);
+      });
+      renderDetail(progress.skills[0]);
+    })();
+  </script>
+</body>
+</html>
