@@ -127,17 +127,31 @@
     .view-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
     .view-heading h2 { margin: 0; font-size: 28px; letter-spacing: -.035em; }
     .view-heading p { margin: 0; color: var(--muted); font-size: 13px; }
-    .map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; }
-    .skill-map { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
-    .skill-branch { padding: 14px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.64); }
-    .skill-branch h3 { margin: 0 0 12px; font-size: 16px; }
-    .skill-node { width: 100%; margin-top: 9px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: #fff; text-align: left; }
+    .map-layout { display: block; }
+    .skill-map { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 3vw, 34px); min-height: 720px; padding: 48px 24px 130px; overflow: hidden; border: 1px solid var(--line); border-radius: 28px; background: radial-gradient(circle at 50% 100%, rgba(99,91,255,.14), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,255,.9)); }
+    .trident-lines { position: absolute; inset: 20px 3% 20px; z-index: 0; width: 94%; height: calc(100% - 40px); pointer-events: none; }
+    .trident-path { fill: none; stroke-width: 12; stroke-linecap: round; opacity: .2; }
+    .trident-path.arithmetic { stroke: #f7904a; }
+    .trident-path.algebra { stroke: #635bff; }
+    .trident-path.geometry { stroke: #2e90fa; }
+    .trident-tip { stroke: #fff; stroke-width: 7; }
+    .skill-branch { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: transparent; }
+    .skill-branch h3 { min-width: 150px; margin: 0 0 18px; padding: 9px 15px; border-radius: 999px; color: #fff; background: var(--branch-color, var(--accent)); box-shadow: 0 8px 22px color-mix(in srgb, var(--branch-color, var(--accent)) 28%, transparent); font-size: 16px; text-align: center; }
+    .skill-branch.arithmetic { --branch-color: #e66b2c; }
+    .skill-branch.algebra { --branch-color: #635bff; }
+    .skill-branch.geometry { --branch-color: #1570ef; }
+    .skill-node { position: relative; width: min(100%, 240px); margin-top: 15px; padding: 13px 14px; border: 2px solid color-mix(in srgb, var(--branch-color) 32%, var(--line)); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 8px 24px rgba(16,24,40,.08); text-align: left; }
     .skill-node:first-of-type { margin-top: 0; }
-    .skill-node:hover, .skill-node.active { border-color: #aaa4ff; box-shadow: 0 6px 18px rgba(99,91,255,.12); }
+    .skill-node::before { content: ''; position: absolute; top: -17px; left: 50%; width: 3px; height: 15px; background: color-mix(in srgb, var(--branch-color) 45%, #fff); transform: translateX(-50%); }
+    .skill-node:first-of-type::before { display: none; }
+    .skill-node:hover, .skill-node.active { border-color: var(--branch-color); box-shadow: 0 10px 28px color-mix(in srgb, var(--branch-color) 20%, transparent); transform: translateY(-2px); }
     .skill-node.mastered { border-color: #75d9aa; background: #ecfdf3; }
     .skill-node.locked { opacity: .5; }
     .skill-node span { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
-    .skill-detail { position: sticky; top: 88px; min-height: 230px; padding: 20px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #5f57f5, #3f37c9); }
+    .trident-base { position: absolute; bottom: 23px; left: 50%; z-index: 3; display: grid; width: 92px; height: 92px; place-items: center; border: 7px solid #fff; border-radius: 50%; color: #fff; background: linear-gradient(145deg, #837bff, #4f46e5); box-shadow: 0 15px 35px rgba(79,70,229,.3); text-align: center; transform: translateX(-50%); }
+    .trident-base span { display: block; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+    .trident-base strong { display: block; font-size: 25px; line-height: 1; }
+    .skill-detail { margin-top: 16px; min-height: 0; padding: 20px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #5f57f5, #3f37c9); }
     .skill-detail h3 { margin: 0 0 8px; font-size: 23px; }
     .skill-detail p { margin: 0 0 18px; color: rgba(255,255,255,.8); }
     .skill-detail .primary { color: var(--accent-dark); background: #fff; box-shadow: none; }
@@ -224,7 +238,7 @@
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .skill-map { grid-template-columns: 1fr; } .skill-detail { position: static; } }
+    @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .skill-map { grid-template-columns: 1fr; min-height: 0; padding: 24px 16px 112px; } .trident-lines { display: none; } .skill-branch { margin-bottom: 28px; } .skill-branch h3 { width: min(100%, 260px); } .skill-detail { position: static; } }
     @media (max-width: 520px) { body { padding: 8px; } .page-nav { top: 0; margin: 0; padding:9px 10px; } .page-nav .brand { display:none; } .page-nav-links { flex:1; } .page-nav-links button { padding:7px 8px; font-size:11px; } .nav-icon { width:34px; height:34px; } .top, .screen { padding-left: 16px; padding-right: 16px; } .card { border-radius: 22px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading, .view-heading { display: block; } .menu-heading p, .view-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats, .profile-summary { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .setting-wide, .mix-options { grid-column: auto; } .reward { right: 0; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .settings-panel { top: 60px; right: 8px; width: calc(100% - 16px); max-height: calc(100vh - 72px); } .exit-button { top: 10px; left: 10px; min-height: 40px; padding: 9px 12px; } .game-active .page-nav { top:0; right:0; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
   </style>
 </head>
@@ -1494,9 +1508,16 @@
         const detail = $('spaSkillDetail');
         const categories = { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' };
         branches.textContent = '';
+        const lines = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        lines.setAttribute('class', 'trident-lines');
+        lines.setAttribute('viewBox', '0 0 1000 760');
+        lines.setAttribute('preserveAspectRatio', 'none');
+        lines.setAttribute('aria-hidden', 'true');
+        lines.innerHTML = '<path class="trident-path arithmetic" d="M500 735 V650 C500 560 165 585 165 455 V58"/><path class="trident-path algebra" d="M500 735 V58"/><path class="trident-path geometry" d="M500 650 C500 560 835 585 835 455 V58"/><circle class="trident-tip" cx="165" cy="54" r="17" fill="#e66b2c"/><circle class="trident-tip" cx="500" cy="54" r="17" fill="#635bff"/><circle class="trident-tip" cx="835" cy="54" r="17" fill="#1570ef"/>';
+        branches.appendChild(lines);
         Object.entries(categories).forEach(([category, title]) => {
           const branch = document.createElement('section');
-          branch.className = 'skill-branch';
+          branch.className = `skill-branch ${category}`;
           const heading = document.createElement('h3');
           heading.textContent = title;
           branch.appendChild(heading);
@@ -1528,6 +1549,11 @@
           });
           branches.appendChild(branch);
         });
+        const base = document.createElement('div');
+        base.className = 'trident-base';
+        base.innerHTML = '<div><span>Уровень</span><strong></strong></div>';
+        base.querySelector('strong').textContent = MathRushProgress.levelForXp(data.totalXp);
+        branches.appendChild(base);
       }
 
       function renderSpaProfile() {
