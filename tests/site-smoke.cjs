@@ -27,5 +27,7 @@ assert.match(quizPage, /id="profileView"/, 'Profile is embedded in the main app'
 assert.match(quizPage, /globalSettingsBtn\.addEventListener\('mouseenter'/, 'Settings open on pointer hover');
 assert.match(quizPage, /languageButton\.addEventListener\('mouseenter'/, 'Language menu opens on pointer hover');
 assert.match(quizPage, /mode-settings-button'[\s\S]*button\.addEventListener\('mouseenter'/, 'Card settings open on pointer hover');
+assert.match(quizPage, /progressState === 'locked' \? 'available'/, 'Every map node is available for navigation');
+assert.match(quizPage, /card\.scrollIntoView\(\{ behavior: 'smooth', block: 'center' \}\)/, 'Map nodes navigate to their quiz card');
 assert.doesNotMatch(quizPage, /href="settings\.html"/, 'Settings no longer navigate away from the app');
 console.log('Site smoke tests passed');

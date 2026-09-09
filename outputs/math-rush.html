@@ -85,6 +85,7 @@
     .mode-category:first-child { margin-top: 0; }
     .mode-card { position: relative; min-height: 120px; padding: 0; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
     .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
+    .mode-card.map-target { z-index: 14; border-color: var(--accent); animation: mapTargetPulse 1.35s ease; box-shadow: 0 0 0 7px rgba(99,91,255,.13), 0 16px 38px rgba(79,70,229,.18); }
     .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
     .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
     .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 32px; height: 32px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.9); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s, transform .16s; }
@@ -224,6 +225,7 @@
     @keyframes problemGood { 0% { transform: scale(1); color: var(--good); } 42% { transform: scale(1.12); } 100% { transform: scale(1); } }
     @keyframes problemBad { 0%, 100% { transform: translateX(0); color: var(--ink); } 20% { transform: translateX(-12px); color: var(--bad); } 40% { transform: translateX(12px); } 60% { transform: translateX(-7px); } 80% { transform: translateX(7px); } }
     @keyframes problemMilestone { 0% { transform: scale(.92) rotate(-2deg); color: var(--gold); } 35% { transform: scale(1.2) rotate(2deg); } 65% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0); } }
+    @keyframes mapTargetPulse { 0%, 100% { transform: translateY(0) scale(1); } 35% { transform: translateY(-3px) scale(1.018); } 65% { transform: translateY(0) scale(1); } }
     @keyframes rewardPop { 0% { opacity: 0; transform: translateY(11px) scale(.8); } 25% { opacity: 1; transform: translateY(0) scale(1.1); } 75% { opacity: 1; transform: translateY(-5px) scale(1); } 100% { opacity: 0; transform: translateY(-18px) scale(.96); } }
     @keyframes catIdle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
     @keyframes catTail { from { transform: rotate(-8deg); } to { transform: rotate(18deg); } }
@@ -456,7 +458,7 @@
 
       <section id="mapView" class="screen spa-view hidden">
         <div class="view-heading"><div><h2>Карта знаний</h2><p>Три направления развития: арифметика, алгебра и геометрия.</p></div></div>
-        <div class="map-layout"><div id="spaBranches" class="skill-map"></div><aside id="spaSkillDetail" class="skill-detail"><h3>Выбери тему</h3><p>Нажми на навык на карте, чтобы увидеть прогресс и начать тренировку.</p></aside></div>
+        <div class="map-layout"><div id="spaBranches" class="skill-map"></div></div>
       </section>
 
       <section id="profileView" class="screen spa-view hidden">
@@ -1506,7 +1508,6 @@
         if (!globalThis.MathRushProgress) return;
         const data = MathRushProgress.load();
         const branches = $('spaBranches');
-        const detail = $('spaSkillDetail');
         const categories = { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' };
         const skillsByCategory = Object.fromEntries(Object.keys(categories).map((category) => [category, MathRushProgress.skills.filter((skill) => skill.category === category)]));
         const levelCount = Math.max(...Object.values(skillsByCategory).map((skills) => skills.length));
@@ -1545,27 +1546,26 @@
               return;
             }
             const mastery = MathRushProgress.masteryFor(skill.id, data);
-            const state = MathRushProgress.stateFor(skill, data);
+            const progressState = MathRushProgress.stateFor(skill, data);
+            const state = progressState === 'locked' ? 'available' : progressState;
             const button = document.createElement('button');
             button.type = 'button';
             button.className = `skill-node ${state}`;
             button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
             button.querySelector('strong').textContent = skill.title;
-            button.querySelector('em').textContent = state === 'mastered' ? 'Освоено' : state === 'learning' ? 'Изучается' : state === 'locked' ? 'Следующая цель' : 'Доступно';
+            button.querySelector('em').textContent = state === 'mastered' ? 'Освоено' : state === 'learning' ? 'Изучается' : 'Доступно';
             button.querySelector('b').textContent = `${mastery}%`;
             button.addEventListener('click', () => {
-              branches.querySelectorAll('.skill-node').forEach((node) => node.classList.remove('active'));
-              button.classList.add('active');
-              detail.textContent = '';
-              const h3 = document.createElement('h3'); h3.textContent = skill.title;
-              const p = document.createElement('p'); p.textContent = `Освоение: ${mastery}%. Готовность по предыдущим темам: ${MathRushProgress.readinessFor(skill, data)}%.`;
-              const practice = document.createElement('button'); practice.type = 'button'; practice.className = 'primary'; practice.textContent = 'Начать тренировку';
-              practice.addEventListener('click', () => {
-                if (skill.href) { location.href = skill.href; return; }
-                const card = document.querySelector(`.mode-card[data-mode="${skill.mode}"]`);
-                if (card) { selectMode(card); showAppView('tasks'); startGame(); }
-              });
-              detail.append(h3, p, practice);
+              const targetMode = skill.mode || (skill.id === 'derivatives' ? 'equations' : '');
+              const card = targetMode && document.querySelector(`.mode-card[data-mode="${targetMode}"]`);
+              showAppView('tasks');
+              if (!card) return;
+              setTimeout(() => {
+                document.querySelectorAll('.mode-card.map-target').forEach((item) => item.classList.remove('map-target'));
+                card.classList.add('map-target');
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => card.classList.remove('map-target'), 1500);
+              }, 40);
             });
             slot.appendChild(button);
             branches.appendChild(slot);
