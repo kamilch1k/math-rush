@@ -20,6 +20,8 @@ for (const page of pages) {
 const quizPage = fs.readFileSync(path.join('outputs', 'math-rush.html'), 'utf8');
 assert.match(quizPage, /--settings-icon: url/, 'Settings buttons share a vector gear icon');
 assert.match(quizPage, /handwritingAnswer/, 'Per-quiz settings expose the handwriting option');
+assert.match(quizPage, /id="choiceAnswers"/, 'Multiple-choice quizzes have a dedicated answer area');
+assert.match(quizPage, /answerKind === 'choice'/, 'Choice quizzes hide text entry and render answer buttons');
 assert.match(quizPage, /HANDWRITING_ENABLED = false/, 'Unavailable handwriting cannot be selected before backend setup');
 assert.match(quizPage, /data-app-view="tasks"/, 'Tasks are an internal app view');
 assert.match(quizPage, /id="mapView"/, 'Knowledge map is embedded in the main app');

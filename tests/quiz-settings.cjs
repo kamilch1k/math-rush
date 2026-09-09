@@ -134,6 +134,9 @@ for (let i = 0; i < 500; i++) {
   const shape = q.build('geometry-shapes');
   assert.match(shape.text, /[○□△▭]/, 'Shape recognition shows a geometric figure');
   assert.ok(['circle', 'square', 'triangle', 'rectangle'].includes(shape.answer), 'Shape recognition has a canonical answer');
+  assert.equal(shape.kind, 'choice', 'Shape recognition uses multiple-choice answers');
+  assert.equal(shape.choices.length, 4, 'Shape recognition offers four answer choices');
+  assert.ok(shape.choices.some(choice => choice.value === shape.answer), 'Shape quiz includes the correct answer');
   const twoStep = q.build('equations-two-step');
   assert.match(twoStep.text, /^\d+ × x \+ \d+ = \d+$/, 'Two-step equation is generated');
   for (const mode of ['geometry-perimeter', 'geometry-area', 'geometry-side']) {
