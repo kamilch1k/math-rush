@@ -21,4 +21,9 @@ const quizPage = fs.readFileSync(path.join('outputs', 'math-rush.html'), 'utf8')
 assert.match(quizPage, /content: '⚙'/, 'Quiz cards use an explicit settings gear');
 assert.match(quizPage, /handwritingAnswer/, 'Per-quiz settings expose the handwriting option');
 assert.match(quizPage, /HANDWRITING_ENABLED = false/, 'Unavailable handwriting cannot be selected before backend setup');
+assert.match(quizPage, /data-app-view="tasks"/, 'Tasks are an internal app view');
+assert.match(quizPage, /id="mapView"/, 'Knowledge map is embedded in the main app');
+assert.match(quizPage, /id="profileView"/, 'Profile is embedded in the main app');
+assert.match(quizPage, /id="settingsBackdrop"/, 'Settings use a modal backdrop');
+assert.doesNotMatch(quizPage, /href="settings\.html"/, 'Settings no longer navigate away from the app');
 console.log('Site smoke tests passed');

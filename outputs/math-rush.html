@@ -31,7 +31,7 @@
                   radial-gradient(circle at 100% 100%, #d8f8ee 0, transparent 30%), var(--bg);
       font: 16px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .app { width: min(100%, 680px); }
+    .app { width: min(100%, 1180px); }
     .card {
       background: var(--card);
       border: 1px solid rgba(255,255,255,.8);
@@ -40,12 +40,16 @@
       backdrop-filter: blur(16px);
       overflow: hidden;
     }
-    .top { padding: 24px 30px 8px; }
-    .page-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 18px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.64); }
+    .top { padding: 18px 30px 0; }
+    .page-nav { position: sticky; top: 12px; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 14px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.84); border-radius: 17px; background: rgba(255,255,255,.88); box-shadow: 0 12px 34px rgba(16,24,40,.1); backdrop-filter: blur(16px); }
     .page-nav .brand { color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 950; letter-spacing: -.03em; }
     .page-nav-links { display: flex; gap: 4px; }
-    .page-nav-links a { padding: 7px 9px; border-radius: 9px; color: var(--muted); text-decoration: none; font-size: 11px; font-weight: 800; }
-    .page-nav-links a:hover, .page-nav-links a.active { color: var(--accent-dark); background: #eeecff; }
+    .page-nav-links button { padding: 8px 12px; border-radius: 10px; color: var(--muted); background: transparent; font-size: 13px; font-weight: 800; }
+    .page-nav-links button:hover, .page-nav-links button.active { color: var(--accent-dark); background: #eeecff; }
+    .nav-tools { position: relative; display: flex; align-items: center; gap: 6px; }
+    .nav-icon { display: grid; width: 38px; height: 38px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 11px; color: var(--muted); background: #fff; font-size: 17px; }
+    .nav-icon:hover { border-color: #b9b4ff; color: var(--accent-dark); }
+    .language-popover { position: absolute; top: calc(100% + 8px); right: 0; width: 180px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: 0 16px 42px rgba(16,24,40,.18); }
     .top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
     .global-tools { display: flex; align-items: center; gap: 8px; }
     .tool-button { padding: 8px 11px; border: 1px solid var(--line); border-radius: 11px; color: var(--muted); background: rgba(255,255,255,.72); font-size: 12px; font-weight: 800; white-space: nowrap; }
@@ -56,12 +60,12 @@
     .eyebrow { margin: 0 0 7px; color: var(--accent); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
     h1 { margin: 0; font-size: clamp(30px, 7vw, 44px); line-height: 1.04; letter-spacing: -.045em; }
     .subtitle { margin: 12px 0 0; color: var(--muted); }
-    .profile-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 13px; margin-top: 18px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 17px; background: rgba(255,255,255,.64); }
+    .profile-bar { display: inline-flex; align-items: center; gap: 9px; margin-top: 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,255,255,.72); }
     .profile-item { display: flex; flex-direction: column; gap: 1px; min-width: 66px; }
     .profile-label { color: var(--muted); font-size: 11px; font-weight: 750; }
     .profile-value { color: var(--accent-dark); font-size: 21px; line-height: 1.1; font-weight: 900; }
     .profile-score .profile-value { color: var(--ink); }
-    .profile-progress-wrap { min-width: 0; }
+    .profile-progress-wrap, .profile-score { display: none; }
     .profile-progress-row { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 700; }
     .profile-progress-track { height: 8px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
     .profile-progress-track > div { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #a49fff, var(--accent)); transition: width .35s ease; }
@@ -107,7 +111,8 @@
     .primary:active { transform: translateY(1px); }
     .secondary { width: 100%; margin-top: 10px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.7); font-weight: 750; }
     .secondary:hover { border-color: #b9b4ff; background: #fff; }
-    .settings-panel { margin: 0 30px 18px; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.72); text-align: left; }
+    .modal-backdrop { position: fixed; inset: 0; z-index: 70; background: rgba(16,24,40,.28); backdrop-filter: blur(5px); }
+    .settings-panel { position: fixed; top: 50%; left: 50%; z-index: 80; width: min(620px, calc(100% - 28px)); max-height: calc(100vh - 32px); overflow: auto; margin: 0; padding: 22px; border: 1px solid rgba(255,255,255,.9); border-radius: 22px; background: rgba(255,255,255,.98); box-shadow: 0 28px 90px rgba(16,24,40,.25); text-align: left; transform: translate(-50%, -50%); }
     .settings-panel h3 { margin: 0 0 13px; font-size: 17px; }
     .settings-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .setting label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 12px; font-weight: 700; }
@@ -116,6 +121,34 @@
     .mix-options label { display: inline-flex; align-items: center; gap: 7px; margin: 0 12px 8px 0; color: var(--ink); font-size: 13px; font-weight: 600; }
     .mix-options input { accent-color: var(--accent); }
     .settings-summary { margin: 14px 0 0 !important; color: var(--muted); font-size: 13px; text-align: center; }
+    .setting-wide { grid-column: 1 / -1; }
+    .spa-view { min-height: 640px; }
+    .view-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    .view-heading h2 { margin: 0; font-size: 28px; letter-spacing: -.035em; }
+    .view-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+    .map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; }
+    .skill-map { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+    .skill-branch { padding: 14px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.64); }
+    .skill-branch h3 { margin: 0 0 12px; font-size: 16px; }
+    .skill-node { width: 100%; margin-top: 9px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: #fff; text-align: left; }
+    .skill-node:first-of-type { margin-top: 0; }
+    .skill-node:hover, .skill-node.active { border-color: #aaa4ff; box-shadow: 0 6px 18px rgba(99,91,255,.12); }
+    .skill-node.mastered { border-color: #75d9aa; background: #ecfdf3; }
+    .skill-node.locked { opacity: .5; }
+    .skill-node span { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
+    .skill-detail { position: sticky; top: 88px; min-height: 230px; padding: 20px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #5f57f5, #3f37c9); }
+    .skill-detail h3 { margin: 0 0 8px; font-size: 23px; }
+    .skill-detail p { margin: 0 0 18px; color: rgba(255,255,255,.8); }
+    .skill-detail .primary { color: var(--accent-dark); background: #fff; box-shadow: none; }
+    .profile-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+    .profile-summary .stat { background: #fff; }
+    .profile-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .profile-panel { padding: 19px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.68); }
+    .profile-panel h3 { margin: 0 0 14px; }
+    .category-row, .profile-skill-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+    .category-row:last-child, .profile-skill-row:last-child { border-bottom: 0; }
+    .mini-track { grid-column: 1 / -1; height: 7px; overflow: hidden; border-radius: 99px; background: #e7e9ee; }
+    .mini-track > i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #8d86ff, var(--accent)); }
     .hint { margin: 14px 0 0; color: var(--muted); font-size: 13px; text-align: center; }
     .game-screen { display: flex; flex-direction: column; min-height: 100vh; padding-top: 82px; }
     .quiz-primary, .quiz-details { width: min(100%, 820px); margin-right: auto; margin-left: auto; }
@@ -183,28 +216,32 @@
     .game-active { place-items: start center; padding: 0; }
     .game-active .app { width: 100%; }
     .game-active .card { min-height: 100vh; border: 0; border-radius: 0; box-shadow: none; }
-    .game-active .top { position: fixed; top: 20px; right: 20px; z-index: 20; padding: 0; }
-    .game-active .top-row > div:first-child, .game-active .subtitle, .game-active .profile-bar { display: none; }
-    .game-active .page-nav { display: none; }
-    .game-active .top-row { display: block; }
+    .game-active .top { display: none; }
+    .game-active .page-nav { position: fixed; top: 14px; right: 14px; left: auto; z-index: 30; width: auto; margin: 0; }
+    .game-active .page-nav .brand, .game-active .page-nav-links { display: none; }
     .result { text-align: center; padding-top: 34px; }
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 520px) { body { padding: 12px; } .page-nav { display:block; padding:10px 12px; } .page-nav .brand { display:block; margin:0 6px 6px; } .page-nav-links { display:grid; grid-template-columns:repeat(4,1fr); } .page-nav-links a { padding:6px 3px; text-align:center; font-size:10px; } .top, .screen { padding-left: 20px; padding-right: 20px; } .settings-panel { margin-left: 20px; margin-right: 20px; } .card { border-radius: 24px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading { display: block; } .menu-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .mix-options { grid-column: auto; } .reward { right: 0; } .top-row { gap: 8px; } .global-tools { gap: 5px; } .tool-button { padding: 7px 8px; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .exit-button { top: 12px; left: 12px; min-height: 40px; padding: 9px 12px; } .game-active .top { top: 12px; right: 12px; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
+    @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .skill-map { grid-template-columns: 1fr; } .skill-detail { position: static; } }
+    @media (max-width: 520px) { body { padding: 8px; } .page-nav { top: 7px; margin: 0 6px; padding:8px; } .page-nav .brand { display:none; } .page-nav-links { flex:1; } .page-nav-links button { padding:7px 8px; font-size:11px; } .nav-icon { width:34px; height:34px; } .top, .screen { padding-left: 16px; padding-right: 16px; } .card { border-radius: 22px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid { grid-template-columns: 1fr; } .menu-heading, .view-heading { display: block; } .menu-heading p, .view-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats, .profile-summary { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .setting-wide, .mix-options { grid-column: auto; } .reward { right: 0; } .exit-button { top: 10px; left: 10px; min-height: 40px; padding: 9px 12px; } .game-active .page-nav { top:10px; right:10px; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
   </style>
 </head>
 <body>
   <button id="exitBtn" class="exit-button" type="button" aria-label="В меню" title="В меню">←</button>
   <main class="app">
     <section class="card">
-      <nav class="page-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="page-nav-links"><a class="active" href="math-rush.html">Задачи</a><a href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
-      <header class="top">
-        <div class="top-row">
-          <div><p id="eyebrow" class="eyebrow">Тренировка скорости</p><h1 id="siteTitle">Математический рывок</h1></div>
-          <div class="global-tools"><button id="globalSettingsBtn" class="tool-button" type="button">⚙ Настройки</button><label class="language-control" for="languageSelect"><span id="languageLabel">🌐 Язык</span><select id="languageSelect" aria-label="Язык"><option value="ru">RU</option><option value="en">EN</option><option value="fr">FR</option><option value="es">ES</option><option value="de">DE</option></select></label></div>
+      <nav class="page-nav" aria-label="Главная навигация">
+        <span class="brand">Math Rush</span>
+        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button></div>
+        <div class="nav-tools">
+          <button id="globalSettingsBtn" class="nav-icon" type="button" aria-label="Настройки" title="Настройки">⚙</button>
+          <button id="languageButton" class="nav-icon" type="button" aria-label="Язык" title="Язык" aria-expanded="false">🌐</button>
+          <div id="languagePopover" class="language-popover hidden"><label for="languageSelect"><span id="languageLabel">Язык</span><select id="languageSelect" aria-label="Язык"><option value="ru">Русский</option><option value="en">English</option><option value="fr">Français</option><option value="es">Español</option><option value="de">Deutsch</option></select></label></div>
         </div>
-        <p id="siteSubtitle" class="subtitle">Выбирай режим, настраивай правила и решай примеры как можно быстрее.</p>
+      </nav>
+      <header class="top">
+        <div class="hidden" aria-hidden="true"><p id="eyebrow"></p><h1 id="siteTitle">Математический рывок</h1><p id="siteSubtitle"></p></div>
         <div class="profile-bar" aria-label="Профиль игрока">
           <div class="profile-item"><span id="profileLevelLabel" class="profile-label">Уровень</span><strong id="userLevel" class="profile-value">1</strong></div>
           <div class="profile-progress-wrap"><div class="profile-progress-row"><span id="profileProgressText">0/10 до следующего уровня</span><span id="profileProgressPercent">0%</span></div><div class="profile-progress-track" aria-label="Прогресс до следующего уровня"><div id="profileProgressBar"></div></div></div>
@@ -212,9 +249,15 @@
         </div>
       </header>
 
+      <div id="settingsBackdrop" class="modal-backdrop hidden"></div>
       <div id="settingsPanel" class="settings-panel hidden">
         <h3 id="settingsTitle">Настройки игры</h3>
         <div class="settings-grid">
+          <div class="setting setting-wide">
+            <label id="challengeLabel" for="challengeMode">Правила раунда</label>
+            <select id="challengeMode"><option value="practice">Тренировка</option><option value="score">На счёт</option><option value="strict">На счёт — без ошибок ввода</option></select>
+            <p id="challengeHint" class="hint">В режиме «На счёт» нет бонусного времени и лимита заданий. В строгом режиме неверный символ или исправление — ошибка. Дроби вводи сокращёнными, например 1/2.</p>
+          </div>
           <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
           <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
           <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option>20</option><option>30</option><option>40</option><option>60</option><option selected>90</option><option>120</option><option>180</option><option>240</option><option>300</option></select></div>
@@ -228,11 +271,6 @@
 
       <section id="menuScreen" class="screen menu-screen">
         <div class="menu-heading"><h2 id="menuTitle">Выбери режим</h2><p id="menuHint">Можно менять настройки перед каждой игрой</p></div>
-        <div class="setting" style="margin-bottom:20px">
-          <label id="challengeLabel" for="challengeMode">Правила раунда</label>
-          <select id="challengeMode"><option value="practice">Тренировка</option><option value="score">На счёт</option><option value="strict">На счёт — без ошибок ввода</option></select>
-          <p id="challengeHint" class="hint">В режиме «На счёт» нет бонусного времени и лимита заданий. В строгом режиме неверный символ или исправление — ошибка. Дроби вводи сокращёнными, например 1/2.</p>
-        </div>
         <div class="mode-grid">
           <h3 class="mode-category" data-category="addition">Сложение</h3>
           <article class="mode-card" data-mode="addition-ten">
@@ -399,6 +437,17 @@
         <p id="menuHintText" class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
       </section>
 
+      <section id="mapView" class="screen spa-view hidden">
+        <div class="view-heading"><div><h2>Карта знаний</h2><p>Три направления развития: арифметика, алгебра и геометрия.</p></div></div>
+        <div class="map-layout"><div id="spaBranches" class="skill-map"></div><aside id="spaSkillDetail" class="skill-detail"><h3>Выбери тему</h3><p>Нажми на навык на карте, чтобы увидеть прогресс и начать тренировку.</p></aside></div>
+      </section>
+
+      <section id="profileView" class="screen spa-view hidden">
+        <div class="view-heading"><div><h2>Профиль</h2><p>Весь прогресс хранится в этом браузере.</p></div></div>
+        <div class="profile-summary"><div class="stat"><span class="stat-label">Уровень</span><strong id="spaProfileLevel" class="stat-value">1</strong></div><div class="stat"><span class="stat-label">Опыт</span><strong id="spaProfileXp" class="stat-value">0 XP</strong></div><div class="stat"><span class="stat-label">Решено</span><strong id="spaAttempts" class="stat-value">0</strong></div><div class="stat"><span class="stat-label">Точность</span><strong id="spaAccuracy" class="stat-value">0%</strong></div></div>
+        <div class="profile-panels"><section class="profile-panel"><h3>Направления</h3><div id="spaCategories"></div></section><section class="profile-panel"><h3>Навыки</h3><div id="spaSkills"></div></section></div>
+      </section>
+
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
         <div id="pixelCat" class="voxel-companion" aria-hidden="true"></div>
         <div class="quiz-primary">
@@ -447,13 +496,14 @@
       const HANDWRITING_ENABLED = false;
       const $ = (id) => document.getElementById(id);
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
+      const mapView = $('mapView'), profileView = $('profileView');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
       const answerInput = $('answerInput'), answerForm = $('answerForm'), feedback = $('feedback'), reward = $('reward');
       const pixelCat = $('pixelCat');
-      const settingsPanel = $('settingsPanel'), settingsSummary = $('settingsSummary');
-      const globalSettingsBtn = $('globalSettingsBtn'), languageSelect = $('languageSelect'), languageLabel = $('languageLabel');
+      const settingsPanel = $('settingsPanel'), settingsBackdrop = $('settingsBackdrop'), settingsSummary = $('settingsSummary');
+      const globalSettingsBtn = $('globalSettingsBtn'), languageButton = $('languageButton'), languagePopover = $('languagePopover'), languageSelect = $('languageSelect'), languageLabel = $('languageLabel');
       const userLevelEl = $('userLevel'), globalScoreEl = $('globalScore'), profileLevelLabel = $('profileLevelLabel'), profileScoreLabel = $('profileScoreLabel'), profileProgressText = $('profileProgressText'), profileProgressPercent = $('profileProgressPercent'), profileProgressBar = $('profileProgressBar');
       const LEVEL_STEP = 10, PROFILE_STORAGE_KEY = 'mathRushProfileV1';
       const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
@@ -1211,6 +1261,8 @@
         initAudio();
         document.body.classList.add('game-active');
         menuScreen.classList.add('hidden');
+        mapView.classList.add('hidden');
+        profileView.classList.add('hidden');
         resultScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         $('exitBtn').classList.add('visible');
@@ -1301,8 +1353,17 @@
         $('menuHint').textContent = language.menuHint;
         $('menuHintText').textContent = language.hint;
         $('startBtn').textContent = language.start;
-        $('globalSettingsBtn').textContent = `⚙ ${language.settings}`;
-        languageLabel.textContent = `🌐 ${language.languageMenu}`;
+        $('globalSettingsBtn').textContent = '⚙';
+        $('globalSettingsBtn').setAttribute('aria-label', language.settings);
+        $('globalSettingsBtn').title = language.settings;
+        languageButton.setAttribute('aria-label', language.languageMenu);
+        languageButton.title = language.languageMenu;
+        languageLabel.textContent = language.languageMenu;
+        const shell = {
+          ru: ['Задачи', 'Карта', 'Профиль'], en: ['Tasks', 'Map', 'Profile'],
+          fr: ['Exercices', 'Carte', 'Profil'], es: ['Ejercicios', 'Mapa', 'Perfil'], de: ['Aufgaben', 'Karte', 'Profil']
+        }[currentLanguage];
+        document.querySelectorAll('[data-app-view]').forEach((button, index) => { button.textContent = shell[index]; });
         languageSelect.value = currentLanguage;
         languageSelect.setAttribute('aria-label', language.languageLabel);
         $('settingsTitle').textContent = language.settingsTitle;
@@ -1418,6 +1479,97 @@
         }
       }
 
+      function setSettingsOpen(open) {
+        settingsPanel.classList.toggle('hidden', !open);
+        settingsBackdrop.classList.toggle('hidden', !open);
+        globalSettingsBtn.setAttribute('aria-expanded', String(open));
+        if (open) setTimeout(() => $('challengeMode').focus(), 0);
+        else if (gameActive) answerInput.focus({ preventScroll: true });
+      }
+
+      function renderSpaMap() {
+        if (!globalThis.MathRushProgress) return;
+        const data = MathRushProgress.load();
+        const branches = $('spaBranches');
+        const detail = $('spaSkillDetail');
+        const categories = { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' };
+        branches.textContent = '';
+        Object.entries(categories).forEach(([category, title]) => {
+          const branch = document.createElement('section');
+          branch.className = 'skill-branch';
+          const heading = document.createElement('h3');
+          heading.textContent = title;
+          branch.appendChild(heading);
+          MathRushProgress.skills.filter((skill) => skill.category === category).forEach((skill) => {
+            const mastery = MathRushProgress.masteryFor(skill.id, data);
+            const state = MathRushProgress.stateFor(skill, data);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `skill-node ${state}`;
+            button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
+            button.querySelector('strong').textContent = skill.title;
+            button.querySelector('em').textContent = state === 'mastered' ? 'Освоено' : state === 'learning' ? 'Изучается' : state === 'locked' ? 'Следующая цель' : 'Доступно';
+            button.querySelector('b').textContent = `${mastery}%`;
+            button.addEventListener('click', () => {
+              branches.querySelectorAll('.skill-node').forEach((node) => node.classList.remove('active'));
+              button.classList.add('active');
+              detail.textContent = '';
+              const h3 = document.createElement('h3'); h3.textContent = skill.title;
+              const p = document.createElement('p'); p.textContent = `Освоение: ${mastery}%. Готовность по предыдущим темам: ${MathRushProgress.readinessFor(skill, data)}%.`;
+              const practice = document.createElement('button'); practice.type = 'button'; practice.className = 'primary'; practice.textContent = 'Начать тренировку';
+              practice.addEventListener('click', () => {
+                if (skill.href) { location.href = skill.href; return; }
+                const card = document.querySelector(`.mode-card[data-mode="${skill.mode}"]`);
+                if (card) { selectMode(card); showAppView('tasks'); startGame(); }
+              });
+              detail.append(h3, p, practice);
+            });
+            branch.appendChild(button);
+          });
+          branches.appendChild(branch);
+        });
+      }
+
+      function renderSpaProfile() {
+        if (!globalThis.MathRushProgress) return;
+        const data = MathRushProgress.load();
+        const attempts = data.attempts || [];
+        const correct = attempts.filter((attempt) => attempt.isCorrect).length;
+        $('spaProfileLevel').textContent = MathRushProgress.levelForXp(data.totalXp);
+        $('spaProfileXp').textContent = `${data.totalXp} XP`;
+        $('spaAttempts').textContent = attempts.length;
+        $('spaAccuracy').textContent = `${attempts.length ? Math.round(correct / attempts.length * 100) : 0}%`;
+        const categoryNames = { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' };
+        $('spaCategories').textContent = '';
+        Object.entries(categoryNames).forEach(([key, title]) => {
+          const mastery = MathRushProgress.categorySummary(key, data).mastery;
+          const row = document.createElement('div'); row.className = 'category-row';
+          row.innerHTML = `<strong></strong><span></span><div class="mini-track"><i></i></div>`;
+          row.querySelector('strong').textContent = title; row.querySelector('span').textContent = `${mastery}%`; row.querySelector('i').style.width = `${mastery}%`;
+          $('spaCategories').appendChild(row);
+        });
+        $('spaSkills').textContent = '';
+        [...MathRushProgress.skills].sort((a, b) => MathRushProgress.masteryFor(b.id, data) - MathRushProgress.masteryFor(a.id, data)).slice(0, 8).forEach((skill) => {
+          const mastery = MathRushProgress.masteryFor(skill.id, data);
+          const row = document.createElement('div'); row.className = 'profile-skill-row';
+          row.innerHTML = '<strong></strong><span></span>';
+          row.querySelector('strong').textContent = skill.title; row.querySelector('span').textContent = `${mastery}%`;
+          $('spaSkills').appendChild(row);
+        });
+      }
+
+      function showAppView(view) {
+        if (gameActive) goToMenu();
+        [menuScreen, mapView, profileView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
+        const target = view === 'map' ? mapView : view === 'profile' ? profileView : menuScreen;
+        target.classList.remove('hidden');
+        document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === view));
+        if (view === 'map') renderSpaMap();
+        if (view === 'profile') renderSpaProfile();
+        if (history.replaceState) history.replaceState(null, '', `#${view}`);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
       organizeMenu();
       ensureModeSettingsControls();
       document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => {
@@ -1460,15 +1612,23 @@
         $('exitBtn').classList.remove('visible');
         resultScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
+        mapView.classList.add('hidden');
+        profileView.classList.add('hidden');
         menuScreen.classList.remove('hidden');
-        settingsPanel.classList.add('hidden');
+        setSettingsOpen(false);
+        document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === 'tasks'));
         closeModeSettings();
       }
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
-      globalSettingsBtn.addEventListener('click', () => { settingsPanel.classList.toggle('hidden'); if (!settingsPanel.classList.contains('hidden')) factorFrom.focus(); });
-      languageSelect.addEventListener('change', () => { currentLanguage = languageSelect.value; savePreference('language', currentLanguage); applyLanguage(); });
-      $('closeSettingsBtn').addEventListener('click', () => { readSettings(); settingsPanel.classList.add('hidden'); if (gameActive) answerInput.focus({ preventScroll: true }); });
+      document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => showAppView(button.dataset.appView)));
+      globalSettingsBtn.addEventListener('click', () => setSettingsOpen(settingsPanel.classList.contains('hidden')));
+      settingsBackdrop.addEventListener('click', () => setSettingsOpen(false));
+      languageButton.addEventListener('click', (event) => { event.stopPropagation(); const open = languagePopover.classList.contains('hidden'); languagePopover.classList.toggle('hidden', !open); languageButton.setAttribute('aria-expanded', String(open)); });
+      languagePopover.addEventListener('click', (event) => event.stopPropagation());
+      document.addEventListener('click', () => { languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); });
+      languageSelect.addEventListener('change', () => { currentLanguage = languageSelect.value; savePreference('language', currentLanguage); applyLanguage(); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); });
+      $('closeSettingsBtn').addEventListener('click', () => { readSettings(); setSettingsOpen(false); });
       [factorFrom, factorTo].forEach((control) => control.addEventListener('change', readSettings));
       [startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', () => { updateSelectedModeConfigFromGlobalControls(control); readSettings(); }));
       document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
@@ -1478,7 +1638,13 @@
       const requestedMode = globalThis.MathRushProgress && MathRushProgress.modeForSkill(requestedSkill);
       const requestedCard = requestedMode && document.querySelector(`.mode-card[data-mode="${requestedMode}"]`);
       if (requestedCard) { selectMode(requestedCard); setTimeout(startGame, 0); }
-      document.addEventListener('keydown', (event) => { const tagName = event.target && event.target.tagName; const isControl = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(tagName); if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && !isControl) startGame(); });
+      else showAppView(['map', 'profile'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'tasks');
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') { if (!settingsPanel.classList.contains('hidden')) setSettingsOpen(false); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); }
+        const tagName = event.target && event.target.tagName;
+        const isControl = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(tagName);
+        if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && !isControl) startGame();
+      });
     })();
   </script>
 <script type="module">
