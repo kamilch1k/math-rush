@@ -141,6 +141,8 @@
     .trident-path.geometry { stroke: #2e90fa; }
     .dependency-path { fill: none; stroke: #98a2b3; stroke-width: 1.5; stroke-linecap: round; opacity: .58; }
     .dependency-path.cross-branch { stroke: #7f78e8; stroke-dasharray: 5 5; opacity: .72; }
+    .skill-map.network-active .dependency-path, .skill-map.network-active .trident-path { opacity: .08; }
+    .skill-map.network-active .dependency-path.network-focus { stroke-width: 3; stroke-dasharray: none; opacity: 1; filter: drop-shadow(0 2px 3px rgba(99,91,255,.25)); }
     .branch-heading { position: relative; z-index: 2; padding: 9px 12px; border-radius: 999px; color: #fff; background: var(--branch-color); box-shadow: 0 8px 22px color-mix(in srgb, var(--branch-color) 28%, transparent); font-size: 15px; font-weight: 850; text-align: center; }
     .branch-heading.arithmetic, .skill-slot.arithmetic { --branch-color: #e66b2c; }
     .branch-heading.algebra, .skill-slot.algebra { --branch-color: #635bff; }
@@ -152,6 +154,9 @@
     .skill-slot.empty { min-height: 74px; }
     .skill-node { position: relative; width: 100%; min-height: 70px; margin: 0; padding: 13px 14px; border: 2px solid color-mix(in srgb, var(--branch-color) 32%, var(--line)); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 8px 24px rgba(16,24,40,.08); text-align: left; }
     .skill-node:hover, .skill-node.active { border-color: var(--branch-color); box-shadow: 0 10px 28px color-mix(in srgb, var(--branch-color) 20%, transparent); transform: translateY(-2px); }
+    .skill-map.network-active .skill-node { opacity: .45; }
+    .skill-map.network-active .skill-node.network-related { opacity: .82; }
+    .skill-map.network-active .skill-node.network-focus { z-index: 4; border-color: var(--branch-color); opacity: 1; box-shadow: 0 0 0 5px color-mix(in srgb, var(--branch-color) 14%, transparent), 0 12px 30px rgba(16,24,40,.14); transform: translateY(-3px) scale(1.025); }
     .skill-node.mastered { border-color: #75d9aa; background: #ecfdf3; }
     .skill-node.locked { opacity: .5; }
     .skill-node span { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
@@ -352,6 +357,9 @@
             <button class="mode-settings-button" type="button" data-mode-settings="equations" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="equations"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <article class="mode-card" data-mode="algebra-inequalities"><button class="mode-card-main" type="button"><span class="mode-icon">&gt;</span><strong>Неравенства</strong><small>Найди граничное целое число</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-functions"><button class="mode-card-main" type="button"><span class="mode-icon">f</span><strong>Функции</strong><small>Найди значение f(x)</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-linear-functions"><button class="mode-card-main" type="button"><span class="mode-icon">f(x)</span><strong>Линейные функции</strong><small>f(x) = ax + b</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <h3 class="mode-category" data-category="fractions">Дроби</h3>
           <article class="mode-card" data-mode="fractions-simplify">
             <button class="mode-card-main" type="button"><span class="mode-icon">½</span><strong>Сокращение дробей</strong><small>Например: 6/8 = 3/4</small></button>
@@ -415,6 +423,9 @@
             <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <article class="mode-card" data-mode="geometry-angles"><button class="mode-card-main" type="button"><span class="mode-icon">∠</span><strong>Углы</strong><small>Смежные и полные углы</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="geometry-triangles"><button class="mode-card-main" type="button"><span class="mode-icon">△</span><strong>Треугольники</strong><small>Сумма углов равна 180°</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="geometry-coordinates"><button class="mode-card-main" type="button"><span class="mode-icon">⌖</span><strong>Координаты</strong><small>Расстояние между точками</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <article class="mode-card" data-mode="geometry-perimeter">
             <button class="mode-card-main" type="button"><span class="mode-icon">▭</span><strong>Периметр</strong><small>Прямоугольники и квадраты</small></button>
             <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
@@ -677,6 +688,14 @@
         es: { mapTitle: 'Mapa de conocimientos', mapSubtitle: 'Tres rutas: aritmética, álgebra y geometría.', profileTitle: 'Perfil', profileSubtitle: 'Tu progreso se guarda en este navegador.', level: 'Nivel', xp: 'Experiencia', attempts: 'Resueltos', accuracy: 'Precisión', directions: 'Rutas', skills: 'Habilidades', stage: 'Etapa', categories: { arithmetic: 'Aritmética', algebra: 'Álgebra', geometry: 'Geometría' }, status: { mastered: 'Dominado', learning: 'Aprendiendo', available: 'Disponible' }, skillNames: { derivatives: 'Derivadas', angles: 'Ángulos', triangles: 'Triángulos' }, reward: { level: 'Nivel', streak: 'seguidas!', seconds: 's', correct: 'Correcto', wrong: 'Error' }, missing: '¿Qué número está oculto en la casilla?', twoStep: (extra, factor) => `Primero resta ${extra} y después divide entre ${factor}.` },
         de: { mapTitle: 'Wissenskarte', mapSubtitle: 'Drei Lernpfade: Arithmetik, Algebra und Geometrie.', profileTitle: 'Profil', profileSubtitle: 'Dein Fortschritt wird in diesem Browser gespeichert.', level: 'Stufe', xp: 'Erfahrung', attempts: 'Gelöst', accuracy: 'Genauigkeit', directions: 'Lernpfade', skills: 'Fähigkeiten', stage: 'Stufe', categories: { arithmetic: 'Arithmetik', algebra: 'Algebra', geometry: 'Geometrie' }, status: { mastered: 'Gemeistert', learning: 'In Arbeit', available: 'Verfügbar' }, skillNames: { derivatives: 'Ableitungen', angles: 'Winkel', triangles: 'Dreiecke' }, reward: { level: 'Stufe', streak: 'in Folge!', seconds: 'Sek.', correct: 'Richtig', wrong: 'Fehler' }, missing: 'Welche Zahl ist im Kästchen versteckt?', twoStep: (extra, factor) => `Ziehe zuerst ${extra} ab und teile dann durch ${factor}.` }
       };
+      const newTopicText = {
+        ru: { category: 'Функции и неравенства', modes: { 'algebra-inequalities': ['Неравенства', 'Найди граничное целое число', 'Определи наименьшее целое число, которое удовлетворяет неравенству.'], 'algebra-functions': ['Функции', 'Найди значение f(x)', 'Подставь заданное число вместо x и вычисли значение функции.'], 'algebra-linear-functions': ['Линейные функции', 'f(x) = ax + b', 'Вычисляй значения линейных функций.'], 'geometry-angles': ['Углы', 'Смежные и полные углы', 'Находи неизвестный угол, используя сумму 180° или 360°.'], 'geometry-triangles': ['Треугольники', 'Сумма углов равна 180°', 'Найди третий угол треугольника.'], 'geometry-coordinates': ['Координаты', 'Расстояние между точками', 'Найди расстояние между точками на горизонтальной или вертикальной линии.'] } },
+        en: { category: 'Functions and inequalities', modes: { 'algebra-inequalities': ['Inequalities', 'Find the boundary integer', 'Find the smallest integer that satisfies the inequality.'], 'algebra-functions': ['Functions', 'Find f(x)', 'Substitute the given value for x and evaluate the function.'], 'algebra-linear-functions': ['Linear functions', 'f(x) = ax + b', 'Evaluate linear functions.'], 'geometry-angles': ['Angles', 'Supplementary and full angles', 'Find an unknown angle using a total of 180° or 360°.'], 'geometry-triangles': ['Triangles', 'Angles add up to 180°', 'Find the third angle of a triangle.'], 'geometry-coordinates': ['Coordinates', 'Distance between points', 'Find the distance between points on a horizontal or vertical line.'] } },
+        fr: { category: 'Fonctions et inégalités', modes: { 'algebra-inequalities': ['Inégalités', 'Trouve l’entier limite', 'Trouve le plus petit entier qui vérifie l’inégalité.'], 'algebra-functions': ['Fonctions', 'Calcule f(x)', 'Remplace x par la valeur donnée et calcule la fonction.'], 'algebra-linear-functions': ['Fonctions affines', 'f(x) = ax + b', 'Calcule les valeurs de fonctions affines.'], 'geometry-angles': ['Angles', 'Angles supplémentaires et complets', 'Trouve l’angle inconnu avec une somme de 180° ou 360°.'], 'geometry-triangles': ['Triangles', 'La somme des angles vaut 180°', 'Trouve le troisième angle du triangle.'], 'geometry-coordinates': ['Coordonnées', 'Distance entre deux points', 'Trouve la distance entre deux points alignés.'] } },
+        es: { category: 'Funciones y desigualdades', modes: { 'algebra-inequalities': ['Desigualdades', 'Encuentra el entero límite', 'Encuentra el menor entero que cumple la desigualdad.'], 'algebra-functions': ['Funciones', 'Calcula f(x)', 'Sustituye x por el valor dado y calcula la función.'], 'algebra-linear-functions': ['Funciones lineales', 'f(x) = ax + b', 'Calcula valores de funciones lineales.'], 'geometry-angles': ['Ángulos', 'Ángulos suplementarios y completos', 'Encuentra el ángulo desconocido usando 180° o 360°.'], 'geometry-triangles': ['Triángulos', 'Los ángulos suman 180°', 'Encuentra el tercer ángulo del triángulo.'], 'geometry-coordinates': ['Coordenadas', 'Distancia entre puntos', 'Encuentra la distancia entre dos puntos alineados.'] } },
+        de: { category: 'Funktionen und Ungleichungen', modes: { 'algebra-inequalities': ['Ungleichungen', 'Finde die kleinste ganze Zahl', 'Finde die kleinste ganze Zahl, welche die Ungleichung erfüllt.'], 'algebra-functions': ['Funktionen', 'Berechne f(x)', 'Setze den gegebenen Wert für x ein und berechne die Funktion.'], 'algebra-linear-functions': ['Lineare Funktionen', 'f(x) = ax + b', 'Berechne Werte linearer Funktionen.'], 'geometry-angles': ['Winkel', 'Nebenwinkel und Vollwinkel', 'Finde den unbekannten Winkel mit 180° oder 360°.'], 'geometry-triangles': ['Dreiecke', 'Winkelsumme 180°', 'Finde den dritten Winkel eines Dreiecks.'], 'geometry-coordinates': ['Koordinaten', 'Abstand zwischen Punkten', 'Finde den Abstand zwischen zwei waagerecht oder senkrecht liegenden Punkten.'] } }
+      };
+      Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, newTopicText[key].modes); languageData[key].categories.functions = newTopicText[key].category; });
       function localizedSkillTitle(skill) {
         return interfaceText[currentLanguage].skillNames[skill.id] || languageData[currentLanguage].modes[skill.mode]?.[0] || skill.title;
       }
@@ -701,6 +720,9 @@
         'equations-multiplication': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-division': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-two-step': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-inequalities': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-functions': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-linear-functions': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         addition: { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         multiplication: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'fractions-simplify': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -710,6 +732,9 @@
         'skills-percent': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'skills-story-equation': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'skills-compare': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-angles': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-triangles': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-coordinates': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-perimeter': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-area': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-side': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -844,9 +869,10 @@
             ['mixed', ['mixed']]
           ]],
           ['algebra', [
-            ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation']]
+            ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation']],
+            ['functions', ['algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']]
           ]],
-          ['geometry', [['geometry', ['geometry-perimeter', 'geometry-area', 'geometry-side']]]],
+          ['geometry', [['geometry', ['geometry-angles', 'geometry-triangles', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-coordinates']]]],
           ['olympiad', [
             ['olympiad-patterns', ['olympiad-parity', 'olympiad-patterns']],
             ['olympiad-logic', ['olympiad-coloring', 'olympiad-logic']]
@@ -1050,6 +1076,34 @@
           }
           const people = randomInt(5, difficulty === 'expert' ? 18 : 10);
           return { text: localized({ ru: `В комнате ${people} человек. Каждый пожал руку каждому ровно один раз. Сколько было рукопожатий?`, en: `${people} people are in a room. Each pair shakes hands once. How many handshakes occur?`, fr: `${people} personnes sont dans une pièce. Chaque paire se serre la main une fois. Combien de poignées de main ?`, es: `Hay ${people} personas. Cada pareja se da la mano una vez. ¿Cuántos apretones hay?`, de: `${people} Personen sind in einem Raum. Jedes Paar gibt sich einmal die Hand. Wie viele Händedrücke gibt es?` }), answer: people * (people - 1) / 2, kind: 'word', hint: localized({ ru: `Каждый человек встречается с ${people - 1} другими, но каждую пару нельзя считать дважды.`, en: `Each person meets ${people - 1} others, but do not count a pair twice.`, fr: `Chaque personne rencontre ${people - 1} autres, sans compter chaque paire deux fois.`, es: `Cada persona saluda a otras ${people - 1}, pero no cuentes cada pareja dos veces.`, de: `Jede Person trifft ${people - 1} andere; zähle jedes Paar nur einmal.` }) };
+        }
+        if (mode === 'algebra-inequalities') {
+          const limit = difficultyFor(mode) === 'simple' ? 20 : difficultyFor(mode) === 'expert' ? 250 : 80;
+          const addition = randomInt(1, Math.max(3, Math.floor(limit / 2))), boundary = randomInt(addition + 1, limit);
+          return { text: `x + ${addition} > ${boundary}`, answer: boundary - addition + 1, hint: localized({ ru: 'Введи наименьшее целое x, при котором неравенство верно.', en: 'Enter the smallest integer x that makes the inequality true.', fr: 'Saisis le plus petit entier x qui vérifie l’inégalité.', es: 'Escribe el menor entero x que cumple la desigualdad.', de: 'Gib die kleinste ganze Zahl x ein, für die die Ungleichung stimmt.' }) };
+        }
+        if (mode === 'algebra-functions' || mode === 'algebra-linear-functions') {
+          const difficulty = difficultyFor(mode);
+          const x = randomInt(0, difficulty === 'simple' ? 10 : difficulty === 'expert' ? 60 : 25);
+          const factor = mode === 'algebra-functions' && difficulty === 'simple' ? 1 : randomInt(2, difficulty === 'expert' ? 12 : 6);
+          const offset = randomInt(1, difficulty === 'simple' ? 10 : difficulty === 'expert' ? 50 : 20);
+          return { text: `f(x) = ${factor === 1 ? '' : `${factor} × `}x + ${offset};  f(${x}) = ?`, answer: factor * x + offset, hint: localized({ ru: `Подставь ${x} вместо x.`, en: `Substitute ${x} for x.`, fr: `Remplace x par ${x}.`, es: `Sustituye x por ${x}.`, de: `Setze ${x} für x ein.` }) };
+        }
+        if (mode === 'geometry-angles') {
+          const total = difficultyFor(mode) === 'simple' ? 180 : Math.random() < .65 ? 180 : 360;
+          const known = randomInt(10, total - 10);
+          return { text: `${known}° + ? = ${total}°`, answer: total - known, hint: localized({ ru: `Вместе углы составляют ${total}°.`, en: `Together the angles make ${total}°.`, fr: `Ensemble, les angles mesurent ${total}°.`, es: `Juntos, los ángulos suman ${total}°.`, de: `Zusammen ergeben die Winkel ${total}°.` }) };
+        }
+        if (mode === 'geometry-triangles') {
+          const first = randomInt(20, 100), second = randomInt(20, Math.min(140 - first, 100));
+          return { text: `△: ${first}°, ${second}°, ?`, answer: 180 - first - second, hint: localized({ ru: 'Сумма углов треугольника равна 180°.', en: 'The angles of a triangle add up to 180°.', fr: 'La somme des angles d’un triangle est de 180°.', es: 'Los ángulos de un triángulo suman 180°.', de: 'Die Winkelsumme im Dreieck beträgt 180°.' }) };
+        }
+        if (mode === 'geometry-coordinates') {
+          const limit = difficultyFor(mode) === 'simple' ? 10 : difficultyFor(mode) === 'expert' ? 60 : 25;
+          const horizontal = Math.random() < .5, fixed = randomInt(-limit, limit), first = randomInt(-limit, limit), second = randomInt(-limit, limit);
+          const a = horizontal ? `A(${first}; ${fixed})` : `A(${fixed}; ${first})`;
+          const b = horizontal ? `B(${second}; ${fixed})` : `B(${fixed}; ${second})`;
+          return { text: `${a}, ${b}`, answer: Math.abs(second - first), hint: localized({ ru: 'Найди разность изменяющихся координат по модулю.', en: 'Find the absolute difference between the changing coordinates.', fr: 'Calcule la différence absolue entre les coordonnées qui changent.', es: 'Calcula la diferencia absoluta entre las coordenadas que cambian.', de: 'Berechne den Betrag der Differenz der veränderten Koordinaten.' }) };
         }
         if (mode === 'geometry-perimeter' || mode === 'geometry-area' || mode === 'geometry-side') {
           const limit = difficultyFor(mode) === 'simple' ? 12 : difficultyFor(mode) === 'expert' ? 80 : 30;
@@ -1569,10 +1623,27 @@
             }
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('class', `dependency-path${crossBranch ? ' cross-branch' : ''}`);
+            path.dataset.from = prerequisiteId;
+            path.dataset.to = skill.id;
             path.setAttribute('marker-end', crossBranch ? 'url(#mapArrowCross)' : 'url(#mapArrow)');
             path.setAttribute('d', d);
             lines.appendChild(path);
           });
+        });
+      }
+
+      function highlightMapNetwork(branches, skillId, active) {
+        branches.classList.toggle('network-active', active);
+        branches.querySelectorAll('.skill-node').forEach((node) => node.classList.remove('network-focus', 'network-related'));
+        branches.querySelectorAll('.dependency-path').forEach((path) => path.classList.remove('network-focus'));
+        if (!active) return;
+        const focus = branches.querySelector(`[data-skill-id="${skillId}"]`);
+        if (focus) focus.classList.add('network-focus');
+        branches.querySelectorAll('.dependency-path').forEach((path) => {
+          if (path.dataset.from !== skillId && path.dataset.to !== skillId) return;
+          path.classList.add('network-focus');
+          const relatedId = path.dataset.from === skillId ? path.dataset.to : path.dataset.from;
+          branches.querySelector(`[data-skill-id="${relatedId}"]`)?.classList.add('network-related');
         });
       }
 
@@ -1627,6 +1698,10 @@
             button.querySelector('strong').textContent = localizedSkillTitle(skill);
             button.querySelector('em').textContent = ui.status[state];
             button.querySelector('b').textContent = `${mastery}%`;
+            button.addEventListener('mouseenter', () => highlightMapNetwork(branches, skill.id, true));
+            button.addEventListener('mouseleave', () => highlightMapNetwork(branches, skill.id, false));
+            button.addEventListener('focus', () => highlightMapNetwork(branches, skill.id, true));
+            button.addEventListener('blur', () => highlightMapNetwork(branches, skill.id, false));
             button.addEventListener('click', () => {
               const targetMode = skill.mode || (skill.id === 'derivatives' ? 'equations' : '');
               const card = targetMode && document.querySelector(`.mode-card[data-mode="${targetMode}"]`);

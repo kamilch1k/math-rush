@@ -11,16 +11,21 @@
     { id: 'multiplication', title: 'Умножение', category: 'arithmetic', prerequisites: ['addition'], mode: 'tables' },
     { id: 'division', title: 'Деление', category: 'arithmetic', prerequisites: ['multiplication'], mode: 'equations-division' },
     { id: 'fractions', title: 'Дроби', category: 'arithmetic', prerequisites: ['division'], mode: 'fractions-simplify' },
+    { id: 'percentages', title: 'Проценты', category: 'arithmetic', prerequisites: ['fractions'], mode: 'skills-percent' },
     { id: 'expressions', title: 'Простые выражения', category: 'algebra', prerequisites: ['addition', 'subtraction'], mode: 'equations-missing' },
     { id: 'equation-add', title: 'x + a = b', category: 'algebra', prerequisites: ['expressions'], mode: 'equations-addition' },
     { id: 'equation-multiply', title: 'ax = b', category: 'algebra', prerequisites: ['multiplication', 'division', 'equation-add'], mode: 'equations-multiplication' },
     { id: 'equation-two-step', title: 'ax + b = c', category: 'algebra', prerequisites: ['equation-add', 'equation-multiply'], mode: 'equations-two-step' },
     { id: 'linear-equations', title: 'Линейные уравнения', category: 'algebra', prerequisites: ['equation-two-step'], mode: 'equations' },
-    { id: 'derivatives', title: 'Производные', category: 'algebra', prerequisites: ['linear-equations'], href: 'derivatives.html' },
-    { id: 'angles', title: 'Углы', category: 'geometry', prerequisites: [], mode: 'geometry-perimeter' },
-    { id: 'triangles', title: 'Треугольники', category: 'geometry', prerequisites: ['angles'], mode: 'geometry-perimeter' },
+    { id: 'inequalities', title: 'Неравенства', category: 'algebra', prerequisites: ['linear-equations'], mode: 'algebra-inequalities' },
+    { id: 'functions', title: 'Функции', category: 'algebra', prerequisites: ['linear-equations'], mode: 'algebra-functions' },
+    { id: 'linear-functions', title: 'Линейные функции', category: 'algebra', prerequisites: ['functions', 'equation-two-step'], mode: 'algebra-linear-functions' },
+    { id: 'derivatives', title: 'Производные', category: 'algebra', prerequisites: ['functions', 'linear-functions'], href: 'derivatives.html' },
+    { id: 'angles', title: 'Углы', category: 'geometry', prerequisites: [], mode: 'geometry-angles' },
+    { id: 'triangles', title: 'Треугольники', category: 'geometry', prerequisites: ['angles'], mode: 'geometry-triangles' },
     { id: 'perimeter', title: 'Периметр', category: 'geometry', prerequisites: ['addition'], mode: 'geometry-perimeter' },
-    { id: 'area', title: 'Площадь', category: 'geometry', prerequisites: ['multiplication', 'perimeter'], mode: 'geometry-area' }
+    { id: 'area', title: 'Площадь', category: 'geometry', prerequisites: ['multiplication', 'perimeter'], mode: 'geometry-area' },
+    { id: 'coordinates', title: 'Координаты', category: 'geometry', prerequisites: ['subtraction'], mode: 'geometry-coordinates' }
   ];
 
   const modeToSkill = {
@@ -31,7 +36,9 @@
     'equations-missing': 'expressions', 'equations-addition': 'equation-add', 'equations-subtraction': 'equation-add',
     'equations-multiplication': 'equation-multiply', 'equations-division': 'division',
     'equations-two-step': 'equation-two-step', equations: 'linear-equations', 'skills-story-equation': 'equation-add',
-    'geometry-perimeter': 'perimeter', 'geometry-side': 'perimeter', 'geometry-area': 'area',
+    'algebra-inequalities': 'inequalities', 'algebra-functions': 'functions', 'algebra-linear-functions': 'linear-functions',
+    'geometry-angles': 'angles', 'geometry-triangles': 'triangles', 'geometry-perimeter': 'perimeter', 'geometry-side': 'perimeter', 'geometry-area': 'area', 'geometry-coordinates': 'coordinates',
+    'skills-percent': 'percentages',
     'derivatives-whiteboard': 'derivatives'
   };
 
