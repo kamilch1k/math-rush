@@ -79,10 +79,11 @@
     .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
     .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
     .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
-    .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.85); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s; }
-    .mode-settings-button::before { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(1px) rotate(45deg); transform-origin: center; transition: transform .16s; }
+    .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.9); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s, transform .16s; }
+    .mode-settings-button::before { content: '⚙'; display: block; font-size: 16px; line-height: 1; }
     .mode-settings-button:hover, .mode-settings-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
-    .mode-settings-button.open::before { transform: translateY(-1px) rotate(225deg); }
+    .mode-settings-button.open { transform: rotate(28deg); }
+    .answer-mode-note { grid-column: 1 / -1; margin: -2px 0 0; color: var(--muted); font-size: 10px; line-height: 1.35; }
     .mode-settings { margin: -4px 12px 12px; padding: 10px 11px 11px; border-top: 1px solid var(--line); border-radius: 0 0 11px 11px; background: rgba(255,255,255,.56); }
     .mode-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
@@ -443,6 +444,7 @@
   <script>
     (() => {
       const START_TIME = 90;
+      const HANDWRITING_ENABLED = false;
       const $ = (id) => document.getElementById(id);
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
@@ -472,25 +474,25 @@
       languageData.ru.exitLabel = 'В меню';
       languageData.ru.languageMenu = 'Язык';
       languageData.ru.timeRemaining = 'Оставшееся время игры';
-      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', taskLimit: 'Количество заданий', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
+      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', taskLimit: 'Количество заданий', answerMode: 'Способ ответа', textAnswer: 'Клавиатура', handwritingAnswer: 'Доска — после подключения', handwritingNote: 'Рукописный ввод появится после подключения сервиса распознавания.', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
       languageData.ru.quizCompletion = 'Прогресс теста';
       languageData.ru.taskLimitOptions = { 0: 'Без лимита', 10: '10 заданий', 20: '20 заданий', 30: '30 заданий' };
       languageData.en.exitLabel = 'Menu';
       languageData.en.languageMenu = 'Language';
       languageData.en.timeRemaining = 'Time remaining';
-      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', taskLimit: 'Question limit', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
+      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', taskLimit: 'Question limit', answerMode: 'Answer method', textAnswer: 'Keyboard', handwritingAnswer: 'Board — after setup', handwritingNote: 'Handwriting will become available after a recognition service is connected.', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
       languageData.en.quizCompletion = 'Quiz progress';
       languageData.en.taskLimitOptions = { 0: 'No limit', 10: '10 tasks', 20: '20 tasks', 30: '30 tasks' };
       languageData.fr.exitLabel = 'Menu';
-      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', taskLimit: 'Nombre d’exercices', button: 'Configurer le mode', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
+      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', taskLimit: 'Nombre d’exercices', answerMode: 'Mode de réponse', textAnswer: 'Clavier', handwritingAnswer: 'Tableau — après connexion', handwritingNote: 'L’écriture manuscrite sera disponible après la connexion du service.', button: 'Configurer le mode', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
       languageData.fr.quizCompletion = 'Progression du quiz';
       languageData.fr.taskLimitOptions = { 0: 'Sans limite', 10: '10 exercices', 20: '20 exercices', 30: '30 exercices' };
       languageData.es.exitLabel = 'Menú';
-      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', taskLimit: 'Cantidad de ejercicios', button: 'Configurar modo', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
+      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', taskLimit: 'Cantidad de ejercicios', answerMode: 'Forma de responder', textAnswer: 'Teclado', handwritingAnswer: 'Pizarra — tras conectar', handwritingNote: 'La escritura estará disponible al conectar el servicio de reconocimiento.', button: 'Configurar modo', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
       languageData.es.quizCompletion = 'Progreso del cuestionario';
       languageData.es.taskLimitOptions = { 0: 'Sin límite', 10: '10 ejercicios', 20: '20 ejercicios', 30: '30 ejercicios' };
       languageData.de.exitLabel = 'Menü';
-      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', taskLimit: 'Aufgabenanzahl', button: 'Modus einstellen', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
+      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', taskLimit: 'Aufgabenanzahl', answerMode: 'Antwortmethode', textAnswer: 'Tastatur', handwritingAnswer: 'Tafel — nach Einrichtung', handwritingNote: 'Handschrift wird nach Anbindung des Erkennungsdienstes verfügbar.', button: 'Modus einstellen', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
       languageData.de.quizCompletion = 'Quizfortschritt';
       languageData.de.taskLimitOptions = { 0: 'Ohne Limit', 10: '10 Aufgaben', 20: '20 Aufgaben', 30: '30 Aufgaben' };
       const settingsLabels = {
@@ -603,7 +605,7 @@
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
-      let settings = { factorFrom: 1, factorTo: 10, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
+      let settings = { factorFrom: 1, factorTo: 10, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', answerMode: 'text', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
         'addition-ten': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'addition-twenty': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -636,6 +638,7 @@
         'olympiad-logic': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         mixed: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
       };
+      Object.values(modeConfigs).forEach((config) => { config.answerMode = 'text'; });
       let savedPreferences = {};
       try { savedPreferences = JSON.parse(localStorage.getItem('mathRushPreferencesV1') || '{}'); } catch (error) { savedPreferences = {}; }
       if (languageData[savedPreferences.language]) currentLanguage = savedPreferences.language;
@@ -796,6 +799,12 @@
           grid.className = 'mode-settings-grid';
           grid.append(difficultyLabel);
           Object.entries(modeControlOptions).forEach(([key, values]) => grid.append(makeModeControl(mode, key, values)));
+          const answerMode = makeModeControl(mode, 'answerMode', ['text', 'handwriting']);
+          answerMode.querySelector('[value="handwriting"]').disabled = !HANDWRITING_ENABLED;
+          const note = document.createElement('p');
+          note.className = 'answer-mode-note';
+          note.dataset.modeSettingNote = 'handwriting';
+          grid.append(answerMode, note);
           panel.append(grid);
         });
       }
@@ -1219,7 +1228,7 @@
         const mixTypes = [...document.querySelectorAll('.mix-options input:checked')].map((box) => box.value);
         const modeConfig = configFor(selectedMode);
         const previousStartTime = settings.startTime;
-        settings = { factorFrom: from, factorTo: to, startTime: modeConfig.startTime, timeBonus: modeConfig.timeBonus, streakGoal: modeConfig.streakGoal, taskLimit: modeConfig.taskLimit, difficulty: modeConfig.difficulty, mixTypes };
+        settings = { factorFrom: from, factorTo: to, startTime: modeConfig.startTime, timeBonus: modeConfig.timeBonus, streakGoal: modeConfig.streakGoal, taskLimit: modeConfig.taskLimit, difficulty: modeConfig.difficulty, answerMode: modeConfig.answerMode || 'text', mixTypes };
         settings.challenge = $('challengeMode').value;
         if (['score', 'strict'].includes(settings.challenge)) {
           settings.timeBonus = 0;
@@ -1323,7 +1332,12 @@
             control.value = String(configFor(mode)[control.dataset.modeConfig]);
             if (control.dataset.modeConfig === 'difficulty') control.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
             if (control.dataset.modeConfig === 'taskLimit') control.querySelectorAll('option').forEach((option) => { option.textContent = language.taskLimitOptions[option.value]; });
+            if (control.dataset.modeConfig === 'answerMode') {
+              control.querySelector('[value="text"]').textContent = language.modeSettings.textAnswer;
+              control.querySelector('[value="handwriting"]').textContent = language.modeSettings.handwritingAnswer;
+            }
           });
+          card.querySelector('[data-mode-setting-note="handwriting"]').textContent = language.modeSettings.handwritingNote;
           modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
         document.querySelectorAll('[data-category]').forEach((heading) => { heading.textContent = language.categories[heading.dataset.category]; });
@@ -1415,7 +1429,7 @@
         const mode = control.dataset.mode;
         const config = configFor(mode);
         const key = control.dataset.modeConfig;
-        config[key] = key === 'difficulty' ? control.value : Number(control.value);
+        config[key] = ['difficulty', 'answerMode'].includes(key) ? control.value : Number(control.value);
         if (mode !== selectedMode) selectMode(control.closest('.mode-card'));
         else { syncGlobalSettingsControls(); readSettings(); }
       }));

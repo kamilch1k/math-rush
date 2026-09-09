@@ -24,6 +24,7 @@ const context = { document };
 vm.runInNewContext(script, context);
 const q = context.quiz;
 assert.ok(Object.values(q.configs).every(c => c.startTime === 90), 'Every quiz defaults to 90 seconds');
+assert.ok(Object.values(q.configs).every(c => c.answerMode === 'text'), 'Every quiz defaults to keyboard answers');
 let zeroProblems = 0;
 for (let i = 0; i < 2000; i++) {
   const p = q.build('addition-ten');

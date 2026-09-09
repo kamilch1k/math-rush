@@ -17,4 +17,8 @@ for (const page of pages) {
     if (script[1].trim()) new vm.Script(script[1], { filename: page });
   }
 }
+const quizPage = fs.readFileSync(path.join('outputs', 'math-rush.html'), 'utf8');
+assert.match(quizPage, /content: '⚙'/, 'Quiz cards use an explicit settings gear');
+assert.match(quizPage, /handwritingAnswer/, 'Per-quiz settings expose the handwriting option');
+assert.match(quizPage, /HANDWRITING_ENABLED = false/, 'Unavailable handwriting cannot be selected before backend setup');
 console.log('Site smoke tests passed');
