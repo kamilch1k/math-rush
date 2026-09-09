@@ -76,6 +76,14 @@ for (let i = 0; i < 500; i++) {
   const expression = order.text.replace(' = ?', '').replaceAll('÷', '/').replaceAll('×', '*').replaceAll('−', '-');
   assert.equal(order.answer, Function(`return (${expression})`)(), 'Order-of-operations answer is correct');
 }
+for (const mode of ['column-addition', 'column-subtraction', 'column-multiplication']) {
+  for (let i = 0; i < 200; i++) {
+    const p = q.build(mode);
+    assert.equal(p.kind, 'column', `${mode} is formatted as vertical arithmetic`);
+    assert.ok(Number.isInteger(p.answer) && p.answer >= 0, `${mode} has a valid numeric answer`);
+    assert.match(p.text, /─/, `${mode} has a written-calculation divider`);
+  }
+}
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-twenty');
   const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);

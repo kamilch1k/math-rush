@@ -204,6 +204,7 @@
     }
     .mode-badge { display: inline-block; margin-bottom: 5px; padding: 4px 9px; border-radius: 99px; color: var(--accent-dark); background: #eeecff; font-size: 12px; font-weight: 800; }
     .problem { min-height: 90px; display: grid; place-items: center; margin-bottom: 17px; font-size: clamp(40px, 11vw, 66px); font-weight: 900; letter-spacing: -.06em; }
+    .problem.column-problem { min-height: 150px; padding: 8px 24px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(34px, 8vw, 56px); line-height: 1.02; letter-spacing: 0; text-align: right; white-space: pre; }
     .problem.word-problem { max-width: 720px; min-height: 105px; margin: 0 auto 10px; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; letter-spacing: -.02em; font-weight: 800; }
     .problem-help { min-height: 24px; margin: 0 0 15px; color: var(--accent-dark); font-size: 13px; font-weight: 700; }
     .answer-row { display: flex; gap: 10px; }
@@ -346,6 +347,10 @@
             <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <h3 class="mode-category" data-category="column">Вычисления в столбик</h3>
+          <article class="mode-card" data-mode="column-addition"><button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Сложение в столбик</strong><small>Двузначные и трёхзначные числа</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="column-subtraction"><button class="mode-card-main" type="button"><span class="mode-icon">−</span><strong>Вычитание в столбик</strong><small>С переходом через разряд</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="column-multiplication"><button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Умножение в столбик</strong><small>Умножение двузначных чисел</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <h3 class="mode-category" data-category="operations">Выражения и порядок действий</h3>
           <article class="mode-card" data-mode="arithmetic-chain-addition">
             <button class="mode-card-main" type="button"><span class="mode-icon">+ +</span><strong>Действия по шагам</strong><small>Например: 1 + 2 + 3</small></button>
@@ -649,13 +654,13 @@
         for (const field of ['startTime', 'timeBonus', 'streakGoal']) languageData[key].modeSettings[field] = settingsLabels[key][field];
       });
       const arithmeticTopicText = {
-        ru: { category: 'Выражения и порядок действий', modes: { division: ['Деление без остатка', 'Деление с целым ответом', 'Деление чисел без остатка.'], 'arithmetic-chain-addition': ['Действия по шагам', 'Например: 1 + 2 + 3', 'Складывай несколько чисел по порядку.'], 'arithmetic-parentheses': ['Скобки', 'Например: 12 ÷ (3 + 1)', 'Сначала вычисли выражение в скобках.'], 'arithmetic-order': ['Порядок действий', 'Например: 12 ÷ 2 + 4 ÷ 2', 'Сначала умножение и деление, затем сложение и вычитание.'] } },
-        en: { category: 'Expressions and operation order', modes: { division: ['Exact division', 'Division with an integer answer', 'Divide numbers with no remainder.'], 'arithmetic-chain-addition': ['Step-by-step operations', 'Example: 1 + 2 + 3', 'Add several numbers in order.'], 'arithmetic-parentheses': ['Parentheses', 'Example: 12 ÷ (3 + 1)', 'Calculate the expression in parentheses first.'], 'arithmetic-order': ['Order of operations', 'Example: 12 ÷ 2 + 4 ÷ 2', 'Do multiplication and division before addition and subtraction.'] } },
-        fr: { category: 'Expressions et ordre des opérations', modes: { division: ['Division exacte', 'Une réponse entière', 'Divise sans reste.'], 'arithmetic-chain-addition': ['Calculs par étapes', 'Exemple : 1 + 2 + 3', 'Additionne plusieurs nombres dans l’ordre.'], 'arithmetic-parentheses': ['Parenthèses', 'Exemple : 12 ÷ (3 + 1)', 'Calcule d’abord l’expression entre parenthèses.'], 'arithmetic-order': ['Ordre des opérations', 'Exemple : 12 ÷ 2 + 4 ÷ 2', 'Fais les multiplications et divisions avant les additions et soustractions.'] } },
-        es: { category: 'Expresiones y orden de operaciones', modes: { division: ['División exacta', 'Respuesta entera', 'Divide sin resto.'], 'arithmetic-chain-addition': ['Operaciones paso a paso', 'Ejemplo: 1 + 2 + 3', 'Suma varios números en orden.'], 'arithmetic-parentheses': ['Paréntesis', 'Ejemplo: 12 ÷ (3 + 1)', 'Calcula primero la expresión entre paréntesis.'], 'arithmetic-order': ['Orden de operaciones', 'Ejemplo: 12 ÷ 2 + 4 ÷ 2', 'Haz multiplicaciones y divisiones antes que sumas y restas.'] } },
-        de: { category: 'Terme und Rechenreihenfolge', modes: { division: ['Division ohne Rest', 'Ganze Antwort', 'Teile Zahlen ohne Rest.'], 'arithmetic-chain-addition': ['Schrittweise rechnen', 'Beispiel: 1 + 2 + 3', 'Addiere mehrere Zahlen der Reihe nach.'], 'arithmetic-parentheses': ['Klammern', 'Beispiel: 12 ÷ (3 + 1)', 'Berechne zuerst den Ausdruck in den Klammern.'], 'arithmetic-order': ['Rechenreihenfolge', 'Beispiel: 12 ÷ 2 + 4 ÷ 2', 'Multipliziere und dividiere vor Addition und Subtraktion.'] } }
+        ru: { category: 'Выражения и порядок действий', column: 'Вычисления в столбик', modes: { division: ['Деление без остатка', 'Деление с целым ответом', 'Деление чисел без остатка.'], 'column-addition': ['Сложение в столбик', 'Двузначные и трёхзначные числа', 'Складывай числа по разрядам.'], 'column-subtraction': ['Вычитание в столбик', 'С переходом через разряд', 'Вычитай числа по разрядам.'], 'column-multiplication': ['Умножение в столбик', 'Умножение двузначных чисел', 'Умножай числа по разрядам.'], 'arithmetic-chain-addition': ['Действия по шагам', 'Например: 1 + 2 + 3', 'Складывай несколько чисел по порядку.'], 'arithmetic-parentheses': ['Скобки', 'Например: 12 ÷ (3 + 1)', 'Сначала вычисли выражение в скобках.'], 'arithmetic-order': ['Порядок действий', 'Например: 12 ÷ 2 + 4 ÷ 2', 'Сначала умножение и деление, затем сложение и вычитание.'] } },
+        en: { category: 'Expressions and operation order', column: 'Column arithmetic', modes: { division: ['Exact division', 'Division with an integer answer', 'Divide numbers with no remainder.'], 'column-addition': ['Column addition', 'Two- and three-digit numbers', 'Add numbers by place value.'], 'column-subtraction': ['Column subtraction', 'Borrowing across place values', 'Subtract numbers by place value.'], 'column-multiplication': ['Column multiplication', 'Two-digit multiplication', 'Multiply numbers by place value.'], 'arithmetic-chain-addition': ['Step-by-step operations', 'Example: 1 + 2 + 3', 'Add several numbers in order.'], 'arithmetic-parentheses': ['Parentheses', 'Example: 12 ÷ (3 + 1)', 'Calculate the expression in parentheses first.'], 'arithmetic-order': ['Order of operations', 'Example: 12 ÷ 2 + 4 ÷ 2', 'Do multiplication and division before addition and subtraction.'] } },
+        fr: { category: 'Expressions et ordre des opérations', column: 'Calcul posé', modes: { division: ['Division exacte', 'Une réponse entière', 'Divise sans reste.'], 'column-addition': ['Addition posée', 'Nombres à deux et trois chiffres', 'Additionne chiffre par chiffre.'], 'column-subtraction': ['Soustraction posée', 'Avec retenue', 'Soustrais chiffre par chiffre.'], 'column-multiplication': ['Multiplication posée', 'Multiplication à deux chiffres', 'Multiplie chiffre par chiffre.'], 'arithmetic-chain-addition': ['Calculs par étapes', 'Exemple : 1 + 2 + 3', 'Additionne plusieurs nombres dans l’ordre.'], 'arithmetic-parentheses': ['Parenthèses', 'Exemple : 12 ÷ (3 + 1)', 'Calcule d’abord l’expression entre parenthèses.'], 'arithmetic-order': ['Ordre des opérations', 'Exemple : 12 ÷ 2 + 4 ÷ 2', 'Fais les multiplications et divisions avant les additions et soustractions.'] } },
+        es: { category: 'Expresiones y orden de operaciones', column: 'Cálculo en columna', modes: { division: ['División exacta', 'Respuesta entera', 'Divide sin resto.'], 'column-addition': ['Suma en columna', 'Números de dos y tres cifras', 'Suma por posiciones.'], 'column-subtraction': ['Resta en columna', 'Con llevadas', 'Resta por posiciones.'], 'column-multiplication': ['Multiplicación en columna', 'Multiplicación de dos cifras', 'Multiplica por posiciones.'], 'arithmetic-chain-addition': ['Operaciones paso a paso', 'Ejemplo: 1 + 2 + 3', 'Suma varios números en orden.'], 'arithmetic-parentheses': ['Paréntesis', 'Ejemplo: 12 ÷ (3 + 1)', 'Calcula primero la expresión entre paréntesis.'], 'arithmetic-order': ['Orden de operaciones', 'Ejemplo: 12 ÷ 2 + 4 ÷ 2', 'Haz multiplicaciones y divisiones antes que sumas y restas.'] } },
+        de: { category: 'Terme und Rechenreihenfolge', column: 'Schriftliches Rechnen', modes: { division: ['Division ohne Rest', 'Ganze Antwort', 'Teile Zahlen ohne Rest.'], 'column-addition': ['Schriftliche Addition', 'Zwei- und dreistellige Zahlen', 'Addiere nach Stellenwerten.'], 'column-subtraction': ['Schriftliche Subtraktion', 'Mit Übertrag', 'Subtrahiere nach Stellenwerten.'], 'column-multiplication': ['Schriftliche Multiplikation', 'Zweistellige Multiplikation', 'Multipliziere nach Stellenwerten.'], 'arithmetic-chain-addition': ['Schrittweise rechnen', 'Beispiel: 1 + 2 + 3', 'Addiere mehrere Zahlen der Reihe nach.'], 'arithmetic-parentheses': ['Klammern', 'Beispiel: 12 ÷ (3 + 1)', 'Berechne zuerst den Ausdruck in den Klammern.'], 'arithmetic-order': ['Rechenreihenfolge', 'Beispiel: 12 ÷ 2 + 4 ÷ 2', 'Multipliziere und dividiere vor Addition und Subtraktion.'] } }
       };
-      Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, arithmeticTopicText[key].modes); languageData[key].categories.operations = arithmeticTopicText[key].category; });
+      Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, arithmeticTopicText[key].modes); languageData[key].categories.operations = arithmeticTopicText[key].category; languageData[key].categories.column = arithmeticTopicText[key].column; });
       const skillsText = {
         ru: { category: 'Логика и скорость', percent: ['Проценты', 'Найди процент от числа', 'Решай задачи вида «15% от 80».'], story: ['Составь уравнение', 'Понимание задач словами', 'Прочитай условие и введи уравнение, например: x + 5 = 25.'], compare: ['Быстрое сравнение', 'Введи <, > или =', 'Сравни два выражения как можно быстрее.'], equationHint: 'Введи уравнение, например x+5=25' },
         en: { category: 'Logic and speed', percent: ['Percentages', 'Find a percentage of a number', 'Solve questions such as “15% of 80”.'], story: ['Build an equation', 'Understand word problems', 'Read the story and enter an equation, for example: x + 5 = 25.'], compare: ['Fast comparison', 'Enter <, >, or =', 'Compare two expressions as quickly as you can.'], equationHint: 'Enter an equation, e.g. x+5=25' },
@@ -726,6 +731,14 @@
         de: { category: 'Funktionen und Ungleichungen', modes: { 'algebra-inequalities': ['Ungleichungen', 'Finde die kleinste ganze Zahl', 'Finde die kleinste ganze Zahl, welche die Ungleichung erfüllt.'], 'algebra-functions': ['Funktionen', 'Berechne f(x)', 'Setze den gegebenen Wert für x ein und berechne die Funktion.'], 'algebra-linear-functions': ['Lineare Funktionen', 'f(x) = ax + b', 'Berechne Werte linearer Funktionen.'], 'geometry-shapes': ['Figuren erkennen', 'Kreis, Quadrat, Dreieck und Rechteck', 'Benenne die gezeigte Figur.'], 'geometry-angles': ['Winkel', 'Nebenwinkel und Vollwinkel', 'Finde den unbekannten Winkel mit 180° oder 360°.'], 'geometry-triangles': ['Dreiecke', 'Winkelsumme 180°', 'Finde den dritten Winkel eines Dreiecks.'], 'geometry-coordinates': ['Koordinaten', 'Abstand zwischen Punkten', 'Finde den Abstand zwischen zwei waagerecht oder senkrecht liegenden Punkten.'] } }
       };
       Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, newTopicText[key].modes); languageData[key].categories.functions = newTopicText[key].category; });
+      const mapSkillText = {
+        ru: { addition: 'Сложение', subtraction: 'Вычитание', multiplication: 'Умножение', division: 'Деление', 'column-addition': 'Сложение в столбик', 'column-subtraction': 'Вычитание в столбик', 'column-multiplication': 'Умножение в столбик', 'chain-addition': 'Действия по шагам', parentheses: 'Скобки', 'order-of-operations': 'Порядок действий', fractions: 'Дроби', percentages: 'Проценты', shapes: 'Фигуры', perimeter: 'Периметр', area: 'Площадь', coordinates: 'Координаты' },
+        en: { addition: 'Addition', subtraction: 'Subtraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Column addition', 'column-subtraction': 'Column subtraction', 'column-multiplication': 'Column multiplication', 'chain-addition': 'Step-by-step operations', parentheses: 'Parentheses', 'order-of-operations': 'Order of operations', fractions: 'Fractions', percentages: 'Percentages', shapes: 'Shapes', perimeter: 'Perimeter', area: 'Area', coordinates: 'Coordinates' },
+        fr: { addition: 'Addition', subtraction: 'Soustraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Addition posée', 'column-subtraction': 'Soustraction posée', 'column-multiplication': 'Multiplication posée', 'chain-addition': 'Calculs par étapes', parentheses: 'Parenthèses', 'order-of-operations': 'Ordre des opérations', fractions: 'Fractions', percentages: 'Pourcentages', shapes: 'Figures', perimeter: 'Périmètre', area: 'Aire', coordinates: 'Coordonnées' },
+        es: { addition: 'Suma', subtraction: 'Resta', multiplication: 'Multiplicación', division: 'División', 'column-addition': 'Suma en columna', 'column-subtraction': 'Resta en columna', 'column-multiplication': 'Multiplicación en columna', 'chain-addition': 'Operaciones paso a paso', parentheses: 'Paréntesis', 'order-of-operations': 'Orden de operaciones', fractions: 'Fracciones', percentages: 'Porcentajes', shapes: 'Figuras', perimeter: 'Perímetro', area: 'Área', coordinates: 'Coordenadas' },
+        de: { addition: 'Addition', subtraction: 'Subtraktion', multiplication: 'Multiplikation', division: 'Division', 'column-addition': 'Schriftliche Addition', 'column-subtraction': 'Schriftliche Subtraktion', 'column-multiplication': 'Schriftliche Multiplikation', 'chain-addition': 'Schrittweise rechnen', parentheses: 'Klammern', 'order-of-operations': 'Rechenreihenfolge', fractions: 'Brüche', percentages: 'Prozentrechnung', shapes: 'Figuren', perimeter: 'Umfang', area: 'Fläche', coordinates: 'Koordinaten' }
+      };
+      Object.keys(interfaceText).forEach((key) => Object.assign(interfaceText[key].skillNames, mapSkillText[key]));
       function localizedSkillTitle(skill) {
         return interfaceText[currentLanguage].skillNames[skill.id] || languageData[currentLanguage].modes[skill.mode]?.[0] || skill.title;
       }
@@ -744,6 +757,9 @@
         'addition-subtraction': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         tables: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         division: { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'column-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'column-subtraction': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'column-multiplication': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'arithmetic-chain-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'arithmetic-parentheses': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'arithmetic-order': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -899,6 +915,7 @@
             ['subtraction', ['subtraction-ten', 'subtraction']],
             ['combined', ['addition-subtraction']],
             ['multiplication', ['tables', 'multiplication', 'division']],
+            ['column', ['column-addition', 'column-subtraction', 'column-multiplication']],
             ['operations', ['arithmetic-chain-addition', 'arithmetic-parentheses', 'arithmetic-order']],
             ['fractions', ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed']],
             ['skills', ['skills-percent', 'skills-compare']],
@@ -1160,6 +1177,22 @@
           const b = randomInt(settings.factorFrom, settings.factorTo);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
+        if (mode === 'column-addition' || mode === 'column-subtraction' || mode === 'column-multiplication') {
+          const difficulty = difficultyFor(mode);
+          const max = difficulty === 'simple' ? 99 : difficulty === 'advanced' ? 999 : 9999;
+          let first = randomInt(10, max), second = randomInt(10, Math.min(max, difficulty === 'simple' ? 99 : 999));
+          let operator = '+', answerValue = first + second;
+          if (mode === 'column-subtraction') {
+            if (second > first) [first, second] = [second, first];
+            operator = '−'; answerValue = first - second;
+          }
+          if (mode === 'column-multiplication') {
+            second = randomInt(10, difficulty === 'expert' ? 99 : 29);
+            operator = '×'; answerValue = first * second;
+          }
+          const width = Math.max(String(first).length, String(second).length + 1);
+          return { text: `${String(first).padStart(width)}\n${operator}${String(second).padStart(width - 1)}\n${'─'.repeat(width)}\n?`, answer: answerValue, kind: 'column', hint: localized({ ru: 'Реши пример, записанный в столбик.', en: 'Solve the calculation written in a column.', fr: 'Résous le calcul posé.', es: 'Resuelve la operación escrita en columna.', de: 'Löse die schriftlich notierte Rechnung.' }) };
+        }
         if (mode === 'division') {
           const difficulty = difficultyFor(mode);
           const divisor = randomInt(2, difficulty === 'expert' ? 20 : 10);
@@ -1296,6 +1329,7 @@
         modeBadge.textContent = languageData[currentLanguage].modes[mode][0];
         problemEl.textContent = built.text;
         problemEl.classList.toggle('word-problem', built.kind === 'word' || built.kind === 'equation');
+        problemEl.classList.toggle('column-problem', built.kind === 'column');
         problemHelp.textContent = built.hint || '';
         answerInput.value = '';
         const equation = answerKind === 'equation';
