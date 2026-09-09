@@ -1,4 +1,4 @@
-const RELEASE = 'ed0129c';
+const RELEASE = '421765b';
 const RAW_ROOT = `https://raw.githubusercontent.com/kamilch1k/math-rush/${RELEASE}/outputs`;
 
 const ROUTES = {
