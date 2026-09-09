@@ -743,6 +743,10 @@
         de: { addition: 'Addition', subtraction: 'Subtraktion', multiplication: 'Multiplikation', division: 'Division', 'column-addition': 'Schriftliche Addition', 'column-subtraction': 'Schriftliche Subtraktion', 'column-multiplication': 'Schriftliche Multiplikation', 'chain-addition': 'Schrittweise rechnen', parentheses: 'Klammern', 'order-of-operations': 'Rechenreihenfolge', fractions: 'Brüche', percentages: 'Prozentrechnung', shapes: 'Figuren', perimeter: 'Umfang', area: 'Fläche', coordinates: 'Koordinaten' }
       };
       Object.keys(interfaceText).forEach((key) => Object.assign(interfaceText[key].skillNames, mapSkillText[key]));
+      const mapSkillDescriptions = {
+        ru: { derivatives: 'Скорость изменения функции' }, en: { derivatives: 'Rate of change of a function' },
+        fr: { derivatives: 'Taux de variation d’une fonction' }, es: { derivatives: 'Tasa de cambio de una función' }, de: { derivatives: 'Änderungsrate einer Funktion' }
+      };
       function localizedSkillTitle(skill) {
         return interfaceText[currentLanguage].skillNames[skill.id] || languageData[currentLanguage].modes[skill.mode]?.[0] || skill.title;
       }
@@ -1846,7 +1850,7 @@
             button.dataset.skillId = skill.id;
             button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
             button.querySelector('strong').textContent = localizedSkillTitle(skill);
-            button.querySelector('em').textContent = languageData[currentLanguage].modes[skill.mode]?.[1] || ui.status[state];
+            button.querySelector('em').textContent = languageData[currentLanguage].modes[skill.mode]?.[1] || mapSkillDescriptions[currentLanguage][skill.id] || ui.status[state];
             button.querySelector('b').textContent = `${mastery}%`;
             button.addEventListener('mouseenter', () => highlightMapNetwork(branches, skill.id, true));
             button.addEventListener('mouseleave', () => highlightMapNetwork(branches, skill.id, false));
