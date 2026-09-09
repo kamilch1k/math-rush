@@ -34,6 +34,7 @@ assert.match(quizPage, /card\.scrollIntoView\(\{ behavior: 'smooth', block: 'cen
 assert.match(quizPage, /class', `dependency-path/, 'Knowledge map draws prerequisite threads');
 assert.match(quizPage, /button\.dataset\.skillId = skill\.id/, 'Map nodes expose skill ids for dependency routing');
 assert.match(quizPage, /highlightMapNetwork\(branches, skill\.id, true\)/, 'Hovering a map node highlights its dependency network');
+assert.match(quizPage, /modes\[skill\.mode\]\?\.\[1\] \|\| ui\.status\[state\]/, 'Map nodes show each topic description instead of availability text');
 for (const mode of ['division', 'column-addition', 'column-subtraction', 'column-multiplication', 'arithmetic-chain-addition', 'arithmetic-parentheses', 'arithmetic-order', 'geometry-shapes', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates', 'algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']) assert.match(quizPage, new RegExp(`data-mode="${mode}"`), `${mode} has a quiz card`);
 assert.match(quizPage, /addition: 'Сложение'/, 'The map names the addition node by the parent topic');
 for (const language of ['ru', 'en', 'fr', 'es', 'de']) assert.match(quizPage, new RegExp(`${language}: \\{ mapTitle:`), `SPA views include ${language} translations`);

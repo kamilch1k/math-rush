@@ -1846,7 +1846,7 @@
             button.dataset.skillId = skill.id;
             button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
             button.querySelector('strong').textContent = localizedSkillTitle(skill);
-            button.querySelector('em').textContent = ui.status[state];
+            button.querySelector('em').textContent = languageData[currentLanguage].modes[skill.mode]?.[1] || ui.status[state];
             button.querySelector('b').textContent = `${mastery}%`;
             button.addEventListener('mouseenter', () => highlightMapNetwork(branches, skill.id, true));
             button.addEventListener('mouseleave', () => highlightMapNetwork(branches, skill.id, false));
