@@ -123,6 +123,9 @@ for (let i = 0; i < 500; i++) {
   assert.match(multiply.text, /^x × \d+ = \d+$/, 'Multiplication equation is generated');
   const divide = q.build('equations-division');
   assert.match(divide.text, /^x \/ \d+ = \d+$/, 'Division equation is generated');
+  const shape = q.build('geometry-shapes');
+  assert.match(shape.text, /[○□△▭]/, 'Shape recognition shows a geometric figure');
+  assert.ok(['circle', 'square', 'triangle', 'rectangle'].includes(shape.answer), 'Shape recognition has a canonical answer');
   const twoStep = q.build('equations-two-step');
   assert.match(twoStep.text, /^\d+ × x \+ \d+ = \d+$/, 'Two-step equation is generated');
   for (const mode of ['geometry-perimeter', 'geometry-area', 'geometry-side']) {

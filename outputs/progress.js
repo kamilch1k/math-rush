@@ -25,11 +25,12 @@
     { id: 'functions', title: 'Функции', category: 'algebra', prerequisites: ['linear-equations'], mode: 'algebra-functions' },
     { id: 'linear-functions', title: 'Линейные функции', category: 'algebra', prerequisites: ['functions', 'equation-two-step'], mode: 'algebra-linear-functions' },
     { id: 'derivatives', title: 'Производные', category: 'algebra', prerequisites: ['functions', 'linear-functions'], href: 'derivatives.html' },
-    { id: 'angles', title: 'Углы', category: 'geometry', prerequisites: [], mode: 'geometry-angles' },
-    { id: 'triangles', title: 'Треугольники', category: 'geometry', prerequisites: ['angles'], mode: 'geometry-triangles' },
-    { id: 'perimeter', title: 'Периметр', category: 'geometry', prerequisites: ['addition'], mode: 'geometry-perimeter' },
-    { id: 'area', title: 'Площадь', category: 'geometry', prerequisites: ['multiplication', 'perimeter'], mode: 'geometry-area' },
-    { id: 'coordinates', title: 'Координаты', category: 'geometry', prerequisites: ['subtraction'], mode: 'geometry-coordinates' }
+    { id: 'shapes', title: 'Фигуры', category: 'geometry', prerequisites: [], mode: 'geometry-shapes' },
+    { id: 'perimeter', title: 'Периметр', category: 'geometry', prerequisites: ['shapes', 'addition'], mode: 'geometry-perimeter' },
+    { id: 'area', title: 'Площадь', category: 'geometry', prerequisites: ['shapes', 'multiplication', 'perimeter'], mode: 'geometry-area' },
+    { id: 'angles', title: 'Углы', category: 'geometry', prerequisites: ['shapes'], mode: 'geometry-angles' },
+    { id: 'triangles', title: 'Треугольники', category: 'geometry', prerequisites: ['shapes', 'angles'], mode: 'geometry-triangles' },
+    { id: 'coordinates', title: 'Координаты', category: 'geometry', prerequisites: ['shapes', 'subtraction'], mode: 'geometry-coordinates' }
   ];
 
   const modeToSkill = {
@@ -42,7 +43,7 @@
     'equations-multiplication': 'equation-multiply', 'equations-division': 'equation-divide',
     'equations-two-step': 'equation-two-step', equations: 'linear-equations', 'skills-story-equation': 'equation-add',
     'algebra-inequalities': 'inequalities', 'algebra-functions': 'functions', 'algebra-linear-functions': 'linear-functions',
-    'geometry-angles': 'angles', 'geometry-triangles': 'triangles', 'geometry-perimeter': 'perimeter', 'geometry-side': 'perimeter', 'geometry-area': 'area', 'geometry-coordinates': 'coordinates',
+    'geometry-shapes': 'shapes', 'geometry-angles': 'angles', 'geometry-triangles': 'triangles', 'geometry-perimeter': 'perimeter', 'geometry-side': 'perimeter', 'geometry-area': 'area', 'geometry-coordinates': 'coordinates',
     'skills-percent': 'percentages',
     'derivatives-whiteboard': 'derivatives'
   };

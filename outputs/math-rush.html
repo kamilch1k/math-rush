@@ -444,6 +444,7 @@
             <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <article class="mode-card" data-mode="geometry-shapes"><button class="mode-card-main" type="button"><span class="mode-icon">○</span><strong>Распознавание фигур</strong><small>Круг, квадрат, треугольник и прямоугольник</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <article class="mode-card" data-mode="geometry-angles"><button class="mode-card-main" type="button"><span class="mode-icon">∠</span><strong>Углы</strong><small>Смежные и полные углы</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <article class="mode-card" data-mode="geometry-triangles"><button class="mode-card-main" type="button"><span class="mode-icon">△</span><strong>Треугольники</strong><small>Сумма углов равна 180°</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <article class="mode-card" data-mode="geometry-coordinates"><button class="mode-card-main" type="button"><span class="mode-icon">⌖</span><strong>Координаты</strong><small>Расстояние между точками</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
@@ -718,11 +719,11 @@
         de: { mapTitle: 'Wissenskarte', mapSubtitle: 'Drei Lernpfade: Arithmetik, Algebra und Geometrie.', profileTitle: 'Profil', profileSubtitle: 'Dein Fortschritt wird in diesem Browser gespeichert.', level: 'Stufe', xp: 'Erfahrung', attempts: 'Gelöst', accuracy: 'Genauigkeit', directions: 'Lernpfade', skills: 'Fähigkeiten', stage: 'Stufe', categories: { arithmetic: 'Arithmetik', algebra: 'Algebra', geometry: 'Geometrie' }, status: { mastered: 'Gemeistert', learning: 'In Arbeit', available: 'Verfügbar' }, skillNames: { derivatives: 'Ableitungen', angles: 'Winkel', triangles: 'Dreiecke' }, reward: { level: 'Stufe', streak: 'in Folge!', seconds: 'Sek.', correct: 'Richtig', wrong: 'Fehler' }, missing: 'Welche Zahl ist im Kästchen versteckt?', twoStep: (extra, factor) => `Ziehe zuerst ${extra} ab und teile dann durch ${factor}.` }
       };
       const newTopicText = {
-        ru: { category: 'Функции и неравенства', modes: { 'algebra-inequalities': ['Неравенства', 'Найди граничное целое число', 'Определи наименьшее целое число, которое удовлетворяет неравенству.'], 'algebra-functions': ['Функции', 'Найди значение f(x)', 'Подставь заданное число вместо x и вычисли значение функции.'], 'algebra-linear-functions': ['Линейные функции', 'f(x) = ax + b', 'Вычисляй значения линейных функций.'], 'geometry-angles': ['Углы', 'Смежные и полные углы', 'Находи неизвестный угол, используя сумму 180° или 360°.'], 'geometry-triangles': ['Треугольники', 'Сумма углов равна 180°', 'Найди третий угол треугольника.'], 'geometry-coordinates': ['Координаты', 'Расстояние между точками', 'Найди расстояние между точками на горизонтальной или вертикальной линии.'] } },
-        en: { category: 'Functions and inequalities', modes: { 'algebra-inequalities': ['Inequalities', 'Find the boundary integer', 'Find the smallest integer that satisfies the inequality.'], 'algebra-functions': ['Functions', 'Find f(x)', 'Substitute the given value for x and evaluate the function.'], 'algebra-linear-functions': ['Linear functions', 'f(x) = ax + b', 'Evaluate linear functions.'], 'geometry-angles': ['Angles', 'Supplementary and full angles', 'Find an unknown angle using a total of 180° or 360°.'], 'geometry-triangles': ['Triangles', 'Angles add up to 180°', 'Find the third angle of a triangle.'], 'geometry-coordinates': ['Coordinates', 'Distance between points', 'Find the distance between points on a horizontal or vertical line.'] } },
-        fr: { category: 'Fonctions et inégalités', modes: { 'algebra-inequalities': ['Inégalités', 'Trouve l’entier limite', 'Trouve le plus petit entier qui vérifie l’inégalité.'], 'algebra-functions': ['Fonctions', 'Calcule f(x)', 'Remplace x par la valeur donnée et calcule la fonction.'], 'algebra-linear-functions': ['Fonctions affines', 'f(x) = ax + b', 'Calcule les valeurs de fonctions affines.'], 'geometry-angles': ['Angles', 'Angles supplémentaires et complets', 'Trouve l’angle inconnu avec une somme de 180° ou 360°.'], 'geometry-triangles': ['Triangles', 'La somme des angles vaut 180°', 'Trouve le troisième angle du triangle.'], 'geometry-coordinates': ['Coordonnées', 'Distance entre deux points', 'Trouve la distance entre deux points alignés.'] } },
-        es: { category: 'Funciones y desigualdades', modes: { 'algebra-inequalities': ['Desigualdades', 'Encuentra el entero límite', 'Encuentra el menor entero que cumple la desigualdad.'], 'algebra-functions': ['Funciones', 'Calcula f(x)', 'Sustituye x por el valor dado y calcula la función.'], 'algebra-linear-functions': ['Funciones lineales', 'f(x) = ax + b', 'Calcula valores de funciones lineales.'], 'geometry-angles': ['Ángulos', 'Ángulos suplementarios y completos', 'Encuentra el ángulo desconocido usando 180° o 360°.'], 'geometry-triangles': ['Triángulos', 'Los ángulos suman 180°', 'Encuentra el tercer ángulo del triángulo.'], 'geometry-coordinates': ['Coordenadas', 'Distancia entre puntos', 'Encuentra la distancia entre dos puntos alineados.'] } },
-        de: { category: 'Funktionen und Ungleichungen', modes: { 'algebra-inequalities': ['Ungleichungen', 'Finde die kleinste ganze Zahl', 'Finde die kleinste ganze Zahl, welche die Ungleichung erfüllt.'], 'algebra-functions': ['Funktionen', 'Berechne f(x)', 'Setze den gegebenen Wert für x ein und berechne die Funktion.'], 'algebra-linear-functions': ['Lineare Funktionen', 'f(x) = ax + b', 'Berechne Werte linearer Funktionen.'], 'geometry-angles': ['Winkel', 'Nebenwinkel und Vollwinkel', 'Finde den unbekannten Winkel mit 180° oder 360°.'], 'geometry-triangles': ['Dreiecke', 'Winkelsumme 180°', 'Finde den dritten Winkel eines Dreiecks.'], 'geometry-coordinates': ['Koordinaten', 'Abstand zwischen Punkten', 'Finde den Abstand zwischen zwei waagerecht oder senkrecht liegenden Punkten.'] } }
+        ru: { category: 'Функции и неравенства', modes: { 'algebra-inequalities': ['Неравенства', 'Найди граничное целое число', 'Определи наименьшее целое число, которое удовлетворяет неравенству.'], 'algebra-functions': ['Функции', 'Найди значение f(x)', 'Подставь заданное число вместо x и вычисли значение функции.'], 'algebra-linear-functions': ['Линейные функции', 'f(x) = ax + b', 'Вычисляй значения линейных функций.'], 'geometry-shapes': ['Распознавание фигур', 'Круг, квадрат, треугольник и прямоугольник', 'Назови фигуру, которую видишь.'], 'geometry-angles': ['Углы', 'Смежные и полные углы', 'Находи неизвестный угол, используя сумму 180° или 360°.'], 'geometry-triangles': ['Треугольники', 'Сумма углов равна 180°', 'Найди третий угол треугольника.'], 'geometry-coordinates': ['Координаты', 'Расстояние между точками', 'Найди расстояние между точками на горизонтальной или вертикальной линии.'] } },
+        en: { category: 'Functions and inequalities', modes: { 'algebra-inequalities': ['Inequalities', 'Find the boundary integer', 'Find the smallest integer that satisfies the inequality.'], 'algebra-functions': ['Functions', 'Find f(x)', 'Substitute the given value for x and evaluate the function.'], 'algebra-linear-functions': ['Linear functions', 'f(x) = ax + b', 'Evaluate linear functions.'], 'geometry-shapes': ['Shape recognition', 'Circle, square, triangle, and rectangle', 'Name the shape you see.'], 'geometry-angles': ['Angles', 'Supplementary and full angles', 'Find an unknown angle using a total of 180° or 360°.'], 'geometry-triangles': ['Triangles', 'Angles add up to 180°', 'Find the third angle of a triangle.'], 'geometry-coordinates': ['Coordinates', 'Distance between points', 'Find the distance between points on a horizontal or vertical line.'] } },
+        fr: { category: 'Fonctions et inégalités', modes: { 'algebra-inequalities': ['Inégalités', 'Trouve l’entier limite', 'Trouve le plus petit entier qui vérifie l’inégalité.'], 'algebra-functions': ['Fonctions', 'Calcule f(x)', 'Remplace x par la valeur donnée et calcule la fonction.'], 'algebra-linear-functions': ['Fonctions affines', 'f(x) = ax + b', 'Calcule les valeurs de fonctions affines.'], 'geometry-shapes': ['Reconnaître les figures', 'Cercle, carré, triangle et rectangle', 'Nomme la figure affichée.'], 'geometry-angles': ['Angles', 'Angles supplémentaires et complets', 'Trouve l’angle inconnu avec une somme de 180° ou 360°.'], 'geometry-triangles': ['Triangles', 'La somme des angles vaut 180°', 'Trouve le troisième angle du triangle.'], 'geometry-coordinates': ['Coordonnées', 'Distance entre deux points', 'Trouve la distance entre deux points alignés.'] } },
+        es: { category: 'Funciones y desigualdades', modes: { 'algebra-inequalities': ['Desigualdades', 'Encuentra el entero límite', 'Encuentra el menor entero que cumple la desigualdad.'], 'algebra-functions': ['Funciones', 'Calcula f(x)', 'Sustituye x por el valor dado y calcula la función.'], 'algebra-linear-functions': ['Funciones lineales', 'f(x) = ax + b', 'Calcula valores de funciones lineales.'], 'geometry-shapes': ['Reconocer figuras', 'Círculo, cuadrado, triángulo y rectángulo', 'Nombra la figura que ves.'], 'geometry-angles': ['Ángulos', 'Ángulos suplementarios y completos', 'Encuentra el ángulo desconocido usando 180° o 360°.'], 'geometry-triangles': ['Triángulos', 'Los ángulos suman 180°', 'Encuentra el tercer ángulo del triángulo.'], 'geometry-coordinates': ['Coordenadas', 'Distancia entre puntos', 'Encuentra la distancia entre dos puntos alineados.'] } },
+        de: { category: 'Funktionen und Ungleichungen', modes: { 'algebra-inequalities': ['Ungleichungen', 'Finde die kleinste ganze Zahl', 'Finde die kleinste ganze Zahl, welche die Ungleichung erfüllt.'], 'algebra-functions': ['Funktionen', 'Berechne f(x)', 'Setze den gegebenen Wert für x ein und berechne die Funktion.'], 'algebra-linear-functions': ['Lineare Funktionen', 'f(x) = ax + b', 'Berechne Werte linearer Funktionen.'], 'geometry-shapes': ['Figuren erkennen', 'Kreis, Quadrat, Dreieck und Rechteck', 'Benenne die gezeigte Figur.'], 'geometry-angles': ['Winkel', 'Nebenwinkel und Vollwinkel', 'Finde den unbekannten Winkel mit 180° oder 360°.'], 'geometry-triangles': ['Dreiecke', 'Winkelsumme 180°', 'Finde den dritten Winkel eines Dreiecks.'], 'geometry-coordinates': ['Koordinaten', 'Abstand zwischen Punkten', 'Finde den Abstand zwischen zwei waagerecht oder senkrecht liegenden Punkten.'] } }
       };
       Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, newTopicText[key].modes); languageData[key].categories.functions = newTopicText[key].category; });
       function localizedSkillTitle(skill) {
@@ -766,6 +767,7 @@
         'skills-story-equation': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'skills-compare': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-angles': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'geometry-shapes': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-triangles': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-coordinates': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'geometry-perimeter': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -906,7 +908,7 @@
             ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation']],
             ['functions', ['algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']]
           ]],
-          ['geometry', [['geometry', ['geometry-angles', 'geometry-triangles', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-coordinates']]]],
+          ['geometry', [['geometry', ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates']]]],
           ['olympiad', [
             ['olympiad-patterns', ['olympiad-parity', 'olympiad-patterns']],
             ['olympiad-logic', ['olympiad-coloring', 'olympiad-logic']]
@@ -1123,6 +1125,13 @@
           const offset = randomInt(1, difficulty === 'simple' ? 10 : difficulty === 'expert' ? 50 : 20);
           return { text: `f(x) = ${factor === 1 ? '' : `${factor} × `}x + ${offset};  f(${x}) = ?`, answer: factor * x + offset, hint: localized({ ru: `Подставь ${x} вместо x.`, en: `Substitute ${x} for x.`, fr: `Remplace x par ${x}.`, es: `Sustituye x por ${x}.`, de: `Setze ${x} für x ein.` }) };
         }
+        if (mode === 'geometry-shapes') {
+          const shapes = [
+            { symbol: '○', answer: 'circle' }, { symbol: '□', answer: 'square' }, { symbol: '△', answer: 'triangle' }, { symbol: '▭', answer: 'rectangle' }
+          ];
+          const shape = shapes[randomInt(0, shapes.length - 1)];
+          return { text: localized({ ru: `Какая это фигура?  ${shape.symbol}`, en: `What shape is this?  ${shape.symbol}`, fr: `Quelle est cette figure ?  ${shape.symbol}`, es: `¿Qué figura es esta?  ${shape.symbol}`, de: `Welche Figur ist das?  ${shape.symbol}` }), answer: shape.answer, kind: 'shape', hint: localized({ ru: 'Напиши: круг, квадрат, треугольник или прямоугольник.', en: 'Type: circle, square, triangle, or rectangle.', fr: 'Écris : cercle, carré, triangle ou rectangle.', es: 'Escribe: círculo, cuadrado, triángulo o rectángulo.', de: 'Schreibe: Kreis, Quadrat, Dreieck oder Rechteck.' }) };
+        }
         if (mode === 'geometry-angles') {
           const total = difficultyFor(mode) === 'simple' ? 180 : Math.random() < .65 ? 180 : 360;
           const known = randomInt(10, total - 10);
@@ -1290,9 +1299,9 @@
         problemHelp.textContent = built.hint || '';
         answerInput.value = '';
         const equation = answerKind === 'equation';
-        const textual = equation || answerKind === 'comparison' || answerKind === 'fraction' || answerKind === 'parity';
+        const textual = equation || answerKind === 'comparison' || answerKind === 'fraction' || answerKind === 'parity' || answerKind === 'shape';
         answerInput.inputMode = textual ? 'text' : 'numeric';
-        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : answerKind === 'comparison' ? '[<>=]*' : answerKind === 'fraction' ? '-?[0-9/]*' : answerKind === 'parity' ? '.*' : '-?[0-9]*';
+        answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : answerKind === 'comparison' ? '[<>=]*' : answerKind === 'fraction' ? '-?[0-9/]*' : (answerKind === 'parity' || answerKind === 'shape') ? '.*' : '-?[0-9]*';
         answerInput.placeholder = equation ? skillsText[currentLanguage].equationHint : answerKind === 'parity' ? olympiadText[currentLanguage].parityPlaceholder : languageData[currentLanguage].placeholder;
         answerInput.setAttribute('aria-label', answerInput.placeholder);
         canAnswer = true;
@@ -1460,7 +1469,22 @@
         return '';
       }
 
+      function normalizeShape(value) {
+        const cleaned = value.trim().toLowerCase().replace(/ё/g, 'е');
+        const aliases = {
+          circle: ['circle', 'круг', 'окружность', 'cercle', 'circulo', 'círculo', 'kreis'],
+          square: ['square', 'квадрат', 'carre', 'carré', 'cuadrado', 'quadrat'],
+          triangle: ['triangle', 'треугольник', 'triangle', 'triangulo', 'triángulo', 'dreieck'],
+          rectangle: ['rectangle', 'прямоугольник', 'rectangulo', 'rectángulo', 'rechteck']
+        };
+        return Object.keys(aliases).find((shape) => aliases[shape].includes(cleaned)) || '';
+      }
+
       function displayAnswer(value) {
+        if (answerKind === 'shape') {
+          const labels = { ru: { circle: 'круг', square: 'квадрат', triangle: 'треугольник', rectangle: 'прямоугольник' }, en: { circle: 'circle', square: 'square', triangle: 'triangle', rectangle: 'rectangle' }, fr: { circle: 'cercle', square: 'carré', triangle: 'triangle', rectangle: 'rectangle' }, es: { circle: 'círculo', square: 'cuadrado', triangle: 'triángulo', rectangle: 'rectángulo' }, de: { circle: 'Kreis', square: 'Quadrat', triangle: 'Dreieck', rectangle: 'Rechteck' } };
+          return labels[currentLanguage][value];
+        }
         if (answerKind !== 'parity') return value;
         const labels = {
           ru: { even: 'чётное', odd: 'нечётное' }, en: { even: 'even', odd: 'odd' },
@@ -1473,6 +1497,7 @@
       function answerMatches(value) {
         if (answerKind === 'equation') return normalizeEquation(value) === answer;
         if (answerKind === 'parity') return normalizeParity(value) === answer;
+        if (answerKind === 'shape') return normalizeShape(value) === answer;
         if (typeof answer === 'number') return Number(value) === answer;
         if (['<', '>', '='].includes(answer)) return value.trim().replace('==', '=') === answer;
         return normalizeFractionAnswer(value) === answer;
