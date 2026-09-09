@@ -341,6 +341,27 @@
             <button class="mode-settings-button" type="button" data-mode-settings="multiplication" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="multiplication"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <article class="mode-card" data-mode="division">
+            <button class="mode-card-main" type="button"><span class="mode-icon">÷</span><strong>Деление без остатка</strong><small>Деление с целым ответом</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <h3 class="mode-category" data-category="operations">Выражения и порядок действий</h3>
+          <article class="mode-card" data-mode="arithmetic-chain-addition">
+            <button class="mode-card-main" type="button"><span class="mode-icon">+ +</span><strong>Действия по шагам</strong><small>Например: 1 + 2 + 3</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="arithmetic-parentheses">
+            <button class="mode-card-main" type="button"><span class="mode-icon">( )</span><strong>Скобки</strong><small>Например: 12 ÷ (3 + 1)</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <article class="mode-card" data-mode="arithmetic-order">
+            <button class="mode-card-main" type="button"><span class="mode-icon">1→2</span><strong>Порядок действий</strong><small>Например: 12 ÷ 2 + 4 ÷ 2</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
           <h3 class="mode-category" data-category="equations">Уравнения</h3>
           <article class="mode-card" data-mode="equations-addition">
             <button class="mode-card-main" type="button"><span class="mode-icon">x</span><strong>Уравнения со сложением</strong><small>Например: x + 2 = 10</small></button>
@@ -626,6 +647,14 @@
         languageData[key].categories = Object.fromEntries(['addition', 'subtraction', 'combined', 'multiplication', 'equations', 'fractions', 'mixed'].map((name, index) => [name, expandedModeText[key].categories[index]]));
         for (const field of ['startTime', 'timeBonus', 'streakGoal']) languageData[key].modeSettings[field] = settingsLabels[key][field];
       });
+      const arithmeticTopicText = {
+        ru: { category: 'Выражения и порядок действий', modes: { division: ['Деление без остатка', 'Деление с целым ответом', 'Деление чисел без остатка.'], 'arithmetic-chain-addition': ['Действия по шагам', 'Например: 1 + 2 + 3', 'Складывай несколько чисел по порядку.'], 'arithmetic-parentheses': ['Скобки', 'Например: 12 ÷ (3 + 1)', 'Сначала вычисли выражение в скобках.'], 'arithmetic-order': ['Порядок действий', 'Например: 12 ÷ 2 + 4 ÷ 2', 'Сначала умножение и деление, затем сложение и вычитание.'] } },
+        en: { category: 'Expressions and operation order', modes: { division: ['Exact division', 'Division with an integer answer', 'Divide numbers with no remainder.'], 'arithmetic-chain-addition': ['Step-by-step operations', 'Example: 1 + 2 + 3', 'Add several numbers in order.'], 'arithmetic-parentheses': ['Parentheses', 'Example: 12 ÷ (3 + 1)', 'Calculate the expression in parentheses first.'], 'arithmetic-order': ['Order of operations', 'Example: 12 ÷ 2 + 4 ÷ 2', 'Do multiplication and division before addition and subtraction.'] } },
+        fr: { category: 'Expressions et ordre des opérations', modes: { division: ['Division exacte', 'Une réponse entière', 'Divise sans reste.'], 'arithmetic-chain-addition': ['Calculs par étapes', 'Exemple : 1 + 2 + 3', 'Additionne plusieurs nombres dans l’ordre.'], 'arithmetic-parentheses': ['Parenthèses', 'Exemple : 12 ÷ (3 + 1)', 'Calcule d’abord l’expression entre parenthèses.'], 'arithmetic-order': ['Ordre des opérations', 'Exemple : 12 ÷ 2 + 4 ÷ 2', 'Fais les multiplications et divisions avant les additions et soustractions.'] } },
+        es: { category: 'Expresiones y orden de operaciones', modes: { division: ['División exacta', 'Respuesta entera', 'Divide sin resto.'], 'arithmetic-chain-addition': ['Operaciones paso a paso', 'Ejemplo: 1 + 2 + 3', 'Suma varios números en orden.'], 'arithmetic-parentheses': ['Paréntesis', 'Ejemplo: 12 ÷ (3 + 1)', 'Calcula primero la expresión entre paréntesis.'], 'arithmetic-order': ['Orden de operaciones', 'Ejemplo: 12 ÷ 2 + 4 ÷ 2', 'Haz multiplicaciones y divisiones antes que sumas y restas.'] } },
+        de: { category: 'Terme und Rechenreihenfolge', modes: { division: ['Division ohne Rest', 'Ganze Antwort', 'Teile Zahlen ohne Rest.'], 'arithmetic-chain-addition': ['Schrittweise rechnen', 'Beispiel: 1 + 2 + 3', 'Addiere mehrere Zahlen der Reihe nach.'], 'arithmetic-parentheses': ['Klammern', 'Beispiel: 12 ÷ (3 + 1)', 'Berechne zuerst den Ausdruck in den Klammern.'], 'arithmetic-order': ['Rechenreihenfolge', 'Beispiel: 12 ÷ 2 + 4 ÷ 2', 'Multipliziere und dividiere vor Addition und Subtraktion.'] } }
+      };
+      Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, arithmeticTopicText[key].modes); languageData[key].categories.operations = arithmeticTopicText[key].category; });
       const skillsText = {
         ru: { category: 'Логика и скорость', percent: ['Проценты', 'Найди процент от числа', 'Решай задачи вида «15% от 80».'], story: ['Составь уравнение', 'Понимание задач словами', 'Прочитай условие и введи уравнение, например: x + 5 = 25.'], compare: ['Быстрое сравнение', 'Введи <, > или =', 'Сравни два выражения как можно быстрее.'], equationHint: 'Введи уравнение, например x+5=25' },
         en: { category: 'Logic and speed', percent: ['Percentages', 'Find a percentage of a number', 'Solve questions such as “15% of 80”.'], story: ['Build an equation', 'Understand word problems', 'Read the story and enter an equation, for example: x + 5 = 25.'], compare: ['Fast comparison', 'Enter <, >, or =', 'Compare two expressions as quickly as you can.'], equationHint: 'Enter an equation, e.g. x+5=25' },
@@ -713,6 +742,10 @@
         subtraction: { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'addition-subtraction': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         tables: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        division: { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'arithmetic-chain-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'arithmetic-parentheses': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'arithmetic-order': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         equations: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-subtraction': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -863,7 +896,8 @@
             ['addition', ['addition-ten', 'addition-twenty', 'addition']],
             ['subtraction', ['subtraction-ten', 'subtraction']],
             ['combined', ['addition-subtraction']],
-            ['multiplication', ['tables', 'multiplication']],
+            ['multiplication', ['tables', 'multiplication', 'division']],
+            ['operations', ['arithmetic-chain-addition', 'arithmetic-parentheses', 'arithmetic-order']],
             ['fractions', ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed']],
             ['skills', ['skills-percent', 'skills-compare']],
             ['mixed', ['mixed']]
@@ -1116,6 +1150,38 @@
           const a = randomInt(settings.factorFrom, settings.factorTo);
           const b = randomInt(settings.factorFrom, settings.factorTo);
           return { text: `${a} × ${b} = ?`, answer: a * b };
+        }
+        if (mode === 'division') {
+          const difficulty = difficultyFor(mode);
+          const divisor = randomInt(2, difficulty === 'expert' ? 20 : 10);
+          const quotient = randomInt(1, difficulty === 'simple' ? 10 : difficulty === 'expert' ? 99 : 30);
+          return { text: `${divisor * quotient} ÷ ${divisor} = ?`, answer: quotient };
+        }
+        if (mode === 'arithmetic-chain-addition') {
+          const difficulty = difficultyFor(mode);
+          const count = difficulty === 'simple' ? 3 : difficulty === 'expert' ? 5 : 4;
+          const max = difficulty === 'simple' ? 10 : difficulty === 'expert' ? 99 : 30;
+          const terms = Array.from({ length: count }, () => randomInt(1, max));
+          return { text: `${terms.join(' + ')} = ?`, answer: terms.reduce((sum, value) => sum + value, 0), hint: localized({ ru: 'Сложи числа по одному, слева направо.', en: 'Add the numbers one at a time, from left to right.', fr: 'Additionne les nombres un par un, de gauche à droite.', es: 'Suma los números uno a uno, de izquierda a derecha.', de: 'Addiere die Zahlen nacheinander von links nach rechts.' }) };
+        }
+        if (mode === 'arithmetic-parentheses') {
+          const difficulty = difficultyFor(mode);
+          const innerA = randomInt(1, difficulty === 'expert' ? 30 : 10);
+          const innerB = randomInt(1, difficulty === 'expert' ? 30 : 10);
+          const quotient = randomInt(1, difficulty === 'simple' ? 12 : difficulty === 'expert' ? 80 : 30);
+          const divisor = innerA + innerB;
+          return { text: `${divisor * quotient} ÷ (${innerA} + ${innerB}) = ?`, answer: quotient, hint: localized({ ru: 'Сначала найди сумму в скобках.', en: 'First find the sum inside the parentheses.', fr: 'Calcule d’abord la somme entre parenthèses.', es: 'Calcula primero la suma dentro de los paréntesis.', de: 'Berechne zuerst die Summe in der Klammer.' }) };
+        }
+        if (mode === 'arithmetic-order') {
+          const difficulty = difficultyFor(mode);
+          const maxDivisor = difficulty === 'expert' ? 15 : 10;
+          const firstDivisor = randomInt(2, maxDivisor), secondDivisor = randomInt(2, maxDivisor);
+          const firstQuotient = randomInt(1, difficulty === 'simple' ? 12 : difficulty === 'expert' ? 80 : 30);
+          const secondQuotient = randomInt(1, difficulty === 'simple' ? 12 : difficulty === 'expert' ? 80 : 30);
+          const subtract = difficulty !== 'simple' && Math.random() < .45;
+          const left = firstDivisor * firstQuotient, right = secondDivisor * secondQuotient;
+          if (subtract && firstQuotient < secondQuotient) return { text: `${right} ÷ ${secondDivisor} − ${left} ÷ ${firstDivisor} = ?`, answer: secondQuotient - firstQuotient, hint: localized({ ru: 'Сначала выполни оба деления.', en: 'Do both divisions first.', fr: 'Effectue d’abord les deux divisions.', es: 'Haz primero las dos divisiones.', de: 'Führe zuerst beide Divisionen aus.' }) };
+          return { text: `${left} ÷ ${firstDivisor} ${subtract ? '−' : '+'} ${right} ÷ ${secondDivisor} = ?`, answer: subtract ? firstQuotient - secondQuotient : firstQuotient + secondQuotient, hint: localized({ ru: 'Сначала выполни оба деления.', en: 'Do both divisions first.', fr: 'Effectue d’abord les deux divisions.', es: 'Haz primero las dos divisiones.', de: 'Führe zuerst beide Divisionen aus.' }) };
         }
         if (mode === 'equations' || mode === 'equations-addition' || mode === 'equations-subtraction' || mode === 'equations-multiplication' || mode === 'equations-division') {
           const difficulty = difficultyFor(mode);

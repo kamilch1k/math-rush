@@ -32,7 +32,7 @@ assert.match(quizPage, /card\.scrollIntoView\(\{ behavior: 'smooth', block: 'cen
 assert.match(quizPage, /class', `dependency-path/, 'Knowledge map draws prerequisite threads');
 assert.match(quizPage, /button\.dataset\.skillId = skill\.id/, 'Map nodes expose skill ids for dependency routing');
 assert.match(quizPage, /highlightMapNetwork\(branches, skill\.id, true\)/, 'Hovering a map node highlights its dependency network');
-for (const mode of ['geometry-angles', 'geometry-triangles', 'geometry-coordinates', 'algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']) assert.match(quizPage, new RegExp(`data-mode="${mode}"`), `${mode} has a quiz card`);
+for (const mode of ['division', 'arithmetic-chain-addition', 'arithmetic-parentheses', 'arithmetic-order', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates', 'algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']) assert.match(quizPage, new RegExp(`data-mode="${mode}"`), `${mode} has a quiz card`);
 for (const language of ['ru', 'en', 'fr', 'es', 'de']) assert.match(quizPage, new RegExp(`${language}: \\{ mapTitle:`), `SPA views include ${language} translations`);
 assert.match(quizPage, /\.game-screen \.stat-label/, 'Game stat translation is scoped away from profile statistics');
 assert.doesNotMatch(quizPage, /href="settings\.html"/, 'Settings no longer navigate away from the app');

@@ -61,6 +61,21 @@ for (let i = 0; i < 1000; i++) {
   assert.ok(p.answer <= 10);
   assert.equal(p.answer, +a + +b);
 }
+for (let i = 0; i < 500; i++) {
+  const division = q.build('division');
+  const [, dividend, divisor] = division.text.match(/^(\d+) ÷ (\d+) = \?$/);
+  assert.equal(division.answer, +dividend / +divisor, 'Division has an exact integer answer');
+  assert.ok(Number.isInteger(division.answer), 'Division never leaves a remainder');
+  const chain = q.build('arithmetic-chain-addition');
+  const terms = chain.text.match(/\d+/g).map(Number);
+  assert.equal(chain.answer, terms.reduce((sum, value) => sum + value, 0), 'Step-by-step addition is correct');
+  const parentheses = q.build('arithmetic-parentheses');
+  const [, numerator, a, b] = parentheses.text.match(/^(\d+) ÷ \((\d+) \+ (\d+)\) = \?$/);
+  assert.equal(parentheses.answer, +numerator / (+a + +b), 'Parentheses are evaluated before division');
+  const order = q.build('arithmetic-order');
+  const expression = order.text.replace(' = ?', '').replaceAll('÷', '/').replaceAll('×', '*').replaceAll('−', '-');
+  assert.equal(order.answer, Function(`return (${expression})`)(), 'Order-of-operations answer is correct');
+}
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-twenty');
   const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);
