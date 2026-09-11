@@ -94,6 +94,22 @@ for (const mode of ['column-addition', 'column-subtraction', 'column-multiplicat
     assert.match(p.text, /─/, `${mode} has a written-calculation divider`);
   }
 }
+for (let i = 0; i < 500; i++) {
+  const t = q.build('tables');
+  const [, fa, fb] = t.text.match(/^(\d+) × (\d+) = \?$/);
+  assert.ok(+fa >= 2 && +fa <= 9 && +fb >= 2 && +fb <= 9, 'Tables use factors 2-9 (no ×1, no ×10)');
+  assert.equal(t.answer, +fa * +fb);
+  const m = q.build('multiplication');
+  const [, ma, mb] = m.text.match(/^(\d+) × (\d+) = \?$/);
+  assert.ok(+ma !== 1 && +ma !== 10 && +mb !== 1 && +mb !== 10, 'No ×1 or ×10 in multiplication');
+  assert.equal(m.answer, +ma * +mb);
+  const d = q.build('division');
+  const [, dividend, divisor] = d.text.match(/^(\d+) ÷ (\d+) = \?$/);
+  assert.ok(+divisor >= 2, 'No division by 1');
+  const em = q.build('equations-multiplication');
+  const [, ef] = em.text.match(/^x × (\d+) = \d+$/);
+  assert.ok(+ef >= 2 && +ef <= 9, 'Equation factor has no ×1 or ×10');
+}
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-twenty');
   const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);

@@ -13,6 +13,7 @@ Live stack: single-file SPA (`outputs/math-rush.html`) + standalone pages + `pro
 - **Progression**: XP, levels, streaks, per-skill mastery (recency-weighted last 20 attempts), readiness %, locked → available → learning → mastered states.
 - **Round rules**: practice / score / strict-input modes, per-card timer / bonus / streak-goal / task-limit / difficulty / answer-mode overrides, global settings sync.
 - **Answer inputs**: keyboard, embedded touch keypad (readonly input to suppress OS keyboard), multiple-choice, comparison (`< > =`), parity (`even/odd`), column layout, handwriting placeholder (`HANDWRITING_ENABLED = false` until a recognition backend is wired).
+- **Graded tests (no timers)**: 6 levels from Beginner to Pro with curated playlists across every topic. Each question ships with a scratch whiteboard (same zero-dependency canvas engine as the derivatives page: pen colors, eraser, undo/redo, clear). Best scores persist in `localStorage`, answers feed XP and the knowledge map.
 - **Derivatives whiteboard**: separate `derivatives.html` + `derivatives.js` polynomial-derivative engine with canvas board (undo/redo, pointer events).
 - **PWA-ish**: responsive, mobile-first, profile persists via `localStorage` + cookie fallback.
 

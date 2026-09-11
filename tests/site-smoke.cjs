@@ -47,4 +47,18 @@ assert.match(quizPage, /addition: 'Сложение'/, 'The map names the additi
 for (const language of ['ru', 'en', 'fr', 'es', 'de']) assert.match(quizPage, new RegExp(`${language}: \\{ mapTitle:`), `SPA views include ${language} translations`);
 assert.match(quizPage, /\.game-screen \.stat-label/, 'Game stat translation is scoped away from profile statistics');
 assert.doesNotMatch(quizPage, /href="settings\.html"/, 'Settings no longer navigate away from the app');
+assert.match(quizPage, /data-app-view="test"/, 'Test tab is in the main navigation');
+assert.match(quizPage, /id="testView"/, 'Test view exists next to tasks, map and profile');
+assert.match(quizPage, /id="testBoard"/, 'Tests include a scratch board canvas');
+assert.match(quizPage, /id="testTools"/, 'Scratch board has its own toolbar');
+assert.match(quizPage, /renderTestLevels/, 'Test levels are rendered into the test view');
+assert.match(quizPage, /view === 'test' \? testView/, 'Test view is wired into the app router');
+assert.doesNotMatch(quizPage, /testRun = \{[^}]*timeLeft/, 'Graded tests carry no timer state');
+const cardModes = new Set([...quizPage.matchAll(/data-mode="([^"]+)"/g)].map((entry) => entry[1]));
+const levelBlock = quizPage.match(/const testLevels = \[([\s\S]*?)\];/)[1];
+assert.equal((levelBlock.match(/id: 't\d'/g) || []).length, 6, 'There are six graded tests');
+for (const entry of levelBlock.matchAll(/'([a-z0-9-]+)'/g)) {
+  if (/^t\d$/.test(entry[1])) continue;
+  assert.ok(cardModes.has(entry[1]), `Test playlist mode ${entry[1]} has a quiz card`);
+}
 console.log('Site smoke tests passed');

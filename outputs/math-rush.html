@@ -179,6 +179,50 @@
     .skill-detail h3 { margin: 0 0 8px; font-size: 23px; }
     .skill-detail p { margin: 0 0 18px; color: rgba(255,255,255,.8); }
     .skill-detail .primary { color: var(--accent-dark); background: #fff; box-shadow: none; }
+    .test-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .test-card { position: relative; padding: 18px 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.75); text-align: left; transition: border-color .16s, transform .16s, box-shadow .16s; }
+    .test-card:hover { border-color: #b9b4ff; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(79,70,229,.14); }
+    .test-level { display: inline-block; margin-bottom: 8px; padding: 3px 10px; border-radius: 99px; color: var(--accent-dark); background: #eeecff; font-size: 11px; font-weight: 900; letter-spacing: .06em; }
+    .test-card strong { display: block; font-size: 17px; letter-spacing: -.02em; }
+    .test-card small { display: block; margin-top: 5px; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+    .test-meta { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    .test-best { margin-top: 8px; font-size: 12px; font-weight: 900; color: var(--good); }
+    .test-card .primary { width: 100%; margin-top: 12px; padding: 11px; }
+    .test-run { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 16px; align-items: start; }
+    .test-qa { padding: 20px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.75); }
+    .test-progress { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 8px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    .test-track { height: 8px; overflow: hidden; margin-bottom: 16px; border-radius: 99px; background: #eaecf0; }
+    .test-track > div { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #837bff, var(--accent)); transition: width .3s ease; }
+    .test-problem { display: grid; place-items: center; min-height: 96px; margin-bottom: 8px; font-size: clamp(30px, 6vw, 46px); font-weight: 900; letter-spacing: -.04em; text-align: center; }
+    .test-problem.word { min-height: 110px; font-size: clamp(17px, 2.4vw, 22px); line-height: 1.45; letter-spacing: -.015em; font-weight: 800; }
+    .test-problem.column { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(28px, 6vw, 44px); line-height: 1.1; letter-spacing: 0; white-space: pre; }
+    .test-help { min-height: 22px; margin: 0 0 12px; color: var(--accent-dark); font-size: 13px; font-weight: 700; text-align: center; }
+    .test-answers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .test-answers.single { grid-template-columns: 1fr; }
+    .test-answer-row { display: flex; gap: 10px; margin-bottom: 12px; }
+    .test-feedback { min-height: 28px; margin: 0 0 12px; font-size: 15px; font-weight: 800; text-align: center; }
+    .test-feedback.good { color: var(--good); }
+    .test-feedback.bad { color: var(--bad); }
+    .test-actions { display: flex; gap: 10px; }
+    .test-actions .primary, .test-actions .secondary { margin-top: 0; }
+    .test-board { padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.75); }
+    .test-board-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--muted); font-size: 12px; font-weight: 800; }
+    .test-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .tb-btn { min-width: 38px; min-height: 36px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font-size: 14px; font-weight: 850; cursor: pointer; }
+    .tb-btn:hover { border-color: #b9b4ff; }
+    .tb-btn.active { border-color: var(--accent); color: var(--accent-dark); background: #eeecff; }
+    .tb-swatch { width: 38px; padding: 6px; }
+    .tb-swatch i { display: block; width: 18px; height: 18px; margin: 0 auto; border-radius: 50%; }
+    .test-canvas-wrap { position: relative; overflow: hidden; border: 2px solid #d0d5dd; border-radius: 14px; background: #fff; }
+    .test-canvas-wrap canvas { display: block; width: 100%; height: 340px; touch-action: none; cursor: crosshair; }
+    .test-summary { padding: 26px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #5f57f5, #3f37c9); text-align: center; }
+    .test-summary h3 { margin: 0 0 6px; font-size: 26px; }
+    .test-summary p { margin: 0 0 16px; color: rgba(255,255,255,.85); }
+    .test-score { margin: 8px 0 4px; font-size: 56px; line-height: 1; font-weight: 900; }
+    .test-actions .primary, .test-actions .secondary { width: auto; flex: 1; }
+    .test-answers .choice-answer.selected { border-color: var(--accent); background: #f6f5ff; transform: translateY(-1px); }
+    @media (max-width: 900px) { .test-grid { grid-template-columns: 1fr 1fr; } .test-run { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) { .test-grid { grid-template-columns: 1fr; } }
     .profile-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
     .profile-summary .stat { background: #fff; }
     .profile-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
@@ -289,7 +333,7 @@
     <section class="card">
       <nav class="page-nav" aria-label="Главная навигация">
         <span class="brand">Math Rush</span>
-        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button></div>
+        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button><button type="button" data-app-view="test">Тест</button></div>
         <div class="nav-tools">
           <button id="globalSettingsBtn" class="nav-icon" type="button" aria-label="Настройки" title="Настройки">⚙</button>
           <button id="languageButton" class="nav-icon" type="button" aria-label="Язык" title="Язык" aria-expanded="false">🌐</button>
@@ -314,8 +358,8 @@
             <select id="challengeMode"><option value="practice">Тренировка</option><option value="score">На счёт</option><option value="strict">На счёт — без ошибок ввода</option></select>
             <p id="challengeHint" class="hint">В режиме «На счёт» нет бонусного времени и лимита заданий. В строгом режиме неверный символ или исправление — ошибка. Дроби вводи сокращёнными, например 1/2.</p>
           </div>
-          <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
-          <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option selected>10</option></select></div>
+          <div class="setting"><label for="factorFrom">Диапазон множителей от</label><select id="factorFrom"><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div>
+          <div class="setting"><label for="factorTo">Диапазон множителей до</label><select id="factorTo"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option selected>9</option></select></div>
           <div class="setting"><label for="startTime">Стартовое время</label><select id="startTime"><option>15</option><option>20</option><option>30</option><option>40</option><option>60</option><option selected>90</option><option>120</option><option>180</option><option>240</option><option>300</option></select></div>
           <div class="setting"><label for="timeBonus">Бонус за правильный ответ</label><select id="timeBonus"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select></div>
           <div class="setting"><label for="streakGoal">Длина серии</label><select id="streakGoal"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></div>
@@ -363,7 +407,7 @@
           </article>
           <h3 class="mode-category" data-category="multiplication">Умножение</h3>
           <article class="mode-card" data-mode="tables">
-            <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 1 до 10</small></button>
+            <button class="mode-card-main" type="button"><span class="mode-icon">×</span><strong>Таблица умножения</strong><small>Множители от 2 до 9</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="tables" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="tables"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
@@ -554,6 +598,31 @@
         <div class="profile-panels"><section class="profile-panel"><h3 id="profileDirectionsTitle">Направления</h3><div id="spaCategories"></div></section><section class="profile-panel"><h3 id="profileSkillsTitle">Навыки</h3><div id="spaSkills"></div></section></div>
       </section>
 
+      <section id="testView" class="screen spa-view hidden">
+        <div class="view-heading"><div><h2 id="testViewTitle">Тесты</h2><p id="testViewSubtitle">Без таймера — решай спокойно и разбирай задания на доске.</p></div></div>
+        <div id="testLevels" class="test-grid"></div>
+        <div id="testRun" class="hidden">
+          <div class="test-run">
+            <div class="test-qa">
+              <div class="test-progress"><span id="testProgressLabel">Вопрос 1 / 10</span><span id="testLevelLabel"></span></div>
+              <div class="test-track"><div id="testProgressBar"></div></div>
+              <div id="testProblem" class="test-problem">—</div>
+              <p id="testHelp" class="test-help"></p>
+              <div id="testChoiceAnswers" class="test-answers hidden"></div>
+              <div id="testAnswerRow" class="test-answer-row"><input id="testAnswerInput" aria-label="Ответ" placeholder="Твой ответ" autocomplete="off"><button id="testCheckBtn" class="submit" type="button">Проверить</button></div>
+              <p id="testFeedback" class="test-feedback" role="status"></p>
+              <div class="test-actions"><button id="testSkipBtn" class="secondary" type="button">Пропустить</button><button id="testNextBtn" class="primary hidden" type="button">Дальше</button><button id="testBackBtn" class="secondary" type="button">← К тестам</button></div>
+            </div>
+            <div class="test-board">
+              <div class="test-board-head"><span id="testBoardLabel">Доска для разборов</span></div>
+              <div id="testTools" class="test-tools"></div>
+              <div class="test-canvas-wrap"><canvas id="testBoard"></canvas></div>
+            </div>
+          </div>
+        </div>
+        <div id="testSummary" class="test-summary hidden" style="margin-top:16px"></div>
+      </section>
+
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
         <div id="pixelCat" class="voxel-companion" aria-hidden="true"></div>
         <div class="quiz-primary">
@@ -604,7 +673,7 @@
       const HANDWRITING_ENABLED = false;
       const $ = (id) => document.getElementById(id);
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
-      const mapView = $('mapView'), profileView = $('profileView');
+      const mapView = $('mapView'), profileView = $('profileView'), testView = $('testView');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
@@ -617,17 +686,17 @@
       const factorFrom = $('factorFrom'), factorTo = $('factorTo'), startTimeSelect = $('startTime'), timeBonusSelect = $('timeBonus'), streakGoalSelect = $('streakGoal'), difficultySelect = $('difficulty');
       const languageData = {
         ru: {
-          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, profile: { level: 'Уровень', score: 'Общий счёт', progress: (current) => `${current}/${LEVEL_STEP} до следующего уровня`, levelUp: (level) => `⬆ Новый уровень: ${level}!` }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (mode, start, bonus, goal) => `${mode} · время: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => bonus ? `Верно! +${bonus} сек` : 'Верно!', milestone: (streak, bonus) => bonus ? `🔥 Серия ${streak}! +${bonus} сек — отлично!` : `🔥 Серия ${streak}! Отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 1 до 10', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Простое сложение', 'Числа от 1 до 19 · 90 секунд', 'Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], 'fractions-simplify': ['Сокращение дробей', 'Например: 6/8 = 3/4', 'Сократи дробь до несократимого вида.'], 'fractions-compare': ['Сравнение дробей', 'Введи <, > или =', 'Сравни две дроби и введи знак: <, > или =.'], 'fractions-calculate': ['Действия с дробями', 'Сложение, вычитание, × и /', 'Решай примеры с дробями и вводи сокращённый ответ.'], 'fractions-mixed': ['Дроби — микс', 'Все задания с дробями', 'Сокращай, сравнивай и вычисляй дроби вперемешку.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
+          pageTitle: 'Математический рывок', eyebrow: 'Тренировка скорости', subtitle: 'Выбирай режим, настраивай правила и решай примеры как можно быстрее.', menuTitle: 'Выбери режим', menuHint: 'Можно менять настройки перед каждой игрой', start: 'Начать игру', settings: 'Настройки', hint: 'В игре можно сразу печатать ответ и нажимать Enter', settingsTitle: 'Настройки игры', ready: 'Готово', languageLabel: 'Переключить язык', placeholder: 'Твой ответ', submit: 'Ответить', exit: '← В меню', stats: { time: 'Время', solved: 'Решено', score: 'Счёт', streak: 'Серия' }, profile: { level: 'Уровень', score: 'Общий счёт', progress: (current) => `${current}/${LEVEL_STEP} до следующего уровня`, levelUp: (level) => `⬆ Новый уровень: ${level}!` }, resultTitle: 'Раунд завершён!', again: 'Сыграть ещё', menu: 'Вернуться в меню', resultNote: (score, solved) => `${score} правильных ответов · решено примеров: ${solved}`, summary: (mode, start, bonus, goal) => `${mode} · время: ${start} сек · +${bonus} сек · серия: ${goal}`, feedback: { correct: (bonus) => bonus ? `Верно! +${bonus} сек` : 'Верно!', milestone: (streak, bonus) => bonus ? `🔥 Серия ${streak}! +${bonus} сек — отлично!` : `🔥 Серия ${streak}! Отлично!`, wrong: (answer) => `Не совсем. Правильный ответ: ${answer}` }, modes: { tables: ['Таблица умножения', 'Множители от 2 до 9', 'Вся таблица умножения: оба множителя случайно выбираются в заданном диапазоне.'], equations: ['Уравнения', 'x +, −, × или / число', 'Найди x в примерах вида x + 5 = 10, x − 5 = 10, x × 5 = 10 или x / 5 = 2.'], addition: ['Простое сложение', 'Числа от 1 до 19 · 90 секунд', 'Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.'], multiplication: ['Сложное умножение', 'От однозначных до двузначных', 'Решай более сложные примеры с умножением однозначных и двузначных чисел.'], 'fractions-simplify': ['Сокращение дробей', 'Например: 6/8 = 3/4', 'Сократи дробь до несократимого вида.'], 'fractions-compare': ['Сравнение дробей', 'Введи <, > или =', 'Сравни две дроби и введи знак: <, > или =.'], 'fractions-calculate': ['Действия с дробями', 'Сложение, вычитание, × и /', 'Решай примеры с дробями и вводи сокращённый ответ.'], 'fractions-mixed': ['Дроби — микс', 'Все задания с дробями', 'Сокращай, сравнивай и вычисляй дроби вперемешку.'], mixed: ['Смешанный режим', 'Все выбранные типы вперемешку', 'Типы примеров выбираются случайно из отмеченных в настройках.'] } },
         en: {
-          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, profile: { level: 'Level', score: 'Overall score', progress: (current) => `${current}/${LEVEL_STEP} to next level`, levelUp: (level) => `⬆ New level: ${level}!` }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (mode, start, bonus, goal) => `${mode} · time: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => bonus ? `Correct! +${bonus}s` : 'Correct!', milestone: (streak, bonus) => bonus ? `🔥 ${streak} streak! +${bonus}s — great!` : `🔥 ${streak} streak! Great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 1 to 10', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Simple addition', 'Numbers from 1 to 19 · 90 seconds', 'Add two numbers from 1 to 19. Use the card settings to expand the range or change the timer.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
+          pageTitle: 'Math Rush', eyebrow: 'Speed training', subtitle: 'Choose a mode, set the rules, and solve as many problems as you can.', menuTitle: 'Choose a mode', menuHint: 'You can change the settings before each game', start: 'Start game', settings: 'Settings', hint: 'Type your answer and press Enter', settingsTitle: 'Game settings', ready: 'Done', languageLabel: 'Switch language', placeholder: 'Your answer', submit: 'Submit', exit: '← Menu', stats: { time: 'Time', solved: 'Solved', score: 'Score', streak: 'Streak' }, profile: { level: 'Level', score: 'Overall score', progress: (current) => `${current}/${LEVEL_STEP} to next level`, levelUp: (level) => `⬆ New level: ${level}!` }, resultTitle: 'Round complete!', again: 'Play again', menu: 'Back to menu', resultNote: (score, solved) => `${score} correct answers · ${solved} problems solved`, summary: (mode, start, bonus, goal) => `${mode} · time: ${start}s · +${bonus}s · streak: ${goal}`, feedback: { correct: (bonus) => bonus ? `Correct! +${bonus}s` : 'Correct!', milestone: (streak, bonus) => bonus ? `🔥 ${streak} streak! +${bonus}s — great!` : `🔥 ${streak} streak! Great!`, wrong: (answer) => `Not quite. Correct answer: ${answer}` }, modes: { tables: ['Multiplication table', 'Multipliers from 2 to 9', 'The full multiplication table with both factors chosen from the selected range.'], equations: ['Equations', 'x +, −, × or / a number', 'Solve x in examples such as x + 5 = 10, x − 5 = 10, x × 5 = 10, or x / 5 = 2.'], addition: ['Simple addition', 'Numbers from 1 to 19 · 90 seconds', 'Add two numbers from 1 to 19. Use the card settings to expand the range or change the timer.'], multiplication: ['Advanced multiplication', 'One- and two-digit numbers', 'Solve more challenging multiplication problems with one- and two-digit numbers.'], 'fractions-simplify': ['Simplify fractions', 'For example: 6/8 = 3/4', 'Reduce each fraction to its simplest form.'], 'fractions-compare': ['Compare fractions', 'Enter <, >, or =', 'Compare two fractions and enter the correct sign: <, >, or =.'], 'fractions-calculate': ['Fraction operations', 'Add, subtract, ×, and /', 'Solve fraction problems and enter the simplified answer.'], 'fractions-mixed': ['Fraction mix', 'All fraction challenges', 'Simplify, compare, and calculate fractions in random order.'], mixed: ['Mixed mode', 'All selected types mixed together', 'Problem types are chosen randomly from the ones selected in settings.'] } }
       };
       Object.assign(languageData, {
         fr: {
-          pageTitle: 'Défi mathématique', eyebrow: 'Entraînement de vitesse', subtitle: 'Choisis un mode, règle les paramètres et résous les exercices le plus vite possible.', menuTitle: 'Choisis un mode', menuHint: 'Tu peux modifier les paramètres avant chaque partie', start: 'Commencer', settings: 'Paramètres', hint: 'Saisis ta réponse et appuie sur Entrée', settingsTitle: 'Paramètres du jeu', ready: 'Terminé', languageLabel: 'Choisir la langue', languageMenu: 'Langue', timeRemaining: 'Temps restant', placeholder: 'Ta réponse', submit: 'Répondre', exit: '← Menu', stats: { time: 'Temps', solved: 'Résolus', score: 'Score', streak: 'Série' }, profile: { level: 'Niveau', score: 'Score total', progress: (current) => `${current}/${LEVEL_STEP} avant le niveau suivant`, levelUp: (level) => `⬆ Nouveau niveau : ${level} !` }, resultTitle: 'Partie terminée !', again: 'Rejouer', menu: 'Retour au menu', resultNote: (score, solved) => `${score} bonnes réponses · ${solved} exercices résolus`, summary: (mode, start, bonus, goal) => `${mode} · temps : ${start}s · +${bonus}s · série : ${goal}`, feedback: { correct: (bonus) => bonus ? `Correct ! +${bonus}s` : 'Correct !', milestone: (streak, bonus) => bonus ? `🔥 Série de ${streak} ! +${bonus}s — bravo !` : `🔥 Série de ${streak} ! Bravo !`, wrong: (answer) => `Pas tout à fait. La bonne réponse : ${answer}` }, modes: { tables: ['Table de multiplication', 'Multiplicateurs de 1 à 10', 'Toute la table de multiplication avec deux facteurs choisis dans la plage définie.'], equations: ['Équations', 'x +, −, × ou / un nombre', 'Trouve x dans des exemples comme x + 5 = 10, x − 5 = 10, x × 5 = 10 ou x / 5 = 2.'], addition: ['Addition simple', 'Nombres de 1 à 19 · 90 secondes', 'Additionne deux nombres de 1 à 19.'], multiplication: ['Multiplication avancée', 'Nombres à un ou deux chiffres', 'Résous des multiplications plus difficiles.'], 'fractions-simplify': ['Simplifier des fractions', 'Par exemple : 6/8 = 3/4', 'Réduis chaque fraction à sa forme la plus simple.'], 'fractions-compare': ['Comparer des fractions', 'Saisis <, > ou =', 'Compare deux fractions et saisis le bon signe.'], 'fractions-calculate': ['Opérations sur les fractions', 'Addition, soustraction, × et /', 'Résous les exercices avec des fractions.'], 'fractions-mixed': ['Fractions — mélange', 'Tous les défis avec des fractions', 'Simplifie, compare et calcule des fractions.'], mixed: ['Mode mixte', 'Tous les types sélectionnés', 'Les types d’exercices sont choisis au hasard.'] } },
+          pageTitle: 'Défi mathématique', eyebrow: 'Entraînement de vitesse', subtitle: 'Choisis un mode, règle les paramètres et résous les exercices le plus vite possible.', menuTitle: 'Choisis un mode', menuHint: 'Tu peux modifier les paramètres avant chaque partie', start: 'Commencer', settings: 'Paramètres', hint: 'Saisis ta réponse et appuie sur Entrée', settingsTitle: 'Paramètres du jeu', ready: 'Terminé', languageLabel: 'Choisir la langue', languageMenu: 'Langue', timeRemaining: 'Temps restant', placeholder: 'Ta réponse', submit: 'Répondre', exit: '← Menu', stats: { time: 'Temps', solved: 'Résolus', score: 'Score', streak: 'Série' }, profile: { level: 'Niveau', score: 'Score total', progress: (current) => `${current}/${LEVEL_STEP} avant le niveau suivant`, levelUp: (level) => `⬆ Nouveau niveau : ${level} !` }, resultTitle: 'Partie terminée !', again: 'Rejouer', menu: 'Retour au menu', resultNote: (score, solved) => `${score} bonnes réponses · ${solved} exercices résolus`, summary: (mode, start, bonus, goal) => `${mode} · temps : ${start}s · +${bonus}s · série : ${goal}`, feedback: { correct: (bonus) => bonus ? `Correct ! +${bonus}s` : 'Correct !', milestone: (streak, bonus) => bonus ? `🔥 Série de ${streak} ! +${bonus}s — bravo !` : `🔥 Série de ${streak} ! Bravo !`, wrong: (answer) => `Pas tout à fait. La bonne réponse : ${answer}` }, modes: { tables: ['Table de multiplication', 'Multiplicateurs de 2 à 9', 'Toute la table de multiplication avec deux facteurs choisis dans la plage définie.'], equations: ['Équations', 'x +, −, × ou / un nombre', 'Trouve x dans des exemples comme x + 5 = 10, x − 5 = 10, x × 5 = 10 ou x / 5 = 2.'], addition: ['Addition simple', 'Nombres de 1 à 19 · 90 secondes', 'Additionne deux nombres de 1 à 19.'], multiplication: ['Multiplication avancée', 'Nombres à un ou deux chiffres', 'Résous des multiplications plus difficiles.'], 'fractions-simplify': ['Simplifier des fractions', 'Par exemple : 6/8 = 3/4', 'Réduis chaque fraction à sa forme la plus simple.'], 'fractions-compare': ['Comparer des fractions', 'Saisis <, > ou =', 'Compare deux fractions et saisis le bon signe.'], 'fractions-calculate': ['Opérations sur les fractions', 'Addition, soustraction, × et /', 'Résous les exercices avec des fractions.'], 'fractions-mixed': ['Fractions — mélange', 'Tous les défis avec des fractions', 'Simplifie, compare et calcule des fractions.'], mixed: ['Mode mixte', 'Tous les types sélectionnés', 'Les types d’exercices sont choisis au hasard.'] } },
         es: {
-          pageTitle: 'Reto matemático', eyebrow: 'Entrenamiento de velocidad', subtitle: 'Elige un modo, ajusta las reglas y resuelve ejercicios lo más rápido posible.', menuTitle: 'Elige un modo', menuHint: 'Puedes cambiar los ajustes antes de cada partida', start: 'Empezar', settings: 'Ajustes', hint: 'Escribe tu respuesta y pulsa Intro', settingsTitle: 'Ajustes del juego', ready: 'Listo', languageLabel: 'Elegir idioma', languageMenu: 'Idioma', timeRemaining: 'Tiempo restante', placeholder: 'Tu respuesta', submit: 'Responder', exit: '← Menú', stats: { time: 'Tiempo', solved: 'Resueltos', score: 'Puntos', streak: 'Racha' }, profile: { level: 'Nivel', score: 'Puntuación total', progress: (current) => `${current}/${LEVEL_STEP} para el siguiente nivel`, levelUp: (level) => `⬆ ¡Nuevo nivel: ${level}!` }, resultTitle: '¡Ronda terminada!', again: 'Jugar otra vez', menu: 'Volver al menú', resultNote: (score, solved) => `${score} respuestas correctas · ${solved} ejercicios resueltos`, summary: (mode, start, bonus, goal) => `${mode} · tiempo: ${start}s · +${bonus}s · racha: ${goal}`, feedback: { correct: (bonus) => bonus ? `¡Correcto! +${bonus}s` : '¡Correcto!', milestone: (streak, bonus) => bonus ? `🔥 ¡Racha de ${streak}! +${bonus}s — ¡genial!` : `🔥 ¡Racha de ${streak}! ¡Genial!`, wrong: (answer) => `No exactamente. La respuesta correcta: ${answer}` }, modes: { tables: ['Tabla de multiplicar', 'Multiplicadores del 1 al 10', 'La tabla de multiplicar completa con factores dentro del rango elegido.'], equations: ['Ecuaciones', 'x +, −, × o / un número', 'Encuentra x en ejercicios como x + 5 = 10, x − 5 = 10, x × 5 = 10 o x / 5 = 2.'], addition: ['Suma sencilla', 'Números del 1 al 19 · 90 segundos', 'Suma dos números del 1 al 19.'], multiplication: ['Multiplicación avanzada', 'Números de una y dos cifras', 'Resuelve multiplicaciones más difíciles.'], 'fractions-simplify': ['Simplificar fracciones', 'Por ejemplo: 6/8 = 3/4', 'Reduce cada fracción a su forma más simple.'], 'fractions-compare': ['Comparar fracciones', 'Escribe <, > o =', 'Compara dos fracciones y escribe el signo correcto.'], 'fractions-calculate': ['Operaciones con fracciones', 'Suma, resta, × y /', 'Resuelve ejercicios con fracciones.'], 'fractions-mixed': ['Fracciones — mezcla', 'Todos los retos de fracciones', 'Simplifica, compara y calcula fracciones.'], mixed: ['Modo mixto', 'Todos los tipos seleccionados', 'Los tipos de ejercicios se eligen al azar.'] } },
+          pageTitle: 'Reto matemático', eyebrow: 'Entrenamiento de velocidad', subtitle: 'Elige un modo, ajusta las reglas y resuelve ejercicios lo más rápido posible.', menuTitle: 'Elige un modo', menuHint: 'Puedes cambiar los ajustes antes de cada partida', start: 'Empezar', settings: 'Ajustes', hint: 'Escribe tu respuesta y pulsa Intro', settingsTitle: 'Ajustes del juego', ready: 'Listo', languageLabel: 'Elegir idioma', languageMenu: 'Idioma', timeRemaining: 'Tiempo restante', placeholder: 'Tu respuesta', submit: 'Responder', exit: '← Menú', stats: { time: 'Tiempo', solved: 'Resueltos', score: 'Puntos', streak: 'Racha' }, profile: { level: 'Nivel', score: 'Puntuación total', progress: (current) => `${current}/${LEVEL_STEP} para el siguiente nivel`, levelUp: (level) => `⬆ ¡Nuevo nivel: ${level}!` }, resultTitle: '¡Ronda terminada!', again: 'Jugar otra vez', menu: 'Volver al menú', resultNote: (score, solved) => `${score} respuestas correctas · ${solved} ejercicios resueltos`, summary: (mode, start, bonus, goal) => `${mode} · tiempo: ${start}s · +${bonus}s · racha: ${goal}`, feedback: { correct: (bonus) => bonus ? `¡Correcto! +${bonus}s` : '¡Correcto!', milestone: (streak, bonus) => bonus ? `🔥 ¡Racha de ${streak}! +${bonus}s — ¡genial!` : `🔥 ¡Racha de ${streak}! ¡Genial!`, wrong: (answer) => `No exactamente. La respuesta correcta: ${answer}` }, modes: { tables: ['Tabla de multiplicar', 'Multiplicadores del 2 al 9', 'La tabla de multiplicar completa con factores dentro del rango elegido.'], equations: ['Ecuaciones', 'x +, −, × o / un número', 'Encuentra x en ejercicios como x + 5 = 10, x − 5 = 10, x × 5 = 10 o x / 5 = 2.'], addition: ['Suma sencilla', 'Números del 1 al 19 · 90 segundos', 'Suma dos números del 1 al 19.'], multiplication: ['Multiplicación avanzada', 'Números de una y dos cifras', 'Resuelve multiplicaciones más difíciles.'], 'fractions-simplify': ['Simplificar fracciones', 'Por ejemplo: 6/8 = 3/4', 'Reduce cada fracción a su forma más simple.'], 'fractions-compare': ['Comparar fracciones', 'Escribe <, > o =', 'Compara dos fracciones y escribe el signo correcto.'], 'fractions-calculate': ['Operaciones con fracciones', 'Suma, resta, × y /', 'Resuelve ejercicios con fracciones.'], 'fractions-mixed': ['Fracciones — mezcla', 'Todos los retos de fracciones', 'Simplifica, compara y calcula fracciones.'], mixed: ['Modo mixto', 'Todos los tipos seleccionados', 'Los tipos de ejercicios se eligen al azar.'] } },
         de: {
-          pageTitle: 'Mathe-Sprint', eyebrow: 'Schnelligkeitstraining', subtitle: 'Wähle einen Modus, passe die Regeln an und löse Aufgaben so schnell wie möglich.', menuTitle: 'Wähle einen Modus', menuHint: 'Du kannst die Einstellungen vor jeder Runde ändern', start: 'Starten', settings: 'Einstellungen', hint: 'Gib deine Antwort ein und drücke Enter', settingsTitle: 'Spieleinstellungen', ready: 'Fertig', languageLabel: 'Sprache auswählen', languageMenu: 'Sprache', timeRemaining: 'Verbleibende Zeit', placeholder: 'Deine Antwort', submit: 'Antworten', exit: '← Menü', stats: { time: 'Zeit', solved: 'Gelöst', score: 'Punkte', streak: 'Serie' }, profile: { level: 'Stufe', score: 'Gesamtpunktzahl', progress: (current) => `${current}/${LEVEL_STEP} bis zur nächsten Stufe`, levelUp: (level) => `⬆ Neue Stufe: ${level}!` }, resultTitle: 'Runde beendet!', again: 'Noch einmal spielen', menu: 'Zurück zum Menü', resultNote: (score, solved) => `${score} richtige Antworten · ${solved} Aufgaben gelöst`, summary: (mode, start, bonus, goal) => `${mode} · Zeit: ${start}s · +${bonus}s · Serie: ${goal}`, feedback: { correct: (bonus) => bonus ? `Richtig! +${bonus}s` : 'Richtig!', milestone: (streak, bonus) => bonus ? `🔥 ${streak}er-Serie! +${bonus}s — toll!` : `🔥 ${streak}er-Serie! Toll!`, wrong: (answer) => `Nicht ganz. Die richtige Antwort: ${answer}` }, modes: { tables: ['Einmaleins', 'Faktoren von 1 bis 10', 'Das ganze Einmaleins mit Faktoren aus dem gewählten Bereich.'], equations: ['Gleichungen', 'x +, −, × oder / eine Zahl', 'Finde x in Aufgaben wie x + 5 = 10, x − 5 = 10, x × 5 = 10 oder x / 5 = 2.'], addition: ['Einfache Addition', 'Zahlen von 1 bis 19 · 90 Sekunden', 'Addiere zwei Zahlen von 1 bis 19.'], multiplication: ['Fortgeschrittene Multiplikation', 'Ein- und zweistellige Zahlen', 'Löse schwierigere Multiplikationsaufgaben.'], 'fractions-simplify': ['Brüche kürzen', 'Zum Beispiel: 6/8 = 3/4', 'Kürze jeden Bruch vollständig.'], 'fractions-compare': ['Brüche vergleichen', 'Gib <, > oder = ein', 'Vergleiche zwei Brüche und gib das richtige Zeichen ein.'], 'fractions-calculate': ['Bruchrechnen', 'Addition, Subtraktion, × und /', 'Löse Aufgaben mit Brüchen.'], 'fractions-mixed': ['Brüche — Mix', 'Alle Bruchaufgaben', 'Kürze, vergleiche und berechne Brüche.'], mixed: ['Gemischter Modus', 'Alle ausgewählten Typen', 'Aufgabentypen werden zufällig ausgewählt.'] } }
+          pageTitle: 'Mathe-Sprint', eyebrow: 'Schnelligkeitstraining', subtitle: 'Wähle einen Modus, passe die Regeln an und löse Aufgaben so schnell wie möglich.', menuTitle: 'Wähle einen Modus', menuHint: 'Du kannst die Einstellungen vor jeder Runde ändern', start: 'Starten', settings: 'Einstellungen', hint: 'Gib deine Antwort ein und drücke Enter', settingsTitle: 'Spieleinstellungen', ready: 'Fertig', languageLabel: 'Sprache auswählen', languageMenu: 'Sprache', timeRemaining: 'Verbleibende Zeit', placeholder: 'Deine Antwort', submit: 'Antworten', exit: '← Menü', stats: { time: 'Zeit', solved: 'Gelöst', score: 'Punkte', streak: 'Serie' }, profile: { level: 'Stufe', score: 'Gesamtpunktzahl', progress: (current) => `${current}/${LEVEL_STEP} bis zur nächsten Stufe`, levelUp: (level) => `⬆ Neue Stufe: ${level}!` }, resultTitle: 'Runde beendet!', again: 'Noch einmal spielen', menu: 'Zurück zum Menü', resultNote: (score, solved) => `${score} richtige Antworten · ${solved} Aufgaben gelöst`, summary: (mode, start, bonus, goal) => `${mode} · Zeit: ${start}s · +${bonus}s · Serie: ${goal}`, feedback: { correct: (bonus) => bonus ? `Richtig! +${bonus}s` : 'Richtig!', milestone: (streak, bonus) => bonus ? `🔥 ${streak}er-Serie! +${bonus}s — toll!` : `🔥 ${streak}er-Serie! Toll!`, wrong: (answer) => `Nicht ganz. Die richtige Antwort: ${answer}` }, modes: { tables: ['Einmaleins', 'Faktoren von 2 bis 9', 'Das ganze Einmaleins mit Faktoren aus dem gewählten Bereich.'], equations: ['Gleichungen', 'x +, −, × oder / eine Zahl', 'Finde x in Aufgaben wie x + 5 = 10, x − 5 = 10, x × 5 = 10 oder x / 5 = 2.'], addition: ['Einfache Addition', 'Zahlen von 1 bis 19 · 90 Sekunden', 'Addiere zwei Zahlen von 1 bis 19.'], multiplication: ['Fortgeschrittene Multiplikation', 'Ein- und zweistellige Zahlen', 'Löse schwierigere Multiplikationsaufgaben.'], 'fractions-simplify': ['Brüche kürzen', 'Zum Beispiel: 6/8 = 3/4', 'Kürze jeden Bruch vollständig.'], 'fractions-compare': ['Brüche vergleichen', 'Gib <, > oder = ein', 'Vergleiche zwei Brüche und gib das richtige Zeichen ein.'], 'fractions-calculate': ['Bruchrechnen', 'Addition, Subtraktion, × und /', 'Löse Aufgaben mit Brüchen.'], 'fractions-mixed': ['Brüche — Mix', 'Alle Bruchaufgaben', 'Kürze, vergleiche und berechne Brüche.'], mixed: ['Gemischter Modus', 'Alle ausgewählten Typen', 'Aufgabentypen werden zufällig ausgewählt.'] } }
       });
       languageData.ru.exitLabel = 'В меню';
       languageData.ru.languageMenu = 'Язык';
@@ -819,7 +888,7 @@
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
       let desktopKeypadOpen = false;
       let mapLineFrame = null;
-      let settings = { factorFrom: 1, factorTo: 10, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', answerMode: 'text', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
+      let settings = { factorFrom: 2, factorTo: 9, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', answerMode: 'text', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
         'addition-ten': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'addition-twenty': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -955,6 +1024,18 @@
       function multiplicationFactor(from, to) {
         const values = Array.from({ length: to - from + 1 }, (_, index) => from + index);
         return weightedPick(values, (value) => multiplicationFactorWeights[value] || (value > 12 ? 3 : 1));
+      }
+
+      // Practice factors exclude trivial 1 and 10.
+      function cleanFactor(from, to) {
+        const lo = Math.min(from, to), hi = Math.max(from, to);
+        const items = [];
+        for (let value = lo; value <= hi; value += 1) {
+          if (value === 1 || value === 10) continue;
+          items.push(value);
+        }
+        if (!items.length) return lo <= 2 ? 2 : 9;
+        return weightedPick(items, (value) => multiplicationFactorWeights[value] || (value > 12 ? 3 : 1));
       }
 
       function configFor(mode = selectedMode) { return modeConfigs[mode] || modeConfigs.tables; }
@@ -1331,8 +1412,8 @@
           return { text: currentLanguage === 'ru' ? `Периметр прямоугольника ${perimeter} см, одна сторона ${width} см. Найди другую сторону.` : `A rectangle has perimeter ${perimeter} cm and one side ${width} cm. Find the other side.`, answer: height, kind: 'word', hint: currentLanguage === 'ru' ? `Сначала раздели периметр на 2, затем вычти ${width}.` : `Divide the perimeter by 2, then subtract ${width}.` };
         }
         if (mode === 'tables') {
-          const a = multiplicationFactor(settings.factorFrom, settings.factorTo);
-          const b = multiplicationFactor(settings.factorFrom, settings.factorTo);
+          const a = cleanFactor(settings.factorFrom, settings.factorTo);
+          const b = cleanFactor(settings.factorFrom, settings.factorTo);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
         if (mode === 'column-addition' || mode === 'column-subtraction' || mode === 'column-multiplication') {
@@ -1346,7 +1427,8 @@
             operator = '−'; answerValue = first - second;
           }
           if (mode === 'column-multiplication') {
-            second = randomInt(10, difficulty === 'expert' ? 99 : 29);
+            if (first === 10) first += 1;
+            second = randomInt(11, difficulty === 'expert' ? 99 : 29);
             operator = '×'; answerValue = first * second;
           }
           const width = Math.max(String(first).length, String(second).length + 1);
@@ -1415,7 +1497,7 @@
             return { text: `x - ${number} = ${x - number}`, answer: x, hint: currentLanguage === 'ru' ? `Прибавь ${number} к правой части.` : `Add ${number} to the right side.` };
           }
           if (operation === '×') {
-            const number = randomInt(2, 10);
+            const number = randomInt(2, 9);
             return { text: `x × ${number} = ${x * number}`, answer: x, hint: currentLanguage === 'ru' ? `Раздели правую часть на ${number}.` : `Divide the right side by ${number}.` };
           }
           if (mode === 'equations-division') {
@@ -1468,8 +1550,8 @@
         }
         if (mode === 'multiplication') {
           const difficulty = difficultyFor(mode);
-          const a = difficulty === 'simple' ? multiplicationFactor(2, 12) : randomInt(10, difficulty === 'expert' ? 99 : 30);
-          const b = difficulty === 'simple' ? multiplicationFactor(2, 12) : multiplicationFactor(3, difficulty === 'expert' ? 30 : 12);
+          const a = difficulty === 'simple' ? cleanFactor(2, 12) : randomInt(11, difficulty === 'expert' ? 99 : 30);
+          const b = difficulty === 'simple' ? cleanFactor(2, 12) : cleanFactor(3, difficulty === 'expert' ? 30 : 12);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
         if (mode === 'fractions-simplify') {
@@ -1741,6 +1823,7 @@
         menuScreen.classList.add('hidden');
         mapView.classList.add('hidden');
         profileView.classList.add('hidden');
+        testView.classList.add('hidden');
         resultScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         $('exitBtn').classList.add('visible');
@@ -1751,7 +1834,7 @@
       }
 
       function readSettings() {
-        let from = Number(factorFrom.value), to = Number(factorTo.value);
+        let from = Math.min(9, Math.max(2, Number(factorFrom.value))), to = Math.min(9, Math.max(2, Number(factorTo.value)));
         if (from > to) [from, to] = [to, from];
         factorFrom.value = from;
         factorTo.value = to;
@@ -1855,13 +1938,18 @@
         languageButton.title = language.languageMenu;
         languageLabel.textContent = language.languageMenu;
         const shell = {
-          ru: ['Задачи', 'Карта', 'Профиль'], en: ['Tasks', 'Map', 'Profile'],
-          fr: ['Exercices', 'Carte', 'Profil'], es: ['Ejercicios', 'Mapa', 'Perfil'], de: ['Aufgaben', 'Karte', 'Profil']
+          ru: ['Задачи', 'Карта', 'Профиль', 'Тест'], en: ['Tasks', 'Map', 'Profile', 'Test'],
+          fr: ['Exercices', 'Carte', 'Profil', 'Test'], es: ['Ejercicios', 'Mapa', 'Perfil', 'Prueba'], de: ['Aufgaben', 'Karte', 'Profil', 'Test']
         }[currentLanguage];
         document.querySelectorAll('[data-app-view]').forEach((button, index) => { button.textContent = shell[index]; });
         $('mapViewTitle').textContent = ui.mapTitle;
         $('mapViewSubtitle').textContent = ui.mapSubtitle;
-        $('profileViewTitle').textContent = ui.profileTitle;
+        $('testViewTitle').textContent = testText[currentLanguage].title;
+        $('testViewSubtitle').textContent = testText[currentLanguage].subtitle;
+        if (!testView.classList.contains('hidden')) {
+          if (testRun) renderTestRunChrome();
+          else renderTestLevels();
+        }        $('profileViewTitle').textContent = ui.profileTitle;
         $('profileViewSubtitle').textContent = ui.profileSubtitle;
         $('profileDirectionsTitle').textContent = ui.directions;
         $('profileSkillsTitle').textContent = ui.skills;
@@ -2244,14 +2332,423 @@
         });
       }
 
+      // ---------- Graded tests: no timers, scratch board attached ----------
+      const TEST_PASS = 70;
+      const TEST_STORE_KEY = 'mathRushTestsV1';
+      const testLevels = [
+        { id: 't1', tasks: ['addition-ten', 'addition-ten', 'subtraction-ten', 'subtraction-ten', 'addition-twenty', 'addition-twenty', 'tables', 'arithmetic-chain-addition', 'skills-compare', 'skills-story-equation'] },
+        { id: 't2', tasks: ['addition', 'subtraction', 'tables', 'tables', 'division', 'division', 'column-addition', 'arithmetic-parentheses', 'fractions-simplify', 'equations-missing', 'skills-percent', 'geometry-shapes'] },
+        { id: 't3', tasks: ['column-subtraction', 'column-multiplication', 'arithmetic-order', 'fractions-compare', 'fractions-calculate', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'geometry-perimeter', 'geometry-angles', 'algebra-inequalities'] },
+        { id: 't4', tasks: ['equations-two-step', 'equations', 'algebra-functions', 'algebra-linear-functions', 'algebra-powers', 'algebra-roots', 'geometry-area', 'geometry-triangles', 'geometry-coordinates', 'fractions-mixed', 'arithmetic-negatives', 'olympiad-patterns'] },
+        { id: 't5', tasks: ['algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-sequences', 'geometry-side', 'olympiad-parity', 'olympiad-coloring', 'algebra-inequalities', 'column-multiplication', 'equations', 'fractions-calculate', 'olympiad-logic'] },
+        { id: 't6', tasks: ['olympiad-logic', 'olympiad-logic', 'olympiad-coloring', 'olympiad-patterns', 'olympiad-parity', 'algebra-quadratics', 'algebra-systems', 'algebra-polynomials', 'geometry-triangles', 'geometry-coordinates', 'equations-two-step', 'arithmetic-order'] }
+      ];
+      const testText = {
+        ru: { title: 'Тесты', subtitle: 'Без таймера — решай спокойно и разбирай задания на доске.', start: 'Начать', check: 'Проверить', skip: 'Пропустить', next: 'Дальше', finish: 'К результату', back: '← К тестам', question: 'Вопрос', tasksWord: 'заданий', best: 'Лучший результат', noBest: 'Пока не пройден', retry: 'Ещё раз', correct: 'Верно!', even: 'Чётное', odd: 'Нечётное', wrong: (a) => `Правильный ответ: ${displayAnswer(a)}`, passed: 'Зачёт!', failed: 'Пока не зачёт — попробуй ещё', board: 'Доска для разборов', clear: 'Очистить', answerPh: 'Твой ответ', levels: [
+          { name: 'Новичок', desc: 'Сложение, вычитание и пара задачек словами.' },
+          { name: 'Ученик', desc: 'Таблица умножения, деление, столбики и дроби.' },
+          { name: 'Уверенный', desc: 'Уравнения, скобки и первые фигуры.' },
+          { name: 'Знаток', desc: 'Функции, степени, корни и площади.' },
+          { name: 'Эксперт', desc: 'Многочлены, системы, прогрессии и олимпиадные задачи.' },
+          { name: 'Профи', desc: 'Самые сложные: логика, комбинаторика и квадратные уравнения.' } ] },
+        en: { title: 'Tests', subtitle: 'No timers — solve calmly and work things out on the board.', start: 'Start', check: 'Check', skip: 'Skip', next: 'Next', finish: 'See result', back: '← Back to tests', question: 'Question', tasksWord: 'tasks', best: 'Best score', noBest: 'Not taken yet', retry: 'Retry', correct: 'Correct!', even: 'Even', odd: 'Odd', wrong: (a) => `Correct answer: ${displayAnswer(a)}`, passed: 'Passed!', failed: 'Not yet — try again', board: 'Scratch board', clear: 'Clear', answerPh: 'Your answer', levels: [
+          { name: 'Beginner', desc: 'Addition, subtraction and a couple of word problems.' },
+          { name: 'Learner', desc: 'Times tables, division, columns and fractions.' },
+          { name: 'Confident', desc: 'Equations, parentheses and first shapes.' },
+          { name: 'Skilled', desc: 'Functions, powers, roots and areas.' },
+          { name: 'Expert', desc: 'Polynomials, systems, progressions and olympiad tasks.' },
+          { name: 'Pro', desc: 'The hardest: logic, combinatorics and quadratics.' } ] },
+        fr: { title: 'Tests', subtitle: 'Sans chrono — résous calmement et utilise le brouillon.', start: 'Commencer', check: 'Vérifier', skip: 'Passer', next: 'Suivant', finish: 'Voir le résultat', back: '← Retour aux tests', question: 'Question', tasksWord: 'exercices', best: 'Meilleur score', noBest: 'Pas encore passé', retry: 'Recommencer', correct: 'Correct !', even: 'Pair', odd: 'Impair', wrong: (a) => `Bonne réponse : ${displayAnswer(a)}`, passed: 'Réussi !', failed: 'Pas encore — réessaie', board: 'Brouillon', clear: 'Effacer', answerPh: 'Ta réponse', levels: [
+          { name: 'Débutant', desc: 'Additions, soustractions et petits problèmes.' },
+          { name: 'Élève', desc: 'Tables, divisions, calcul posé et fractions.' },
+          { name: 'Confirmé', desc: 'Équations, parenthèses et premières figures.' },
+          { name: 'Avancé', desc: 'Fonctions, puissances, racines et aires.' },
+          { name: 'Expert', desc: 'Polynômes, systèmes, suites et défis.' },
+          { name: 'Pro', desc: 'Le plus dur : logique, combinatoire et second degré.' } ] },
+        es: { title: 'Pruebas', subtitle: 'Sin cronómetro — resuelve con calma y usa el borrador.', start: 'Empezar', check: 'Comprobar', skip: 'Omitir', next: 'Siguiente', finish: 'Ver resultado', back: '← Volver', question: 'Pregunta', tasksWord: 'ejercicios', best: 'Mejor resultado', noBest: 'Aún no realizada', retry: 'Reintentar', correct: '¡Correcto!', even: 'Par', odd: 'Impar', wrong: (a) => `Respuesta correcta: ${displayAnswer(a)}`, passed: '¡Superado!', failed: 'Aún no — inténtalo de nuevo', board: 'Borrador', clear: 'Borrar', answerPh: 'Tu respuesta', levels: [
+          { name: 'Principiante', desc: 'Sumas, restas y pequeños problemas.' },
+          { name: 'Aprendiz', desc: 'Tablas, divisiones, cálculo en columna y fracciones.' },
+          { name: 'Seguro', desc: 'Ecuaciones, paréntesis y primeras figuras.' },
+          { name: 'Avanzado', desc: 'Funciones, potencias, raíces y áreas.' },
+          { name: 'Experto', desc: 'Polinomios, sistemas, progresiones y retos.' },
+          { name: 'Pro', desc: 'Lo más difícil: lógica, combinatoria y cuadráticas.' } ] },
+        de: { title: 'Tests', subtitle: 'Ohne Zeitdruck — löse in Ruhe und nutze die Tafel.', start: 'Starten', check: 'Prüfen', skip: 'Überspringen', next: 'Weiter', finish: 'Zum Ergebnis', back: '← Zurück zu den Tests', question: 'Aufgabe', tasksWord: 'Aufgaben', best: 'Bestleistung', noBest: 'Noch nicht absolviert', retry: 'Nochmal', correct: 'Richtig!', even: 'Gerade', odd: 'Ungerade', wrong: (a) => `Richtige Antwort: ${displayAnswer(a)}`, passed: 'Bestanden!', failed: 'Noch nicht — versuch es nochmal', board: 'Notiztafel', clear: 'Löschen', answerPh: 'Deine Antwort', levels: [
+          { name: 'Anfänger', desc: 'Addition, Subtraktion und kleine Textaufgaben.' },
+          { name: 'Lernender', desc: 'Einmaleins, Division, schriftliches Rechnen und Brüche.' },
+          { name: 'Fortgeschrittener', desc: 'Gleichungen, Klammern und erste Figuren.' },
+          { name: 'Könner', desc: 'Funktionen, Potenzen, Wurzeln und Flächen.' },
+          { name: 'Experte', desc: 'Polynome, Systeme, Folgen und Olympiade-Aufgaben.' },
+          { name: 'Profi', desc: 'Das Schwerste: Logik, Kombinatorik und quadratische Gleichungen.' } ] }
+      };
+      let testRun = null;
+      function loadTestStore() {
+        try { return JSON.parse(localStorage.getItem(TEST_STORE_KEY) || '{}'); } catch (_) { return {}; }
+      }
+      function saveTestBest(id, pct) {
+        try {
+          const store = loadTestStore();
+          const prev = (store[id] && store[id].best) || 0;
+          store[id] = { best: Math.max(prev, pct), at: new Date().toISOString() };
+          localStorage.setItem(TEST_STORE_KEY, JSON.stringify(store));
+        } catch (_) { /* Best score stays for this visit only. */ }
+      }
+      function shuffleTestQueue(items) {
+        for (let i = items.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [items[i], items[j]] = [items[j], items[i]];
+        }
+        return items;
+      }
+      function renderTestLevels() {
+        const host = $('testLevels');
+        if (!host) return;
+        const t = testText[currentLanguage];
+        $('testViewTitle').textContent = t.title;
+        $('testViewSubtitle').textContent = t.subtitle;
+        host.classList.remove('hidden');
+        $('testRun').classList.add('hidden');
+        $('testSummary').classList.add('hidden');
+        host.textContent = '';
+        const store = loadTestStore();
+        testLevels.forEach((level, idx) => {
+          const meta = t.levels[idx];
+          const best = store[level.id] && store[level.id].best;
+          const card = document.createElement('article');
+          card.className = 'test-card';
+          card.innerHTML = '<span class="test-level"></span><strong></strong><small></small><div class="test-meta"><span></span><span class="test-best"></span></div>';
+          card.querySelector('.test-level').textContent = `${idx + 1}`;
+          card.querySelector('strong').textContent = meta.name;
+          card.querySelector('small').textContent = meta.desc;
+          card.querySelector('.test-meta span').textContent = `${level.tasks.length} ${t.tasksWord}`;
+          card.querySelector('.test-best').textContent = best != null ? `${t.best}: ${best}%` : t.noBest;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'primary';
+          button.textContent = t.start;
+          button.addEventListener('click', () => startTest(idx));
+          card.appendChild(button);
+          host.appendChild(card);
+        });
+      }
+      function startTest(idx) {
+        testRun = { idx, queue: shuffleTestQueue([...testLevels[idx].tasks]), pos: 0, correct: 0, checked: false, current: null, selectedChoice: null, qStartedAt: Date.now() };
+        $('testLevels').classList.add('hidden');
+        $('testSummary').classList.add('hidden');
+        $('testRun').classList.remove('hidden');
+        renderTestQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function endTestRun() {
+        testRun = null;
+        renderTestLevels();
+      }
+      function renderTestRunChrome() {
+        initTestBoard();
+        const t = testText[currentLanguage];
+        const total = testRun.queue.length;
+        $('testProgressLabel').textContent = `${t.question} ${Math.min(testRun.pos + 1, total)} / ${total}`;
+        $('testLevelLabel').textContent = t.levels[testRun.idx].name;
+        $('testBoardLabel').textContent = t.board;
+        $('testCheckBtn').textContent = t.check;
+        $('testSkipBtn').textContent = t.skip;
+        $('testBackBtn').textContent = t.back;
+        $('testNextBtn').textContent = (testRun.pos + 1 >= total) ? t.finish : t.next;
+        const input = $('testAnswerInput');
+        input.placeholder = t.answerPh;
+        input.setAttribute('aria-label', t.answerPh);
+      }
+      function renderTestQuestion() {
+        const total = testRun.queue.length;
+        const mode = testRun.queue[testRun.pos];
+        const built = buildFreshProblem(mode);
+        testRun.current = {
+          mode, answer: built.answer,
+          kind: built.kind || (typeof built.answer === 'number' ? 'number' : ['<', '>', '='].includes(built.answer) ? 'comparison' : 'fraction'),
+          choices: built.choices || null,
+          answerLabel: (built.choices || []).find((choice) => String(choice.value) === String(built.answer)
+            || (['circle', 'square', 'triangle', 'rectangle'].includes(built.answer) && normalizeShape(String(choice.value)) === built.answer))?.label || null
+        };
+        testRun.checked = false;
+        testRun.selectedChoice = null;
+        testRun.qStartedAt = Date.now();
+        renderTestRunChrome();
+        $('testProgressBar').style.width = `${(testRun.pos / total) * 100}%`;
+        const problemEl = $('testProblem');
+        problemEl.textContent = built.text;
+        problemEl.classList.toggle('word', built.kind === 'word' || built.kind === 'equation');
+        problemEl.classList.toggle('column', built.kind === 'column');
+        $('testHelp').textContent = built.hint || '';
+        const choiceHost = $('testChoiceAnswers');
+        const answerRow = $('testAnswerRow');
+        const input = $('testAnswerInput');
+        choiceHost.textContent = '';
+        const kind = testRun.current.kind;
+        if (kind === 'choice' || kind === 'comparison' || kind === 'parity') {
+          choiceHost.classList.remove('hidden');
+          answerRow.classList.add('hidden');
+          const options = kind === 'choice'
+            ? testRun.current.choices.map((choice) => ({ label: choice.label, value: choice.value }))
+            : kind === 'comparison'
+              ? [{ label: '<', value: '<' }, { label: '>', value: '>' }, { label: '=', value: '=' }]
+              : [{ label: testText[currentLanguage].even, value: 'even' }, { label: testText[currentLanguage].odd, value: 'odd' }];
+          options.forEach((option) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'choice-answer';
+            button.textContent = option.label;
+            button.addEventListener('click', () => {
+              if (!testRun || testRun.checked) return;
+              testRun.selectedChoice = option.value;
+              choiceHost.querySelectorAll('button').forEach((item) => item.classList.toggle('selected', item === button));
+            });
+            choiceHost.appendChild(button);
+          });
+        } else {
+          choiceHost.classList.add('hidden');
+          answerRow.classList.remove('hidden');
+          input.value = '';
+          input.disabled = false;
+          input.inputMode = (kind === 'equation' || kind === 'fraction') ? 'text' : 'numeric';
+          setTimeout(() => { if (testRun && !testRun.checked) input.focus({ preventScroll: true }); }, 30);
+        }
+        const feedback = $('testFeedback');
+        feedback.textContent = '';
+        feedback.className = 'test-feedback';
+        $('testCheckBtn').classList.remove('hidden');
+        $('testSkipBtn').classList.remove('hidden');
+        $('testNextBtn').classList.add('hidden');
+        clearTestBoard();
+      }
+      function testAnswerValue() {
+        if (!testRun || !testRun.current) return null;
+        const kind = testRun.current.kind;
+        if (kind === 'choice' || kind === 'comparison' || kind === 'parity') return testRun.selectedChoice;
+        return $('testAnswerInput').value.trim();
+      }
+      function testIsCorrect(value) {
+        const { answer, kind } = testRun.current;
+        if (value == null || value === '') return false;
+        if (kind === 'equation') return normalizeEquation(String(value)) === answer;
+        if (kind === 'parity') return normalizeParity(String(value)) === answer;
+        if (kind === 'choice') {
+          if (['circle', 'square', 'triangle', 'rectangle'].includes(answer)) return normalizeShape(String(value)) === answer;
+          return String(value) === String(answer);
+        }
+        if (typeof answer === 'number') return Number(value) === answer;
+        if (['<', '>', '='].includes(answer)) return String(value).trim().replace('==', '=') === answer;
+        return normalizeFractionAnswer(String(value)) === answer;
+      }
+      function displayTestAnswer() {
+        const { answer, kind, answerLabel } = testRun.current;
+        const t = testText[currentLanguage];
+        if (answerLabel) return answerLabel;
+        if (kind === 'parity') return answer === 'even' ? t.even : t.odd;
+        return displayAnswer(answer);
+      }
+      function checkTestAnswer() {
+        if (!testRun || testRun.checked) return;
+        const value = testAnswerValue();
+        if (value == null || value === '') {
+          if (testRun.current.kind !== 'choice' && testRun.current.kind !== 'comparison' && testRun.current.kind !== 'parity') $('testAnswerInput').focus();
+          return;
+        }
+        const t = testText[currentLanguage];
+        const ok = testIsCorrect(value);
+        testRun.checked = true;
+        const duration = Date.now() - testRun.qStartedAt;
+        if (globalThis.MathRushProgress) {
+          try { MathRushProgress.recordAttempt(testRun.current.mode, ok, duration, difficultyFor(testRun.current.mode)); } catch (_) { /* Progress stays local to the test. */ }
+        }
+        if (ok) {
+          testRun.correct += 1;
+          try { addProfilePoint(); } catch (_) { /* Header score stays as is. */ }
+        }
+        const feedback = $('testFeedback');
+        feedback.textContent = ok ? t.correct : t.wrong(displayTestAnswer());
+        feedback.className = `test-feedback ${ok ? 'good' : 'bad'}`;
+        $('testAnswerInput').disabled = true;
+        $('testCheckBtn').classList.add('hidden');
+        $('testSkipBtn').classList.add('hidden');
+        $('testNextBtn').classList.remove('hidden');
+        const total = testRun.queue.length;
+        $('testProgressBar').style.width = `${((testRun.pos + 1) / total) * 100}%`;
+      }
+      function skipTestQuestion() {
+        if (!testRun || testRun.checked) return;
+        testRun.checked = true;
+        testRun.pos += 1;
+        if (testRun.pos >= testRun.queue.length) renderTestSummary();
+        else renderTestQuestion();
+      }
+      function nextTestQuestion() {
+        if (!testRun || !testRun.checked) return;
+        testRun.pos += 1;
+        if (testRun.pos >= testRun.queue.length) renderTestSummary();
+        else renderTestQuestion();
+      }
+      function renderTestSummary() {
+        const t = testText[currentLanguage];
+        const level = testLevels[testRun.idx];
+        const total = testRun.queue.length;
+        const correct = testRun.correct;
+        const pct = total ? Math.round((correct / total) * 100) : 0;
+        const pass = pct >= TEST_PASS;
+        saveTestBest(level.id, pct);
+        testRun = null;
+        $('testLevels').classList.add('hidden');
+        $('testRun').classList.add('hidden');
+        const box = $('testSummary');
+        box.classList.remove('hidden');
+        box.innerHTML = '<h3></h3><div class="test-score"></div><p></p><div class="test-actions"><button class="primary" type="button"></button><button class="secondary" type="button"></button></div>';
+        box.querySelector('h3').textContent = pass ? t.passed : t.failed;
+        box.querySelector('.test-score').textContent = `${pct}%`;
+        box.querySelector('p').textContent = `${t.levels[testLevels.indexOf(level)].name} · ${correct} / ${total}`;
+        const [retryButton, levelsButton] = box.querySelectorAll('button');
+        retryButton.textContent = t.retry;
+        levelsButton.textContent = t.toLevels || t.back;
+        retryButton.addEventListener('click', () => startTest(testLevels.indexOf(level)));
+        levelsButton.addEventListener('click', renderTestLevels);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      // Scratch board: same zero-dependency canvas engine as the derivatives page.
+      function initTestBoard() {
+        const canvas = $('testBoard');
+        if (!canvas) return;
+        const toolsHost = $('testTools');
+        const t = testText[currentLanguage];
+        let state = canvas._board;
+        if (!state) {
+          state = { color: '#101828', tool: 'pen', strokes: [], redo: [], drawing: null };
+          canvas._board = state;
+          const redraw = () => {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+            state.strokes.forEach((stroke) => drawTestStroke(ctx, stroke));
+          };
+          state.redraw = redraw;
+          const point = (event) => {
+            const rect = canvas.getBoundingClientRect();
+            return { x: (event.clientX - rect.left) / rect.width, y: (event.clientY - rect.top) / rect.height };
+          };
+          canvas.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            try { canvas.setPointerCapture(event.pointerId); } catch (_) { /* Mouse input works without capture. */ }
+            state.drawing = { tool: state.tool, color: state.color, points: [point(event)] };
+            state.strokes.push(state.drawing);
+            state.redo.length = 0;
+            drawTestStroke(canvas.getContext('2d'), state.drawing);
+          });
+          canvas.addEventListener('pointermove', (event) => {
+            if (!state.drawing) return;
+            event.preventDefault();
+            state.drawing.points.push(point(event));
+            redraw();
+          });
+          const stop = () => { state.drawing = null; };
+          canvas.addEventListener('pointerup', stop);
+          canvas.addEventListener('pointercancel', stop);
+          window.addEventListener('resize', () => sizeTestBoard());
+        }
+        toolsHost.textContent = '';
+        const pens = [
+          { color: '#101828', label: '●' },
+          { color: '#1570ef', label: '●' },
+          { color: '#d92d20', label: '●' }
+        ];
+        pens.forEach((pen) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = `tb-btn tb-swatch${state.tool === 'pen' && state.color === pen.color ? ' active' : ''}`;
+          button.innerHTML = '<i></i>';
+          button.querySelector('i').style.background = pen.color;
+          button.title = pen.color;
+          button.setAttribute('aria-label', pen.color);
+          button.addEventListener('click', () => {
+            state.tool = 'pen';
+            state.color = pen.color;
+            toolsHost.querySelectorAll('.tb-btn').forEach((item) => item.classList.remove('active'));
+            button.classList.add('active');
+          });
+          toolsHost.appendChild(button);
+        });
+        const eraser = document.createElement('button');
+        eraser.type = 'button';
+        eraser.className = `tb-btn${state.tool === 'eraser' ? ' active' : ''}`;
+        eraser.textContent = '⌫';
+        eraser.title = 'eraser';
+        eraser.addEventListener('click', () => {
+          state.tool = 'eraser';
+          toolsHost.querySelectorAll('.tb-btn').forEach((item) => item.classList.remove('active'));
+          eraser.classList.add('active');
+        });
+        toolsHost.appendChild(eraser);
+        const undo = document.createElement('button');
+        undo.type = 'button';
+        undo.className = 'tb-btn';
+        undo.textContent = '↶';
+        undo.addEventListener('click', () => { if (state.strokes.length) { state.redo.push(state.strokes.pop()); state.redraw(); } });
+        toolsHost.appendChild(undo);
+        const redo = document.createElement('button');
+        redo.type = 'button';
+        redo.className = 'tb-btn';
+        redo.textContent = '↷';
+        redo.addEventListener('click', () => { if (state.redo.length) { state.strokes.push(state.redo.pop()); state.redraw(); } });
+        toolsHost.appendChild(redo);
+        const clear = document.createElement('button');
+        clear.type = 'button';
+        clear.className = 'tb-btn';
+        clear.textContent = t.clear;
+        clear.addEventListener('click', clearTestBoard);
+        toolsHost.appendChild(clear);
+        canvas._boardLang = currentLanguage;
+        sizeTestBoard();
+      }
+      function drawTestStroke(ctx, stroke) {
+        const canvas = $('testBoard');
+        if (!stroke.points.length || !canvas) return;
+        ctx.save();
+        ctx.globalCompositeOperation = stroke.tool === 'eraser' ? 'destination-out' : 'source-over';
+        ctx.strokeStyle = stroke.color;
+        ctx.lineWidth = stroke.tool === 'eraser' ? 26 : 3.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        stroke.points.forEach((p, i) => {
+          const x = p.x * canvas.clientWidth, y = p.y * canvas.clientHeight;
+          if (i) ctx.lineTo(x, y);
+          else ctx.moveTo(x, y);
+        });
+        ctx.stroke();
+        ctx.restore();
+      }
+      function sizeTestBoard() {
+        const canvas = $('testBoard');
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        if (!rect.width) return;
+        const d = Math.min(devicePixelRatio || 1, 2);
+        canvas.width = Math.round(rect.width * d);
+        canvas.height = Math.round(rect.height * d);
+        canvas.getContext('2d').setTransform(d, 0, 0, d, 0, 0);
+        if (canvas._board) canvas._board.redraw();
+      }
+      function clearTestBoard() {
+        const canvas = $('testBoard');
+        if (!canvas || !canvas._board) return;
+        canvas._board.strokes = [];
+        canvas._board.redo = [];
+        canvas.getContext('2d').clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+      }
       function showAppView(view) {
         if (gameActive) goToMenu();
-        [menuScreen, mapView, profileView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
-        const target = view === 'map' ? mapView : view === 'profile' ? profileView : menuScreen;
+        if (testRun) endTestRun();
+        [menuScreen, mapView, profileView, testView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
+        const target = view === 'map' ? mapView : view === 'profile' ? profileView : view === 'test' ? testView : menuScreen;
         target.classList.remove('hidden');
         document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === view));
         if (view === 'map') renderSpaMap();
         if (view === 'profile') renderSpaProfile();
+        if (view === 'test') renderTestLevels();
         if (history.replaceState) history.replaceState(null, '', `#${view}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -2322,6 +2819,7 @@
         gameScreen.classList.add('hidden');
         mapView.classList.add('hidden');
         profileView.classList.add('hidden');
+        testView.classList.add('hidden');
         menuScreen.classList.remove('hidden');
         setSettingsOpen(false);
         document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === 'tasks'));
@@ -2330,6 +2828,16 @@
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
       document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => showAppView(button.dataset.appView)));
+      $('testCheckBtn').addEventListener('click', checkTestAnswer);
+      $('testNextBtn').addEventListener('click', nextTestQuestion);
+      $('testSkipBtn').addEventListener('click', skipTestQuestion);
+      $('testBackBtn').addEventListener('click', () => { testRun = null; renderTestLevels(); });
+      $('testAnswerInput').addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' || !testRun) return;
+        event.preventDefault();
+        if (testRun.checked) nextTestQuestion();
+        else checkTestAnswer();
+      });
       let settingsCloseTimer = null, languageCloseTimer = null;
       const openLanguage = () => { clearTimeout(languageCloseTimer); languagePopover.classList.remove('hidden'); languageButton.setAttribute('aria-expanded', 'true'); };
       const closeLanguageSoon = () => { clearTimeout(languageCloseTimer); languageCloseTimer = setTimeout(() => { languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); }, 180); };
@@ -2358,7 +2866,7 @@
       const requestedMode = globalThis.MathRushProgress && MathRushProgress.modeForSkill(requestedSkill);
       const requestedCard = requestedMode && document.querySelector(`.mode-card[data-mode="${requestedMode}"]`);
       if (requestedCard) { selectMode(requestedCard); setTimeout(startGame, 0); }
-      else showAppView(['map', 'profile'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'tasks');
+      else showAppView(['map', 'profile', 'test'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'tasks');
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') { if (!settingsPanel.classList.contains('hidden')) setSettingsOpen(false); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); }
         const tagName = event.target && event.target.tagName;
