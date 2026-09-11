@@ -133,34 +133,56 @@
     .view-heading h2 { margin: 0; font-size: 28px; letter-spacing: -.035em; }
     .view-heading p { margin: 0; color: var(--muted); font-size: 13px; }
     .map-layout { display: block; }
-    .skill-map { position: relative; display: grid; grid-template-columns: 76px repeat(3, minmax(0, 1fr)); gap: 14px clamp(12px, 3vw, 34px); min-height: 720px; padding: 42px 24px 100px; overflow: hidden; border: 1px solid var(--line); border-radius: 28px; background: radial-gradient(circle at 50% 100%, rgba(99,91,255,.14), transparent 34%), linear-gradient(180deg, rgba(255,255,255,.92), rgba(246,247,255,.9)); }
+    .map-layout { display: block; padding: 16px; border-radius: 26px; background: linear-gradient(135deg, #9a7448 0%, #7a5a34 22%, #5d4226 45%, #8a6844 70%, #6b4e2e 100%); box-shadow: 0 24px 60px rgba(60,40,15,.35), inset 0 2px 2px rgba(255,255,255,.35), inset 0 -3px 6px rgba(0,0,0,.35); }
+    .board-plaque { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 2px auto 12px; padding: 8px 22px; width: fit-content; border-radius: 10px; color: #f5e7c8; background: linear-gradient(180deg, #3a2c18, #241a0e); border: 1px solid #d9b77a; box-shadow: 0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.15); font-size: 13px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
+    .map-stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 12px; }
+    .map-stat { padding: 10px 14px; border-radius: 14px; color: #f3ecdc; background: rgba(0,0,0,.32); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(2px); }
+    .map-stat span { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+    .map-stat strong { display: block; font-size: 20px; font-weight: 900; }
+    .map-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0 4px 12px; color: #f3ecdc; font-size: 12px; font-weight: 700; }
+    .map-legend i { display: inline-block; width: 26px; height: 4px; border-radius: 99px; margin-right: 6px; vertical-align: middle; }
+    .skill-map { position: relative; display: grid; grid-template-columns: 64px repeat(3, minmax(0, 1fr)); gap: 18px clamp(14px, 3vw, 34px); min-height: 760px; padding: 44px 24px 90px; overflow: hidden; border-radius: 14px; color: #f2f4f8; background: radial-gradient(ellipse at 18% 8%, rgba(255,255,255,.09), transparent 42%), radial-gradient(ellipse at 85% 95%, rgba(255,255,255,.07), transparent 38%), repeating-linear-gradient(0deg, transparent 0 34px, rgba(255,255,255,.022) 34px 35px), linear-gradient(180deg, #26334e 0%, #1d2740 45%, #161f33 100%); box-shadow: inset 0 0 80px rgba(0,0,0,.5), inset 0 2px 18px rgba(0,0,0,.6); }
+    .skill-map::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"); }
     .trident-lines { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
-    .trident-path { fill: none; stroke-width: 3; stroke-linecap: round; opacity: .2; }
-    .trident-path.arithmetic { stroke: #f7904a; }
-    .trident-path.algebra { stroke: #635bff; }
-    .trident-path.geometry { stroke: #2e90fa; }
-    .dependency-path { fill: none; stroke: #98a2b3; stroke-width: 1.5; stroke-linecap: round; opacity: .58; }
-    .dependency-path.cross-branch { stroke: #7f78e8; stroke-dasharray: 5 5; opacity: .72; }
-    .skill-map.network-active .dependency-path, .skill-map.network-active .trident-path { opacity: .08; }
-    .skill-map.network-active .dependency-path.network-focus { stroke-width: 3; stroke-dasharray: none; opacity: 1; filter: drop-shadow(0 2px 3px rgba(99,91,255,.25)); }
-    .branch-heading { position: relative; z-index: 2; padding: 9px 12px; border-radius: 999px; color: #fff; background: var(--branch-color); box-shadow: 0 8px 22px color-mix(in srgb, var(--branch-color) 28%, transparent); font-size: 15px; font-weight: 850; text-align: center; }
-    .branch-heading.arithmetic, .skill-slot.arithmetic { --branch-color: #e66b2c; }
-    .branch-heading.algebra, .skill-slot.algebra { --branch-color: #635bff; }
-    .branch-heading.geometry, .skill-slot.geometry { --branch-color: #1570ef; }
-    .map-corner { position: relative; z-index: 2; display: grid; place-items: center; color: var(--muted); font-size: 11px; font-weight: 850; text-transform: uppercase; }
-    .level-label { position: relative; z-index: 2; display: grid; place-items: start center; padding-top: 19px; border-top: 1px dashed #d7dae3; color: var(--accent-dark); font-size: 12px; font-weight: 900; text-align: center; }
-    .level-label strong { display: block; font-size: 22px; line-height: 1; }
-    .skill-slot { position: relative; z-index: 2; padding-top: 14px; border-top: 1px dashed #d7dae3; }
-    .skill-slot.empty { min-height: 74px; }
-    .skill-node { position: relative; width: 100%; min-height: 70px; margin: 0; padding: 13px 14px; border: 2px solid color-mix(in srgb, var(--branch-color) 32%, var(--line)); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 8px 24px rgba(16,24,40,.08); text-align: left; }
-    .skill-node:hover, .skill-node.active { border-color: var(--branch-color); box-shadow: 0 10px 28px color-mix(in srgb, var(--branch-color) 20%, transparent); transform: translateY(-2px); }
-    .skill-map.network-active .skill-node { opacity: .45; }
-    .skill-map.network-active .skill-node.network-related { opacity: .82; }
-    .skill-map.network-active .skill-node.network-focus { z-index: 4; border-color: var(--branch-color); opacity: 1; box-shadow: 0 0 0 5px color-mix(in srgb, var(--branch-color) 14%, transparent), 0 12px 30px rgba(16,24,40,.14); transform: translateY(-3px) scale(1.025); }
-    .skill-node.mastered { border-color: #75d9aa; background: #ecfdf3; }
-    .skill-node.locked { opacity: .5; }
+    .trident-path { fill: none; stroke-width: 3; stroke-linecap: round; opacity: .28; stroke-dasharray: 1 7; }
+    .trident-path.arithmetic { stroke: #ffb37a; }
+    .trident-path.algebra { stroke: #b7adff; }
+    .trident-path.geometry { stroke: #7cc4ff; }
+    .dependency-path { fill: none; stroke: #f2ecdc; stroke-width: 1.7; stroke-linecap: round; opacity: .5; filter: drop-shadow(0 1px 1px rgba(0,0,0,.6)); }
+    .dependency-path.cross-branch { stroke: #c4b5fd; stroke-dasharray: 6 5; opacity: .85; }
+    .skill-map.network-active .dependency-path, .skill-map.network-active .trident-path { opacity: .07; }
+    .skill-map.network-active .dependency-path.network-focus { stroke-width: 3; stroke-dasharray: none; opacity: 1; filter: drop-shadow(0 0 6px rgba(255,255,255,.7)); }
+    .branch-heading { position: relative; z-index: 2; padding: 10px 12px; border-radius: 12px; color: #fff; background: color-mix(in srgb, var(--branch-color) 78%, #101828); border: 2px dashed rgba(255,255,255,.55); box-shadow: 0 8px 22px rgba(0,0,0,.4); font-size: 15px; font-weight: 900; letter-spacing: .04em; text-align: center; text-transform: uppercase; }
+    .branch-heading.arithmetic, .skill-slot.arithmetic { --branch-color: #f0822e; --pin-color: #ff5d5d; }
+    .branch-heading.algebra, .skill-slot.algebra { --branch-color: #7c6cff; --pin-color: #ffd23f; }
+    .branch-heading.geometry, .skill-slot.geometry { --branch-color: #2e90fa; --pin-color: #3ddc84; }
+    .map-corner { position: relative; z-index: 2; display: grid; place-items: center; color: rgba(255,255,255,.65); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
+    .level-label { position: relative; z-index: 2; display: grid; place-items: start center; padding-top: 18px; border-top: 2px dashed rgba(255,255,255,.22); color: #ffe9b8; font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
+    .level-label strong { display: block; font-size: 24px; line-height: 1; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+    .skill-slot { position: relative; z-index: 2; padding-top: 16px; border-top: 2px dashed rgba(255,255,255,.22); }
+    .skill-slot.empty { min-height: 74px; border-top-style: dotted; opacity: .5; }
+    .skill-node { position: relative; width: 100%; min-height: 78px; margin: 0; padding: 18px 14px 12px; border: 0; border-radius: 4px 4px 12px 4px; color: var(--ink); background: linear-gradient(180deg, #fffdf4, #fdf3d8); box-shadow: 0 10px 22px rgba(0,0,0,.45), 0 2px 0 rgba(0,0,0,.2); text-align: left; transition: transform .16s ease, box-shadow .16s ease; }
+    .skill-slot.algebra .skill-node { transform: rotate(.5deg); }
+    .skill-slot.geometry .skill-node { transform: rotate(-.5deg); }
+    .skill-slot.arithmetic .skill-node { transform: rotate(.25deg); }
+    .skill-node::before { content: ""; position: absolute; top: -8px; left: 50%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff 0 18%, var(--pin-color) 20% 100%); box-shadow: 0 3px 6px rgba(0,0,0,.5), inset 0 -2px 3px rgba(0,0,0,.3); }
+    .skill-node::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; border-radius: 4px 4px 0 0; background: var(--branch-color); opacity: .9; }
+    .skill-node:hover, .skill-node.active { box-shadow: 0 16px 32px rgba(0,0,0,.5); transform: translateY(-3px) rotate(0deg) scale(1.015); }
+    .skill-map.network-active .skill-node { opacity: .4; }
+    .skill-map.network-active .skill-node.network-related { opacity: .9; }
+    .skill-map.network-active .skill-node.network-focus { z-index: 4; opacity: 1; outline: 3px solid #fff; box-shadow: 0 0 0 6px color-mix(in srgb, var(--branch-color) 55%, transparent), 0 18px 40px rgba(0,0,0,.5); transform: translateY(-3px) scale(1.03) rotate(0deg); }
+    .skill-node.mastered { background: linear-gradient(180deg, #eefdf3, #d9f5e3); }
+    .skill-node.mastered::after { background: #12b76a; }
+    .skill-node.locked { opacity: .72; filter: saturate(.7); }
+    .skill-node strong { display: block; font-size: 14px; line-height: 1.25; }
     .skill-node span { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; }
-    .skill-detail { margin-top: 16px; min-height: 0; padding: 20px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #5f57f5, #3f37c9); }
+    .skill-node em { display: block; margin-top: 4px; color: var(--muted); font-size: 11.5px; font-style: normal; line-height: 1.35; }
+    .node-meta { display: flex !important; align-items: center; justify-content: space-between; margin-top: 8px; }
+    .node-meta b { font-size: 12px; }
+    .mastery-track { height: 6px; overflow: hidden; margin-top: 6px; border-radius: 99px; background: #e7e2cf; }
+    .mastery-track i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--branch-color), #12b76a); }
+    .node-req { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 2px 8px; border-radius: 99px; background: rgba(0,0,0,.06); font-size: 10.5px; font-weight: 800; }
+    .skill-detail { margin-top: 16px; min-height: 0; padding: 22px; border-radius: 18px; color: #fff; background: linear-gradient(145deg, #2b3560, #171e38); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 18px 44px rgba(0,0,0,.35); }
     .skill-detail h3 { margin: 0 0 8px; font-size: 23px; }
     .skill-detail p { margin: 0 0 18px; color: rgba(255,255,255,.8); }
     .skill-detail .primary { color: var(--accent-dark); background: #fff; box-shadow: none; }
@@ -262,7 +284,7 @@
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .skill-map { display: block; min-height: 0; padding: 22px 16px 34px; } .trident-lines, .map-corner, .branch-heading { display: none; } .level-label { display: block; margin: 22px 0 8px; padding: 9px 12px; border: 0; border-radius: 12px; background: #eeecff; text-align: left; } .level-label strong { display: inline; margin-left: 4px; font-size: inherit; } .skill-slot { margin-top: 8px; padding: 0; border: 0; } .skill-slot.empty { display: none; } .skill-slot::before { content: attr(data-branch); display: block; margin: 0 0 4px 4px; color: var(--branch-color); font-size: 11px; font-weight: 850; } .skill-detail { position: static; } }
+    @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .map-layout { padding: 10px; } .map-stats { grid-template-columns: repeat(2, 1fr); } .skill-map { display: block; min-height: 0; padding: 22px 16px 34px; } .trident-lines, .map-corner, .branch-heading { display: none; } .level-label { display: block; margin: 22px 0 8px; padding: 9px 12px; border: 0; border-radius: 12px; background: rgba(255,255,255,.12); color: #fff; text-align: left; } .level-label strong { display: inline; margin-left: 4px; font-size: inherit; color: #ffe9b8; } .skill-slot { margin-top: 8px; padding: 0; border: 0; } .skill-slot.empty { display: none; } .skill-slot::before { content: attr(data-branch); display: block; margin: 0 0 4px 4px; color: #ffe9b8; font-size: 11px; font-weight: 850; } .skill-detail { position: static; } }
     @media (pointer: coarse) { .embedded-keypad:not(.hidden) { display: grid; } .game-screen .answer-row input { min-height: 58px; font-size: 24px; caret-color: transparent; } }
     @media (pointer: coarse) and (min-width: 700px) { .embedded-keypad { grid-template-columns: repeat(6, minmax(0, 1fr)); } .keypad-key { min-height: 54px; } }
     @media (max-width: 520px) { body { padding: 8px; } .page-nav { top: 0; margin: 0; padding:9px 10px; } .page-nav .brand { display:none; } .page-nav-links { flex:1; } .page-nav-links button { padding:7px 8px; font-size:11px; } .nav-icon { width:34px; height:34px; } .top, .screen { padding-left: 16px; padding-right: 16px; } .card { border-radius: 22px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid, .choice-answers { grid-template-columns: 1fr; } .menu-heading, .view-heading { display: block; } .menu-heading p, .view-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats, .profile-summary { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .setting-wide, .mix-options { grid-column: auto; } .reward { right: 0; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .settings-panel { top: 60px; right: 8px; width: calc(100% - 16px); max-height: calc(100vh - 72px); } .exit-button { top: 10px; left: 10px; min-height: 40px; padding: 9px 12px; } .game-active .page-nav { top:0; right:0; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
@@ -401,6 +423,12 @@
           <article class="mode-card" data-mode="algebra-inequalities"><button class="mode-card-main" type="button"><span class="mode-icon">&gt;</span><strong>Неравенства</strong><small>Найди граничное целое число</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <article class="mode-card" data-mode="algebra-functions"><button class="mode-card-main" type="button"><span class="mode-icon">f</span><strong>Функции</strong><small>Найди значение f(x)</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <article class="mode-card" data-mode="algebra-linear-functions"><button class="mode-card-main" type="button"><span class="mode-icon">f(x)</span><strong>Линейные функции</strong><small>f(x) = ax + b</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-powers"><button class="mode-card-main" type="button"><span class="mode-icon">x²</span><strong>Степени</strong><small>Квадраты, кубы и степени</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-roots"><button class="mode-card-main" type="button"><span class="mode-icon">√</span><strong>Квадратные корни</strong><small>Корни из точных квадратов</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-polynomials"><button class="mode-card-main" type="button"><span class="mode-icon">P(x)</span><strong>Многочлены</strong><small>Значения ax²+bx+c</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-quadratics"><button class="mode-card-main" type="button"><span class="mode-icon">x²=</span><strong>Квадратные уравнения</strong><small>x² = число, (x−a)(x−b)=0</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-systems"><button class="mode-card-main" type="button"><span class="mode-icon">{}</span><strong>Системы уравнений</strong><small>Два уравнения, два неизвестных</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
+          <article class="mode-card" data-mode="algebra-sequences"><button class="mode-card-main" type="button"><span class="mode-icon">aₙ</span><strong>Прогрессии</strong><small>n-й член арифметической прогрессии</small></button><button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button><div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div></article>
           <h3 class="mode-category" data-category="fractions">Дроби</h3>
           <article class="mode-card" data-mode="fractions-simplify">
             <button class="mode-card-main" type="button"><span class="mode-icon">½</span><strong>Сокращение дробей</strong><small>Например: 6/8 = 3/4</small></button>
@@ -512,7 +540,13 @@
 
       <section id="mapView" class="screen spa-view hidden">
         <div class="view-heading"><div><h2 id="mapViewTitle">Карта знаний</h2><p id="mapViewSubtitle">Три направления развития: арифметика, алгебра и геометрия.</p></div></div>
-        <div class="map-layout"><div id="spaBranches" class="skill-map"></div></div>
+        <div class="map-layout">
+          <div class="board-plaque">★ Математика · Knowledge Board ★</div>
+          <div id="mapStats" class="map-stats"></div>
+          <div class="map-legend"><span><i style="background:#f0822e"></i>Арифметика</span><span><i style="background:#7c6cff"></i>Алгебра</span><span><i style="background:#2e90fa"></i>Геометрия</span><span><i style="background:#f2ecdc"></i>связь внутри ветки</span><span><i style="background:#c4b5fd"></i>связь между ветками</span><span>Наведи на карточку — подсветится вся цепочка зависимостей</span></div>
+          <div id="spaBranches" class="skill-map"></div>
+          <div id="mapDetail" class="skill-detail"></div>
+        </div>
       </section>
 
       <section id="profileView" class="screen spa-view hidden">
@@ -748,12 +782,20 @@
         de: { category: 'Funktionen und Ungleichungen', modes: { 'algebra-inequalities': ['Ungleichungen', 'Finde die kleinste ganze Zahl', 'Finde die kleinste ganze Zahl, welche die Ungleichung erfüllt.'], 'algebra-functions': ['Funktionen', 'Berechne f(x)', 'Setze den gegebenen Wert für x ein und berechne die Funktion.'], 'algebra-linear-functions': ['Lineare Funktionen', 'f(x) = ax + b', 'Berechne Werte linearer Funktionen.'], 'geometry-shapes': ['Figuren erkennen', 'Kreis, Quadrat, Dreieck und Rechteck', 'Benenne die gezeigte Figur.'], 'geometry-angles': ['Winkel', 'Nebenwinkel und Vollwinkel', 'Finde den unbekannten Winkel mit 180° oder 360°.'], 'geometry-triangles': ['Dreiecke', 'Winkelsumme 180°', 'Finde den dritten Winkel eines Dreiecks.'], 'geometry-coordinates': ['Koordinaten', 'Abstand zwischen Punkten', 'Finde den Abstand zwischen zwei waagerecht oder senkrecht liegenden Punkten.'] } }
       };
       Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, newTopicText[key].modes); languageData[key].categories.functions = newTopicText[key].category; });
+      const algebraBoardText = {
+        ru: { category: 'Степени и уравнения', modes: { 'algebra-powers': ['Степени', 'Квадраты, кубы и степени', 'Вычисляй a в степени n: квадраты, кубы и небольшие показатели.'], 'algebra-roots': ['Квадратные корни', 'Корни из точных квадратов', 'Находи корень из точных квадратов до 400.'], 'algebra-polynomials': ['Многочлены', 'Значения ax²+bx+c', 'Подставляй x в многочлен и вычисляй значение.'], 'algebra-quadratics': ['Квадратные уравнения', 'x² = число и разложение', 'Решай x² = k и уравнения вида (x−a)(x−b)=0.'], 'algebra-systems': ['Системы уравнений', 'Два уравнения — одно решение', 'Решай простые системы сложением: найди x и y.'], 'algebra-sequences': ['Прогрессии', 'n-й член прогрессии', 'Находи n-й член арифметической прогрессии.'] } },
+        en: { category: 'Powers and equations', modes: { 'algebra-powers': ['Powers', 'Squares, cubes and exponents', 'Evaluate a to the power n: squares, cubes and small exponents.'], 'algebra-roots': ['Square roots', 'Roots of perfect squares', 'Find square roots of perfect squares up to 400.'], 'algebra-polynomials': ['Polynomials', 'Values of ax²+bx+c', 'Substitute x into a polynomial and evaluate it.'], 'algebra-quadratics': ['Quadratic equations', 'x² = k and factored form', 'Solve x² = k and (x−a)(x−b)=0 equations.'], 'algebra-systems': ['Systems of equations', 'Two equations, one solution', 'Solve simple systems by elimination: find x and y.'], 'algebra-sequences': ['Progressions', 'n-th term of a progression', 'Find the n-th term of an arithmetic progression.'] } },
+        fr: { category: 'Puissances et équations', modes: { 'algebra-powers': ['Puissances', 'Carrés, cubes et exposants', 'Calcule a puissance n : carrés, cubes et petits exposants.'], 'algebra-roots': ['Racines carrées', 'Racines des carrés parfaits', 'Trouve la racine des carrés parfaits jusqu’à 400.'], 'algebra-polynomials': ['Polynômes', 'Valeurs de ax²+bx+c', 'Remplace x dans le polynôme et calcule.'], 'algebra-quadratics': ['Équations du second degré', 'x² = k et forme factorisée', 'Résous x² = k et (x−a)(x−b)=0.'], 'algebra-systems': ['Systèmes d’équations', 'Deux équations, une solution', 'Résous des systèmes simples par addition.'], 'algebra-sequences': ['Suites', 'n-ième terme', 'Trouve le n-ième terme d’une suite arithmétique.'] } },
+        es: { category: 'Potencias y ecuaciones', modes: { 'algebra-powers': ['Potencias', 'Cuadrados, cubos y exponentes', 'Calcula a elevado a n: cuadrados, cubos y exponentes pequeños.'], 'algebra-roots': ['Raíces cuadradas', 'Raíces de cuadrados perfectos', 'Halla la raíz de cuadrados perfectos hasta 400.'], 'algebra-polynomials': ['Polinomios', 'Valores de ax²+bx+c', 'Sustituye x en el polinomio y calcula.'], 'algebra-quadratics': ['Ecuaciones cuadráticas', 'x² = k y forma factorizada', 'Resuelve x² = k y (x−a)(x−b)=0.'], 'algebra-systems': ['Sistemas de ecuaciones', 'Dos ecuaciones, una solución', 'Resuelve sistemas sencillos por eliminación.'], 'algebra-sequences': ['Progresiones', 'Término n-ésimo', 'Halla el término n-ésimo de una progresión aritmética.'] } },
+        de: { category: 'Potenzen und Gleichungen', modes: { 'algebra-powers': ['Potenzen', 'Quadrate, Kuben, Exponenten', 'Berechne a hoch n: Quadrate, Kuben und kleine Exponenten.'], 'algebra-roots': ['Quadratwurzeln', 'Wurzeln aus Quadratzahlen', 'Finde Wurzeln aus Quadratzahlen bis 400.'], 'algebra-polynomials': ['Polynome', 'Werte von ax²+bx+c', 'Setze x ins Polynom ein und berechne.'], 'algebra-quadratics': ['Quadratische Gleichungen', 'x² = k und Faktorform', 'Löse x² = k und (x−a)(x−b)=0.'], 'algebra-systems': ['Gleichungssysteme', 'Zwei Gleichungen, eine Lösung', 'Löse einfache Systeme per Addition.'], 'algebra-sequences': ['Folgen', 'n-tes Glied', 'Finde das n-te Glied einer arithmetischen Folge.'] } }
+      };
+      Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, algebraBoardText[key].modes); languageData[key].categories.powers = algebraBoardText[key].category; });
       const mapSkillText = {
-        ru: { addition: 'Сложение', subtraction: 'Вычитание', multiplication: 'Умножение', division: 'Деление', 'column-addition': 'Сложение в столбик', 'column-subtraction': 'Вычитание в столбик', 'column-multiplication': 'Умножение в столбик', 'chain-addition': 'Действия по шагам', parentheses: 'Скобки', 'order-of-operations': 'Порядок действий', fractions: 'Дроби', percentages: 'Проценты', shapes: 'Фигуры', perimeter: 'Периметр', area: 'Площадь', coordinates: 'Координаты' },
-        en: { addition: 'Addition', subtraction: 'Subtraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Column addition', 'column-subtraction': 'Column subtraction', 'column-multiplication': 'Column multiplication', 'chain-addition': 'Step-by-step operations', parentheses: 'Parentheses', 'order-of-operations': 'Order of operations', fractions: 'Fractions', percentages: 'Percentages', shapes: 'Shapes', perimeter: 'Perimeter', area: 'Area', coordinates: 'Coordinates' },
-        fr: { addition: 'Addition', subtraction: 'Soustraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Addition posée', 'column-subtraction': 'Soustraction posée', 'column-multiplication': 'Multiplication posée', 'chain-addition': 'Calculs par étapes', parentheses: 'Parenthèses', 'order-of-operations': 'Ordre des opérations', fractions: 'Fractions', percentages: 'Pourcentages', shapes: 'Figures', perimeter: 'Périmètre', area: 'Aire', coordinates: 'Coordonnées' },
-        es: { addition: 'Suma', subtraction: 'Resta', multiplication: 'Multiplicación', division: 'División', 'column-addition': 'Suma en columna', 'column-subtraction': 'Resta en columna', 'column-multiplication': 'Multiplicación en columna', 'chain-addition': 'Operaciones paso a paso', parentheses: 'Paréntesis', 'order-of-operations': 'Orden de operaciones', fractions: 'Fracciones', percentages: 'Porcentajes', shapes: 'Figuras', perimeter: 'Perímetro', area: 'Área', coordinates: 'Coordenadas' },
-        de: { addition: 'Addition', subtraction: 'Subtraktion', multiplication: 'Multiplikation', division: 'Division', 'column-addition': 'Schriftliche Addition', 'column-subtraction': 'Schriftliche Subtraktion', 'column-multiplication': 'Schriftliche Multiplikation', 'chain-addition': 'Schrittweise rechnen', parentheses: 'Klammern', 'order-of-operations': 'Rechenreihenfolge', fractions: 'Brüche', percentages: 'Prozentrechnung', shapes: 'Figuren', perimeter: 'Umfang', area: 'Fläche', coordinates: 'Koordinaten' }
+        ru: { addition: 'Сложение', subtraction: 'Вычитание', multiplication: 'Умножение', division: 'Деление', 'column-addition': 'Сложение в столбик', 'column-subtraction': 'Вычитание в столбик', 'column-multiplication': 'Умножение в столбик', 'chain-addition': 'Действия по шагам', parentheses: 'Скобки', 'order-of-operations': 'Порядок действий', fractions: 'Дроби', percentages: 'Проценты', shapes: 'Фигуры', perimeter: 'Периметр', area: 'Площадь', coordinates: 'Координаты', powers: 'Степени', roots: 'Квадратные корни', polynomials: 'Многочлены', quadratics: 'Квадратные уравнения', systems: 'Системы уравнений', sequences: 'Прогрессии', expressions: 'Простые выражения', 'equation-add': 'Уравнения x+a=b', 'equation-divide': 'Уравнения x/a=b', 'equation-multiply': 'Уравнения ax=b', 'equation-two-step': 'Уравнения ax+b=c', 'linear-equations': 'Линейные уравнения', inequalities: 'Неравенства', functions: 'Функции', 'linear-functions': 'Линейные функции' },
+        en: { addition: 'Addition', subtraction: 'Subtraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Column addition', 'column-subtraction': 'Column subtraction', 'column-multiplication': 'Column multiplication', 'chain-addition': 'Step-by-step operations', parentheses: 'Parentheses', 'order-of-operations': 'Order of operations', fractions: 'Fractions', percentages: 'Percentages', shapes: 'Shapes', perimeter: 'Perimeter', area: 'Area', coordinates: 'Coordinates', powers: 'Powers', roots: 'Square roots', polynomials: 'Polynomials', quadratics: 'Quadratic equations', systems: 'Systems of equations', sequences: 'Progressions', expressions: 'Simple expressions', 'equation-add': 'Equations x+a=b', 'equation-divide': 'Equations x/a=b', 'equation-multiply': 'Equations ax=b', 'equation-two-step': 'Equations ax+b=c', 'linear-equations': 'Linear equations', inequalities: 'Inequalities', functions: 'Functions', 'linear-functions': 'Linear functions' },
+        fr: { addition: 'Addition', subtraction: 'Soustraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Addition posée', 'column-subtraction': 'Soustraction posée', 'column-multiplication': 'Multiplication posée', 'chain-addition': 'Calculs par étapes', parentheses: 'Parenthèses', 'order-of-operations': 'Ordre des opérations', fractions: 'Fractions', percentages: 'Pourcentages', shapes: 'Figures', perimeter: 'Périmètre', area: 'Aire', coordinates: 'Coordonnées', powers: 'Puissances', roots: 'Racines carrées', polynomials: 'Polynômes', quadratics: 'Équations du second degré', systems: 'Systèmes', sequences: 'Suites', expressions: 'Expressions simples', 'equation-add': 'Équations x+a=b', 'equation-divide': 'Équations x/a=b', 'equation-multiply': 'Équations ax=b', 'equation-two-step': 'Équations ax+b=c', 'linear-equations': 'Équations linéaires', inequalities: 'Inégalités', functions: 'Fonctions', 'linear-functions': 'Fonctions affines' },
+        es: { addition: 'Suma', subtraction: 'Resta', multiplication: 'Multiplicación', division: 'División', 'column-addition': 'Suma en columna', 'column-subtraction': 'Resta en columna', 'column-multiplication': 'Multiplicación en columna', 'chain-addition': 'Operaciones paso a paso', parentheses: 'Paréntesis', 'order-of-operations': 'Orden de operaciones', fractions: 'Fracciones', percentages: 'Porcentajes', shapes: 'Figuras', perimeter: 'Perímetro', area: 'Área', coordinates: 'Coordenadas', powers: 'Potencias', roots: 'Raíces cuadradas', polynomials: 'Polinomios', quadratics: 'Ecuaciones cuadráticas', systems: 'Sistemas', sequences: 'Progresiones', expressions: 'Expresiones simples', 'equation-add': 'Ecuaciones x+a=b', 'equation-divide': 'Ecuaciones x/a=b', 'equation-multiply': 'Ecuaciones ax=b', 'equation-two-step': 'Ecuaciones ax+b=c', 'linear-equations': 'Ecuaciones lineales', inequalities: 'Desigualdades', functions: 'Funciones', 'linear-functions': 'Funciones lineales' },
+        de: { addition: 'Addition', subtraction: 'Subtraktion', multiplication: 'Multiplikation', division: 'Division', 'column-addition': 'Schriftliche Addition', 'column-subtraction': 'Schriftliche Subtraktion', 'column-multiplication': 'Schriftliche Multiplikation', 'chain-addition': 'Schrittweise rechnen', parentheses: 'Klammern', 'order-of-operations': 'Rechenreihenfolge', fractions: 'Brüche', percentages: 'Prozentrechnung', shapes: 'Figuren', perimeter: 'Umfang', area: 'Fläche', coordinates: 'Koordinaten', powers: 'Potenzen', roots: 'Quadratwurzeln', polynomials: 'Polynome', quadratics: 'Quadratische Gleichungen', systems: 'Gleichungssysteme', sequences: 'Folgen', expressions: 'Einfache Terme', 'equation-add': 'Gleichungen x+a=b', 'equation-divide': 'Gleichungen x/a=b', 'equation-multiply': 'Gleichungen ax=b', 'equation-two-step': 'Gleichungen ax+b=c', 'linear-equations': 'Lineare Gleichungen', inequalities: 'Ungleichungen', functions: 'Funktionen', 'linear-functions': 'Lineare Funktionen' }
       };
       Object.keys(interfaceText).forEach((key) => Object.assign(interfaceText[key].skillNames, mapSkillText[key]));
       const mapSkillDescriptions = {
@@ -795,6 +837,12 @@
         'algebra-inequalities': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'algebra-functions': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'algebra-linear-functions': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-powers': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-roots': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-polynomials': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-quadratics': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-systems': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'algebra-sequences': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         addition: { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         multiplication: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'fractions-simplify': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -965,7 +1013,8 @@
           ]],
           ['algebra', [
             ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation']],
-            ['functions', ['algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']]
+            ['functions', ['algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']],
+            ['powers', ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-sequences']]
           ]],
           ['geometry', [['geometry', ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates']]]],
           ['olympiad', [
@@ -1183,6 +1232,62 @@
           const factor = mode === 'algebra-functions' && difficulty === 'simple' ? 1 : randomInt(2, difficulty === 'expert' ? 12 : 6);
           const offset = randomInt(1, difficulty === 'simple' ? 10 : difficulty === 'expert' ? 50 : 20);
           return { text: `f(x) = ${factor === 1 ? '' : `${factor} × `}x + ${offset};  f(${x}) = ?`, answer: factor * x + offset, hint: localized({ ru: `Подставь ${x} вместо x.`, en: `Substitute ${x} for x.`, fr: `Remplace x par ${x}.`, es: `Sustituye x por ${x}.`, de: `Setze ${x} für x ein.` }) };
+        }
+        if (mode === 'algebra-powers') {
+          const difficulty = difficultyFor(mode);
+          if (difficulty === 'simple') {
+            const base = randomInt(2, 10);
+            return { text: `${base}² = ?`, answer: base * base, hint: localized({ ru: 'Квадрат — это число, умноженное само на себя.', en: 'A square is a number times itself.', fr: 'Un carré, c’est le nombre fois lui-même.', es: 'El cuadrado es el número por sí mismo.', de: 'Ein Quadrat ist die Zahl mal sich selbst.' }) };
+          }
+          if (difficulty === 'advanced' && Math.random() < 0.5) {
+            const base = randomInt(2, 9);
+            return { text: `${base}³ = ?`, answer: base * base * base, hint: localized({ ru: 'Куб — умножь число само на себя дважды.', en: 'Cube it: multiply the number by itself twice.', fr: 'Cube : multiplie le nombre deux fois par lui-même.', es: 'Cubo: multiplica el número por sí mismo dos veces.', de: 'Kubus: multipliziere die Zahl zweimal mit sich selbst.' }) };
+          }
+          const base = randomInt(2, difficulty === 'expert' ? 12 : 9);
+          const exp = randomInt(2, difficulty === 'expert' ? 4 : 3);
+          return { text: `${base}^${exp} = ?`, answer: Math.pow(base, exp), hint: localized({ ru: `Умножь ${base} само на себя ${exp} раз.`, en: `Multiply ${base} by itself ${exp} times.`, fr: `Multiplie ${base} par lui-même ${exp} fois.`, es: `Multiplica ${base} por sí mismo ${exp} veces.`, de: `Multipliziere ${base} ${exp}-mal mit sich selbst.` }) };
+        }
+        if (mode === 'algebra-roots') {
+          const difficulty = difficultyFor(mode);
+          const root = randomInt(2, difficulty === 'simple' ? 12 : difficulty === 'expert' ? 25 : 20);
+          return { text: `√${root * root} = ?`, answer: root, hint: localized({ ru: 'Какое число, умноженное само на себя, даёт подкоренное?', en: 'Which number times itself gives the radicand?', fr: 'Quel nombre fois lui-même donne ce nombre ?', es: '¿Qué número por sí mismo da el radicando?', de: 'Welche Zahl mal sich selbst ergibt den Radikanden?' }) };
+        }
+        if (mode === 'algebra-polynomials') {
+          const difficulty = difficultyFor(mode);
+          const x = randomInt(1, difficulty === 'simple' ? 6 : difficulty === 'expert' ? 15 : 10);
+          if (difficulty === 'simple') {
+            const a = randomInt(1, 5), b = randomInt(1, 10);
+            return { text: `P(x) = ${a}x + ${b};  P(${x}) = ?`, answer: a * x + b, hint: localized({ ru: `Подставь ${x} вместо x.`, en: `Substitute ${x} for x.`, fr: `Remplace x par ${x}.`, es: `Sustituye x por ${x}.`, de: `Setze ${x} für x ein.` }) };
+          }
+          const a = randomInt(1, difficulty === 'expert' ? 6 : 4), b = randomInt(-9, 9), c = randomInt(-9, 9);
+          const bPart = b >= 0 ? `+ ${b}x` : `− ${Math.abs(b)}x`;
+          const cPart = c >= 0 ? `+ ${c}` : `− ${Math.abs(c)}`;
+          return { text: `P(x) = ${a}x² ${bPart} ${cPart};  P(${x}) = ?`, answer: a * x * x + b * x + c, hint: localized({ ru: `Сначала посчитай x² = ${x * x}, затем подставь.`, en: `First compute x² = ${x * x}, then substitute.`, fr: `Calcule d’abord x² = ${x * x}, puis remplace.`, es: `Calcula primero x² = ${x * x} y sustituye.`, de: `Berechne zuerst x² = ${x * x} und setze ein.` }) };
+        }
+        if (mode === 'algebra-quadratics') {
+          const difficulty = difficultyFor(mode);
+          if (difficulty === 'simple' || Math.random() < 0.5) {
+            const root = randomInt(2, difficulty === 'expert' ? 20 : 12);
+            return { text: `x² = ${root * root};  x > 0`, answer: root, hint: localized({ ru: 'Найди положительный корень.', en: 'Find the positive root.', fr: 'Trouve la racine positive.', es: 'Halla la raíz positiva.', de: 'Finde die positive Wurzel.' }) };
+          }
+          const r1 = randomInt(1, 9), r2 = randomInt(1, 9);
+          const sum = r1 + r2, prod = r1 * r2;
+          return { text: `(x − ${r1})(x − ${r2}) = 0;  max x = ?`, answer: Math.max(r1, r2), hint: localized({ ru: `Корни: x = ${Math.min(r1, r2)} и x = ${Math.max(r1, r2)}. Выбери больший.`, en: `Roots are x = ${Math.min(r1, r2)} and x = ${Math.max(r1, r2)}. Pick the larger.`, fr: `Racines : x = ${Math.min(r1, r2)} et x = ${Math.max(r1, r2)}. Choisis la plus grande.`, es: `Raíces: x = ${Math.min(r1, r2)} y x = ${Math.max(r1, r2)}. Elige la mayor.`, de: `Nullstellen: x = ${Math.min(r1, r2)} und x = ${Math.max(r1, r2)}. Wähle die größere.` }) };
+        }
+        if (mode === 'algebra-systems') {
+          const difficulty = difficultyFor(mode);
+          const limit = difficulty === 'simple' ? 10 : difficulty === 'expert' ? 40 : 20;
+          const x = randomInt(1, limit), y = randomInt(1, limit);
+          const sum = x + y, diff = x - y;
+          if (Math.random() < 0.5) return { text: `x + y = ${sum};  x − y = ${diff};  x = ?`, answer: x, hint: localized({ ru: 'Сложи уравнения: 2x = сумма обеих частей.', en: 'Add the equations: 2x equals the sum of both sides.', fr: 'Additionne les équations : 2x égale la somme des deux côtés.', es: 'Suma las ecuaciones: 2x es la suma de ambos lados.', de: 'Addiere die Gleichungen: 2x ist die Summe beider Seiten.' }) };
+          return { text: `x + y = ${sum};  x − y = ${diff};  y = ?`, answer: y, hint: localized({ ru: 'Вычти второе уравнение из первого: 2y = разность.', en: 'Subtract the second equation from the first: 2y is the difference.', fr: 'Soustrais la seconde équation : 2y est la différence.', es: 'Resta la segunda ecuación: 2y es la diferencia.', de: 'Subtrahiere die zweite Gleichung: 2y ist die Differenz.' }) };
+        }
+        if (mode === 'algebra-sequences') {
+          const difficulty = difficultyFor(mode);
+          const first = randomInt(1, difficulty === 'expert' ? 30 : 12);
+          const step = randomInt(2, difficulty === 'simple' ? 6 : difficulty === 'expert' ? 15 : 9);
+          const n = randomInt(3, difficulty === 'simple' ? 6 : difficulty === 'expert' ? 12 : 8);
+          return { text: `a₁ = ${first};  d = ${step};  a${n} = ?`, answer: first + (n - 1) * step, hint: localized({ ru: `Прибавь d = ${step} ровно ${n - 1} раз к ${first}.`, en: `Add d = ${step} exactly ${n - 1} times to ${first}.`, fr: `Ajoute d = ${step} exactement ${n - 1} fois à ${first}.`, es: `Suma d = ${step} exactamente ${n - 1} veces a ${first}.`, de: `Addiere d = ${step} genau ${n - 1}-mal zu ${first}.` }) };
         }
         if (mode === 'geometry-shapes') {
           const shapes = [
@@ -1857,13 +1962,46 @@
         if (!open && gameActive && !usesEmbeddedKeypad()) answerInput.focus({ preventScroll: true });
       }
 
+      function skillDepthMap() {
+        const memo = {};
+        const visit = (id, stack = []) => {
+          if (memo[id] !== undefined) return memo[id];
+          if (stack.includes(id)) return 0;
+          const skill = MathRushProgress.skillById(id);
+          if (!skill || !skill.prerequisites.length) { memo[id] = 0; return 0; }
+          const depth = 1 + Math.max(...skill.prerequisites.map((pre) => visit(pre, [...stack, id])));
+          memo[id] = depth;
+          return depth;
+        };
+        MathRushProgress.skills.forEach((skill) => visit(skill.id));
+        return memo;
+      }
+
+      function mapNetworkFor(skillId) {
+        const upstream = new Set([skillId]);
+        const downstream = new Set([skillId]);
+        const byId = Object.fromEntries(MathRushProgress.skills.map((skill) => [skill.id, skill]));
+        let changed = true;
+        while (changed) {
+          changed = false;
+          MathRushProgress.skills.forEach((skill) => {
+            if (skill.prerequisites.some((pre) => upstream.has(pre)) && !upstream.has(skill.id)) { upstream.add(skill.id); changed = true; }
+            skill.prerequisites.forEach((pre) => {
+              if (downstream.has(skill.id) && !downstream.has(pre)) { downstream.add(pre); changed = true; }
+            });
+          });
+        }
+        Object.keys(byId).forEach((id) => { if (upstream.has(id) || downstream.has(id)) { upstream.add(id); } });
+        return upstream;
+      }
+
       function drawMapConnections(branches) {
         const lines = branches.querySelector('.trident-lines');
         if (!lines || branches.classList.contains('hidden')) return;
         const root = branches.getBoundingClientRect();
         if (!root.width || !root.height) return;
         lines.setAttribute('viewBox', `0 0 ${root.width} ${root.height}`);
-        lines.innerHTML = '<defs><marker id="mapArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#98a2b3"/></marker><marker id="mapArrowCross" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7f78e8"/></marker></defs>';
+        lines.innerHTML = '<defs><marker id="mapArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f2ecdc"/></marker><marker id="mapArrowCross" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c4b5fd"/></marker></defs>';
         const point = (element, edge) => {
           const rect = element.getBoundingClientRect();
           return { x: rect.left - root.left + rect.width / 2, y: (edge === 'top' ? rect.top : rect.bottom) - root.top };
@@ -1874,28 +2012,33 @@
           const start = point(nodes[0], 'top'), end = point(nodes[nodes.length - 1], 'bottom');
           const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
           path.setAttribute('class', `trident-path ${category}`);
-          path.setAttribute('d', `M ${start.x} ${start.y - 28} L ${end.x} ${end.y + 28}`);
+          path.setAttribute('d', `M ${start.x} ${start.y - 30} L ${end.x} ${end.y + 30}`);
           lines.appendChild(path);
         });
+        const targetIndex = {};
         MathRushProgress.skills.forEach((skill) => {
           const target = branches.querySelector(`[data-skill-id="${skill.id}"]`);
           if (!target) return;
-          skill.prerequisites.forEach((prerequisiteId) => {
+          skill.prerequisites.forEach((prerequisiteId, preIndex) => {
             const source = branches.querySelector(`[data-skill-id="${prerequisiteId}"]`);
             if (!source) return;
             const sourceRect = source.getBoundingClientRect(), targetRect = target.getBoundingClientRect();
             const crossBranch = source.closest('.skill-slot').dataset.branch !== target.closest('.skill-slot').dataset.branch;
+            const fan = (targetIndex[skill.id] = (targetIndex[skill.id] || 0) + 1);
+            const spread = (fan - (skill.prerequisites.length + 1) / 2) * 10;
             let start, end, d;
             if (targetRect.top > sourceRect.bottom + 8) {
               start = point(source, 'bottom'); end = point(target, 'top');
+              start.x += Math.max(-22, Math.min(22, spread));
+              end.x += Math.max(-26, Math.min(26, spread * 1.4));
               const middleY = (start.y + end.y) / 2;
               d = `M ${start.x} ${start.y} C ${start.x} ${middleY}, ${end.x} ${middleY}, ${end.x} ${end.y - 5}`;
             } else {
               const direction = targetRect.left > sourceRect.left ? 1 : -1;
-              start = { x: (direction > 0 ? sourceRect.right : sourceRect.left) - root.left, y: sourceRect.top - root.top + sourceRect.height / 2 };
+              start = { x: (direction > 0 ? sourceRect.right : sourceRect.left) - root.left, y: sourceRect.top - root.top + sourceRect.height / 2 + spread * 0.4 };
               end = { x: (direction > 0 ? targetRect.left : targetRect.right) - root.left, y: targetRect.top - root.top + targetRect.height / 2 };
               const middleX = (start.x + end.x) / 2;
-              d = `M ${start.x} ${start.y} C ${middleX} ${start.y}, ${middleX} ${end.y}, ${end.x - direction * 5} ${end.y}`;
+              d = `M ${start.x} ${start.y} C ${middleX} ${start.y}, ${middleX} ${end.y}, ${end.x - direction * 6} ${end.y}`;
             }
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('class', `dependency-path${crossBranch ? ' cross-branch' : ''}`);
@@ -1913,13 +2056,43 @@
         branches.querySelectorAll('.skill-node').forEach((node) => node.classList.remove('network-focus', 'network-related'));
         branches.querySelectorAll('.dependency-path').forEach((path) => path.classList.remove('network-focus'));
         if (!active) return;
+        const related = mapNetworkFor(skillId);
         const focus = branches.querySelector(`[data-skill-id="${skillId}"]`);
         if (focus) focus.classList.add('network-focus');
+        branches.querySelectorAll('.skill-node').forEach((node) => {
+          if (node.dataset.skillId !== skillId && related.has(node.dataset.skillId)) node.classList.add('network-related');
+        });
         branches.querySelectorAll('.dependency-path').forEach((path) => {
-          if (path.dataset.from !== skillId && path.dataset.to !== skillId) return;
-          path.classList.add('network-focus');
-          const relatedId = path.dataset.from === skillId ? path.dataset.to : path.dataset.from;
-          branches.querySelector(`[data-skill-id="${relatedId}"]`)?.classList.add('network-related');
+          if (!related.has(path.dataset.from) || !related.has(path.dataset.to)) return;
+          if (path.dataset.from === skillId || path.dataset.to === skillId || (related.has(path.dataset.from) && related.has(path.dataset.to) && (upstreamHas(path.dataset.from, skillId) || downstreamHas(skillId, path.dataset.to)))) path.classList.add('network-focus');
+          else path.classList.add('network-focus');
+        });
+        function upstreamHas(from, to) { return mapNetworkFor(to).has(from); }
+        function downstreamHas(from, to) { return mapNetworkFor(from).has(to); }
+      }
+
+      function renderMapDetail(skill, data, ui) {
+        const host = $('mapDetail');
+        if (!host || !skill) return;
+        const mastery = MathRushProgress.masteryFor(skill.id, data);
+        const readiness = MathRushProgress.readinessFor(skill, data);
+        const prereqs = skill.prerequisites.map((id) => {
+          const item = MathRushProgress.skillById(id);
+          const value = MathRushProgress.masteryFor(id, data);
+          return `<li><span>${value >= 60 ? '✓' : '○'} ${item ? localizedSkillTitle(item) : id}</span><strong>${value}%</strong></li>`;
+        }).join('') || '<li><span>★ Start node — no prerequisites</span><strong>—</strong></li>';
+        const next = MathRushProgress.skills.filter((other) => other.prerequisites.includes(skill.id)).slice(0, 4).map((other) => `<span class="node-req">→ ${localizedSkillTitle(other)}</span>`).join(' ');
+        const targetMode = skill.mode || '';
+        host.innerHTML = `<h3>${localizedSkillTitle(skill)}</h3><p>${languageData[currentLanguage].modes[skill.mode]?.[2] || mapSkillDescriptions[currentLanguage][skill.id] || ''} · Readiness ${readiness}% · Mastery ${mastery}%</p><ul class="requirements" style="list-style:none;margin:0 0 14px;padding:0;display:grid;gap:8px">${prereqs}</ul><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">${next}</div><button class="primary" type="button" data-practice="${skill.id}">Practice →</button>`;
+        host.querySelector('[data-practice]')?.addEventListener('click', () => {
+          const card = targetMode && document.querySelector(`.mode-card[data-mode="${targetMode}"]`);
+          showAppView('tasks');
+          if (!card) return;
+          setTimeout(() => {
+            document.querySelectorAll('.mode-card.map-target').forEach((item) => item.classList.remove('map-target'));
+            card.classList.add('map-target');
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 40);
         });
       }
 
@@ -1929,8 +2102,25 @@
         const branches = $('spaBranches');
         const ui = interfaceText[currentLanguage];
         const categories = ui.categories;
-        const skillsByCategory = Object.fromEntries(Object.keys(categories).map((category) => [category, MathRushProgress.skills.filter((skill) => skill.category === category)]));
+        const depths = skillDepthMap();
+        const skillsByCategory = Object.fromEntries(Object.keys(categories).map((category) => [category, MathRushProgress.skills.filter((skill) => skill.category === category).sort((a, b) => (depths[a.id] - depths[b.id]) || MathRushProgress.skills.indexOf(a) - MathRushProgress.skills.indexOf(b))]));
         const levelCount = Math.max(...Object.values(skillsByCategory).map((skills) => skills.length));
+        const statsHost = $('mapStats');
+        if (statsHost) {
+          const total = MathRushProgress.skills.length;
+          const mastered = MathRushProgress.skills.filter((skill) => MathRushProgress.masteryFor(skill.id, data) >= 80).length;
+          const avg = Math.round(MathRushProgress.skills.reduce((sum, skill) => sum + MathRushProgress.masteryFor(skill.id, data), 0) / Math.max(1, total));
+          const cards = [['★', `${mastered}/${total}`, ui.status.mastered], ['◐', `${avg}%`, ui.level], ...Object.entries(categories).map(([key, title]) => ['◆', `${MathRushProgress.categorySummary(key, data).mastery}%`, title])];
+          statsHost.textContent = '';
+          cards.slice(0, 4).forEach(([icon, value, label]) => {
+            const card = document.createElement('div');
+            card.className = 'map-stat';
+            card.innerHTML = `<span></span><strong></strong>`;
+            card.querySelector('span').textContent = `${icon} ${label}`;
+            card.querySelector('strong').textContent = value;
+            statsHost.appendChild(card);
+          });
+        }
         branches.textContent = '';
         const lines = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         lines.setAttribute('class', 'trident-lines');
@@ -1970,26 +2160,22 @@
             button.type = 'button';
             button.className = `skill-node ${state}`;
             button.dataset.skillId = skill.id;
-            button.innerHTML = `<strong></strong><span><em></em><b></b></span>`;
-            button.querySelector('strong').textContent = localizedSkillTitle(skill);
+            button.setAttribute('aria-label', `${localizedSkillTitle(skill)} — ${mastery}%`);
+            const statusIcon = state === 'mastered' ? '✓' : state === 'learning' ? '◐' : '●';
+            const prereqLabel = skill.prerequisites.length ? `${skill.prerequisites.length} req` : 'start';
+            const depthLabel = `d${depths[skill.id] ?? 0}`;
+            button.innerHTML = `<strong></strong><em></em><div class="mastery-track"><i></i></div><span class="node-meta"><b></b><span class="node-req"></span></span>`;
+            button.querySelector('strong').textContent = `${statusIcon} ${localizedSkillTitle(skill)}`;
             button.querySelector('em').textContent = languageData[currentLanguage].modes[skill.mode]?.[1] || mapSkillDescriptions[currentLanguage][skill.id] || ui.status[state];
-            button.querySelector('b').textContent = `${mastery}%`;
+            button.querySelector('.mastery-track i').style.width = `${mastery}%`;
+            button.querySelector('.node-meta b').textContent = `${mastery}%`;
+            button.querySelector('.node-req').textContent = `${prereqLabel} · ${depthLabel}`;
             button.addEventListener('mouseenter', () => highlightMapNetwork(branches, skill.id, true));
             button.addEventListener('mouseleave', () => highlightMapNetwork(branches, skill.id, false));
             button.addEventListener('focus', () => highlightMapNetwork(branches, skill.id, true));
             button.addEventListener('blur', () => highlightMapNetwork(branches, skill.id, false));
-            button.addEventListener('click', () => {
-              const targetMode = skill.mode || (skill.id === 'derivatives' ? 'equations' : '');
-              const card = targetMode && document.querySelector(`.mode-card[data-mode="${targetMode}"]`);
-              showAppView('tasks');
-              if (!card) return;
-              setTimeout(() => {
-                document.querySelectorAll('.mode-card.map-target').forEach((item) => item.classList.remove('map-target'));
-                card.classList.add('map-target');
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => card.classList.remove('map-target'), 1500);
-              }, 40);
-            });
+            const openDetail = () => renderMapDetail(skill, data, ui);
+            button.addEventListener('click', openDetail);
             slot.appendChild(button);
             branches.appendChild(slot);
           });

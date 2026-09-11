@@ -3,19 +3,55 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f3f6fb">
+  <meta name="theme-color" content="#1b2538">
   <title>Карта математики — Math Rush</title>
   <link rel="stylesheet" href="app-shell.css">
   <style>
-    .map-wrap{overflow-x:auto;padding:10px 0 4px}.math-map{position:relative;min-width:850px;padding:10px 20px 28px}.root-node{position:relative;z-index:2;width:210px;margin:0 auto 58px;padding:17px;border-radius:18px;color:#fff;background:linear-gradient(145deg,#837bff,#4f46e5);box-shadow:0 14px 28px rgba(99,91,255,.25);text-align:center;font-size:18px;font-weight:950}.root-node::after{content:"";position:absolute;top:100%;left:50%;width:2px;height:30px;background:#b9b4ff}.branches{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:38px}.branches::before{content:"";position:absolute;left:16.66%;right:16.66%;top:-29px;height:2px;background:#b9b4ff}.branch{position:relative;padding:0 8px}.branch::before{content:"";position:absolute;bottom:100%;left:50%;width:2px;height:30px;background:#b9b4ff}.branch-title{position:relative;z-index:2;margin:0 0 17px;padding:13px 10px;border:1px solid #d6d2ff;border-radius:15px;background:#f0eeff;color:#4f46e5;text-align:center;font-size:15px;font-weight:950;letter-spacing:.04em}.skill-list{display:grid;gap:12px}.skill-node{position:relative;width:100%;padding:14px 42px 14px 15px;border:1px solid var(--line);border-radius:15px;background:#fff;color:var(--ink);text-align:left;cursor:pointer;box-shadow:0 6px 16px rgba(16,24,40,.05)}.skill-node:not(:last-child)::after{content:"";position:absolute;top:100%;left:50%;width:2px;height:13px;background:#d0d5dd}.skill-node strong,.skill-node small{display:block}.skill-node small{margin-top:3px;color:var(--muted)}.skill-node .state{position:absolute;top:13px;right:13px;width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#f2f4f7;font-size:12px}.skill-node.mastered{border-color:#6ce9a6;background:#ecfdf3}.skill-node.mastered .state{color:#fff;background:var(--good)}.skill-node.learning{border-color:#a49fff;background:#f7f6ff}.skill-node.learning .state{color:#fff;background:var(--accent)}.skill-node.locked{opacity:.62}.skill-detail{display:grid;grid-template-columns:1.3fr .7fr;gap:22px;align-items:start}.detail-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.detail-metric{padding:13px;border:1px solid var(--line);border-radius:14px;background:#f9fafb}.detail-metric span,.detail-metric strong{display:block}.detail-metric span{font-size:11px;color:var(--muted)}.detail-metric strong{font-size:22px}.requirements{margin:14px 0 0;padding:0;list-style:none}.requirements li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0f1f3}.detail-actions{display:flex;gap:9px;margin-top:18px}@media(max-width:700px){.skill-detail{grid-template-columns:1fr}.map-wrap{margin-inline:-16px;padding-inline:16px;overflow:visible}.math-map{min-width:0;padding-inline:0}.root-node{margin-bottom:34px}.root-node::after{height:18px}.branches{grid-template-columns:1fr;gap:28px}.branches::before{display:none}.branch::before{height:29px}.detail-metrics{grid-template-columns:1fr 1fr}.detail-metric:last-child{grid-column:1/-1}}
+    .board-frame{padding:16px;border-radius:26px;background:linear-gradient(135deg,#9a7448 0%,#7a5a34 22%,#5d4226 45%,#8a6844 70%,#6b4e2e 100%);box-shadow:0 24px 60px rgba(60,40,15,.35),inset 0 2px 2px rgba(255,255,255,.35),inset 0 -3px 6px rgba(0,0,0,.35)}
+    .board-plaque{display:flex;align-items:center;justify-content:center;margin:2px auto 12px;padding:8px 22px;width:fit-content;border-radius:10px;color:#f5e7c8;background:linear-gradient(180deg,#3a2c18,#241a0e);border:1px solid #d9b77a;font-size:13px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+    .board-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
+    .board-stat{padding:10px 14px;border-radius:14px;color:#f3ecdc;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.14)}
+    .board-stat span{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+    .board-stat strong{display:block;font-size:20px;font-weight:900}
+    .math-map{position:relative;padding:40px 22px 60px;border-radius:14px;color:#f2f4f8;background:radial-gradient(ellipse at 18% 8%,rgba(255,255,255,.09),transparent 42%),radial-gradient(ellipse at 85% 95%,rgba(255,255,255,.07),transparent 38%),linear-gradient(180deg,#26334e 0%,#1d2740 45%,#161f33 100%);box-shadow:inset 0 0 80px rgba(0,0,0,.5)}
+    .root-node{position:relative;z-index:2;width:fit-content;margin:0 auto 40px;padding:12px 34px;border-radius:12px;color:#fff;background:color-mix(in srgb,#7c6cff 78%,#101828);border:2px dashed rgba(255,255,255,.55);font-size:18px;font-weight:950;letter-spacing:.14em}
+    .branches{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+    .branch-title{margin:0 0 16px;padding:10px;border-radius:12px;text-align:center;font-size:14px;font-weight:900;letter-spacing:.06em;color:#fff;background:rgba(0,0,0,.35);border:2px dashed rgba(255,255,255,.4)}
+    .branch[data-category="arithmetic"]{--branch-color:#f0822e;--pin-color:#ff5d5d}
+    .branch[data-category="algebra"]{--branch-color:#7c6cff;--pin-color:#ffd23f}
+    .branch[data-category="geometry"]{--branch-color:#2e90fa;--pin-color:#3ddc84}
+    .skill-list{display:grid;gap:16px}
+    .skill-node{position:relative;width:100%;padding:20px 15px 13px;border:0;border-radius:4px 4px 12px 4px;background:linear-gradient(180deg,#fffdf4,#fdf3d8);color:var(--ink);text-align:left;cursor:pointer;box-shadow:0 10px 22px rgba(0,0,0,.45)}
+    .skill-node::before{content:"";position:absolute;top:-8px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,var(--pin-color) 20% 100%);box-shadow:0 3px 6px rgba(0,0,0,.5)}
+    .skill-node::after{content:"";position:absolute;inset:0 0 auto 0;height:6px;border-radius:4px 4px 0 0;background:var(--branch-color)}
+    .skill-node strong{display:block;font-size:14px}
+    .skill-node small{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.4}
+    .mastery-track{height:6px;margin-top:8px;border-radius:99px;background:#e7e2cf;overflow:hidden}
+    .mastery-track i{display:block;height:100%;background:linear-gradient(90deg,var(--branch-color),#12b76a)}
+    .node-sub{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;font-weight:800;color:var(--muted)}
+    .skill-node .state{position:absolute;top:10px;right:10px;font-size:13px}
+    .skill-node.mastered{background:linear-gradient(180deg,#eefdf3,#d9f5e3)}
+    .skill-node.locked{opacity:.75}
+    .req-chip{display:inline-block;margin:6px 6px 0 0;padding:2px 9px;border-radius:99px;background:rgba(0,0,0,.07);font-size:10.5px;font-weight:800}
+    .req-chip.cross{background:rgba(124,108,255,.16);color:#4f46e5}
+    .skill-detail{background:linear-gradient(145deg,#2b3560,#171e38);color:#fff;border:1px solid rgba(255,255,255,.14)}
+    .skill-detail h2{color:#fff}
+    .skill-detail .muted{color:rgba(255,255,255,.7)}
+    .detail-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+    .detail-metric{padding:10px;border-radius:12px;background:rgba(255,255,255,.08)}
+    .detail-metric span{display:block;font-size:11px;opacity:.7}
+    .detail-metric strong{font-size:20px}
+    .requirements{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+    .requirements li{display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.07)}
+    @media(max-width:800px){.branches{grid-template-columns:1fr}.board-stats{grid-template-columns:repeat(2,1fr)}}
   </style>
 </head>
 <body>
   <main class="page">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a class="active" href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
-    <header class="hero"><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Три направления, понятные зависимости и живой прогресс по каждой теме. Закрытые темы можно открыть — карта лишь подскажет, что стоит повторить.</p></header>
-    <section class="panel map-wrap" aria-label="Карта навыков"><div class="math-map"><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></section>
-    <section id="skillDetail" class="panel" aria-live="polite"></section>
+    <header class="hero"><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Школьная доска: три ветки, честные зависимости без пересечений наугад, живой прогресс. Наведи порядок — от арифметики через алгебру (включая степени, корни, многочлены, квадратные уравнения, системы и прогрессии) к геометрии.</p></header>
+    <section class="panel board-frame" aria-label="Карта навыков"><div class="board-plaque">★ Математика · Knowledge Board ★</div><div id="boardStats" class="board-stats"></div><div class="math-map"><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></section>
+    <section id="skillDetail" class="panel skill-detail" aria-live="polite"></section>
   </main>
   <script src="progress.js"></script>
   <script>
@@ -25,25 +61,47 @@
       const categories = { arithmetic: 'АРИФМЕТИКА', algebra: 'АЛГЕБРА', geometry: 'ГЕОМЕТРИЯ' };
       const branchHost = document.getElementById('branches');
       const detail = document.getElementById('skillDetail');
+      const statsHost = document.getElementById('boardStats');
       const icon = { mastered: '✓', learning: '◐', available: '●', locked: '🔒' };
+      const depths = {};
+      const depthOf = (id, stack = []) => {
+        if (depths[id] !== undefined) return depths[id];
+        if (stack.includes(id)) return 0;
+        const skill = progress.skillById(id);
+        if (!skill || !skill.prerequisites.length) return (depths[id] = 0);
+        return (depths[id] = 1 + Math.max(...skill.prerequisites.map((pre) => depthOf(pre, [...stack, id]))));
+      };
+      progress.skills.forEach((skill) => depthOf(skill.id));
+      const total = progress.skills.length;
+      const mastered = progress.skills.filter((s) => progress.masteryFor(s.id, data) >= 80).length;
+      const avg = Math.round(progress.skills.reduce((sum, s) => sum + progress.masteryFor(s.id, data), 0) / Math.max(1, total));
+      [['★', `${mastered}/${total}`, 'Освоено'], ['◐', `${avg}%`, 'Среднее'], ['◆', `${progress.categorySummary('arithmetic', data).mastery}%`, 'Арифметика'], ['◆', `${progress.categorySummary('algebra', data).mastery}%`, 'Алгебра']].forEach(([ic, val, label]) => {
+        const card = document.createElement('div'); card.className = 'board-stat'; card.innerHTML = `<span>${ic} ${label}</span><strong>${val}</strong>`; statsHost.append(card);
+      });
       function renderDetail(skill) {
         const summary = data.skills[skill.id] || { xp: 0, attempts: 0, correctAttempts: 0 };
         const mastery = progress.masteryFor(skill.id, data);
         const readiness = progress.readinessFor(skill, data);
         const accuracy = summary.attempts ? Math.round(summary.correctAttempts / summary.attempts * 100) : 0;
-        const requirements = skill.prerequisites.length ? skill.prerequisites.map((id) => { const item = progress.skillById(id); const value = progress.masteryFor(id, data); return `<li><span>${value >= 60 ? '✓' : '⚠'} ${item.title}</span><strong>${value}%</strong></li>`; }).join('') : '<li><span>Начальная тема</span><strong>Готово</strong></li>';
-        detail.innerHTML = `<div class="skill-detail"><div><p class="eyebrow">Навык</p><h2>${skill.title}</h2><div class="detail-metrics"><div class="detail-metric"><span>Освоение</span><strong>${mastery}%</strong></div><div class="detail-metric"><span>XP</span><strong>${summary.xp || 0}</strong></div><div class="detail-metric"><span>Точность</span><strong>${accuracy}%</strong></div></div><div class="progress-track" style="margin-top:12px"><span style="width:${mastery}%"></span></div><div class="detail-actions"><a class="button" href="${progress.hrefForSkill(skill)}">Практиковаться</a></div></div><div><h3>Готовность: ${readiness}%</h3><p class="muted">Рекомендуемые навыки перед этой темой:</p><ul class="requirements">${requirements}</ul></div></div>`;
+        const requirements = skill.prerequisites.length ? skill.prerequisites.map((id) => { const item = progress.skillById(id); const value = progress.masteryFor(id, data); const cross = item && item.category !== skill.category; return `<li><span>${value >= 60 ? '✓' : '○'} ${item ? item.title : id}${cross ? ' (другая ветка)' : ''}</span><strong>${value}%</strong></li>`; }).join('') : '<li><span>★ Стартовая тема</span><strong>—</strong></li>';
+        const next = progress.skills.filter((o) => o.prerequisites.includes(skill.id)).slice(0, 6).map((o) => `<span class="req-chip${o.category !== skill.category ? ' cross' : ''}">→ ${o.title}</span>`).join('');
+        detail.innerHTML = `<div><p class="eyebrow">Навык · глубина ${depths[skill.id]} · ${categories[skill.category]}</p><h2>${skill.title}</h2><div class="detail-metrics"><div class="detail-metric"><span>Освоение</span><strong>${mastery}%</strong></div><div class="detail-metric"><span>XP</span><strong>${summary.xp || 0}</strong></div><div class="detail-metric"><span>Точность</span><strong>${accuracy}%</strong></div></div><div class="progress-track" style="margin-top:12px"><span style="width:${mastery}%"></span></div><div style="margin:12px 0"><a class="button" href="${progress.hrefForSkill(skill)}">Практиковаться →</a></div><div>${next}</div></div><div><h3>Готовность: ${readiness}%</h3><p class="muted">Что нужно перед этой темой:</p><ul class="requirements">${requirements}</ul></div>`;
       }
       Object.entries(categories).forEach(([category, title]) => {
-        const branch = document.createElement('section'); branch.className = 'branch';
+        const branch = document.createElement('section'); branch.className = 'branch'; branch.dataset.category = category;
         branch.innerHTML = `<h2 class="branch-title">${title}</h2><div class="skill-list"></div>`;
-        progress.skills.filter((skill) => skill.category === category).forEach((skill) => {
+        progress.skills.filter((skill) => skill.category === category).sort((a, b) => depths[a.id] - depths[b.id]).forEach((skill) => {
           const state = progress.stateFor(skill, data); const mastery = progress.masteryFor(skill.id, data);
-          const button = document.createElement('button'); button.className = `skill-node ${state}`; button.type = 'button'; button.innerHTML = `<strong>${skill.title}</strong><small>Освоение ${mastery}%</small><span class="state">${icon[state]}</span>`; button.addEventListener('click', () => renderDetail(skill)); branch.querySelector('.skill-list').append(button);
+          const prereqChips = skill.prerequisites.slice(0, 3).map((id) => { const item = progress.skillById(id); const cross = item && item.category !== category; return `<span class="req-chip${cross ? ' cross' : ''}">${cross ? '⇄' : '↑'} ${item ? item.title : id}</span>`; }).join('');
+          const button = document.createElement('button'); button.className = `skill-node ${state}`; button.type = 'button';
+          button.innerHTML = `<strong>${skill.title}</strong><small>Освоение ${mastery}% · глубина ${depths[skill.id]}${skill.prerequisites.length ? ` · нужно: ${skill.prerequisites.length}` : ' · старт'}</small><div class="mastery-track"><i style="width:${mastery}%"></i></div><div class="node-sub"><span>${mastery}%</span><span>d${depths[skill.id]}</span></div><div>${prereqChips}</div><span class="state">${icon[state]}</span>`;
+          button.addEventListener('click', () => renderDetail(skill));
+          branch.querySelector('.skill-list').append(button);
         });
         branchHost.append(branch);
       });
-      renderDetail(progress.skills[0]);
+      const algebraDefault = progress.skillById('powers') || progress.skills[0];
+      renderDetail(algebraDefault);
     })();
   </script>
   <!-- Cloudflare Web Analytics -->
