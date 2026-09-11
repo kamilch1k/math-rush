@@ -75,7 +75,7 @@ Routes: `/` `/quizzes` → `math-rush.html`, `/map` → `math-map.html`, `/profi
 Defined in `outputs/progress.js` (`skills[]` + `modeToSkill`). Each skill: `id, title, category, prerequisites[], mode|href`.
 
 - Arithmetic (12): addition → subtraction → multiplication → division → step-by-step chains → column +/− → column × → order of operations (×/÷ first) → parentheses → fractions → percentages
-- Algebra (16): everything requires order of operations + parentheses (gap before the branch). Entry: expressions + powers → x+a=b → ax=b, x/a=b, roots → ax+b=c → linear → sequences / systems / inequalities / functions → polynomials + linear-functions → quadratics → derivatives (whiteboard)
+- Algebra (16): basics up top next to counting — expressions, powers, x+a=b, ax=b, x/a=b, roots, ax+b=c (same level as order of operations). Advanced only after order + parentheses: linear → sequences / systems / inequalities / functions → polynomials + linear-functions → quadratics → derivatives (whiteboard)
 - Geometry (6): shapes → perimeter / angles → area / triangles / coordinates
 
 Cross-branch deps are dashed purple in the UI (e.g. geometry `area` needs arithmetic `multiplication`; algebra `expressions` needs arithmetic `addition/subtraction`). Hovering a node dims the board and highlights its full upstream + downstream network.

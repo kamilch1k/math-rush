@@ -160,7 +160,6 @@
     .level-label strong { display: block; font-size: 24px; line-height: 1; }
     .skill-slot { position: relative; z-index: 2; display: grid; gap: 10px; align-content: start; padding-top: 16px; border-top: 1px dashed #d7dae3; }
     .skill-slot.empty { min-height: 40px; }
-    .skill-slot.gap { border-top-style: dotted; background: repeating-linear-gradient(180deg, transparent 0 8px, rgba(99,91,255,.06) 8px 16px); border-radius: 12px; }
     .skill-node { position: relative; width: 100%; min-height: 78px; margin: 0; padding: 13px 14px 12px; border: 2px solid color-mix(in srgb, var(--branch-color) 32%, var(--line)); border-radius: 15px; color: var(--ink); background: rgba(255,255,255,.97); box-shadow: 0 8px 24px rgba(16,24,40,.07); text-align: left; transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease; }
     .skill-node:hover, .skill-node.active { border-color: var(--branch-color); box-shadow: 0 10px 28px color-mix(in srgb, var(--branch-color) 20%, transparent); transform: translateY(-2px); }
     .skill-map.network-active .skill-node { opacity: .45; }
@@ -537,7 +536,7 @@
         <div class="map-layout">
           <div class="board-plaque">Математика · Карта знаний</div>
           <div id="mapStats" class="map-stats"></div>
-          <div class="map-legend"><span><i style="background:#e66b2c"></i>Арифметика</span><span><i style="background:#635bff"></i>Алгебра</span><span><i style="background:#1570ef"></i>Геометрия</span><span><i style="background:#98a2b3"></i>связь внутри ветки</span><span><i style="background:#7f78e8"></i>связь между ветками</span><span>Алгебра начинается с гэпом: сначала порядок действий и скобки</span><span>Наведи на карточку — подсветится вся цепочка зависимостей</span></div>
+          <div class="map-legend"><span><i style="background:#e66b2c"></i>Арифметика</span><span><i style="background:#635bff"></i>Алгебра</span><span><i style="background:#1570ef"></i>Геометрия</span><span><i style="background:#98a2b3"></i>связь внутри ветки</span><span><i style="background:#7f78e8"></i>связь между ветками</span><span>Простая алгебра — наверху рядом со счётом, продолжение — после порядка действий и скобок</span><span>Наведи на карточку — подсветится вся цепочка зависимостей</span></div>
           <div id="spaBranches" class="skill-map"></div>
           <div id="mapDetail" class="skill-detail"></div>
         </div>
@@ -2144,7 +2143,6 @@
             const stack = MathRushProgress.skills.filter((skill) => skill.category === category && (depths[skill.id] ?? 0) === level);
             if (!stack.length) {
               slot.classList.add('empty');
-              if (category === 'algebra' && level < 5) slot.classList.add('gap');
               branches.appendChild(slot);
               return;
             }
