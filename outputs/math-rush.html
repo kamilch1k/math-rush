@@ -208,6 +208,11 @@
     .problem.word-problem { max-width: 720px; min-height: 105px; margin: 0 auto 10px; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; letter-spacing: -.02em; font-weight: 800; }
     .problem-help { min-height: 24px; margin: 0 0 15px; color: var(--accent-dark); font-size: 13px; font-weight: 700; }
     .answer-row { display: flex; gap: 10px; }
+    .embedded-keypad { display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+    .keypad-key { min-height: 48px; padding: 8px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: #fff; font-size: 19px; font-weight: 850; box-shadow: 0 3px 0 rgba(16,24,40,.08); }
+    .keypad-key:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(16,24,40,.08); }
+    .keypad-key.action { color: var(--accent-dark); background: #f2f0ff; }
+    .keypad-key.submit-key { color: #fff; background: var(--accent); }
     .choice-answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .choice-answer { min-height: 58px; padding: 12px 16px; border: 2px solid var(--line); border-radius: 15px; color: var(--ink); background: #fff; font-size: 17px; font-weight: 850; transition: transform .15s, border-color .15s, background .15s; }
     .choice-answer:hover, .choice-answer:focus-visible { border-color: var(--accent); background: #f6f5ff; transform: translateY(-1px); outline: 0; }
@@ -253,6 +258,8 @@
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
     @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .skill-map { display: block; min-height: 0; padding: 22px 16px 34px; } .trident-lines, .map-corner, .branch-heading { display: none; } .level-label { display: block; margin: 22px 0 8px; padding: 9px 12px; border: 0; border-radius: 12px; background: #eeecff; text-align: left; } .level-label strong { display: inline; margin-left: 4px; font-size: inherit; } .skill-slot { margin-top: 8px; padding: 0; border: 0; } .skill-slot.empty { display: none; } .skill-slot::before { content: attr(data-branch); display: block; margin: 0 0 4px 4px; color: var(--branch-color); font-size: 11px; font-weight: 850; } .skill-detail { position: static; } }
+    @media (pointer: coarse) { .embedded-keypad:not(.hidden) { display: grid; } .game-screen .answer-row .submit { display: none; } .game-screen .answer-row input { min-height: 58px; font-size: 24px; caret-color: transparent; } }
+    @media (pointer: coarse) and (min-width: 700px) { .embedded-keypad { grid-template-columns: repeat(6, minmax(0, 1fr)); } .keypad-key { min-height: 54px; } }
     @media (max-width: 520px) { body { padding: 8px; } .page-nav { top: 0; margin: 0; padding:9px 10px; } .page-nav .brand { display:none; } .page-nav-links { flex:1; } .page-nav-links button { padding:7px 8px; font-size:11px; } .nav-icon { width:34px; height:34px; } .top, .screen { padding-left: 16px; padding-right: 16px; } .card { border-radius: 22px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid, .choice-answers { grid-template-columns: 1fr; } .menu-heading, .view-heading { display: block; } .menu-heading p, .view-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats, .profile-summary { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .setting-wide, .mix-options { grid-column: auto; } .reward { right: 0; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .settings-panel { top: 60px; right: 8px; width: calc(100% - 16px); max-height: calc(100vh - 72px); } .exit-button { top: 10px; left: 10px; min-height: 40px; padding: 9px 12px; } .game-active .page-nav { top:0; right:0; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
   </style>
 </head>
@@ -520,6 +527,7 @@
               <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
               <button id="submitBtn" class="submit" type="submit">Ответить</button>
             </form>
+            <div id="embeddedKeypad" class="embedded-keypad hidden" aria-label="Клавиатура ответа"></div>
             <div id="choiceAnswers" class="choice-answers hidden" aria-label="Варианты ответа"></div>
             <div id="feedback" class="feedback" role="status"></div>
             <div id="reward" class="reward" aria-hidden="true"></div>
@@ -562,7 +570,7 @@
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
-      const answerInput = $('answerInput'), answerForm = $('answerForm'), choiceAnswers = $('choiceAnswers'), feedback = $('feedback'), reward = $('reward');
+      const answerInput = $('answerInput'), answerForm = $('answerForm'), embeddedKeypad = $('embeddedKeypad'), choiceAnswers = $('choiceAnswers'), feedback = $('feedback'), reward = $('reward');
       const pixelCat = $('pixelCat');
       const settingsPanel = $('settingsPanel'), settingsBackdrop = $('settingsBackdrop'), settingsSummary = $('settingsSummary');
       const globalSettingsBtn = $('globalSettingsBtn'), languageButton = $('languageButton'), languagePopover = $('languagePopover'), languageSelect = $('languageSelect'), languageLabel = $('languageLabel');
@@ -1373,6 +1381,64 @@
         return built;
       }
 
+      function usesEmbeddedKeypad() {
+        return window.matchMedia('(pointer: coarse)').matches || (navigator.maxTouchPoints > 0 && Math.max(window.innerWidth, window.innerHeight) <= 1180);
+      }
+
+      function keypadLayout() {
+        const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+        if (answerKind === 'equation') return ['x', ...digits, '+', '−', '×', '/', '='];
+        if (answerKind === 'comparison') return ['<', '>', '='];
+        if (answerKind === 'fraction') return [...digits, '/', '−'];
+        if (answerKind === 'parity') return [displayAnswer('even'), displayAnswer('odd')];
+        return [...digits, '−'];
+      }
+
+      function keypadValue(key) {
+        if (answerKind === 'parity') {
+          const even = displayAnswer('even').toLowerCase();
+          return key.toLowerCase() === even ? 'even' : 'odd';
+        }
+        return key === '−' ? '-' : key;
+      }
+
+      function renderEmbeddedKeypad() {
+        const enabled = gameActive && canAnswer && answerKind !== 'choice' && usesEmbeddedKeypad();
+        embeddedKeypad.classList.toggle('hidden', !enabled);
+        if (!enabled) {
+          embeddedKeypad.replaceChildren();
+          return;
+        }
+        embeddedKeypad.setAttribute('aria-label', localized({ ru: 'Клавиатура ответа', en: 'Answer keypad', fr: 'Clavier de réponse', es: 'Teclado de respuesta', de: 'Antworttastatur' }));
+        embeddedKeypad.replaceChildren();
+        keypadLayout().forEach((key) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'keypad-key';
+          button.textContent = key;
+          button.setAttribute('aria-label', key);
+          button.addEventListener('click', () => {
+            if (!canAnswer) return;
+            answerInput.value += keypadValue(key);
+            processInput();
+          });
+          embeddedKeypad.appendChild(button);
+        });
+        const erase = document.createElement('button');
+        erase.type = 'button';
+        erase.className = 'keypad-key action';
+        erase.textContent = '⌫';
+        erase.setAttribute('aria-label', localized({ ru: 'Стереть', en: 'Delete', fr: 'Effacer', es: 'Borrar', de: 'Löschen' }));
+        erase.addEventListener('click', () => { if (canAnswer) answerInput.value = answerInput.value.slice(0, -1); });
+        const submit = document.createElement('button');
+        submit.type = 'button';
+        submit.className = 'keypad-key submit-key';
+        submit.textContent = '✓';
+        submit.setAttribute('aria-label', localized({ ru: 'Ответить', en: 'Submit', fr: 'Répondre', es: 'Responder', de: 'Antworten' }));
+        submit.addEventListener('click', submitAnswer);
+        embeddedKeypad.append(erase, submit);
+      }
+
       function newProblem() {
         const mode = nextMode();
         const built = buildFreshProblem(mode);
@@ -1406,14 +1472,17 @@
         }
         const equation = answerKind === 'equation';
         const textual = equation || answerKind === 'comparison' || answerKind === 'fraction' || answerKind === 'parity' || answerKind === 'shape';
-        answerInput.inputMode = textual ? 'text' : 'numeric';
+        const embedded = usesEmbeddedKeypad();
+        answerInput.readOnly = embedded;
+        answerInput.inputMode = embedded ? 'none' : (textual ? 'text' : 'numeric');
         answerInput.pattern = equation ? '[xX0-9+−\-*/×÷= ]*' : answerKind === 'comparison' ? '[<>=]*' : answerKind === 'fraction' ? '-?[0-9/]*' : (answerKind === 'parity' || answerKind === 'shape') ? '.*' : '-?[0-9]*';
         answerInput.placeholder = equation ? skillsText[currentLanguage].equationHint : answerKind === 'parity' ? olympiadText[currentLanguage].parityPlaceholder : languageData[currentLanguage].placeholder;
         answerInput.setAttribute('aria-label', answerInput.placeholder);
         canAnswer = true;
         updateStats();
+        renderEmbeddedKeypad();
         if (isChoice) choiceAnswers.querySelector('button')?.focus({ preventScroll: true });
-        else answerInput.focus({ preventScroll: true });
+        else if (!embedded) answerInput.focus({ preventScroll: true });
       }
 
       function updateStats() {
@@ -1777,7 +1846,7 @@
         settingsPanel.classList.toggle('hidden', !open);
         settingsBackdrop.classList.toggle('hidden', !open);
         globalSettingsBtn.setAttribute('aria-expanded', String(open));
-        if (!open && gameActive) answerInput.focus({ preventScroll: true });
+        if (!open && gameActive && !usesEmbeddedKeypad()) answerInput.focus({ preventScroll: true });
       }
 
       function drawMapConnections(branches) {
@@ -1994,6 +2063,7 @@
       }));
       answerForm.addEventListener('submit', submitAnswer);
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
+      answerInput.addEventListener('pointerdown', (event) => { if (usesEmbeddedKeypad()) event.preventDefault(); });
       function processInput(event) {
         if (!gameActive || !canAnswer || event?.isComposing) return;
         const value = answerInput.value;
@@ -2006,6 +2076,7 @@
       }
       answerInput.addEventListener('input', processInput);
       answerInput.addEventListener('compositionend', processInput);
+      window.addEventListener('resize', () => { if (gameActive) { answerInput.readOnly = usesEmbeddedKeypad(); answerInput.inputMode = usesEmbeddedKeypad() ? 'none' : (answerKind === 'number' ? 'numeric' : 'text'); renderEmbeddedKeypad(); } });
       $('challengeMode').addEventListener('change', readSettings);
       $('startBtn').addEventListener('click', startGame);
       $('againBtn').addEventListener('click', startGame);
