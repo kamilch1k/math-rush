@@ -335,7 +335,7 @@
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple">Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <article class="mode-card" data-mode="addition-twenty">
-            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Сложение до 20</strong><small>Результат от 11 до 20</small></button>
+            <button class="mode-card-main" type="button"><span class="mode-icon">+</span><strong>Сложение до 20</strong><small>Числа от 1 до 9, сумма от 10</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="addition-twenty" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
@@ -346,7 +346,7 @@
           </article>
           <h3 class="mode-category" data-category="subtraction">Вычитание</h3>
           <article class="mode-card" data-mode="subtraction-ten">
-            <button class="mode-card-main" type="button"><span class="mode-icon">−</span><strong>Самое простое вычитание</strong><small>Числа и результат от 0 до 10</small></button>
+            <button class="mode-card-main" type="button"><span class="mode-icon">−</span><strong>Самое простое вычитание</strong><small>Числа от 1 до 10, без нулей</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="subtraction-ten" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple">Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
@@ -442,6 +442,12 @@
             <button class="mode-card-main" type="button"><span class="mode-icon">½</span><strong>Дроби — микс</strong><small>Все задания с дробями</small></button>
             <button class="mode-settings-button" type="button" data-mode-settings="fractions-mixed" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="fractions-mixed"><option value="simple">Простая</option><option value="advanced" selected>Продвинутая</option><option value="expert">Сложная</option></select></label></div>
+          </article>
+          <h3 class="mode-category" data-category="signed">Числа со знаком</h3>
+          <article class="mode-card" data-mode="arithmetic-negatives">
+            <button class="mode-card-main" type="button"><span class="mode-icon">−±</span><strong>Отрицательные числа</strong><small>Например: 4 − 9 = −5</small></button>
+            <button class="mode-settings-button" type="button" data-mode-settings="arithmetic-negatives" aria-label="Настроить режим" aria-expanded="false" title="Настроить режим">⌄</button>
+            <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty" data-mode-difficulty="arithmetic-negatives"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
           <h3 class="mode-category" data-category="mixed">Смешанная тренировка</h3>
           <article class="mode-card" data-mode="mixed">
@@ -664,18 +670,18 @@
         de: ['Addition für Anfänger', 'Zahlen und Ergebnis bis 10', 'Addiere Zahlen, deren Summe nie größer als 10 ist.']
       };
       const additionLevelText = {
-        ru: { twenty: ['Сложение до 20', 'Результат от 11 до 20', 'Складывай числа с результатом больше 10, но не больше 20.'], large: ['Сложение от 20', 'Результаты больше 20', 'Тренируй сложение с результатами больше 20; сложность задаёт диапазон чисел.'] },
-        en: { twenty: ['Addition up to 20', 'Results from 11 to 20', 'Add numbers whose sum is greater than 10 and no more than 20.'], large: ['Addition above 20', 'Results greater than 20', 'Practice addition with results greater than 20.'] },
-        fr: { twenty: ['Addition jusqu’à 20', 'Résultats de 11 à 20', 'Additionne des nombres dont la somme est comprise entre 11 et 20.'], large: ['Addition au-delà de 20', 'Résultats supérieurs à 20', 'Entraîne-toi avec des sommes supérieures à 20.'] },
-        es: { twenty: ['Suma hasta 20', 'Resultados de 11 a 20', 'Suma números cuyo resultado está entre 11 y 20.'], large: ['Suma mayor que 20', 'Resultados superiores a 20', 'Practica sumas con resultados superiores a 20.'] },
-        de: { twenty: ['Addition bis 20', 'Ergebnisse von 11 bis 20', 'Addiere Zahlen mit Ergebnissen zwischen 11 und 20.'], large: ['Addition über 20', 'Ergebnisse größer als 20', 'Übe Additionen mit Ergebnissen über 20.'] }
+        ru: { twenty: ['Сложение до 20', 'Числа от 1 до 9, сумма от 10', 'Складывай числа от 1 до 9 — сумма всегда от 10 до 18.'], large: ['Сложение от 20', 'Результаты больше 20', 'Тренируй сложение с результатами больше 20; сложность задаёт диапазон чисел.'] },
+        en: { twenty: ['Addition up to 20', 'Numbers 1 to 9, sum from 10', 'Add numbers from 1 to 9 — the sum is always between 10 and 18.'], large: ['Addition above 20', 'Results greater than 20', 'Practice addition with results greater than 20.'] },
+        fr: { twenty: ['Addition jusqu’à 20', 'Nombres de 1 à 9, somme dès 10', 'Additionne des nombres de 1 à 9 — la somme est entre 10 et 18.'], large: ['Addition au-delà de 20', 'Résultats supérieurs à 20', 'Entraîne-toi avec des sommes supérieures à 20.'] },
+        es: { twenty: ['Suma hasta 20', 'Números del 1 al 9, suma desde 10', 'Suma números del 1 al 9 — el resultado está entre 10 y 18.'], large: ['Suma mayor que 20', 'Resultados superiores a 20', 'Practica sumas con resultados superiores a 20.'] },
+        de: { twenty: ['Addition bis 20', 'Zahlen von 1 bis 9, Summe ab 10', 'Addiere Zahlen von 1 bis 9 — das Ergebnis liegt zwischen 10 und 18.'], large: ['Addition über 20', 'Ergebnisse größer als 20', 'Übe Additionen mit Ergebnissen über 20.'] }
       };
       const subtractionText = {
-        ru: { easy: ['Самое простое вычитание', 'Числа и результат от 0 до 10', 'Вычитай в пределах 10 без отрицательных ответов.'], normal: ['Простое вычитание', 'Без отрицательных ответов', 'Решай примеры на вычитание; ответ всегда неотрицательный.'] },
-        en: { easy: ['Beginner subtraction', 'Numbers and result from 0 to 10', 'Subtract within 10 with no negative answers.'], normal: ['Simple subtraction', 'No negative answers', 'Solve subtraction problems with non-negative answers.'] },
-        fr: { easy: ['Soustraction débutant', 'Nombres et résultat de 0 à 10', 'Soustrais jusqu’à 10 sans résultat négatif.'], normal: ['Soustraction simple', 'Sans résultat négatif', 'Résous des soustractions dont le résultat reste positif ou nul.'] },
-        es: { easy: ['Resta para principiantes', 'Números y resultado de 0 a 10', 'Resta hasta 10 sin respuestas negativas.'], normal: ['Resta sencilla', 'Sin respuestas negativas', 'Resuelve restas con resultados no negativos.'] },
-        de: { easy: ['Subtraktion für Anfänger', 'Zahlen und Ergebnis von 0 bis 10', 'Subtrahiere bis 10 ohne negative Ergebnisse.'], normal: ['Einfache Subtraktion', 'Keine negativen Ergebnisse', 'Löse Subtraktionsaufgaben mit nichtnegativen Ergebnissen.'] }
+        ru: { easy: ['Самое простое вычитание', 'Числа от 1 до 10, без нулей', 'Вычитай в пределах 10 без нулей и отрицательных ответов.'], normal: ['Простое вычитание', 'Без нулей и отрицательных ответов', 'Решай примеры на вычитание; ответ всегда положительный.'] },
+        en: { easy: ['Beginner subtraction', 'Numbers from 1 to 10, no zeros', 'Subtract within 10 with no zeros or negative answers.'], normal: ['Simple subtraction', 'No zeros or negative answers', 'Solve subtraction problems with positive answers.'] },
+        fr: { easy: ['Soustraction débutant', 'Nombres de 1 à 10, sans zéro', 'Soustrais jusqu’à 10 sans zéro ni résultat négatif.'], normal: ['Soustraction simple', 'Sans zéro ni résultat négatif', 'Résous des soustractions dont le résultat reste strictement positif.'] },
+        es: { easy: ['Resta para principiantes', 'Números del 1 al 10, sin ceros', 'Resta hasta 10 sin ceros ni respuestas negativas.'], normal: ['Resta sencilla', 'Sin ceros ni respuestas negativas', 'Resuelve restas con resultados positivos.'] },
+        de: { easy: ['Subtraktion für Anfänger', 'Zahlen von 1 bis 10, ohne Null', 'Subtrahiere bis 10 ohne Null und ohne negative Ergebnisse.'], normal: ['Einfache Subtraktion', 'Ohne Null und negative Ergebnisse', 'Löse Subtraktionsaufgaben mit positiven Ergebnissen.'] }
       };
       const expandedModeText = {
         ru: { combined: ['Комбинированные действия', 'Примеры с + и − вместе', 'Решай выражения, в которых сложение и вычитание встречаются вместе.'], equationAdd: ['Уравнения со сложением', 'Например: x + 2 = 10', 'Найди x в простых уравнениях со сложением.'], equationSubtract: ['Уравнения с вычитанием', 'Например: x − 2 = 8', 'Найди x в простых уравнениях с вычитанием.'], allEquations: ['Все уравнения', 'Сложение, вычитание, × и /', 'Решай уравнения со всеми четырьмя действиями.'], categories: ['Сложение', 'Вычитание', 'Сложение и вычитание', 'Умножение', 'Уравнения', 'Дроби', 'Смешанная тренировка'] },
@@ -783,12 +789,20 @@
         de: { category: 'Potenzen und Gleichungen', modes: { 'algebra-powers': ['Potenzen', 'Quadrate, Kuben, Exponenten', 'Berechne a hoch n: Quadrate, Kuben und kleine Exponenten.'], 'algebra-roots': ['Quadratwurzeln', 'Wurzeln aus Quadratzahlen', 'Finde Wurzeln aus Quadratzahlen bis 400.'], 'algebra-polynomials': ['Polynome', 'Werte von ax²+bx+c', 'Setze x ins Polynom ein und berechne.'], 'algebra-quadratics': ['Quadratische Gleichungen', 'x² = k und Faktorform', 'Löse x² = k und (x−a)(x−b)=0.'], 'algebra-systems': ['Gleichungssysteme', 'Zwei Gleichungen, eine Lösung', 'Löse einfache Systeme per Addition.'], 'algebra-sequences': ['Folgen', 'n-tes Glied', 'Finde das n-te Glied einer arithmetischen Folge.'] } }
       };
       Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, algebraBoardText[key].modes); languageData[key].categories.powers = algebraBoardText[key].category; });
+      const signedText = {
+        ru: { category: 'Числа со знаком', modes: { 'arithmetic-negatives': ['Отрицательные числа', 'Например: 4 − 9 = −5', 'Складывай и вычитай числа с отрицательными ответами.'] } },
+        en: { category: 'Signed numbers', modes: { 'arithmetic-negatives': ['Negative numbers', 'Example: 4 − 9 = −5', 'Add and subtract with negative answers.'] } },
+        fr: { category: 'Nombres relatifs', modes: { 'arithmetic-negatives': ['Nombres négatifs', 'Exemple : 4 − 9 = −5', 'Additionne et soustrais avec des résultats négatifs.'] } },
+        es: { category: 'Números con signo', modes: { 'arithmetic-negatives': ['Números negativos', 'Ejemplo: 4 − 9 = −5', 'Suma y resta con resultados negativos.'] } },
+        de: { category: 'Zahlen mit Vorzeichen', modes: { 'arithmetic-negatives': ['Negative Zahlen', 'Beispiel: 4 − 9 = −5', 'Addiere und subtrahiere mit negativen Ergebnissen.'] } }
+      };
+      Object.keys(languageData).forEach((key) => { Object.assign(languageData[key].modes, signedText[key].modes); languageData[key].categories.signed = signedText[key].category; });
       const mapSkillText = {
-        ru: { addition: 'Сложение', subtraction: 'Вычитание', multiplication: 'Умножение', division: 'Деление', 'column-addition': 'Сложение в столбик', 'column-subtraction': 'Вычитание в столбик', 'column-multiplication': 'Умножение в столбик', 'chain-addition': 'Действия по шагам', parentheses: 'Скобки', 'order-of-operations': 'Порядок действий', fractions: 'Дроби', percentages: 'Проценты', shapes: 'Фигуры', perimeter: 'Периметр', area: 'Площадь', coordinates: 'Координаты', powers: 'Степени', roots: 'Квадратные корни', polynomials: 'Многочлены', quadratics: 'Квадратные уравнения', systems: 'Системы уравнений', sequences: 'Прогрессии', expressions: 'Простые выражения', 'equation-add': 'Уравнения x+a=b', 'equation-divide': 'Уравнения x/a=b', 'equation-multiply': 'Уравнения ax=b', 'equation-two-step': 'Уравнения ax+b=c', 'linear-equations': 'Линейные уравнения', inequalities: 'Неравенства', functions: 'Функции', 'linear-functions': 'Линейные функции' },
-        en: { addition: 'Addition', subtraction: 'Subtraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Column addition', 'column-subtraction': 'Column subtraction', 'column-multiplication': 'Column multiplication', 'chain-addition': 'Step-by-step operations', parentheses: 'Parentheses', 'order-of-operations': 'Order of operations', fractions: 'Fractions', percentages: 'Percentages', shapes: 'Shapes', perimeter: 'Perimeter', area: 'Area', coordinates: 'Coordinates', powers: 'Powers', roots: 'Square roots', polynomials: 'Polynomials', quadratics: 'Quadratic equations', systems: 'Systems of equations', sequences: 'Progressions', expressions: 'Simple expressions', 'equation-add': 'Equations x+a=b', 'equation-divide': 'Equations x/a=b', 'equation-multiply': 'Equations ax=b', 'equation-two-step': 'Equations ax+b=c', 'linear-equations': 'Linear equations', inequalities: 'Inequalities', functions: 'Functions', 'linear-functions': 'Linear functions' },
-        fr: { addition: 'Addition', subtraction: 'Soustraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Addition posée', 'column-subtraction': 'Soustraction posée', 'column-multiplication': 'Multiplication posée', 'chain-addition': 'Calculs par étapes', parentheses: 'Parenthèses', 'order-of-operations': 'Ordre des opérations', fractions: 'Fractions', percentages: 'Pourcentages', shapes: 'Figures', perimeter: 'Périmètre', area: 'Aire', coordinates: 'Coordonnées', powers: 'Puissances', roots: 'Racines carrées', polynomials: 'Polynômes', quadratics: 'Équations du second degré', systems: 'Systèmes', sequences: 'Suites', expressions: 'Expressions simples', 'equation-add': 'Équations x+a=b', 'equation-divide': 'Équations x/a=b', 'equation-multiply': 'Équations ax=b', 'equation-two-step': 'Équations ax+b=c', 'linear-equations': 'Équations linéaires', inequalities: 'Inégalités', functions: 'Fonctions', 'linear-functions': 'Fonctions affines' },
-        es: { addition: 'Suma', subtraction: 'Resta', multiplication: 'Multiplicación', division: 'División', 'column-addition': 'Suma en columna', 'column-subtraction': 'Resta en columna', 'column-multiplication': 'Multiplicación en columna', 'chain-addition': 'Operaciones paso a paso', parentheses: 'Paréntesis', 'order-of-operations': 'Orden de operaciones', fractions: 'Fracciones', percentages: 'Porcentajes', shapes: 'Figuras', perimeter: 'Perímetro', area: 'Área', coordinates: 'Coordenadas', powers: 'Potencias', roots: 'Raíces cuadradas', polynomials: 'Polinomios', quadratics: 'Ecuaciones cuadráticas', systems: 'Sistemas', sequences: 'Progresiones', expressions: 'Expresiones simples', 'equation-add': 'Ecuaciones x+a=b', 'equation-divide': 'Ecuaciones x/a=b', 'equation-multiply': 'Ecuaciones ax=b', 'equation-two-step': 'Ecuaciones ax+b=c', 'linear-equations': 'Ecuaciones lineales', inequalities: 'Desigualdades', functions: 'Funciones', 'linear-functions': 'Funciones lineales' },
-        de: { addition: 'Addition', subtraction: 'Subtraktion', multiplication: 'Multiplikation', division: 'Division', 'column-addition': 'Schriftliche Addition', 'column-subtraction': 'Schriftliche Subtraktion', 'column-multiplication': 'Schriftliche Multiplikation', 'chain-addition': 'Schrittweise rechnen', parentheses: 'Klammern', 'order-of-operations': 'Rechenreihenfolge', fractions: 'Brüche', percentages: 'Prozentrechnung', shapes: 'Figuren', perimeter: 'Umfang', area: 'Fläche', coordinates: 'Koordinaten', powers: 'Potenzen', roots: 'Quadratwurzeln', polynomials: 'Polynome', quadratics: 'Quadratische Gleichungen', systems: 'Gleichungssysteme', sequences: 'Folgen', expressions: 'Einfache Terme', 'equation-add': 'Gleichungen x+a=b', 'equation-divide': 'Gleichungen x/a=b', 'equation-multiply': 'Gleichungen ax=b', 'equation-two-step': 'Gleichungen ax+b=c', 'linear-equations': 'Lineare Gleichungen', inequalities: 'Ungleichungen', functions: 'Funktionen', 'linear-functions': 'Lineare Funktionen' }
+        ru: { addition: 'Сложение', subtraction: 'Вычитание', multiplication: 'Умножение', division: 'Деление', 'column-addition': 'Сложение в столбик', 'column-subtraction': 'Вычитание в столбик', 'column-multiplication': 'Умножение в столбик', 'chain-addition': 'Действия по шагам', parentheses: 'Скобки', 'order-of-operations': 'Порядок действий', fractions: 'Дроби', percentages: 'Проценты', negatives: 'Отрицательные числа', shapes: 'Фигуры', perimeter: 'Периметр', area: 'Площадь', coordinates: 'Координаты', powers: 'Степени', roots: 'Квадратные корни', polynomials: 'Многочлены', quadratics: 'Квадратные уравнения', systems: 'Системы уравнений', sequences: 'Прогрессии', expressions: 'Простые выражения', 'equation-add': 'Уравнения x+a=b', 'equation-divide': 'Уравнения x/a=b', 'equation-multiply': 'Уравнения ax=b', 'equation-two-step': 'Уравнения ax+b=c', 'linear-equations': 'Линейные уравнения', inequalities: 'Неравенства', functions: 'Функции', 'linear-functions': 'Линейные функции' },
+        en: { addition: 'Addition', subtraction: 'Subtraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Column addition', 'column-subtraction': 'Column subtraction', 'column-multiplication': 'Column multiplication', 'chain-addition': 'Step-by-step operations', parentheses: 'Parentheses', 'order-of-operations': 'Order of operations', fractions: 'Fractions', percentages: 'Percentages', negatives: 'Negative numbers', shapes: 'Shapes', perimeter: 'Perimeter', area: 'Area', coordinates: 'Coordinates', powers: 'Powers', roots: 'Square roots', polynomials: 'Polynomials', quadratics: 'Quadratic equations', systems: 'Systems of equations', sequences: 'Progressions', expressions: 'Simple expressions', 'equation-add': 'Equations x+a=b', 'equation-divide': 'Equations x/a=b', 'equation-multiply': 'Equations ax=b', 'equation-two-step': 'Equations ax+b=c', 'linear-equations': 'Linear equations', inequalities: 'Inequalities', functions: 'Functions', 'linear-functions': 'Linear functions' },
+        fr: { addition: 'Addition', subtraction: 'Soustraction', multiplication: 'Multiplication', division: 'Division', 'column-addition': 'Addition posée', 'column-subtraction': 'Soustraction posée', 'column-multiplication': 'Multiplication posée', 'chain-addition': 'Calculs par étapes', parentheses: 'Parenthèses', 'order-of-operations': 'Ordre des opérations', fractions: 'Fractions', percentages: 'Pourcentages', negatives: 'Nombres négatifs', shapes: 'Figures', perimeter: 'Périmètre', area: 'Aire', coordinates: 'Coordonnées', powers: 'Puissances', roots: 'Racines carrées', polynomials: 'Polynômes', quadratics: 'Équations du second degré', systems: 'Systèmes', sequences: 'Suites', expressions: 'Expressions simples', 'equation-add': 'Équations x+a=b', 'equation-divide': 'Équations x/a=b', 'equation-multiply': 'Équations ax=b', 'equation-two-step': 'Équations ax+b=c', 'linear-equations': 'Équations linéaires', inequalities: 'Inégalités', functions: 'Fonctions', 'linear-functions': 'Fonctions affines' },
+        es: { addition: 'Suma', subtraction: 'Resta', multiplication: 'Multiplicación', division: 'División', 'column-addition': 'Suma en columna', 'column-subtraction': 'Resta en columna', 'column-multiplication': 'Multiplicación en columna', 'chain-addition': 'Operaciones paso a paso', parentheses: 'Paréntesis', 'order-of-operations': 'Orden de operaciones', fractions: 'Fracciones', percentages: 'Porcentajes', negatives: 'Números negativos', shapes: 'Figuras', perimeter: 'Perímetro', area: 'Área', coordinates: 'Coordenadas', powers: 'Potencias', roots: 'Raíces cuadradas', polynomials: 'Polinomios', quadratics: 'Ecuaciones cuadráticas', systems: 'Sistemas', sequences: 'Progresiones', expressions: 'Expresiones simples', 'equation-add': 'Ecuaciones x+a=b', 'equation-divide': 'Ecuaciones x/a=b', 'equation-multiply': 'Ecuaciones ax=b', 'equation-two-step': 'Ecuaciones ax+b=c', 'linear-equations': 'Ecuaciones lineales', inequalities: 'Desigualdades', functions: 'Funciones', 'linear-functions': 'Funciones lineales' },
+        de: { addition: 'Addition', subtraction: 'Subtraktion', multiplication: 'Multiplikation', division: 'Division', 'column-addition': 'Schriftliche Addition', 'column-subtraction': 'Schriftliche Subtraktion', 'column-multiplication': 'Schriftliche Multiplikation', 'chain-addition': 'Schrittweise rechnen', parentheses: 'Klammern', 'order-of-operations': 'Rechenreihenfolge', fractions: 'Brüche', percentages: 'Prozentrechnung', negatives: 'Negative Zahlen', shapes: 'Figuren', perimeter: 'Umfang', area: 'Fläche', coordinates: 'Koordinaten', powers: 'Potenzen', roots: 'Quadratwurzeln', polynomials: 'Polynome', quadratics: 'Quadratische Gleichungen', systems: 'Gleichungssysteme', sequences: 'Folgen', expressions: 'Einfache Terme', 'equation-add': 'Gleichungen x+a=b', 'equation-divide': 'Gleichungen x/a=b', 'equation-multiply': 'Gleichungen ax=b', 'equation-two-step': 'Gleichungen ax+b=c', 'linear-equations': 'Lineare Gleichungen', inequalities: 'Ungleichungen', functions: 'Funktionen', 'linear-functions': 'Lineare Funktionen' }
       };
       Object.keys(interfaceText).forEach((key) => Object.assign(interfaceText[key].skillNames, mapSkillText[key]));
       const mapSkillDescriptions = {
@@ -820,6 +834,7 @@
         'arithmetic-chain-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'arithmetic-parentheses': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'arithmetic-order': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'arithmetic-negatives': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         equations: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-addition': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'equations-subtraction': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
@@ -1001,6 +1016,7 @@
             ['column', ['column-addition', 'column-subtraction', 'column-multiplication']],
             ['operations', ['arithmetic-order', 'arithmetic-parentheses']],
             ['fractions', ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed']],
+            ['signed', ['arithmetic-negatives']],
             ['skills', ['skills-percent', 'skills-compare']],
             ['mixed', ['mixed']]
           ]],
@@ -1326,6 +1342,7 @@
           let operator = '+', answerValue = first + second;
           if (mode === 'column-subtraction') {
             if (second > first) [first, second] = [second, first];
+            if (second === first) second -= 1;
             operator = '−'; answerValue = first - second;
           }
           if (mode === 'column-multiplication') {
@@ -1367,6 +1384,23 @@
           if (subtract && firstQuotient < secondQuotient) return { text: `${right} ÷ ${secondDivisor} − ${left} ÷ ${firstDivisor} = ?`, answer: secondQuotient - firstQuotient, hint: localized({ ru: 'Сначала выполни оба деления.', en: 'Do both divisions first.', fr: 'Effectue d’abord les deux divisions.', es: 'Haz primero las dos divisiones.', de: 'Führe zuerst beide Divisionen aus.' }) };
           return { text: `${left} ÷ ${firstDivisor} ${subtract ? '−' : '+'} ${right} ÷ ${secondDivisor} = ?`, answer: subtract ? firstQuotient - secondQuotient : firstQuotient + secondQuotient, hint: localized({ ru: 'Сначала выполни оба деления.', en: 'Do both divisions first.', fr: 'Effectue d’abord les deux divisions.', es: 'Haz primero las dos divisiones.', de: 'Führe zuerst beide Divisionen aus.' }) };
         }
+        if (mode === 'arithmetic-negatives') {
+          const difficulty = difficultyFor(mode);
+          const limit = difficulty === 'simple' ? 9 : difficulty === 'expert' ? 50 : 20;
+          const form = randomInt(0, 2);
+          if (form === 0) {
+            const a = randomInt(1, limit), b = randomInt(1, limit);
+            const small = Math.min(a, b), big = Math.max(a, b) + (a === b ? 1 : 0);
+            return { text: `${small} − ${big} = ?`, answer: small - big, hint: localized({ ru: 'Если вычитаешь большее из меньшего — ответ отрицательный.', en: 'Subtracting a larger number gives a negative answer.', fr: 'Soustraire un plus grand nombre donne un résultat négatif.', es: 'Restar un número mayor da un resultado negativo.', de: 'Eine größere Zahl abzuziehen ergibt ein negatives Ergebnis.' }) };
+          }
+          if (form === 1) {
+            let a = randomInt(1, limit), b = randomInt(1, limit);
+            if (a === b) a += 1;
+            return { text: `−${a} + ${b} = ?`, answer: b - a, hint: localized({ ru: 'Сначала иди влево от нуля, потом вправо.', en: 'Go left from zero first, then right.', fr: 'Va d’abord à gauche de zéro, puis à droite.', es: 'Ve primero a la izquierda del cero y luego a la derecha.', de: 'Gehe zuerst nach links von null, dann nach rechts.' }) };
+          }
+          const a = randomInt(1, limit), b = randomInt(1, limit);
+          return { text: `−${a} − ${b} = ?`, answer: -(a + b), hint: localized({ ru: 'Два долга складываются: ответ отрицательный.', en: 'Two debts add up: the answer stays negative.', fr: 'Deux dettes s’additionnent : le résultat reste négatif.', es: 'Dos deudas se suman: el resultado sigue siendo negativo.', de: 'Zwei Schulden addieren sich: das Ergebnis bleibt negativ.' }) };
+        }
         if (mode === 'equations' || mode === 'equations-addition' || mode === 'equations-subtraction' || mode === 'equations-multiplication' || mode === 'equations-division') {
           const difficulty = difficultyFor(mode);
           const equationMax = difficulty === 'simple' ? 10 : difficulty === 'expert' ? 999 : 99;
@@ -1400,12 +1434,13 @@
         }
         const range = difficultyRange(mode);
         if (mode === 'addition-ten') {
-          const a = randomInt(0, 10), b = randomInt(0, 10 - a);
+          const a = randomInt(1, 9), b = randomInt(1, 10 - a);
           return { text: `${a} + ${b} = ?`, answer: a + b };
         }
         if (mode === 'addition-twenty') {
-          const total = randomInt(11, 20), a = randomInt(1, total - 1);
-          return { text: `${a} + ${total - a} = ?`, answer: total };
+          let a = randomInt(1, 9), b = randomInt(1, 9);
+          while (a + b < 10) { a = randomInt(1, 9); b = randomInt(1, 9); }
+          return { text: `${a} + ${b} = ?`, answer: a + b };
         }
         if (mode === 'addition') {
           const difficulty = difficultyFor(mode);
@@ -1415,11 +1450,12 @@
           return { text: `${a} + ${total - a} = ?`, answer: total };
         }
         if (mode === 'subtraction-ten') {
-          const a = randomInt(0, 10), b = randomInt(0, a);
+          const a = randomInt(2, 10), b = randomInt(1, a - 1);
           return { text: `${a} − ${b} = ?`, answer: a - b };
         }
         if (mode === 'subtraction') {
-          const a = randomInt(range.min, range.max), b = randomInt(range.min, a);
+          let a = randomInt(range.min, range.max), b = randomInt(range.min, a);
+          if (b === a) { if (a < range.max) a += 1; else b -= 1; }
           return { text: `${a} − ${b} = ?`, answer: a - b };
         }
         if (mode === 'addition-subtraction') {
@@ -1427,7 +1463,7 @@
           const a = randomInt(range.min, max);
           const b = randomInt(range.min, max);
           const subtotal = a + b;
-          const c = randomInt(0, subtotal);
+          const c = randomInt(1, subtotal - 1);
           return { text: `${a} + ${b} − ${c} = ?`, answer: subtotal - c };
         }
         if (mode === 'multiplication') {

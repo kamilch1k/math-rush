@@ -74,11 +74,11 @@ Routes: `/` `/quizzes` → `math-rush.html`, `/map` → `math-map.html`, `/profi
 
 Defined in `outputs/progress.js` (`skills[]` + `modeToSkill`). Each skill: `id, title, category, prerequisites[], mode|href`.
 
-- Arithmetic (12): addition → subtraction → multiplication → division → step-by-step chains → column +/− → column × → order of operations (×/÷ first) → parentheses → fractions → percentages
+- Arithmetic (13): addition → subtraction → multiplication → division → step-by-step chains → column +/− → column × → order of operations (×/÷ first) → parentheses → fractions → percentages → negative numbers. Addition/subtraction practice never uses zero; addition-to-20 uses numbers 1–9 with sums of 10–18.
 - Algebra (16): prep for equations sits at the very top (no prerequisites). Basics next to counting — x+a=b, powers, ax=b, x/a=b, roots. Order of operations links to everything from ax+b=c down: linear → sequences / systems / inequalities / functions → polynomials + linear-functions → quadratics → derivatives (whiteboard)
 - Geometry (6): shapes → perimeter / angles → area / triangles / coordinates
 
-Cross-branch deps are dashed purple in the UI (e.g. geometry `area` needs arithmetic `multiplication`; algebra `expressions` needs arithmetic `addition/subtraction`). Hovering a node dims the board and highlights its full upstream + downstream network.
+Cross-branch deps are dashed purple in the UI (e.g. geometry `area` needs arithmetic `multiplication`; advanced algebra needs `order-of-operations` + `parentheses`). Hovering a node dims the board and highlights its full upstream + downstream network.
 
 To add a topic: add `skills[]` + `modeToSkill` in `progress.js`, a `mode-card[data-mode]` + `buildRawProblem` branch + `modeConfigs` + `languageData` (ru/en/fr/es/de) in `math-rush.html`, and a menu plan entry in `organizeMenu()`.
 

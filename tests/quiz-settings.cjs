@@ -67,7 +67,7 @@ assert.equal(q.configs.addition.startTime, 20, 'In-game changes affect only acti
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-ten');
   const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);
-  assert.ok(+a >= 0 && +a <= 10 && +b >= 0 && +b <= 10);
+  assert.ok(+a >= 1 && +a <= 10 && +b >= 1 && +b <= 10);
   assert.ok(p.answer <= 10);
   assert.equal(p.answer, +a + +b);
 }
@@ -98,7 +98,8 @@ for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-twenty');
   const [, a, b] = p.text.match(/^(\d+) \+ (\d+) = \?$/);
   assert.equal(p.answer, +a + +b);
-  assert.ok(p.answer >= 11 && p.answer <= 20, 'Second addition level stays between 11 and 20');
+  assert.ok(+a >= 1 && +a <= 9 && +b >= 1 && +b <= 9, 'Second addition level uses numbers 1-9');
+  assert.ok(p.answer >= 10 && p.answer <= 18, 'Second addition level sums to 10-18');
 }
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition');
@@ -109,9 +110,26 @@ for (let i = 0; i < 1000; i++) {
 for (let i = 0; i < 1000; i++) {
   const p = q.build('subtraction-ten');
   const [, a, b] = p.text.match(/^(\d+) − (\d+) = \?$/);
-  assert.ok(+a >= 0 && +a <= 10 && +b >= 0 && +b <= 10);
-  assert.ok(p.answer >= 0 && p.answer <= 10);
+  assert.ok(+a >= 1 && +a <= 10 && +b >= 1 && +b <= 10);
+  assert.ok(p.answer >= 1 && p.answer <= 10);
   assert.equal(p.answer, +a - +b);
+}
+for (const mode of ['addition-ten', 'addition-twenty', 'addition', 'subtraction-ten', 'subtraction', 'addition-subtraction', 'column-addition', 'column-subtraction', 'column-multiplication', 'arithmetic-negatives']) {
+  for (let i = 0; i < 300; i++) {
+    const p = q.build(mode);
+    assert.ok(!/(^|[^0-9])0([^0-9]|$)/.test(p.text), `${mode} has no standalone zero in the text`);
+    assert.notEqual(p.answer, 0, `${mode} never has a zero answer`);
+  }
+}
+for (let i = 0; i < 300; i++) {
+  const p = q.build('arithmetic-negatives');
+  let m = p.text.match(/^(\d+) − (\d+) = \?$/);
+  if (m) { assert.equal(p.answer, +m[1] - +m[2]); assert.ok(p.answer < 0); continue; }
+  m = p.text.match(/^−(\d+) \+ (\d+) = \?$/);
+  if (m) { assert.equal(p.answer, +m[2] - +m[1]); continue; }
+  m = p.text.match(/^−(\d+) − (\d+) = \?$/);
+  assert.ok(m, `Negatives problem has a known form: ${p.text}`);
+  assert.equal(p.answer, -(+m[1] + +m[2]));
 }
 for (let i = 0; i < 1000; i++) {
   const p = q.build('addition-subtraction');
