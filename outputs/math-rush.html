@@ -208,6 +208,8 @@
     .problem.word-problem { max-width: 720px; min-height: 105px; margin: 0 auto 10px; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; letter-spacing: -.02em; font-weight: 800; }
     .problem-help { min-height: 24px; margin: 0 0 15px; color: var(--accent-dark); font-size: 13px; font-weight: 700; }
     .answer-row { display: flex; gap: 10px; }
+    .keypad-toggle { display: grid; width: 52px; min-width: 52px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 15px; color: var(--muted); background: #fff; font-size: 21px; transition: color .15s, border-color .15s, background .15s; }
+    .keypad-toggle:hover, .keypad-toggle[aria-pressed="true"] { border-color: #b9b4ff; color: var(--accent-dark); background: #f2f0ff; }
     .embedded-keypad { display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
     .keypad-key { min-height: 48px; padding: 8px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: #fff; font-size: 19px; font-weight: 850; box-shadow: 0 3px 0 rgba(16,24,40,.08); }
     .keypad-key:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(16,24,40,.08); }
@@ -258,7 +260,7 @@
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
     @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .skill-map { display: block; min-height: 0; padding: 22px 16px 34px; } .trident-lines, .map-corner, .branch-heading { display: none; } .level-label { display: block; margin: 22px 0 8px; padding: 9px 12px; border: 0; border-radius: 12px; background: #eeecff; text-align: left; } .level-label strong { display: inline; margin-left: 4px; font-size: inherit; } .skill-slot { margin-top: 8px; padding: 0; border: 0; } .skill-slot.empty { display: none; } .skill-slot::before { content: attr(data-branch); display: block; margin: 0 0 4px 4px; color: var(--branch-color); font-size: 11px; font-weight: 850; } .skill-detail { position: static; } }
-    @media (pointer: coarse) { .embedded-keypad:not(.hidden) { display: grid; } .game-screen .answer-row .submit { display: none; } .game-screen .answer-row input { min-height: 58px; font-size: 24px; caret-color: transparent; } }
+    @media (pointer: coarse) { .embedded-keypad:not(.hidden) { display: grid; } .game-screen .answer-row .submit, .game-screen .answer-row .keypad-toggle { display: none; } .game-screen .answer-row input { min-height: 58px; font-size: 24px; caret-color: transparent; } }
     @media (pointer: coarse) and (min-width: 700px) { .embedded-keypad { grid-template-columns: repeat(6, minmax(0, 1fr)); } .keypad-key { min-height: 54px; } }
     @media (max-width: 520px) { body { padding: 8px; } .page-nav { top: 0; margin: 0; padding:9px 10px; } .page-nav .brand { display:none; } .page-nav-links { flex:1; } .page-nav-links button { padding:7px 8px; font-size:11px; } .nav-icon { width:34px; height:34px; } .top, .screen { padding-left: 16px; padding-right: 16px; } .card { border-radius: 22px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid, .choice-answers { grid-template-columns: 1fr; } .menu-heading, .view-heading { display: block; } .menu-heading p, .view-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats, .profile-summary { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .setting-wide, .mix-options { grid-column: auto; } .reward { right: 0; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .settings-panel { top: 60px; right: 8px; width: calc(100% - 16px); max-height: calc(100vh - 72px); } .exit-button { top: 10px; left: 10px; min-height: 40px; padding: 9px 12px; } .game-active .page-nav { top:0; right:0; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
   </style>
@@ -526,6 +528,7 @@
             <form id="answerForm" class="answer-row" autocomplete="off">
               <input id="answerInput" inputmode="numeric" pattern="-?[0-9]*" aria-label="Ответ" placeholder="Твой ответ" autofocus>
               <button id="submitBtn" class="submit" type="submit">Ответить</button>
+              <button id="keypadToggle" class="keypad-toggle" type="button" aria-label="Открыть экранную клавиатуру" aria-pressed="false" title="Экранная клавиатура">⌨</button>
             </form>
             <div id="embeddedKeypad" class="embedded-keypad hidden" aria-label="Клавиатура ответа"></div>
             <div id="choiceAnswers" class="choice-answers hidden" aria-label="Варианты ответа"></div>
@@ -570,7 +573,7 @@
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
-      const answerInput = $('answerInput'), answerForm = $('answerForm'), embeddedKeypad = $('embeddedKeypad'), choiceAnswers = $('choiceAnswers'), feedback = $('feedback'), reward = $('reward');
+      const answerInput = $('answerInput'), answerForm = $('answerForm'), keypadToggle = $('keypadToggle'), embeddedKeypad = $('embeddedKeypad'), choiceAnswers = $('choiceAnswers'), feedback = $('feedback'), reward = $('reward');
       const pixelCat = $('pixelCat');
       const settingsPanel = $('settingsPanel'), settingsBackdrop = $('settingsBackdrop'), settingsSummary = $('settingsSummary');
       const globalSettingsBtn = $('globalSettingsBtn'), languageButton = $('languageButton'), languagePopover = $('languagePopover'), languageSelect = $('languageSelect'), languageLabel = $('languageLabel');
@@ -763,6 +766,7 @@
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
+      let desktopKeypadOpen = false;
       let mapLineFrame = null;
       let settings = { factorFrom: 1, factorTo: 10, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', answerMode: 'text', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
       const modeConfigs = {
@@ -1403,8 +1407,12 @@
       }
 
       function renderEmbeddedKeypad() {
-        const enabled = gameActive && canAnswer && answerKind !== 'choice' && usesEmbeddedKeypad();
+        const touchDevice = usesEmbeddedKeypad();
+        const enabled = gameActive && canAnswer && answerKind !== 'choice' && (touchDevice || desktopKeypadOpen);
         embeddedKeypad.classList.toggle('hidden', !enabled);
+        keypadToggle.classList.toggle('hidden', answerKind === 'choice' || touchDevice);
+        keypadToggle.setAttribute('aria-pressed', String(!touchDevice && desktopKeypadOpen));
+        keypadToggle.setAttribute('aria-label', localized({ ru: desktopKeypadOpen ? 'Закрыть экранную клавиатуру' : 'Открыть экранную клавиатуру', en: desktopKeypadOpen ? 'Close on-screen keypad' : 'Open on-screen keypad', fr: desktopKeypadOpen ? 'Fermer le clavier à l’écran' : 'Ouvrir le clavier à l’écran', es: desktopKeypadOpen ? 'Cerrar teclado en pantalla' : 'Abrir teclado en pantalla', de: desktopKeypadOpen ? 'Bildschirmtastatur schließen' : 'Bildschirmtastatur öffnen' }));
         if (!enabled) {
           embeddedKeypad.replaceChildren();
           return;
@@ -1592,6 +1600,7 @@
         clearTimeout(nextProblemTimeout);
         readSettings();
         recentProblemSignatures.clear();
+        desktopKeypadOpen = false;
         timeLeft = settings.startTime;
         solved = 0; score = 0; streak = 0;
         gameActive = true;
@@ -2062,6 +2071,11 @@
         else { syncGlobalSettingsControls(); readSettings(); }
       }));
       answerForm.addEventListener('submit', submitAnswer);
+      keypadToggle.addEventListener('click', () => {
+        if (usesEmbeddedKeypad() || answerKind === 'choice') return;
+        desktopKeypadOpen = !desktopKeypadOpen;
+        renderEmbeddedKeypad();
+      });
       answerInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitAnswer(); } });
       answerInput.addEventListener('pointerdown', (event) => { if (usesEmbeddedKeypad()) event.preventDefault(); });
       function processInput(event) {
