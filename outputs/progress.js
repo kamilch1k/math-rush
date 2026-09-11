@@ -32,7 +32,7 @@
     { id: 'polynomials', title: 'Многочлены', category: 'algebra', prerequisites: ['powers', 'functions'], mode: 'algebra-polynomials' },
     { id: 'quadratics', title: 'Квадратные уравнения', category: 'algebra', prerequisites: ['polynomials', 'equation-two-step'], mode: 'algebra-quadratics' },
     { id: 'systems', title: 'Системы уравнений', category: 'algebra', prerequisites: ['linear-equations', 'equation-two-step'], mode: 'algebra-systems' },
-    { id: 'sequences', title: 'Прогрессии', category: 'algebra', prerequisites: ['multiplication', 'functions'], mode: 'algebra-sequences' },
+    { id: 'sequences', title: 'Прогрессии', category: 'algebra', prerequisites: ['multiplication', 'equation-two-step'], mode: 'algebra-sequences' },
     { id: 'derivatives', title: 'Производные', category: 'algebra', prerequisites: ['functions', 'linear-functions', 'polynomials'], href: 'derivatives.html' },
     { id: 'shapes', title: 'Фигуры', category: 'geometry', prerequisites: [], mode: 'geometry-shapes' },
     { id: 'perimeter', title: 'Периметр', category: 'geometry', prerequisites: ['shapes', 'addition'], mode: 'geometry-perimeter' },

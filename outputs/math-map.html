@@ -3,46 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#1b2538">
+  <meta name="theme-color" content="#f3f6fb">
   <title>Карта математики — Math Rush</title>
   <link rel="stylesheet" href="app-shell.css">
   <style>
-    .board-frame{padding:16px;border-radius:26px;background:linear-gradient(135deg,#9a7448 0%,#7a5a34 22%,#5d4226 45%,#8a6844 70%,#6b4e2e 100%);box-shadow:0 24px 60px rgba(60,40,15,.35),inset 0 2px 2px rgba(255,255,255,.35),inset 0 -3px 6px rgba(0,0,0,.35)}
-    .board-plaque{display:flex;align-items:center;justify-content:center;margin:2px auto 12px;padding:8px 22px;width:fit-content;border-radius:10px;color:#f5e7c8;background:linear-gradient(180deg,#3a2c18,#241a0e);border:1px solid #d9b77a;font-size:13px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+    .board-frame{padding:0}
+    .board-plaque{display:flex;align-items:center;justify-content:center;margin:2px auto 12px;padding:8px 18px;width:fit-content;border-radius:999px;color:var(--accent-dark);background:#eeecff;border:1px solid #d6d2ff;font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
     .board-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
-    .board-stat{padding:10px 14px;border-radius:14px;color:#f3ecdc;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.14)}
-    .board-stat span{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+    .board-stat{padding:10px 14px;border-radius:14px;color:var(--ink);background:#fff;border:1px solid var(--line);box-shadow:0 6px 16px rgba(16,24,40,.05)}
+    .board-stat span{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
     .board-stat strong{display:block;font-size:20px;font-weight:900}
-    .math-map{position:relative;padding:40px 22px 60px;border-radius:14px;color:#f2f4f8;background:radial-gradient(ellipse at 18% 8%,rgba(255,255,255,.09),transparent 42%),radial-gradient(ellipse at 85% 95%,rgba(255,255,255,.07),transparent 38%),linear-gradient(180deg,#26334e 0%,#1d2740 45%,#161f33 100%);box-shadow:inset 0 0 80px rgba(0,0,0,.5)}
-    .root-node{position:relative;z-index:2;width:fit-content;margin:0 auto 40px;padding:12px 34px;border-radius:12px;color:#fff;background:color-mix(in srgb,#7c6cff 78%,#101828);border:2px dashed rgba(255,255,255,.55);font-size:18px;font-weight:950;letter-spacing:.14em}
+    .math-map{position:relative;padding:40px 22px 60px;border:1px solid var(--line);border-radius:28px;color:var(--ink);background:radial-gradient(circle at 50% 100%,rgba(99,91,255,.12),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,247,255,.92));box-shadow:0 12px 30px rgba(16,24,40,.06)}
+    .root-node{position:relative;z-index:2;width:fit-content;margin:0 auto 40px;padding:12px 34px;border-radius:999px;color:#fff;background:#635bff;box-shadow:0 8px 22px rgba(99,91,255,.35);font-size:18px;font-weight:950;letter-spacing:.14em}
     .branches{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
-    .branch-title{margin:0 0 16px;padding:10px;border-radius:12px;text-align:center;font-size:14px;font-weight:900;letter-spacing:.06em;color:#fff;background:rgba(0,0,0,.35);border:2px dashed rgba(255,255,255,.4)}
-    .branch[data-category="arithmetic"]{--branch-color:#f0822e;--pin-color:#ff5d5d}
-    .branch[data-category="algebra"]{--branch-color:#7c6cff;--pin-color:#ffd23f}
-    .branch[data-category="geometry"]{--branch-color:#2e90fa;--pin-color:#3ddc84}
+    .branch-title{margin:0 0 16px;padding:10px;border-radius:999px;text-align:center;font-size:14px;font-weight:900;letter-spacing:.06em;color:#fff;background:var(--branch-color);box-shadow:0 8px 22px color-mix(in srgb,var(--branch-color) 28%,transparent)}
+    .branch[data-category="arithmetic"]{--branch-color:#e66b2c}
+    .branch[data-category="algebra"]{--branch-color:#635bff}
+    .branch[data-category="geometry"]{--branch-color:#1570ef}
     .skill-list{display:grid;gap:16px}
-    .skill-node{position:relative;width:100%;padding:20px 15px 13px;border:0;border-radius:4px 4px 12px 4px;background:linear-gradient(180deg,#fffdf4,#fdf3d8);color:var(--ink);text-align:left;cursor:pointer;box-shadow:0 10px 22px rgba(0,0,0,.45)}
-    .skill-node::before{content:"";position:absolute;top:-8px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,var(--pin-color) 20% 100%);box-shadow:0 3px 6px rgba(0,0,0,.5)}
-    .skill-node::after{content:"";position:absolute;inset:0 0 auto 0;height:6px;border-radius:4px 4px 0 0;background:var(--branch-color)}
+    .skill-node{position:relative;width:100%;padding:13px 15px;border:2px solid color-mix(in srgb,var(--branch-color) 32%,var(--line));border-radius:15px;background:#fff;color:var(--ink);text-align:left;cursor:pointer;box-shadow:0 8px 24px rgba(16,24,40,.07)}
     .skill-node strong{display:block;font-size:14px}
     .skill-node small{display:block;margin-top:4px;color:var(--muted);font-size:12px;line-height:1.4}
-    .mastery-track{height:6px;margin-top:8px;border-radius:99px;background:#e7e2cf;overflow:hidden}
+    .mastery-track{height:6px;margin-top:8px;border-radius:99px;background:#eaecf0;overflow:hidden}
     .mastery-track i{display:block;height:100%;background:linear-gradient(90deg,var(--branch-color),#12b76a)}
     .node-sub{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;font-weight:800;color:var(--muted)}
     .skill-node .state{position:absolute;top:10px;right:10px;font-size:13px}
-    .skill-node.mastered{background:linear-gradient(180deg,#eefdf3,#d9f5e3)}
-    .skill-node.locked{opacity:.75}
-    .req-chip{display:inline-block;margin:6px 6px 0 0;padding:2px 9px;border-radius:99px;background:rgba(0,0,0,.07);font-size:10.5px;font-weight:800}
-    .req-chip.cross{background:rgba(124,108,255,.16);color:#4f46e5}
-    .skill-detail{background:linear-gradient(145deg,#2b3560,#171e38);color:#fff;border:1px solid rgba(255,255,255,.14)}
+    .skill-node.mastered{border-color:#75d9aa;background:#ecfdf3}
+    .skill-node.locked{opacity:.6}
+    .req-chip{display:inline-block;margin:6px 6px 0 0;padding:2px 9px;border-radius:99px;background:#f2f4f7;color:var(--muted);font-size:10.5px;font-weight:800}
+    .req-chip.cross{background:#eeecff;color:#4f46e5}
+    .skill-detail{background:linear-gradient(145deg,#5f57f5,#3f37c9);color:#fff;border:0}
     .skill-detail h2{color:#fff}
-    .skill-detail .muted{color:rgba(255,255,255,.7)}
+    .skill-detail .muted{color:rgba(255,255,255,.8)}
     .detail-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
-    .detail-metric{padding:10px;border-radius:12px;background:rgba(255,255,255,.08)}
-    .detail-metric span{display:block;font-size:11px;opacity:.7}
+    .detail-metric{padding:10px;border-radius:12px;background:rgba(255,255,255,.12)}
+    .detail-metric span{display:block;font-size:11px;opacity:.75}
     .detail-metric strong{font-size:20px}
     .requirements{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-    .requirements li{display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.07)}
+    .requirements li{display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.12)}
     @media(max-width:800px){.branches{grid-template-columns:1fr}.board-stats{grid-template-columns:repeat(2,1fr)}}
   </style>
 </head>
@@ -50,7 +48,7 @@
   <main class="page">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a class="active" href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
     <header class="hero"><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Школьная доска: три ветки, честные зависимости без пересечений наугад, живой прогресс. Наведи порядок — от арифметики через алгебру (включая степени, корни, многочлены, квадратные уравнения, системы и прогрессии) к геометрии.</p></header>
-    <section class="panel board-frame" aria-label="Карта навыков"><div class="board-plaque">★ Математика · Knowledge Board ★</div><div id="boardStats" class="board-stats"></div><div class="math-map"><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></section>
+    <section class="panel board-frame" aria-label="Карта навыков"><div class="board-plaque">Математика · Карта знаний</div><div id="boardStats" class="board-stats"></div><div class="math-map"><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></section>
     <section id="skillDetail" class="panel skill-detail" aria-live="polite"></section>
   </main>
   <script src="progress.js"></script>
