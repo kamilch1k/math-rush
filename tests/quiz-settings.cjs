@@ -31,6 +31,16 @@ for (let i = 0; i < 2000; i++) {
   if (/(^|[^0-9])0([^0-9]|$)/.test(p.text) || p.answer === 0) zeroProblems++;
 }
 assert.ok(zeroProblems < 240, 'Zero problems are uncommon (under 12%)');
+let rareTableFactors = 0;
+let challengingTablePairs = 0;
+for (let i = 0; i < 12000; i++) {
+  const problem = q.build('tables');
+  const [, a, b] = problem.text.match(/^(\d+) × (\d+) = \?$/).map(Number);
+  rareTableFactors += Number([1, 2, 10].includes(a)) + Number([1, 2, 10].includes(b));
+  if ([6, 7, 8, 9].includes(a) && [4, 5, 6, 7, 8, 9].includes(b)) challengingTablePairs++;
+}
+assert.ok(rareTableFactors < 3000, '1, 2, and 10 are rare in multiplication-table practice');
+assert.ok(challengingTablePairs > 3400, 'Harder multiplication pairs occur often in table practice');
 q.read();
 q.configure({ id: 'startTime', value: '20' });
 q.read();

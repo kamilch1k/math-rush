@@ -867,6 +867,26 @@
 
       function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+      // The middle and upper part of the table needs more practice than 1, 2 and 10.
+      // These weights are still applied only inside the range selected by the player.
+      const multiplicationFactorWeights = { 1: 0.35, 2: 0.6, 3: 2.2, 4: 3.6, 5: 4.2, 6: 6.3, 7: 7.8, 8: 7.4, 9: 7.8, 10: 0.55, 11: 2.8, 12: 3.2 };
+
+      function weightedPick(items, getWeight) {
+        const total = items.reduce((sum, item) => sum + Math.max(0, getWeight(item)), 0);
+        if (!total) return items[randomInt(0, items.length - 1)];
+        let cursor = Math.random() * total;
+        for (const item of items) {
+          cursor -= Math.max(0, getWeight(item));
+          if (cursor <= 0) return item;
+        }
+        return items[items.length - 1];
+      }
+
+      function multiplicationFactor(from, to) {
+        const values = Array.from({ length: to - from + 1 }, (_, index) => from + index);
+        return weightedPick(values, (value) => multiplicationFactorWeights[value] || (value > 12 ? 3 : 1));
+      }
+
       function configFor(mode = selectedMode) { return modeConfigs[mode] || modeConfigs.tables; }
 
       function difficultyFor(mode) { return configFor(mode).difficulty || settings.difficulty; }
@@ -1183,8 +1203,8 @@
           return { text: currentLanguage === 'ru' ? `Периметр прямоугольника ${perimeter} см, одна сторона ${width} см. Найди другую сторону.` : `A rectangle has perimeter ${perimeter} cm and one side ${width} cm. Find the other side.`, answer: height, kind: 'word', hint: currentLanguage === 'ru' ? `Сначала раздели периметр на 2, затем вычти ${width}.` : `Divide the perimeter by 2, then subtract ${width}.` };
         }
         if (mode === 'tables') {
-          const a = randomInt(settings.factorFrom, settings.factorTo);
-          const b = randomInt(settings.factorFrom, settings.factorTo);
+          const a = multiplicationFactor(settings.factorFrom, settings.factorTo);
+          const b = multiplicationFactor(settings.factorFrom, settings.factorTo);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
         if (mode === 'column-addition' || mode === 'column-subtraction' || mode === 'column-multiplication') {
@@ -1300,8 +1320,8 @@
         }
         if (mode === 'multiplication') {
           const difficulty = difficultyFor(mode);
-          const a = difficulty === 'simple' ? randomInt(2, 12) : randomInt(10, difficulty === 'expert' ? 99 : 30);
-          const b = difficulty === 'simple' ? randomInt(2, 12) : randomInt(2, difficulty === 'expert' ? 30 : 12);
+          const a = difficulty === 'simple' ? multiplicationFactor(2, 12) : randomInt(10, difficulty === 'expert' ? 99 : 30);
+          const b = difficulty === 'simple' ? multiplicationFactor(2, 12) : multiplicationFactor(3, difficulty === 'expert' ? 30 : 12);
           return { text: `${a} × ${b} = ?`, answer: a * b };
         }
         if (mode === 'fractions-simplify') {
@@ -1329,9 +1349,33 @@
         return types[randomInt(0, types.length - 1)];
       }
 
+      const recentProblemSignatures = new Map();
+
+      function problemSignature(mode, built) {
+        const multiplication = built.text.match(/^(\d+) × (\d+) = \?$/);
+        if (multiplication) {
+          const [first, second] = multiplication.slice(1).map(Number).sort((a, b) => a - b);
+          return `${mode}:${first}×${second}`;
+        }
+        return `${mode}:${built.text.replace(/\s+/g, ' ').trim()}`;
+      }
+
+      function buildFreshProblem(mode) {
+        const recent = recentProblemSignatures.get(mode) || [];
+        let built = buildProblem(mode);
+        let signature = problemSignature(mode, built);
+        for (let attempt = 0; attempt < 10 && recent.includes(signature); attempt += 1) {
+          built = buildProblem(mode);
+          signature = problemSignature(mode, built);
+        }
+        recent.push(signature);
+        recentProblemSignatures.set(mode, recent.slice(-6));
+        return built;
+      }
+
       function newProblem() {
         const mode = nextMode();
-        const built = buildProblem(mode);
+        const built = buildFreshProblem(mode);
         currentQuestionMode = mode;
         questionStartedAt = Date.now();
         answer = built.answer;
@@ -1478,6 +1522,7 @@
         clearInterval(timerId);
         clearTimeout(nextProblemTimeout);
         readSettings();
+        recentProblemSignatures.clear();
         timeLeft = settings.startTime;
         solved = 0; score = 0; streak = 0;
         gameActive = true;
