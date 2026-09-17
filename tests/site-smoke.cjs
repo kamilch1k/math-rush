@@ -45,9 +45,11 @@ assert.match(quizPage, /id="keypadToggle"/, 'Desktop users can optionally open t
 assert.match(quizPage, /id="boardToggle"/, 'Quiz stats have a scratch-board toggle');
 assert.match(quizPage, /id="scratchBoard"/, 'Quizzes have a scratch board canvas between answer and badge');
 assert.match(quizPage, /function toggleScratchBoard\(\)/, 'Scratch board opens from the stats toggle');
-assert.match(quizPage, /mode-notime-button/, 'Every quiz card has a no-timer start button');
-assert.match(quizPage, /function startGame\(withoutTime = false\)/, 'Games can start without a timer');
-assert.match(quizPage, /timeless \? '∞'/, 'Timeless games show an infinity timer');
+assert.match(quizPage, /mode-notime-button/, 'Every quiz card has a no-timer toggle button');
+assert.match(quizPage, /function toggleModeNoTime\(/, 'Time can be disabled per quiz card without launching');
+assert.match(quizPage, /Отключить время/, 'No-timer button speaks Russian');
+assert.match(quizPage, /Включить время/, 'Disabled timer can be re-enabled');
+assert.match(quizPage, /Number\.isFinite\(timeLeft\)/, 'Endless games never run out of time');
 assert.match(quizPage, /keypadToggle\.addEventListener\('click'/, 'The desktop keypad button toggles the keypad');
 assert.match(quizPage, /answerInput\.readOnly = embedded/, 'Touch input is readonly to suppress the system keyboard');
 assert.match(quizPage, /inputMode = embedded \? 'none'/, 'Touch input disables the system keyboard input mode');

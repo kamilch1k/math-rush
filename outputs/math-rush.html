@@ -320,13 +320,14 @@
     .keypad-toggle:active { transform: scale(.96); }
     .keypad-stat { display: grid; gap: 5px; }
     .keypad-stat .stat-label { margin: 0; }
-    .scratch-wrap { width: min(100%, 820px); margin: 14px auto 0; padding: 12px; border: 2px solid var(--line); border-radius: 15px; background: #fff; }
+    .scratch-wrap { position: absolute; top: calc(100% + 10px); left: 0; right: 0; z-index: 6; padding: 12px; border: 2px solid var(--line); border-radius: 15px; background: #fff; box-shadow: 0 18px 50px rgba(16,24,40,.18); }
     .scratch-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; color: var(--muted); font-size: 12px; font-weight: 800; }
     .scratch-clear { padding: 7px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: #fff; font-size: 12px; font-weight: 800; }
     .scratch-clear:hover { border-color: #b9b4ff; color: var(--accent-dark); }
     .scratch-board { display: block; width: 100%; height: 150px; touch-action: none; cursor: crosshair; border: 2px solid #d0d5dd; border-radius: 12px; background: #fff; }
     .mode-notime-button { position: absolute; right: 9px; bottom: 9px; z-index: 1; display: inline-flex; align-items: center; gap: 5px; max-width: calc(100% - 18px); min-height: 30px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 9px; color: var(--accent-dark); background: rgba(238,236,255,.9); font-size: 12px; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color .16s, border-color .16s, background .16s, transform .16s; }
     .mode-notime-button:hover { border-color: #b9b4ff; background: #fff; transform: translateY(-1px); }
+    .mode-notime-button.active { border-color: var(--accent); color: #fff; background: var(--accent); }
     .mode-notime-button:active { transform: translateY(1px); }
     .embedded-keypad { display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
     .embedded-keypad:not(.hidden) { display: grid; }
@@ -723,11 +724,11 @@
             <div id="choiceAnswers" class="choice-answers hidden" aria-label="Варианты ответа"></div>
             <div id="feedback" class="feedback" role="status"></div>
             <div id="reward" class="reward" aria-hidden="true"></div>
+            <div id="scratchWrap" class="scratch-wrap hidden">
+              <div class="scratch-head"><span id="scratchLabel">Доска для черновиков</span><button id="scratchClear" class="scratch-clear" type="button">Очистить</button></div>
+              <canvas id="scratchBoard" class="scratch-board"></canvas>
+            </div>
           </div>
-        </div>
-        <div id="scratchWrap" class="scratch-wrap hidden">
-          <div class="scratch-head"><span id="scratchLabel">Доска для черновиков</span><button id="scratchClear" class="scratch-clear" type="button">Очистить</button></div>
-          <canvas id="scratchBoard" class="scratch-board"></canvas>
         </div>
         <div class="quiz-details">
           <div class="game-top"><span id="modeBadge" class="mode-badge">Простое сложение</span></div>
@@ -1054,7 +1055,7 @@
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
-      let desktopKeypadOpen = false, timeless = false, scratchOpen = false;
+      let desktopKeypadOpen = false, scratchOpen = false;
       const scratchStrokes = [];
       let mapLineFrame = null;
       let settings = { factorFrom: 2, factorTo: 9, startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20, difficulty: 'advanced', answerMode: 'text', mixTypes: ['tables', 'equations', 'addition', 'multiplication'] };
@@ -1263,7 +1264,7 @@
       function modeTimeHint(mode) {
         const seconds = configFor(mode).startTime;
         const timerWord = (languageData[currentLanguage] && languageData[currentLanguage].modeSettings && languageData[currentLanguage].modeSettings.timer) || 'Timer';
-        return `${timerWord}: ${modeTimeLabel(seconds)}`;
+        return `${timerWord}: ${Number.isFinite(seconds) ? modeTimeLabel(seconds) : '∞'}`;
       }
 
       function syncModeTimeButtons(mode) {
@@ -1272,16 +1273,21 @@
         const button = card.querySelector('.mode-time-button');
         if (!button) return;
         const seconds = configFor(mode).startTime;
+        const text = Number.isFinite(seconds) ? modeTimeLabel(seconds) : '∞';
         const value = button.querySelector('.time-value');
-        if (value) value.textContent = modeTimeLabel(seconds);
-        else button.textContent = modeTimeLabel(seconds);
+        if (value) value.textContent = text;
+        else button.textContent = text;
         const hint = modeTimeHint(mode);
         button.setAttribute('aria-label', hint);
         button.title = hint;
       }
 
-      function noTimeText() {
-        return localized({ ru: 'Без времени', en: 'No timer', fr: 'Sans chrono', es: 'Sin tiempo', de: 'Ohne Zeit' });
+      function noTimeDisableText() {
+        return localized({ ru: 'Отключить время', en: 'Disable timer', fr: 'Désactiver le chrono', es: 'Desactivar temporizador', de: 'Timer ausschalten' });
+      }
+
+      function noTimeEnableText() {
+        return localized({ ru: 'Включить время', en: 'Enable timer', fr: 'Activer le chrono', es: 'Activar temporizador', de: 'Timer einschalten' });
       }
 
       function syncModeNoTimeButtons(mode) {
@@ -1289,11 +1295,29 @@
         if (!card) return;
         const button = card.querySelector('.mode-notime-button');
         if (!button) return;
-        const text = `∞ ${noTimeText()}`;
-        button.textContent = text;
-        const hint = `${languageData[currentLanguage].modes[mode][0]} — ${noTimeText()}`;
+        const endless = !Number.isFinite(configFor(mode).startTime);
+        button.textContent = `∞ ${endless ? noTimeEnableText() : noTimeDisableText()}`;
+        button.classList.toggle('active', endless);
+        button.setAttribute('aria-pressed', String(endless));
+        const hint = `${languageData[currentLanguage].modes[mode][0]} — ${endless ? noTimeEnableText() : noTimeDisableText()}`;
         button.setAttribute('aria-label', hint);
         button.title = hint;
+      }
+
+      const prevFiniteStartTime = {};
+
+      function toggleModeNoTime(mode) {
+        if (Number.isFinite(configFor(mode).startTime)) {
+          prevFiniteStartTime[mode] = configFor(mode).startTime;
+          configFor(mode).startTime = Infinity;
+        } else {
+          setModeTime(mode, prevFiniteStartTime[mode] || 90);
+          return;
+        }
+        const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
+        if (card && mode !== selectedMode) selectMode(card);
+        else { syncGlobalSettingsControls(); readSettings(); }
+        syncModeCardControls(mode);
       }
 
       function ensureModeNoTimeButtons() {
@@ -1308,8 +1332,7 @@
             button.addEventListener('click', (event) => {
               event.stopPropagation();
               closeModeSettings();
-              selectMode(card);
-              startGame(true);
+              toggleModeNoTime(mode);
             });
             card.append(button);
           }
@@ -1341,18 +1364,21 @@
         const panel = card.querySelector('.mode-time-panel');
         if (!panel) return;
         const seconds = configFor(mode).startTime;
+        const endless = !Number.isFinite(seconds);
         const hint = modeTimeHint(mode);
         const slider = panel.querySelector('.mode-time-slider');
-        if (slider) { slider.value = String(seconds); slider.setAttribute('aria-label', hint); }
+        if (slider) { slider.value = endless ? String(TIME_MAX) : String(seconds); slider.setAttribute('aria-label', hint); }
         const input = panel.querySelector('.mode-time-input');
-        if (input) { if (document.activeElement !== input) input.value = String(seconds); input.setAttribute('aria-label', hint); }
+        if (input) { if (document.activeElement !== input) input.value = endless ? '' : String(seconds); input.setAttribute('aria-label', hint); }
         const value = panel.querySelector('.mode-time-value');
-        if (value) value.textContent = modeTimeLabel(seconds);
+        if (value) value.textContent = endless ? '∞' : modeTimeLabel(seconds);
         panel.querySelectorAll('.mode-preset').forEach((preset) => {
-          const active = Number(preset.dataset.seconds) === seconds;
+          const active = endless ? preset.classList.contains('mode-preset-inf') : Number(preset.dataset.seconds) === seconds;
           preset.classList.toggle('active', active);
           preset.setAttribute('aria-pressed', String(active));
         });
+        const infPreset = panel.querySelector('.mode-preset-inf');
+        if (infPreset) infPreset.setAttribute('aria-label', noTimeDisableText());
       }
 
       function closeModeTimePanels() {
@@ -1433,6 +1459,13 @@
               preset.addEventListener('click', (event) => { event.stopPropagation(); setModeTime(mode, presetSeconds); });
               presets.append(preset);
             });
+            const infPreset = document.createElement('button');
+            infPreset.type = 'button';
+            infPreset.className = 'mode-preset mode-preset-inf';
+            infPreset.textContent = '∞';
+            infPreset.setAttribute('aria-label', noTimeDisableText());
+            infPreset.addEventListener('click', (event) => { event.stopPropagation(); toggleModeNoTime(mode); });
+            presets.append(infPreset);
             const custom = document.createElement('label');
             custom.className = 'mode-time-custom';
             const rangeHint = document.createElement('span');
@@ -1547,14 +1580,27 @@
         }
       }
 
+      function syncStartTimeSelect(select, seconds) {
+        if (!select) return;
+        if (Number.isFinite(seconds)) {
+          ensureSelectOption(select, seconds);
+          select.value = String(seconds);
+          return;
+        }
+        ensureSelectOption(select, 'inf');
+        const inf = [...select.options].find((option) => option.value === 'inf');
+        if (inf) inf.textContent = '∞';
+        select.value = 'inf';
+      }
+
       function syncModeCardControls(mode) {
         const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
         if (!card) return;
         const config = configFor(mode);
         card.querySelectorAll('[data-mode-config]').forEach((control) => {
           const key = control.dataset.modeConfig;
-          if (key === 'startTime' && control.tagName === 'SELECT') ensureSelectOption(control, config.startTime);
-          if (control.type === 'checkbox') control.checked = Boolean(config[key]);
+          if (key === 'startTime' && control.tagName === 'SELECT') syncStartTimeSelect(control, config.startTime);
+          else if (control.type === 'checkbox') control.checked = Boolean(config[key]);
           else control.value = String(config[key]);
         });
           syncModeTimeButtons(mode);
@@ -1565,15 +1611,15 @@
       function syncGlobalSettingsControls() {
         const config = configFor(selectedMode);
         difficultySelect.value = config.difficulty;
-        ensureSelectOption(startTimeSelect, config.startTime);
-        startTimeSelect.value = String(config.startTime);
+        syncStartTimeSelect(startTimeSelect, config.startTime);
         timeBonusSelect.value = String(config.timeBonus);
         streakGoalSelect.value = String(config.streakGoal);
       }
 
       function updateSelectedModeConfigFromGlobalControls(control) {
         const key = control.id;
-        const value = key === 'difficulty' ? control.value : Number(control.value);
+        const raw = control.value;
+        const value = key === 'difficulty' ? raw : (raw === 'inf' ? Infinity : Number(raw));
         const modes = !gameActive && key === 'startTime' ? Object.keys(modeConfigs) : [selectedMode];
         modes.forEach((mode) => { configFor(mode)[key] = value; syncModeCardControls(mode); });
       }
@@ -2239,12 +2285,13 @@
       }
 
       function updateStats() {
-        timerEl.textContent = timeless ? '∞' : Math.max(0, timeLeft);
+        const endless = !Number.isFinite(timeLeft);
+        timerEl.textContent = endless ? '∞' : Math.max(0, timeLeft);
         solvedEl.textContent = solved;
         scoreEl.textContent = score;
         if (streakEl) streakEl.textContent = streak;
-        progressBar.style.width = timeless ? '100%' : `${Math.min(100, Math.max(0, (timeLeft / settings.startTime) * 100))}%`;
-        timerEl.classList.toggle('low', !timeless && timeLeft <= 10);
+        progressBar.style.width = endless ? '100%' : `${Math.min(100, Math.max(0, (timeLeft / settings.startTime) * 100))}%`;
+        timerEl.classList.toggle('low', !endless && timeLeft <= 10);
         updateQuizCompletion();
       }
 
@@ -2335,16 +2382,15 @@
       }
 
       function tick() {
-        if (timeless) { updateStats(); return; }
+        if (!Number.isFinite(timeLeft)) return;
         timeLeft -= 1;
         updateStats();
         if (timeLeft <= 0) finishGame();
       }
 
-      function startGame(withoutTime = false) {
+      function startGame() {
         clearInterval(timerId);
         clearTimeout(nextProblemTimeout);
-        timeless = withoutTime === true;
         readSettings();
         recentProblemSignatures.clear();
         desktopKeypadOpen = false;
@@ -2366,7 +2412,7 @@
         feedback.textContent = '';
         feedback.className = 'feedback';
         newProblem();
-        timerId = timeless ? null : setInterval(tick, 1000);
+        timerId = setInterval(tick, 1000);
       }
 
       function readSettings() {
@@ -2383,12 +2429,12 @@
           settings.timeBonus = 0;
           settings.taskLimit = 0;
         }
-        if (gameActive && !timeless && previousStartTime !== settings.startTime) {
+        if (gameActive && Number.isFinite(settings.startTime) && previousStartTime !== settings.startTime) {
           timeLeft = Math.max(0, Math.min(settings.startTime, timeLeft + settings.startTime - previousStartTime));
           updateStats();
           if (timeLeft === 0) finishGame();
         }
-        settingsSummary.textContent = languageData[currentLanguage].summary(languageData[currentLanguage].modes[selectedMode][0], settings.startTime, settings.timeBonus, settings.streakGoal);
+        settingsSummary.textContent = languageData[currentLanguage].summary(languageData[currentLanguage].modes[selectedMode][0], Number.isFinite(settings.startTime) ? settings.startTime : '∞', settings.timeBonus, settings.streakGoal);
       }
 
       function normalizeFractionAnswer(value) {
@@ -2524,8 +2570,9 @@
           syncModeNoTimeButtons(mode);
           card.querySelectorAll('[data-mode-setting-label]').forEach((label) => { label.textContent = language.modeSettings[label.dataset.modeSettingLabel]; });
           card.querySelectorAll('[data-mode-config]').forEach((control) => {
-            if (control.dataset.modeConfig === 'startTime' && control.tagName === 'SELECT') ensureSelectOption(control, configFor(mode).startTime);
+            if (control.dataset.modeConfig === 'startTime' && control.tagName === 'SELECT') syncStartTimeSelect(control, configFor(mode).startTime);
             if (control.type === 'checkbox') { control.checked = Boolean(configFor(mode)[control.dataset.modeConfig]); return; }
+            if (control.dataset.modeConfig === 'startTime' && control.tagName === 'SELECT') return;
             control.value = String(configFor(mode)[control.dataset.modeConfig]);
             if (control.dataset.modeConfig === 'difficulty') control.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
             if (control.dataset.modeConfig === 'taskLimit') control.querySelectorAll('option').forEach((option) => { option.textContent = language.taskLimitOptions[option.value]; });
@@ -2567,7 +2614,7 @@
         if (isCorrect) {
           score += 1;
           streak += 1;
-          const earnedTime = timeless ? 0 : Math.max(0, Math.min(settings.timeBonus, settings.startTime - timeLeft));
+          const earnedTime = (!Number.isFinite(settings.startTime) || !Number.isFinite(timeLeft)) ? 0 : Math.max(0, Math.min(settings.timeBonus, settings.startTime - timeLeft));
           timeLeft += earnedTime;
           const levelUp = addProfilePoint();
           feedback.textContent = levelUp ? languageData[currentLanguage].profile.levelUp(levelFor(profile.totalScore)) : (milestone ? languageData[currentLanguage].feedback.milestone(streak, earnedTime) : languageData[currentLanguage].feedback.correct(earnedTime));
@@ -3342,7 +3389,7 @@
         const mode = control.dataset.mode;
         const config = configFor(mode);
         const key = control.dataset.modeConfig;
-        config[key] = control.type === 'checkbox' ? control.checked : (['difficulty', 'answerMode'].includes(key) ? control.value : Number(control.value));
+        config[key] = control.type === 'checkbox' ? control.checked : (['difficulty', 'answerMode'].includes(key) ? control.value : ((control.value === 'inf' && key === 'startTime') ? Infinity : Number(control.value)));
         if (mode !== selectedMode) selectMode(control.closest('.mode-card'));
         else { syncGlobalSettingsControls(); readSettings(); }
         if (key === 'hints' && gameActive && mode === currentQuestionMode) problemHelp.textContent = control.checked ? currentHint : '';
