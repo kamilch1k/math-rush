@@ -21,6 +21,8 @@ for (const page of ['math-rush.html', 'math-map.html']) {
   const src = fs.readFileSync(path.join('outputs', page), 'utf8');
   assert.match(src, /data-board-viewport/, `${page} map pans and zooms like a board`);
   assert.match(src, /map-board\.js/, `${page} loads the shared board module`);
+  const statsId = page === 'math-rush.html' ? 'mapStats' : 'boardStats';
+  assert.match(src, new RegExp(`data-board-content[\\s\\S]*id="${statsId}"`), `${page} map panels live on the canvas above the tree`);
 }
 const boardJs = fs.readFileSync(path.join('outputs', 'map-board.js'), 'utf8');
 assert.match(boardJs, /Math\.exp\(-delta \* 0\.0025\)/, 'Mouse wheel zooms the board');
