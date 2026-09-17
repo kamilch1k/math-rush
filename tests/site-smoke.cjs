@@ -43,7 +43,11 @@ assert.match(quizPage, /id="choiceAnswers"/, 'Multiple-choice quizzes have a ded
 assert.match(quizPage, /id="embeddedKeypad"/, 'Touch devices have an embedded answer keypad');
 assert.match(quizPage, /id="keypadToggle"/, 'Desktop users can optionally open the answer keypad');
 assert.match(quizPage, /data-app-view="games"/, 'Games live in the main navigation');
-assert.match(quizPage, /location\.href = 'runner\.html'/, 'Games tab opens the standalone runner page');
+assert.match(quizPage, /id="gamesView"/, 'Games catalog opens from the tab');
+assert.match(quizPage, /id="gamesGrid"/, 'Catalog renders game cards');
+assert.match(quizPage, /game-cover/, 'Catalog cards have cover art');
+assert.match(quizPage, /href: 'runner\.html'/, 'Catalog runner card links to its own page');
+assert.match(quizPage, /function renderGamesHub\(\)/, 'Catalog renders from the hub');
 const runnerPage = fs.readFileSync(path.join('outputs', 'runner.html'), 'utf8');
 assert.match(runnerPage, /id="runnerCanvas"/, 'Runner page has a game canvas');
 assert.match(runnerPage, /window\.MathRushRunner/, 'Runner exposes a playtest hook');

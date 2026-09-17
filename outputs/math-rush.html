@@ -329,6 +329,15 @@
     .mode-notime-button:hover { border-color: #b9b4ff; background: #fff; transform: translateY(-1px); }
     .mode-notime-button.active { border-color: var(--accent); color: #fff; background: var(--accent); }
     .mode-notime-button:active { transform: translateY(1px); }
+    .game-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .game-card { position: relative; overflow: hidden; padding: 0 0 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); text-align: left; transition: border-color .16s, transform .16s; }
+    .game-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
+    .game-cover { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+    .game-body { padding: 14px 16px 0; }
+    .game-body strong { display: block; font-size: 16px; }
+    .game-body small { display: block; margin: 4px 0 12px; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+    .game-soon { position: absolute; top: 12px; right: 12px; padding: 3px 10px; border-radius: 99px; color: #fff; background: var(--accent); font-size: 11px; font-weight: 900; }
+    @media (max-width: 520px) { .game-grid { grid-template-columns: 1fr; } }
     .embedded-keypad { display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
     .embedded-keypad:not(.hidden) { display: grid; }
     .keypad-key { min-height: 48px; padding: 8px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: #fff; font-size: 19px; font-weight: 850; box-shadow: 0 3px 0 rgba(16,24,40,.08); }
@@ -709,6 +718,11 @@
         <div id="testSummary" class="test-summary hidden" style="margin-top:16px"></div>
       </section>
 
+      <section id="gamesView" class="screen spa-view hidden">
+        <div class="view-heading"><div><h2 id="gamesViewTitle">Игры</h2><p id="gamesViewSubtitle">Мини-игры на счёт и реакцию. Опыт идёт в профиль и на карту.</p></div></div>
+        <div id="gamesGrid" class="game-grid"></div>
+      </section>
+
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
         <div id="pixelCat" class="voxel-companion" aria-hidden="true"></div>
         <div class="quiz-primary">
@@ -765,7 +779,7 @@
       const HANDWRITING_ENABLED = false;
       const $ = (id) => document.getElementById(id);
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
-      const mapView = $('mapView'), profileView = $('profileView'), testView = $('testView');
+      const mapView = $('mapView'), profileView = $('profileView'), testView = $('testView'), gamesView = $('gamesView');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
@@ -2406,6 +2420,7 @@
         mapView.classList.add('hidden');
         profileView.classList.add('hidden');
         testView.classList.add('hidden');
+        gamesView.classList.add('hidden');
         resultScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         $('exitBtn').classList.add('visible');
@@ -2531,7 +2546,8 @@
         if (!testView.classList.contains('hidden')) {
           if (testRun) renderTestRunChrome();
           else renderTestLevels();
-        }        $('profileViewTitle').textContent = ui.profileTitle;
+        }
+        if (typeof gamesView !== 'undefined' && gamesView && !gamesView.classList.contains('hidden')) renderGamesHub();        $('profileViewTitle').textContent = ui.profileTitle;
         $('profileViewSubtitle').textContent = ui.profileSubtitle;
         $('profileDirectionsTitle').textContent = ui.directions;
         $('profileSkillsTitle').textContent = ui.skills;
@@ -3345,17 +3361,70 @@
           shell.style.height = Math.max(420, Math.round(avail)) + 'px';
         } catch (_) { /* fixed CSS height remains as fallback */ }
       }
+      const gameCatalogText = {
+        ru: { title: 'Игры', subtitle: 'Мини-игры на счёт и реакцию. Опыт идёт в профиль и на карту.', play: 'Играть', soon: 'Скоро', runner: 'Врата чисел 3D', runnerDesc: 'Веди шар через врата +N и −N на трёхмерной трассе. Считай, чтобы выжить.', invaders: 'Мат-защита', invadersDesc: 'Сбивай врагов, решая примеры быстрее них.', mine: 'Шахта', mineDesc: 'Копай блоки за правильные ответы. Чем глубже — тем сложнее.' },
+        en: { title: 'Games', subtitle: 'Mini-games for score and speed. XP counts toward your profile and map.', play: 'Play', soon: 'Soon', runner: 'Number Gates 3D', runnerDesc: 'Steer the ball through +N and −N gates on a 3D track. Count to survive.', invaders: 'Math Defense', invadersDesc: 'Shoot down enemies by solving problems faster than they fall.', mine: 'The Mine', mineDesc: 'Dig blocks for correct answers. Deeper means harder.' },
+        fr: { title: 'Jeux', subtitle: 'Mini-jeux de score et de vitesse. L’XP compte pour le profil et la carte.', play: 'Jouer', soon: 'Bientôt', runner: 'Portails 3D', runnerDesc: 'Guide la balle à travers les portails +N et −N sur une piste 3D.', invaders: 'Défense math', invadersDesc: 'Abats les ennemis en résolvant plus vite qu’ils ne tombent.', mine: 'La mine', mineDesc: 'Creuse des blocs contre des bonnes réponses. Plus profond, plus dur.' },
+        es: { title: 'Juegos', subtitle: 'Minijuegos de puntos y velocidad. La XP cuenta para el perfil y el mapa.', play: 'Jugar', soon: 'Pronto', runner: 'Portales 3D', runnerDesc: 'Guía la bola por portales +N y −N en una pista 3D. Cuenta para sobrevivir.', invaders: 'Defensa mate', invadersDesc: 'Derriba enemigos resolviendo más rápido de lo que caen.', mine: 'La mina', mineDesc: 'Excava bloques con respuestas correctas. Más profundo, más difícil.' },
+        de: { title: 'Spiele', subtitle: 'Minispiele auf Punkte und Tempo. XP zählen für Profil und Karte.', play: 'Spielen', soon: 'Bald', runner: 'Zahlentore 3D', runnerDesc: 'Steuere den Ball durch +N- und −N-Tore auf einer 3D-Strecke.', invaders: 'Mathe-Abwehr', invadersDesc: 'Schieße Gegner ab, indem du schneller rechnest, als sie fallen.', mine: 'Die Mine', mineDesc: 'Grabe Blöcke für richtige Antworten. Tiefer heißt schwerer.' }
+      };
+
+      const gameCatalog = [
+        { id: 'runner', href: 'runner.html', playable: true, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><defs><linearGradient id="covR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eceffb"/><stop offset="1" stop-color="#d9def2"/></linearGradient></defs><rect width="320" height="140" fill="url(#covR)"/><polygon points="130,140 190,140 172,52 148,52" fill="#c2c9e2"/><rect x="36" y="34" width="104" height="52" rx="10" fill="#fff" stroke="#12b76a" stroke-width="5"/><text x="88" y="70" font-size="30" font-weight="900" text-anchor="middle" fill="#101828" font-family="Inter,system-ui,sans-serif">+7</text><rect x="180" y="34" width="104" height="52" rx="10" fill="#fff" stroke="#d92d20" stroke-width="5"/><text x="232" y="70" font-size="30" font-weight="900" text-anchor="middle" fill="#101828" font-family="Inter,system-ui,sans-serif">−4</text><circle cx="160" cy="114" r="17" fill="#635bff"/><text x="160" y="122" font-size="20" font-weight="900" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif">10</text></svg>' },
+        { id: 'invaders', href: '', playable: false, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="140" fill="#1c2340"/><circle cx="40" cy="26" r="2.5" fill="#fff"/><circle cx="120" cy="52" r="2" fill="#fff"/><circle cx="200" cy="22" r="2.5" fill="#fff"/><circle cx="280" cy="60" r="2" fill="#fff"/><circle cx="250" cy="110" r="2.5" fill="#fff"/><circle cx="70" cy="110" r="2" fill="#fff"/><polygon points="160,52 146,96 174,96" fill="#f04438"/><polygon points="160,52 146,96 160,88 174,96" fill="#fff"/><rect x="152" y="96" width="16" height="10" fill="#f79009"/><rect x="60" y="30" width="56" height="34" rx="9" fill="#635bff"/><text x="88" y="54" font-size="20" font-weight="900" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif">7</text><rect x="206" y="30" width="56" height="34" rx="9" fill="#635bff"/><text x="234" y="54" font-size="20" font-weight="900" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif">12</text></svg>' },
+        { id: 'mine', href: '', playable: false, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="140" fill="#4a3220"/><rect y="46" width="320" height="46" fill="#5d4128"/><rect y="92" width="320" height="48" fill="#3a2817"/><path d="M0 46h320M0 92h320M40 0v46M120 0v46M200 0v46M280 0v46M80 46v46M160 46v46M240 46v46M40 92v48M120 92v48M200 92v48M280 92v48" stroke="#2c1f10" stroke-width="3"/><polygon points="160,62 176,82 160,102 144,82" fill="#46c6db" stroke="#fff" stroke-width="4"/><rect x="228" y="18" width="14" height="60" rx="7" transform="rotate(38 235 48)" fill="#b54708"/><polygon points="252,20 282,34 262,58 240,44" fill="#98a2b3"/></svg>' }
+      ];
+
+      function renderGamesHub() {
+        const grid = $('gamesGrid');
+        if (!grid) return;
+        const t = gameCatalogText[currentLanguage] || gameCatalogText.en;
+        $('gamesViewTitle').textContent = t.title;
+        $('gamesViewSubtitle').textContent = t.subtitle;
+        grid.replaceChildren();
+        gameCatalog.forEach((game) => {
+          const card = document.createElement('article');
+          card.className = 'game-card';
+          const cover = document.createElement('div');
+          cover.className = 'game-cover';
+          cover.innerHTML = game.cover;
+          const body = document.createElement('div');
+          body.className = 'game-body';
+          const title = document.createElement('strong');
+          title.textContent = t[game.id];
+          const desc = document.createElement('small');
+          desc.textContent = t[game.id + 'Desc'];
+          body.append(title, desc);
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = game.playable ? 'primary' : 'secondary';
+          button.textContent = game.playable ? t.play : t.soon;
+          if (game.playable) button.addEventListener('click', () => { location.href = game.href; });
+          else button.disabled = true;
+          body.append(button);
+          card.append(cover, body);
+          if (!game.playable) {
+            const badge = document.createElement('span');
+            badge.className = 'game-soon';
+            badge.textContent = t.soon;
+            card.append(badge);
+          }
+          grid.append(card);
+        });
+      }
+
       function showAppView(view) {
         if (gameActive) goToMenu();
         if (testRun) endTestRun();
-        [menuScreen, mapView, profileView, testView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
-        const target = view === 'map' ? mapView : view === 'profile' ? profileView : view === 'test' ? testView : menuScreen;
+        [menuScreen, mapView, profileView, testView, gamesView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
+        const target = view === 'map' ? mapView : view === 'profile' ? profileView : view === 'test' ? testView : view === 'games' ? gamesView : menuScreen;
         target.classList.remove('hidden');
         document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === view));
         if (document.body && document.body.classList) document.body.classList.toggle('map-locked', view === 'map');
         if (view === 'map') { renderSpaMap(); if (typeof requestAnimationFrame === 'function') requestAnimationFrame(fitMapShell); else fitMapShell(); }
         if (view === 'profile') renderSpaProfile();
         if (view === 'test') renderTestLevels();
+        if (view === 'games') renderGamesHub();
         if (history.replaceState) history.replaceState(null, '', `#${view}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -3433,6 +3502,7 @@
         mapView.classList.add('hidden');
         profileView.classList.add('hidden');
         testView.classList.add('hidden');
+        gamesView.classList.add('hidden');
         menuScreen.classList.remove('hidden');
         setSettingsOpen(false);
         document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === 'tasks'));
@@ -3440,10 +3510,7 @@
       }
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
-      document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => {
-        if (button.dataset.appView === 'games') { location.href = 'runner.html'; return; }
-        showAppView(button.dataset.appView);
-      }));
+      document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => showAppView(button.dataset.appView)));
       $('testCheckBtn').addEventListener('click', checkTestAnswer);
       $('testNextBtn').addEventListener('click', nextTestQuestion);
       $('testSkipBtn').addEventListener('click', skipTestQuestion);

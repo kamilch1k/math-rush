@@ -4,64 +4,216 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f3f6fb">
-  <title>Врата чисел — Math Rush</title>
+  <title>Врата чисел 3D — Math Rush</title>
   <link rel="stylesheet" href="app-shell.css">
   <style>
-    .runner-canvas{display:block;width:100%;height:420px;touch-action:none;border:2px solid var(--line);border-radius:18px;background:#f8faff;cursor:pointer}
+    .runner-stage{position:relative}
+    .runner-canvas{display:block;width:100%;height:440px;touch-action:none;border:2px solid var(--line);border-radius:18px;background:#eef1f8;cursor:pointer}
+    .runner-hud{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:center;gap:10px;pointer-events:none}
+    .runner-hud .hud-n{font-size:30px;font-weight:900;color:var(--accent-dark);background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:14px;padding:2px 14px}
+    .runner-hud .hud-side{margin-left:auto;display:flex;gap:8px}
+    .runner-hud .hud-chip{font-size:13px;font-weight:800;color:var(--muted);background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:12px;padding:6px 10px;white-space:nowrap}
+    .runner-over{position:absolute;inset:0;display:grid;place-items:center;background:rgba(16,24,40,.55);border-radius:18px;text-align:center;color:#fff}
+    .runner-over h2{margin:0 0 8px;font-size:32px}
+    .runner-over p{margin:0 0 4px;font-size:17px;font-weight:800}
     .runner-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
     .runner-controls button{min-height:56px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:24px;color:var(--ink)}
     .runner-controls button:active{background:#eeecff}
     .runner-actions{margin-top:10px}
     .runner-actions .button{width:100%}
+    .runner-note{margin:12px 0 0;color:var(--muted);font-size:13px;text-align:center}
     .rules{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
     .rules li{padding:10px 14px;border-radius:12px;background:#f2f4f7;font-size:14px}
-    @media(max-width:520px){.runner-canvas{height:360px}}
+    @media(max-width:520px){.runner-canvas{height:380px}}
   </style>
 </head>
 <body>
   <main class="page">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
-    <header class="hero"><p class="eyebrow">Мини-игра</p><h1>Врата чисел</h1><p class="lead">Веди шар через врата +N и −N. Считай, чтобы выжить: шипы пропускают, только если число не меньше порога. Опыт идёт в профиль и на карту.</p></header>
-    <section class="panel" aria-label="Врата чисел">
-      <canvas id="runnerCanvas" class="runner-canvas" aria-label="Игровое поле: веди шар стрелками или пальцем"></canvas>
+    <header class="hero"><p class="eyebrow">Мини-игра · 3D</p><h1>Врата чисел 3D</h1><p class="lead">Веди шар через врата +N и −N. Считай, чтобы выжить: шипы пропускают, только если число не меньше порога. Опыт идёт в профиль и на карту.</p></header>
+    <section class="panel" aria-label="Врата чисел 3D">
+      <div class="runner-stage">
+        <canvas id="runnerCanvas" class="runner-canvas" aria-label="Игровое поле: веди шар стрелками или пальцем"></canvas>
+        <div class="runner-hud" aria-hidden="true"><span id="hudN" class="hud-n">10</span><span class="hud-side"><span id="hudHp" class="hud-chip">❤ 3</span><span id="hudScore" class="hud-chip">Счёт 0</span></span></div>
+        <div id="runnerOver" class="runner-over hidden"><div><h2>Игра окончена!</h2><p id="runnerFinal">Счёт 0 · Рекорд 0</p></div></div>
+      </div>
+      <div id="runnerFallback" class="runner-note hidden">Не удалось загрузить 3D-движок (нужен интернет для three.js). Проверь соединение и обнови страницу.</div>
       <div class="runner-controls"><button id="runnerLeft" type="button" aria-label="Влево">◀</button><button id="runnerRight" type="button" aria-label="Вправо">▶</button></div>
       <div class="runner-actions"><button id="runnerAgain" class="button" type="button">Заново</button></div>
+      <p class="runner-note">◀ ▶, A / D или веди пальцем по полю</p>
     </section>
     <section class="panel" aria-label="Как играть">
       <h2>Как играть</h2>
       <ul class="rules">
-        <li>◀ ▶, A / D или веди пальцем по полю. Выбирай врата с лучшим результатом — это тоже засчитывается как решённый пример.</li>
+        <li>Выбирай врата с лучшим результатом — верный выбор засчитывается как решённый пример и даёт опыт.</li>
         <li>Красные шипы с числом пропускают, только если твоё число не меньше порога. Иначе минус жизнь. Жизней три.</li>
         <li>Если число ушло в минус — оно сгорает до нуля и тоже минус жизнь. Считай на два хода вперёд!</li>
       </ul>
     </section>
   </main>
   <script src="progress.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
   <script>
     (() => {
       const $ = (id) => document.getElementById(id);
-      const t = { over: 'Игра окончена!', score: 'Счёт', best: 'Рекорд' };
+      const hasGL = typeof window !== 'undefined' && !!window.THREE;
 
       let runner = null;
 
       function runnerDefault() {
-        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, speed: 175, x: 0.5, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, w: 0, h: 0 };
+        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, scene: null, camera: null, renderer: null, ball: null };
       }
 
       function runnerCanvasEl() { return $('runnerCanvas'); }
 
-      function sizeRunnerCanvas() {
+      function updateRunnerHud() {
+        const n = $('hudN'), hp = $('hudHp'), score = $('hudScore');
+        if (n) n.textContent = String(runner.n);
+        if (hp) hp.textContent = `❤ ${Math.max(0, runner.hp)}`;
+        if (score) score.textContent = `Счёт ${Math.floor(runner.score)}`;
+      }
+
+      function makeLabelTexture(text, fg, bg) {
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 256;
+        const g = c.getContext('2d');
+        g.fillStyle = bg;
+        g.fillRect(0, 0, 512, 256);
+        g.fillStyle = fg;
+        g.font = '900 130px Inter, system-ui, sans-serif';
+        g.textAlign = 'center';
+        g.textBaseline = 'middle';
+        g.fillText(text, 256, 138);
+        return new window.THREE.CanvasTexture(c);
+      }
+
+      function buildGateMesh(op) {
+        const T = window.THREE;
+        const group = new T.Group();
+        const frame = new T.Mesh(
+          new T.BoxGeometry(7.4, 3.6, 0.5),
+          new T.MeshStandardMaterial({ color: 0x635bff, roughness: 0.6 })
+        );
+        frame.position.y = 1.8;
+        const face = new T.Mesh(
+          new T.PlaneGeometry(6.8, 3.0),
+          new T.MeshBasicMaterial({ map: makeLabelTexture(`${op.o}${op.v}`, '#101828', '#ffffff') })
+        );
+        face.position.set(0, 1.8, 0.28);
+        group.add(frame);
+        group.add(face);
+        return group;
+      }
+
+      function buildSpikeMesh(t) {
+        const T = window.THREE;
+        const group = new T.Group();
+        const bar = new T.Mesh(
+          new T.BoxGeometry(15.6, 1.7, 1),
+          new T.MeshStandardMaterial({ color: 0xd92d20, roughness: 0.6 })
+        );
+        bar.position.y = 0.85;
+        group.add(bar);
+        for (let i = 0; i < 6; i += 1) {
+          const cone = new T.Mesh(
+            new T.ConeGeometry(0.55, 1.3, 4),
+            new T.MeshStandardMaterial({ color: 0x7a271a, roughness: 0.7 })
+          );
+          cone.position.set(-6.25 + i * 2.5, 2.3, 0);
+          cone.rotation.y = Math.PI / 4;
+          group.add(cone);
+        }
+        const face = new T.Mesh(
+          new T.PlaneGeometry(4.6, 1.3),
+          new T.MeshBasicMaterial({ map: makeLabelTexture(`≥ ${t}`, '#ffffff', '#d92d20') })
+        );
+        face.position.set(0, 0.85, 0.55);
+        group.add(face);
+        return group;
+      }
+
+      function disposeRowMeshes(row) {
+        if (!row.g) return;
+        row.g.traverse((node) => {
+          if (node.geometry && node.geometry.dispose) { try { node.geometry.dispose(); } catch (_) { /* noop */ } }
+          if (node.material) {
+            const mats = Array.isArray(node.material) ? node.material : [node.material];
+            mats.forEach((m) => {
+              if (m.map && m.map.dispose) { try { m.map.dispose(); } catch (_) { /* noop */ } }
+              if (m.dispose) { try { m.dispose(); } catch (_) { /* noop */ } }
+            });
+          }
+        });
+        row.g = null;
+      }
+
+      function syncRowMesh(row) {
+        if (!runner.scene || row.g) return;
+        row.g = row.kind === 'gates' ? new window.THREE.Group() : new window.THREE.Group();
+        if (row.kind === 'gates') {
+          const left = buildGateMesh(row.gl);
+          left.position.x = -4;
+          const right = buildGateMesh(row.gr);
+          right.position.x = 4;
+          if (row.done) { left.traverse((n) => { if (n.material) n.material.transparent = true; }); }
+          row.g.add(left);
+          row.g.add(right);
+        } else {
+          row.g.add(buildSpikeMesh(row.t));
+        }
+        row.g.position.z = row.z;
+        runner.scene.add(row.g);
+      }
+
+      function initRunnerGL() {
+        const T = window.THREE;
         const canvas = runnerCanvasEl();
-        if (!canvas || typeof canvas.getContext !== 'function' || !runner) return;
         const rect = canvas.getBoundingClientRect();
-        const density = Math.min(2, (typeof window !== 'undefined' && window.devicePixelRatio) || 1);
-        runner.w = Math.max(200, Math.round(rect.width));
-        runner.h = 420;
-        if (typeof window !== 'undefined' && window.innerWidth <= 520) runner.h = 360;
-        canvas.width = Math.round(runner.w * density);
-        canvas.height = Math.round(runner.h * density);
-        const context = canvas.getContext('2d');
-        if (context) context.setTransform(density, 0, 0, density, 0, 0);
+        const w = Math.max(200, Math.round(rect.width));
+        const h = canvas.clientHeight || 440;
+        runner.renderer = new T.WebGLRenderer({ canvas, antialias: true });
+        runner.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+        runner.renderer.setSize(w, h, false);
+        runner.scene = new T.Scene();
+        runner.scene.background = new T.Color(0xeef1f8);
+        runner.scene.fog = new T.Fog(0xeef1f8, 30, 95);
+        runner.camera = new T.PerspectiveCamera(60, w / h, 0.1, 220);
+        runner.camera.position.set(0, 7.2, 10.5);
+        runner.camera.lookAt(0, 1, -8);
+        runner.scene.add(new T.HemisphereLight(0xffffff, 0xb9c2d8, 0.95));
+        const sun = new T.DirectionalLight(0xffffff, 0.75);
+        sun.position.set(-6, 14, 8);
+        runner.scene.add(sun);
+        const ground = new T.Mesh(
+          new T.PlaneGeometry(60, 220),
+          new T.MeshStandardMaterial({ color: 0xe2e7f2, roughness: 1 })
+        );
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.set(0, 0, -80);
+        runner.scene.add(ground);
+        for (let i = 0; i < 40; i += 1) {
+          const stripe = new T.Mesh(
+            new T.BoxGeometry(0.5, 0.06, 3),
+            new T.MeshBasicMaterial({ color: 0xc9cfe3 })
+          );
+          stripe.position.set(i % 2 === 0 ? -8.6 : 8.6, 0.03, 10 - i * 5);
+          runner.scene.add(stripe);
+        }
+        runner.ball = new T.Mesh(
+          new T.SphereGeometry(0.72, 28, 20),
+          new T.MeshStandardMaterial({ color: 0x635bff, roughness: 0.35 })
+        );
+        runner.ball.position.set(0, 0.72, 0);
+        runner.scene.add(runner.ball);
+        const blob = new T.Mesh(
+          new T.CircleGeometry(0.85, 24),
+          new T.MeshBasicMaterial({ color: 0x9aa3c0, transparent: true, opacity: 0.45 })
+        );
+        blob.rotation.x = -Math.PI / 2;
+        blob.position.set(0, 0.02, 0);
+        runner.scene.add(blob);
+        runner.blob = blob;
       }
 
       function runnerGateLabel(op) { return `${op.o}${op.v}`; }
@@ -85,24 +237,27 @@
         return 'multiplication';
       }
 
-      function spawnRunnerRow(y, index) {
+      function spawnRunnerRow(z, index) {
         if (index > 0 && index % 4 === 3) {
           const threshold = Math.max(3, Math.round(runner.n + (Math.random() * 10 - 3)));
-          return { y, kind: 'spike', t: threshold, done: false };
+          return { z, kind: 'spike', t: threshold, done: false, g: null };
         }
-        return { y, kind: 'gates', gl: runnerRandomOp(), gr: runnerRandomOp(), done: false };
+        return { z, kind: 'gates', gl: runnerRandomOp(), gr: runnerRandomOp(), done: false, g: null };
       }
 
       function startRunnerGame() {
+        if (!hasGL) { $('runnerFallback').classList.remove('hidden'); return; }
         stopRunnerGame();
         const keepBest = runner && runner.best ? runner.best : 0;
         runner = runnerDefault();
         try { runner.best = Number(localStorage.getItem('mathRushRunnerBest') || keepBest || 0) || 0; } catch (_) { runner.best = keepBest || 0; }
         runner.active = true;
-        sizeRunnerCanvas();
+        $('runnerOver').classList.add('hidden');
+        if (!runner.scene) initRunnerGL();
+        updateRunnerHud();
         runner.rows = [];
-        let y = -60;
-        for (let index = 0; index < 4; index += 1) { runner.rows.push(spawnRunnerRow(y, index)); y -= 250; }
+        let z = -6;
+        for (let index = 0; index < 4; index += 1) { runner.rows.push(spawnRunnerRow(z, index)); z -= 15; }
         runner.last = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
         drawRunner();
         if (typeof requestAnimationFrame === 'function') runner.raf = requestAnimationFrame(runnerFrame);
@@ -115,7 +270,7 @@
       }
 
       function runnerResolveGate(row) {
-        const left = runner.x < 0.5;
+        const left = runner.x < 0;
         const op = left ? row.gl : row.gr;
         const other = left ? row.gr : row.gl;
         const result = runnerApply(op, runner.n);
@@ -129,6 +284,7 @@
         }
         if (runner.n < 0) { runner.n = 0; runner.hp -= 1; runner.shake = 1; }
         runner.flash = correct ? 1 : 2;
+        updateRunnerHud();
         if (runner.hp <= 0) runnerGameOver();
       }
 
@@ -141,6 +297,7 @@
           runner.shake = 1;
           runner.flash = 2;
         }
+        updateRunnerHud();
         if (runner.hp <= 0) runnerGameOver();
       }
 
@@ -153,6 +310,8 @@
           try { localStorage.setItem('mathRushRunnerBest', String(runner.best)); } catch (_) { /* private mode */ }
         }
         drawRunner();
+        $('runnerFinal').textContent = `Счёт ${Math.floor(runner.score)} · Рекорд ${Math.floor(runner.best)}`;
+        $('runnerOver').classList.remove('hidden');
       }
 
       function runnerFrame(now) {
@@ -160,121 +319,50 @@
         const stamp = typeof now === 'number' ? now : Date.now();
         const dt = Math.min(0.05, Math.max(0, (stamp - runner.last) / 1000));
         runner.last = stamp;
-        runner.speed = Math.min(430, runner.speed + dt * 7);
+        runner.speed = Math.min(21, runner.speed + dt * 0.35);
         const dir = (runner.keys.right ? 1 : 0) - (runner.keys.left ? 1 : 0);
-        if (dir !== 0) { runner.x += dir * dt * 1.15; runner.targetX = null; }
+        if (dir !== 0) { runner.x += dir * dt * 9; runner.targetX = null; }
         else if (runner.targetX !== null) runner.x += (runner.targetX - runner.x) * Math.min(1, dt * 10);
-        runner.x = Math.max(0.07, Math.min(0.93, runner.x));
+        runner.x = Math.max(-6.4, Math.min(6.4, runner.x));
         runner.score += dt * 0.6;
-        const playerY = runner.h - 100;
         runner.rows.forEach((row) => {
-          row.y += runner.speed * dt;
-          if (!row.done && row.y >= playerY) {
+          row.z += runner.speed * dt;
+          if (row.g) row.g.position.z = row.z;
+          if (!row.done && row.z >= 0) {
             row.done = true;
             if (row.kind === 'gates') runnerResolveGate(row);
             else runnerResolveSpike(row);
           }
         });
-        runner.rows = runner.rows.filter((row) => row.y < runner.h + 60);
-        let top = runner.rows.length ? runner.rows[0].y : 0;
-        runner.rows.forEach((row) => { if (row.y < top) top = row.y; });
+        const alive = [];
+        runner.rows.forEach((row) => {
+          if (row.z < 10) { alive.push(row); return; }
+          if (row.g && runner.scene) runner.scene.remove(row.g);
+          disposeRowMeshes(row);
+        });
+        runner.rows = alive;
+        let top = runner.rows.length ? runner.rows[0].z : 0;
+        runner.rows.forEach((row) => { if (row.z < top) top = row.z; });
         let index = runner.rows.length;
-        while (top > -250) { top -= 250; runner.rows.unshift(spawnRunnerRow(top, index)); index += 1; }
+        while (top > -30) { top -= 15; runner.rows.unshift(spawnRunnerRow(top, index)); index += 1; }
         if (runner.shake > 0) runner.shake = Math.max(0, runner.shake - dt * 3);
         if (runner.flash > 0) runner.flash = Math.max(0, runner.flash - dt * 4);
         drawRunner();
         if (runner.active && typeof requestAnimationFrame === 'function') runner.raf = requestAnimationFrame(runnerFrame);
       }
 
-      function runnerRoundRect(context, x, y, w, h, r) {
-        context.beginPath();
-        context.moveTo(x + r, y);
-        context.arcTo(x + w, y, x + w, y + h, r);
-        context.arcTo(x + w, y + h, x, y + h, r);
-        context.arcTo(x, y + h, x, y, r);
-        context.arcTo(x, y, x + w, y, r);
-        context.closePath();
-      }
-
       function drawRunner() {
-        const canvas = runnerCanvasEl();
-        if (!canvas || typeof canvas.getContext !== 'function' || !runner) return;
-        const context = canvas.getContext('2d');
-        if (!context) return;
-        const W = runner.w || 600, H = runner.h || 420;
-        context.save();
-        if (runner.shake > 0) context.translate((Math.random() - 0.5) * 10 * runner.shake, (Math.random() - 0.5) * 8 * runner.shake);
-        context.clearRect(-20, -20, W + 40, H + 40);
-        context.fillStyle = '#f8faff';
-        context.fillRect(-20, -20, W + 40, H + 40);
-        context.fillStyle = '#e6e9f2';
-        for (let gy = 12; gy < H; gy += 28) {
-          for (let gx = 12; gx < W; gx += 28) {
-            context.beginPath();
-            context.arc(gx, gy, 1.6, 0, Math.PI * 2);
-            context.fill();
-          }
-        }
-        const playerY = H - 100;
-        runner.rows.forEach((row) => {
-          if (row.kind === 'gates') {
-            const gw = W / 2 - 14, gh = 62;
-            [['gl', 8], ['gr', W / 2 + 6]].forEach(([side, gx]) => {
-              context.fillStyle = 'rgba(255,255,255,.96)';
-              context.strokeStyle = row.done ? '#d7dae3' : '#635bff';
-              context.lineWidth = 3;
-              runnerRoundRect(context, gx, row.y, gw, gh, 14);
-              context.fill();
-              context.stroke();
-              context.fillStyle = '#101828';
-              context.font = '900 26px Inter, system-ui, sans-serif';
-              context.textAlign = 'center';
-              context.textBaseline = 'middle';
-              context.fillText(runnerGateLabel(row[side]), gx + gw / 2, row.y + gh / 2 + 1);
-            });
-          } else {
-            context.fillStyle = row.done ? '#e4e7ec' : '#d92d20';
-            runnerRoundRect(context, 8, row.y, W - 16, 46, 12);
-            context.fill();
-            context.fillStyle = '#fff';
-            context.font = '900 22px Inter, system-ui, sans-serif';
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            context.fillText(`≥ ${row.t}`, W / 2, row.y + 24);
-          }
-        });
-        context.strokeStyle = 'rgba(99,91,255,.25)';
-        context.lineWidth = 2;
-        context.setLineDash([8, 8]);
-        context.beginPath();
-        context.moveTo(W / 2, 0);
-        context.lineTo(W / 2, H);
-        context.stroke();
-        context.setLineDash([]);
-        context.fillStyle = runner.flash === 2 ? '#d92d20' : '#635bff';
-        context.beginPath();
-        context.arc(runner.x * W, playerY, 26, 0, Math.PI * 2);
-        context.fill();
-        context.fillStyle = '#fff';
-        context.font = '900 22px Inter, system-ui, sans-serif';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.fillText(String(runner.n), runner.x * W, playerY + 1);
-        context.textAlign = 'left';
-        context.font = '800 15px Inter, system-ui, sans-serif';
-        context.fillStyle = '#667085';
-        context.fillText(`❤ ${Math.max(0, runner.hp)}    ${t.score}: ${Math.floor(runner.score)}    ${t.best}: ${runner.best}`, 12, 24);
-        if (runner.over) {
-          context.fillStyle = 'rgba(16,24,40,.55)';
-          context.fillRect(-20, -20, W + 40, H + 40);
-          context.fillStyle = '#fff';
-          context.textAlign = 'center';
-          context.font = '900 34px Inter, system-ui, sans-serif';
-          context.fillText(t.over, W / 2, H / 2 - 34);
-          context.font = '800 20px Inter, system-ui, sans-serif';
-          context.fillText(`${t.score}: ${Math.floor(runner.score)}   ·   ${t.best}: ${runner.best}`, W / 2, H / 2 + 8);
-        }
-        context.restore();
+        if (!runner || !runner.scene) return;
+        runner.rows.forEach(syncRowMesh);
+        runner.ball.position.x = runner.x;
+        runner.ball.rotation.x -= (runner.speed * 0.016) / 0.72;
+        runner.blob.position.x = runner.x;
+        const flash = runner.flash;
+        runner.ball.material.color.setHex(flash === 2 ? 0xd92d20 : flash === 1 ? 0x12b76a : 0x635bff);
+        const camX = runner.x * 0.45 + (runner.shake > 0 ? (Math.random() - 0.5) * 0.8 * runner.shake : 0);
+        runner.camera.position.set(camX, 7.2, 10.5);
+        runner.camera.lookAt(camX * 0.6, 1, -8);
+        runner.renderer.render(runner.scene, runner.camera);
       }
 
       $('runnerAgain').addEventListener('click', () => { startRunnerGame(); });
@@ -289,28 +377,39 @@
         if (!runner || !runner.active || runner.over) return;
         event.preventDefault();
         const rect = canvas.getBoundingClientRect();
-        runner.targetX = (event.clientX - rect.left) / Math.max(1, rect.width);
+        const ratio = (event.clientX - rect.left) / Math.max(1, rect.width);
+        runner.targetX = ratio * 12.8 - 6.4;
       });
       canvas.addEventListener('pointermove', (event) => {
         if (!runner || !runner.active || runner.over || !(event.buttons & 1)) return;
         event.preventDefault();
         const rect = canvas.getBoundingClientRect();
-        runner.targetX = (event.clientX - rect.left) / Math.max(1, rect.width);
+        const ratio = (event.clientX - rect.left) / Math.max(1, rect.width);
+        runner.targetX = ratio * 12.8 - 6.4;
       });
       document.addEventListener('keydown', (event) => {
-        if (!runner || !runner.active) return;
+        if (!runner) return;
         const tag = event.target && event.target.tagName;
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) return;
+        if (event.key === 'Enter' && runner.over) { event.preventDefault(); startRunnerGame(); return; }
+        if (!runner.active) return;
         if (['ArrowLeft', 'a', 'A', 'ф', 'Ф'].includes(event.key)) { runner.keys.left = true; event.preventDefault(); }
         if (['ArrowRight', 'd', 'D', 'в', 'В'].includes(event.key)) { runner.keys.right = true; event.preventDefault(); }
-        if (event.key === 'Enter' && runner.over) { event.preventDefault(); startRunnerGame(); }
       });
       document.addEventListener('keyup', (event) => {
         if (!runner) return;
         if (['ArrowLeft', 'a', 'A', 'ф', 'Ф'].includes(event.key)) runner.keys.left = false;
         if (['ArrowRight', 'd', 'D', 'в', 'В'].includes(event.key)) runner.keys.right = false;
       });
-      window.addEventListener('resize', () => { if (runner && runner.active) { sizeRunnerCanvas(); drawRunner(); } });
+      window.addEventListener('resize', () => {
+        if (!runner || !runner.scene || !runner.renderer || !runner.camera) return;
+        const rect = canvas.getBoundingClientRect();
+        const w = Math.max(200, Math.round(rect.width));
+        const h = canvas.clientHeight || 440;
+        runner.camera.aspect = w / h;
+        runner.camera.updateProjectionMatrix();
+        runner.renderer.setSize(w, h, false);
+      });
 
       window.MathRushRunner = {
         state() { return runner; },
