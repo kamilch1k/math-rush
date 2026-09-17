@@ -17,8 +17,20 @@ for (const page of pages) {
     if (script[1].trim()) new vm.Script(script[1], { filename: page });
   }
 }
+for (const page of ['math-rush.html', 'math-map.html']) {
+  const src = fs.readFileSync(path.join('outputs', page), 'utf8');
+  assert.match(src, /data-board-viewport/, `${page} map pans and zooms like a board`);
+  assert.match(src, /map-board\.js/, `${page} loads the shared board module`);
+}
+const boardJs = fs.readFileSync(path.join('outputs', 'map-board.js'), 'utf8');
+assert.match(boardJs, /Math\.exp\(-delta \* 0\.0025\)/, 'Mouse wheel zooms the board');
+assert.match(boardJs, /function fitAll/, 'Board reset fits the whole map');
 const quizPage = fs.readFileSync(path.join('outputs', 'math-rush.html'), 'utf8');
 assert.match(quizPage, /--settings-icon: url/, 'Settings buttons share a vector gear icon');
+assert.match(quizPage, /--time-icon: url/, 'Time buttons share a vector clock icon');
+assert.match(quizPage, /mode-time-panel/, 'Each quiz card has a dedicated time picker panel');
+assert.match(quizPage, /makeModeHintControl/, 'Card settings include a hints toggle');
+assert.match(quizPage, /hint: makeTenHint\(a, b\)/, 'Addition up to 20 builds make-ten hints');
 assert.match(quizPage, /handwritingAnswer/, 'Per-quiz settings expose the handwriting option');
 assert.match(quizPage, /id="choiceAnswers"/, 'Multiple-choice quizzes have a dedicated answer area');
 assert.match(quizPage, /id="embeddedKeypad"/, 'Touch devices have an embedded answer keypad');
@@ -43,6 +55,7 @@ assert.match(quizPage, /highlightMapNetwork\(branches, skill\.id, true\)/, 'Hove
 assert.match(quizPage, /modes\[skill\.mode\]\?\.\[1\] \|\| mapSkillDescriptions\[currentLanguage\]\[skill\.id\] \|\| ui\.status\[state\]/, 'Map nodes show each topic description instead of availability text');
 assert.match(quizPage, /derivatives: 'Скорость изменения функции'/, 'Derivative map node has a topic description');
 for (const mode of ['division', 'column-addition', 'column-subtraction', 'column-multiplication', 'arithmetic-chain-addition', 'arithmetic-parentheses', 'arithmetic-order', 'geometry-shapes', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates', 'algebra-inequalities', 'algebra-functions', 'algebra-linear-functions']) assert.match(quizPage, new RegExp(`data-mode="${mode}"`), `${mode} has a quiz card`);
+for (const mode of ['limits-basic', 'derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent', 'integrals-basic']) assert.match(quizPage, new RegExp(`data-mode="${mode}"`), `${mode} has a quiz card`);
 assert.match(quizPage, /addition: 'Сложение'/, 'The map names the addition node by the parent topic');
 for (const language of ['ru', 'en', 'fr', 'es', 'de']) assert.match(quizPage, new RegExp(`${language}: \\{ mapTitle:`), `SPA views include ${language} translations`);
 assert.match(quizPage, /\.game-screen \.stat-label/, 'Game stat translation is scoped away from profile statistics');

@@ -130,6 +130,15 @@ for (let i = 0; i < 1000; i++) {
   assert.ok(p.answer >= 1 && p.answer <= 10);
   assert.equal(p.answer, +a - +b);
 }
+for (let i = 0; i < 1000; i++) {
+  const p = q.build('subtraction');
+  const [, a, b] = p.text.match(/^(\d+) − (\d+) = \?$/);
+  assert.ok(+a >= 10 && +a <= 18, 'Simple subtraction takes from 10-18');
+  assert.ok(+b >= 1 && +b <= 9, 'Simple subtraction subtracts 1-9');
+  assert.ok(p.answer >= 1 && p.answer <= 9, 'Simple subtraction lands on 1-9');
+  assert.equal(p.answer, +a - +b);
+  assert.ok(+b > +a % 10, 'Simple subtraction always borrows across ten');
+}
 for (const mode of ['addition-ten', 'addition-twenty', 'addition', 'subtraction-ten', 'subtraction', 'addition-subtraction', 'column-addition', 'column-subtraction', 'column-multiplication', 'arithmetic-negatives']) {
   for (let i = 0; i < 300; i++) {
     const p = q.build(mode);
@@ -200,5 +209,32 @@ for (let i = 0; i < 300; i++) {
   const story = q.build('skills-story-equation').text;
   assert.ok(!/Ане.*У него/.test(story), 'Anna uses the feminine pronoun');
   assert.ok(!/(?:Пете|Максу).*У неё/.test(story), 'Male names use the masculine pronoun');
+}
+for (let i = 0; i < 500; i++) {
+  const lim = q.build('limits-basic');
+  const [, c, sq, c2] = lim.text.match(/^lim x→(\d+) \(x² − (\d+)\)\/\(x − (\d+)\) = \?$/);
+  assert.ok(+c >= 2 && +c <= 9, 'Limit point stays single-digit');
+  assert.equal(+sq, +c * +c, 'Limit numerator matches the point');
+  assert.equal(+c2, +c, 'Limit denominator matches the point');
+  assert.equal(lim.answer, 2 * +c, 'Difference-of-squares limit doubles the point');
+  const pw = q.build('derivatives-power');
+  const [, a, sup, p] = pw.text.match(/^f\(x\) = (\d+)x(²|³);  f'\((\d+)\) = \?$/);
+  const n = sup === '²' ? 2 : 3;
+  assert.equal(pw.answer, +a * n * Math.pow(+p, n - 1), 'Power rule evaluated at the point');
+  const ch = q.build('derivatives-chain');
+  const [, ca, cb, csup, cp] = ch.text.match(/^f\(x\) = \((\d+)x \+ (\d+)\)(²|³);  f'\((\d+)\) = \?$/);
+  const cn = csup === '²' ? 2 : 3;
+  assert.equal(ch.answer, +ca * cn * Math.pow(+ca * +cp + +cb, cn - 1), 'Chain rule with inner derivative');
+  const tr = q.build('derivatives-trig');
+  const [, ta, fn, point] = tr.text.match(/^f\(x\) = (\d+) (sin|cos) x;  f'\((0|π\/2)\) = \?$/);
+  assert.equal(tr.answer, fn === 'sin' ? (point === '0' ? +ta : 0) : (point === '0' ? 0 : -+ta), 'Trig derivative at a notable point');
+  const tg = q.build('derivatives-tangent');
+  const [, xa, xb, xc, x0] = tg.text.match(/^f\(x\) = (\d+)x² \+ (\d+)x \+ (\d+), x₀ = (\d+);  k = \?$/);
+  assert.equal(tg.answer, 2 * +xa * +x0 + +xb, 'Tangent slope equals the derivative at the point');
+  const ig = q.build('integrals-basic');
+  const [, ia, isup, ic] = ig.text.match(/^f\(x\) = (\d+)x(²)?, F\(0\) = 0;  F\((\d+)\) = \?$/);
+  const im = isup ? 2 : 1;
+  assert.ok(Number.isInteger(ig.answer), 'Antiderivative values stay integral');
+  assert.equal(ig.answer, (+ia * Math.pow(+ic, im + 1)) / (im + 1), 'Power antiderivative evaluated from zero');
 }
 console.log('PASS: timers and generated problems across arithmetic, algebra, geometry, and olympiad modes');

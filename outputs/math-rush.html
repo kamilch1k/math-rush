@@ -19,6 +19,7 @@
       --gold: #b54708;
       --shadow: 0 24px 70px rgba(16,24,40,.12);
       --settings-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+      --time-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E");
     }
     * { box-sizing: border-box; }
     body {
@@ -86,15 +87,30 @@
     .mode-card { position: relative; min-height: 120px; padding: 0; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); color: var(--ink); text-align: left; transition: border-color .16s, transform .16s, background .16s, box-shadow .16s; }
     .mode-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
     .mode-card.map-target { z-index: 14; border-color: var(--accent); animation: mapTargetPulse 1.35s ease; box-shadow: 0 0 0 7px rgba(99,91,255,.13), 0 16px 38px rgba(79,70,229,.18); }
-    .mode-card-main { width: 100%; min-height: 120px; padding: 16px 52px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
+    .mode-card-main { width: 100%; min-height: 120px; padding: 16px 112px 16px 16px; border-radius: 16px; color: var(--ink); background: transparent; text-align: left; }
     .mode-card-main:focus-visible { outline: 3px solid rgba(99,91,255,.35); outline-offset: -4px; }
+    .mode-time-button { position: absolute; top: 9px; right: 49px; z-index: 1; display: inline-flex; align-items: center; gap: 5px; min-width: 55px; height: 32px; padding: 0 9px 0 7px; border: 1px solid var(--line); border-radius: 9px; color: var(--accent-dark); background: rgba(238,236,255,.9); font-size: 13px; font-weight: 800; line-height: 1; white-space: nowrap; transition: color .16s, border-color .16s, background .16s, transform .16s; }
+    .mode-time-button::before { content: ''; flex: 0 0 auto; width: 15px; height: 15px; background: currentColor; -webkit-mask: var(--time-icon) center / contain no-repeat; mask: var(--time-icon) center / contain no-repeat; }
+    .mode-time-button:hover { border-color: #b9b4ff; background: #fff; transform: translateY(-1px); }
+    .mode-time-button:active { transform: translateY(1px); }
+    .mode-time-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
+    .mode-time-panel { position: absolute; top: 48px; right: 9px; z-index: 12; width: min(250px, calc(100% - 18px)); margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.98); box-shadow: 0 16px 42px rgba(16,24,40,.2); }
+    .mode-time-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 11px; font-weight: 750; }
+    .mode-time-value { color: var(--accent-dark); font-size: 18px; font-weight: 900; }
+    .mode-time-slider { width: 100%; margin: 10px 0 2px; padding: 0; accent-color: var(--accent); }
+    .mode-time-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
+    .mode-preset { padding: 6px 0; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); background: #fff; font-size: 12px; font-weight: 800; }
+    .mode-preset:hover { border-color: #b9b4ff; color: var(--accent-dark); }
+    .mode-preset.active { border-color: var(--accent); color: #fff; background: var(--accent); }
+    .mode-time-custom { display: flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--muted); font-size: 11px; font-weight: 750; }
+    .mode-time-input { width: 100%; margin: 0; padding: 7px 9px; font-size: 13px; }
     .mode-settings-button { position: absolute; top: 9px; right: 9px; z-index: 1; display: grid; width: 32px; height: 32px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: rgba(255,255,255,.9); font-size: 0; line-height: 1; transition: color .16s, border-color .16s, background .16s, transform .16s; }
     .mode-settings-button::before { content: ''; position: absolute; top: 50%; left: 50%; width: 17px; height: 17px; margin: 0; background: currentColor; -webkit-mask: var(--settings-icon) center / contain no-repeat; mask: var(--settings-icon) center / contain no-repeat; transform: translate(-50%, -50%); transition: transform .18s ease; }
     .mode-settings-button:hover, .mode-settings-button.open { border-color: #b9b4ff; color: var(--accent-dark); background: #fff; }
     .mode-settings-button.open::before { transform: translate(-50%, -50%) rotate(28deg); }
     .answer-mode-note { grid-column: 1 / -1; margin: -2px 0 0; color: var(--muted); font-size: 10px; line-height: 1.35; }
     .mode-settings { position: absolute; top: 48px; right: 9px; z-index: 12; width: min(300px, calc(100% - 18px)); margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.98); box-shadow: 0 16px 42px rgba(16,24,40,.2); }
-    .mode-card:has(.mode-settings:not(.hidden)) { z-index: 15; }
+    .mode-card:has(.mode-settings:not(.hidden)), .mode-card:has(.mode-time-panel:not(.hidden)) { z-index: 15; }
     .mode-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     .mode-settings-label { display: block; color: var(--muted); font-size: 11px; font-weight: 750; }
     .mode-settings-label select { width: 100%; margin-top: 5px; padding: 7px 9px; font-size: 13px; }
@@ -132,15 +148,34 @@
     .view-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
     .view-heading h2 { margin: 0; font-size: 28px; letter-spacing: -.035em; }
     .view-heading p { margin: 0; color: var(--muted); font-size: 13px; }
-    .map-layout { display: block; }
-    .map-layout { display: block; }
-    .board-plaque { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 2px auto 12px; padding: 8px 18px; width: fit-content; border-radius: 999px; color: var(--accent-dark); background: #eeecff; border: 1px solid #d6d2ff; font-size: 12px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
-    .map-stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 12px; }
-    .map-stat { padding: 10px 14px; border-radius: 14px; color: var(--ink); background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 16px rgba(16,24,40,.05); }
-    .map-stat span { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-    .map-stat strong { display: block; font-size: 20px; font-weight: 900; }
-    .map-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0 4px 12px; color: var(--muted); font-size: 12px; font-weight: 700; }
-    .map-legend i { display: inline-block; width: 26px; height: 4px; border-radius: 99px; margin-right: 6px; vertical-align: middle; }
+    #mapView.map-fullscreen { padding: 12px 12px 12px; }
+    .map-board-shell { position: relative; height: calc(100dvh - 132px); min-height: 560px; overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: radial-gradient(circle at 50% 0%, rgba(99,91,255,.10), transparent 42%), linear-gradient(180deg, rgba(255,255,255,.96), rgba(246,247,255,.92)); box-shadow: 0 12px 30px rgba(16,24,40,.06); }
+    .map-board-shell .board-viewport { position: absolute; inset: 0; height: 100%; min-height: 0; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+    .map-hud { position: absolute; z-index: 6; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.9); box-shadow: 0 10px 28px rgba(16,24,40,.12); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .map-hud-top { top: 12px; left: 12px; max-width: 330px; padding: 12px 14px; }
+    .map-hud-top h2 { margin: 0; font-size: 20px; letter-spacing: -.03em; }
+    .map-hud-top p { margin: 4px 0 8px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .map-hud-profile { top: 12px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 8px 14px; white-space: nowrap; }
+    .map-hud-profile .hud-level { display: flex; flex-direction: column; line-height: 1.1; }
+    .map-hud-profile .hud-level span { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .map-hud-profile .hud-level strong { color: var(--accent-dark); font-size: 20px; font-weight: 900; }
+    .map-hud-profile .hud-progress { width: 160px; }
+    .map-hud-profile .hud-progress-row { display: flex; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 10px; font-weight: 700; margin-bottom: 4px; }
+    .map-hud-profile .hud-track { height: 7px; overflow: hidden; border-radius: 99px; background: #eaecf0; }
+    .map-hud-profile .hud-track > div { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, #a49fff, var(--accent)); }
+    .map-hud-profile .hud-score { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.1; }
+    .map-hud-profile .hud-score span { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .map-hud-profile .hud-score strong { font-size: 20px; font-weight: 900; }
+    .map-hud-stats { top: 76px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; padding: 8px; background: rgba(255,255,255,.82); }
+    .map-hud-stats .map-stat { border: 0; box-shadow: none; background: transparent; padding: 4px 10px; min-width: 76px; text-align: center; }
+    .map-hud-stats .map-stat + .map-stat { border-left: 1px solid var(--line); border-radius: 0; }
+    .board-plaque { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 6px 12px; width: fit-content; border-radius: 999px; color: var(--accent-dark); background: #eeecff; border: 1px solid #d6d2ff; font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+    .map-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 0; }
+    .map-stat { padding: 8px 12px; border-radius: 12px; color: var(--ink); background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 16px rgba(16,24,40,.05); }
+    .map-stat span { display: block; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .map-stat strong { display: block; font-size: 17px; font-weight: 900; }
+    .map-legend.map-hud-legend { left: 12px; bottom: 12px; right: auto; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; max-width: min(560px, calc(100% - 380px)); margin: 0; padding: 9px 12px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .map-legend i { display: inline-block; width: 22px; height: 4px; border-radius: 99px; margin-right: 6px; vertical-align: middle; }
     .skill-map { position: relative; display: grid; grid-template-columns: 64px repeat(3, minmax(0, 1fr)); gap: 18px clamp(14px, 3vw, 34px); min-height: 760px; padding: 44px 24px 90px; overflow: hidden; border: 1px solid var(--line); border-radius: 28px; color: var(--ink); background: radial-gradient(circle at 50% 100%, rgba(99,91,255,.12), transparent 36%), linear-gradient(180deg, rgba(255,255,255,.96), rgba(246,247,255,.92)); box-shadow: 0 12px 30px rgba(16,24,40,.06); }
     .trident-lines { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
     .trident-path { fill: none; stroke-width: 3; stroke-linecap: round; opacity: .22; }
@@ -156,6 +191,20 @@
     .branch-heading.algebra, .skill-slot.algebra { --branch-color: #635bff; }
     .branch-heading.geometry, .skill-slot.geometry { --branch-color: #1570ef; }
     .map-corner { position: relative; z-index: 2; display: grid; place-items: center; color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
+    .board-toolbar.map-hud-tools { top: 12px; right: 12px; margin: 0; padding: 6px; gap: 6px; }
+    .board-toolbar button { min-width: 38px; height: 34px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: #fff; font-size: 14px; font-weight: 900; line-height: 1; }
+    .board-toolbar button:hover { border-color: #b9b4ff; color: var(--accent-dark); }
+    .board-toolbar [data-board-zoom-label] { min-width: 54px; text-align: center; color: var(--muted); font-size: 13px; font-weight: 800; }
+    .map-hud-toggle { top: auto; bottom: 12px; right: 12px; display: flex; gap: 6px; padding: 6px; }
+    .map-hud-toggle button { border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--muted); font-size: 12px; font-weight: 800; padding: 8px 12px; }
+    .map-board-shell.hud-hidden .map-hud { opacity: 0; pointer-events: none; transform: translateY(4px); }
+    .map-board-shell.hud-hidden .map-hud-tools { opacity: 1; pointer-events: auto; transform: none; }
+    .map-hud, .map-hud-tools { transition: opacity .18s ease, transform .18s ease; }
+    .board-viewport { position: relative; overflow: hidden; height: min(78vh, 800px); min-height: 420px; border: 1px solid var(--line); border-radius: 28px; background: radial-gradient(circle at 50% 0%, rgba(99,91,255,.10), transparent 42%), linear-gradient(180deg, rgba(255,255,255,.96), rgba(246,247,255,.92)); box-shadow: 0 12px 30px rgba(16,24,40,.06); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+    .board-viewport::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: radial-gradient(circle, #d9dcea 1.1px, transparent 1.4px); background-size: 26px 26px; pointer-events: none; }
+    .board-viewport.panning { cursor: grabbing; }
+    .board-viewport > .skill-map { border: 0; border-radius: 0; background: transparent; box-shadow: none; will-change: transform; }
+    @media (min-width: 801px) { .board-viewport > .skill-map { min-width: 1280px; } }
     .level-label { position: relative; z-index: 2; display: grid; place-items: start center; padding-top: 18px; border-top: 1px dashed #d7dae3; color: var(--accent-dark); font-size: 11px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
     .level-label strong { display: block; font-size: 24px; line-height: 1; }
     .skill-slot { position: relative; z-index: 2; display: grid; gap: 10px; align-content: start; padding-top: 16px; border-top: 1px dashed #d7dae3; }
@@ -175,10 +224,10 @@
     .mastery-track { height: 6px; overflow: hidden; margin-top: 6px; border-radius: 99px; background: #eaecf0; }
     .mastery-track i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--branch-color), #12b76a); }
     .node-req { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 2px 8px; border-radius: 99px; background: #f2f4f7; color: var(--muted); font-size: 10.5px; font-weight: 800; }
-    .skill-detail { margin-top: 16px; min-height: 0; padding: 22px; border-radius: 20px; color: #fff; background: linear-gradient(145deg, #5f57f5, #3f37c9); box-shadow: 0 18px 44px rgba(79,70,229,.25); }
-    .skill-detail h3 { margin: 0 0 8px; font-size: 23px; }
-    .skill-detail p { margin: 0 0 18px; color: rgba(255,255,255,.8); }
-    .skill-detail .primary { color: var(--accent-dark); background: #fff; box-shadow: none; }
+    .skill-detail.map-hud-detail { position: absolute; z-index: 7; top: 132px; right: 12px; width: min(340px, calc(100% - 24px)); max-height: calc(100% - 220px); overflow: auto; margin-top: 0; min-height: 0; padding: 18px; border: 1px solid var(--line); border-radius: 16px; color: var(--ink); background: rgba(255,255,255,.96); box-shadow: 0 16px 44px rgba(16,24,40,.16); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .skill-detail.map-hud-detail:empty { display: none; }
+    .skill-detail h3 { margin: 0 0 8px; font-size: 20px; }
+    .skill-detail p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
     .test-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
     .test-card { position: relative; padding: 18px 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.75); text-align: left; transition: border-color .16s, transform .16s, box-shadow .16s; }
     .test-card:hover { border-color: #b9b4ff; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(79,70,229,.14); }
@@ -265,7 +314,9 @@
     .problem { min-height: 90px; display: grid; place-items: center; margin-bottom: 17px; font-size: clamp(40px, 11vw, 66px); font-weight: 900; letter-spacing: -.06em; }
     .problem.column-problem { min-height: 150px; padding: 8px 24px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(34px, 8vw, 56px); line-height: 1.02; letter-spacing: 0; text-align: right; white-space: pre; }
     .problem.word-problem { max-width: 720px; min-height: 105px; margin: 0 auto 10px; font-size: clamp(18px, 2.6vw, 24px); line-height: 1.4; letter-spacing: -.02em; font-weight: 800; }
-    .problem-help { min-height: 24px; margin: 0 0 15px; color: var(--accent-dark); font-size: 13px; font-weight: 700; }
+    .problem-help { min-height: 22px; margin: 0 0 15px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+    .mode-settings-check { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .mode-settings-check input[type="checkbox"] { flex: 0 0 auto; width: 20px; height: 20px; margin: 5px 0 0; accent-color: var(--accent); }
     .answer-row { display: flex; gap: 10px; }
     .keypad-toggle { display: grid; width: 100%; min-width: 0; min-height: 42px; place-items: center; padding: 4px 8px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: #fff; font-size: 21px; line-height: 1; transition: color .15s, border-color .15s, background .15s, transform .15s; }
     .keypad-toggle:hover, .keypad-toggle[aria-pressed="true"] { border-color: #b9b4ff; color: var(--accent-dark); background: #f2f0ff; }
@@ -321,7 +372,7 @@
     .result-icon { width: 76px; height: 76px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: #ecfdf3; color: var(--good); font-size: 35px; }
     .result-score { margin: 16px 0 5px; font-size: 58px; line-height: 1; font-weight: 900; letter-spacing: -.07em; }
     .result-note { margin: 0 0 27px; color: var(--muted); }
-    @media (max-width: 800px) { .map-layout, .profile-panels { grid-template-columns: 1fr; } .map-stats { grid-template-columns: repeat(2, 1fr); } .skill-map { display: block; min-height: 0; padding: 22px 16px 34px; } .trident-lines, .map-corner, .branch-heading { display: none; } .level-label { display: block; margin: 22px 0 8px; padding: 9px 12px; border: 0; border-radius: 12px; background: #eeecff; color: var(--accent-dark); text-align: left; } .level-label strong { display: inline; margin-left: 4px; font-size: inherit; } .skill-slot { margin-top: 8px; padding: 0; border: 0; } .skill-slot.empty { display: none; } .skill-slot::before { content: attr(data-branch); display: block; margin: 0 0 4px 4px; color: var(--branch-color); font-size: 11px; font-weight: 850; } .skill-detail { position: static; } }
+    @media (max-width: 800px) { .profile-panels { grid-template-columns: 1fr; } #mapView.map-fullscreen { padding: 8px; } .map-board-shell { height: calc(100dvh - 118px); min-height: 480px; } .map-hud-top { max-width: calc(100% - 24px); padding: 10px 12px; } .map-hud-top p { display: none; } .map-hud-profile { display: none; } .map-hud-stats { top: auto; bottom: 64px; left: 12px; transform: none; max-width: calc(100% - 24px); overflow-x: auto; } .map-legend.map-hud-legend { display: none; } .map-board-shell.show-legend .map-legend.map-hud-legend { display: flex; bottom: 118px; max-width: calc(100% - 24px); } .skill-detail.map-hud-detail { top: auto; bottom: 12px; right: 12px; left: 12px; width: auto; max-height: 46%; } .skill-map { display: block; min-height: 0; padding: 22px 16px 34px; } .trident-lines, .map-corner, .branch-heading { display: none; } .level-label { display: block; margin: 22px 0 8px; padding: 9px 12px; border: 0; border-radius: 12px; background: #eeecff; color: var(--accent-dark); text-align: left; } .level-label strong { display: inline; margin-left: 4px; font-size: inherit; } .skill-slot { margin-top: 8px; padding: 0; border: 0; } .skill-slot.empty { display: none; } .skill-slot::before { content: attr(data-branch); display: block; margin: 0 0 4px 4px; color: var(--branch-color); font-size: 11px; font-weight: 850; } }
     @media (pointer: coarse) { .embedded-keypad:not(.hidden) { display: grid; } .game-screen .answer-row input { min-height: 58px; font-size: 24px; caret-color: transparent; } }
     @media (pointer: coarse) and (min-width: 700px) { .embedded-keypad { grid-template-columns: repeat(6, minmax(0, 1fr)); } .keypad-key { min-height: 54px; } }
     @media (max-width: 520px) { body { padding: 8px; } .page-nav { top: 0; margin: 0; padding:9px 10px; } .page-nav .brand { display:none; } .page-nav-links { flex:1; } .page-nav-links button { padding:7px 8px; font-size:11px; } .nav-icon { width:34px; height:34px; } .top, .screen { padding-left: 16px; padding-right: 16px; } .card { border-radius: 22px; } .mode-grid { grid-template-columns: 1fr; } .mode-settings-grid, .choice-answers { grid-template-columns: 1fr; } .menu-heading, .view-heading { display: block; } .menu-heading p, .view-heading p { margin-top: 5px; text-align: left; } .answer-row { flex-direction: column; } .submit { min-height: 50px; } .stats, .profile-summary { grid-template-columns: repeat(2, 1fr); } .settings-grid { grid-template-columns: 1fr; } .setting-wide, .mix-options { grid-column: auto; } .reward { right: 0; } .profile-bar { grid-template-columns: auto 1fr; gap: 9px 12px; } .profile-progress-wrap { grid-column: 1 / -1; grid-row: 2; } .profile-score { justify-self: end; } .settings-panel { top: 60px; right: 8px; width: calc(100% - 16px); max-height: calc(100vh - 72px); } .exit-button { top: 10px; left: 10px; min-height: 40px; padding: 9px 12px; } .game-active .page-nav { top:0; right:0; } .game-screen { padding-top: 74px; } .quiz-details { padding-top: 22px; } }
@@ -574,6 +625,36 @@
             <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
             <div class="mode-settings hidden"><label class="mode-settings-label"><span class="mode-settings-label-text">Сложность</span><select class="mode-difficulty"><option value="simple" selected>Простая</option><option value="advanced">Продвинутая</option><option value="expert">Сложная</option></select></label></div>
           </article>
+          <article class="mode-card" data-mode="limits-basic">
+            <button class="mode-card-main" type="button"><span class="mode-icon">lim</span><strong>Пределы</strong><small>Раскрой неопределённость 0/0</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"></div>
+          </article>
+          <article class="mode-card" data-mode="derivatives-power">
+            <button class="mode-card-main" type="button"><span class="mode-icon">x²</span><strong>Производная степени</strong><small>f(x) = ax^n в точке</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"></div>
+          </article>
+          <article class="mode-card" data-mode="derivatives-chain">
+            <button class="mode-card-main" type="button"><span class="mode-icon">(x)</span><strong>Сложная функция</strong><small>Производная (ax+b)^n</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"></div>
+          </article>
+          <article class="mode-card" data-mode="derivatives-trig">
+            <button class="mode-card-main" type="button"><span class="mode-icon">sin</span><strong>Синус и косинус</strong><small>Производные sin x и cos x</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"></div>
+          </article>
+          <article class="mode-card" data-mode="derivatives-tangent">
+            <button class="mode-card-main" type="button"><span class="mode-icon">k</span><strong>Касательная</strong><small>Угловой коэффициент k</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"></div>
+          </article>
+          <article class="mode-card" data-mode="integrals-basic">
+            <button class="mode-card-main" type="button"><span class="mode-icon">∫</span><strong>Первообразная</strong><small>F по f, F(0) = 0</small></button>
+            <button class="mode-settings-button" type="button" aria-label="Настроить режим" aria-expanded="false">⌄</button>
+            <div class="mode-settings hidden"></div>
+          </article>
         </div>
         <p id="modeDescription" class="mode-description">Складывай два числа от 1 до 19. В настройках карточки можно расширить диапазон и изменить таймер.</p>
         <button id="startBtn" class="primary" type="button" hidden aria-hidden="true">Начать игру</button>
@@ -581,14 +662,23 @@
         <p id="menuHintText" class="hint">В игре можно сразу печатать ответ и нажимать Enter</p>
       </section>
 
-      <section id="mapView" class="screen spa-view hidden">
-        <div class="view-heading"><div><h2 id="mapViewTitle">Карта знаний</h2><p id="mapViewSubtitle">Три направления развития: арифметика, алгебра и геометрия.</p></div></div>
-        <div class="map-layout">
-          <div class="board-plaque">Математика · Карта знаний</div>
-          <div id="mapStats" class="map-stats"></div>
-          <div class="map-legend"><span><i style="background:#e66b2c"></i>Арифметика</span><span><i style="background:#635bff"></i>Алгебра</span><span><i style="background:#1570ef"></i>Геометрия</span><span><i style="background:#98a2b3"></i>связь внутри ветки</span><span><i style="background:#7f78e8"></i>связь между ветками</span><span>Подготовка к уравнениям — в самом верху; стрелки от порядка действий — ко всей алгебре начиная с ax+b=c</span><span>Наведи на карточку — подсветится вся цепочка зависимостей</span></div>
-          <div id="spaBranches" class="skill-map"></div>
-          <div id="mapDetail" class="skill-detail"></div>
+      <section id="mapView" class="screen spa-view map-fullscreen hidden">
+        <div class="map-board-shell" id="mapBoardShell">
+          <div class="board-viewport" data-board-viewport>
+            <div id="spaBranches" class="skill-map" data-board-content></div>
+          </div>
+          <div class="map-hud map-hud-top"><div><h2 id="mapViewTitle">Карта знаний</h2><p id="mapViewSubtitle">Три направления развития: арифметика, алгебра и геометрия.</p></div><div class="board-plaque">Математика · Карта знаний</div></div>
+          <div class="map-hud map-hud-profile" aria-label="Профиль игрока на карте"><div class="hud-level"><span id="mapHudLevelLabel">Уровень</span><strong id="mapHudLevel">1</strong></div><div class="hud-progress"><div class="hud-progress-row"><span id="mapHudProgressText">0/10 до следующего уровня</span><span id="mapHudProgressPercent">0%</span></div><div class="hud-track"><div id="mapHudProgressBar"></div></div></div><div class="hud-score"><span id="mapHudScoreLabel">Общий счёт</span><strong id="mapHudScore">0</strong></div></div>
+          <div id="mapStats" class="map-hud map-hud-stats"></div>
+          <div class="map-legend map-hud map-hud-legend"><span><i style="background:#e66b2c"></i>Арифметика</span><span><i style="background:#635bff"></i>Алгебра</span><span><i style="background:#1570ef"></i>Геометрия</span><span><i style="background:#98a2b3"></i>связь внутри ветки</span><span><i style="background:#7f78e8"></i>связь между ветками</span><span>Подготовка к уравнениям — в самом верху; стрелки от порядка действий — ко всей алгебре начиная с ax+b=c</span><span>Наведи на карточку — подсветится вся цепочка зависимостей</span></div>
+          <div class="board-toolbar map-hud map-hud-tools" data-board-toolbar>
+            <button type="button" data-board-zoom-out aria-label="Отдалить карту">−</button>
+            <span data-board-zoom-label>100%</span>
+            <button type="button" data-board-zoom-in aria-label="Приблизить карту">+</button>
+            <button type="button" data-board-reset aria-label="Вписать карту в экран">Сброс</button>
+          </div>
+          <div class="map-hud map-hud-toggle"><button type="button" id="mapHudToggle" aria-pressed="false">Скрыть панели</button><button type="button" id="mapLegendToggle" aria-pressed="false">Легенда</button></div>
+          <div id="mapDetail" class="skill-detail map-hud-detail"></div>
         </div>
       </section>
 
@@ -667,6 +757,7 @@
   </main>
 
   <script src="progress.js"></script>
+  <script src="map-board.js"></script>
   <script>
     (() => {
       const START_TIME = 90;
@@ -701,25 +792,25 @@
       languageData.ru.exitLabel = 'В меню';
       languageData.ru.languageMenu = 'Язык';
       languageData.ru.timeRemaining = 'Оставшееся время игры';
-      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', taskLimit: 'Количество заданий', answerMode: 'Способ ответа', textAnswer: 'Клавиатура', handwritingAnswer: 'Доска — после подключения', handwritingNote: 'Рукописный ввод появится после подключения сервиса распознавания.', button: 'Настроить режим', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
+      languageData.ru.modeSettings = { difficulty: 'Сложность чисел', timer: 'Таймер', bonus: 'Бонус за ответ', streak: 'Серия', taskLimit: 'Количество заданий', answerMode: 'Способ ответа', textAnswer: 'Клавиатура', handwritingAnswer: 'Доска — после подключения', handwritingNote: 'Рукописный ввод появится после подключения сервиса распознавания.', button: 'Настроить режим', hints: 'Подсказки', simple: 'Простая', advanced: 'Продвинутая', expert: 'Сложная' };
       languageData.ru.quizCompletion = 'Прогресс теста';
       languageData.ru.taskLimitOptions = { 0: 'Без лимита', 10: '10 заданий', 20: '20 заданий', 30: '30 заданий' };
       languageData.en.exitLabel = 'Menu';
       languageData.en.languageMenu = 'Language';
       languageData.en.timeRemaining = 'Time remaining';
-      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', taskLimit: 'Question limit', answerMode: 'Answer method', textAnswer: 'Keyboard', handwritingAnswer: 'Board — after setup', handwritingNote: 'Handwriting will become available after a recognition service is connected.', button: 'Configure mode', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
+      languageData.en.modeSettings = { difficulty: 'Number complexity', timer: 'Timer', bonus: 'Answer bonus', streak: 'Streak goal', taskLimit: 'Question limit', answerMode: 'Answer method', textAnswer: 'Keyboard', handwritingAnswer: 'Board — after setup', handwritingNote: 'Handwriting will become available after a recognition service is connected.', button: 'Configure mode', hints: 'Hints', simple: 'Simple', advanced: 'Advanced', expert: 'Expert' };
       languageData.en.quizCompletion = 'Quiz progress';
       languageData.en.taskLimitOptions = { 0: 'No limit', 10: '10 tasks', 20: '20 tasks', 30: '30 tasks' };
       languageData.fr.exitLabel = 'Menu';
-      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', taskLimit: 'Nombre d’exercices', answerMode: 'Mode de réponse', textAnswer: 'Clavier', handwritingAnswer: 'Tableau — après connexion', handwritingNote: 'L’écriture manuscrite sera disponible après la connexion du service.', button: 'Configurer le mode', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
+      languageData.fr.modeSettings = { difficulty: 'Difficulté', timer: 'Minuteur', bonus: 'Bonus par réponse', streak: 'Série', taskLimit: 'Nombre d’exercices', answerMode: 'Mode de réponse', textAnswer: 'Clavier', handwritingAnswer: 'Tableau — après connexion', handwritingNote: 'L’écriture manuscrite sera disponible après la connexion du service.', button: 'Configurer le mode', hints: 'Indices', simple: 'Simple', advanced: 'Avancé', expert: 'Expert' };
       languageData.fr.quizCompletion = 'Progression du quiz';
       languageData.fr.taskLimitOptions = { 0: 'Sans limite', 10: '10 exercices', 20: '20 exercices', 30: '30 exercices' };
       languageData.es.exitLabel = 'Menú';
-      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', taskLimit: 'Cantidad de ejercicios', answerMode: 'Forma de responder', textAnswer: 'Teclado', handwritingAnswer: 'Pizarra — tras conectar', handwritingNote: 'La escritura estará disponible al conectar el servicio de reconocimiento.', button: 'Configurar modo', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
+      languageData.es.modeSettings = { difficulty: 'Dificultad', timer: 'Temporizador', bonus: 'Bonificación', streak: 'Racha', taskLimit: 'Cantidad de ejercicios', answerMode: 'Forma de responder', textAnswer: 'Teclado', handwritingAnswer: 'Pizarra — tras conectar', handwritingNote: 'La escritura estará disponible al conectar el servicio de reconocimiento.', button: 'Configurar modo', hints: 'Pistas', simple: 'Fácil', advanced: 'Avanzado', expert: 'Experto' };
       languageData.es.quizCompletion = 'Progreso del cuestionario';
       languageData.es.taskLimitOptions = { 0: 'Sin límite', 10: '10 ejercicios', 20: '20 ejercicios', 30: '30 ejercicios' };
       languageData.de.exitLabel = 'Menü';
-      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', taskLimit: 'Aufgabenanzahl', answerMode: 'Antwortmethode', textAnswer: 'Tastatur', handwritingAnswer: 'Tafel — nach Einrichtung', handwritingNote: 'Handschrift wird nach Anbindung des Erkennungsdienstes verfügbar.', button: 'Modus einstellen', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
+      languageData.de.modeSettings = { difficulty: 'Schwierigkeit', timer: 'Timer', bonus: 'Antwortbonus', streak: 'Serie', taskLimit: 'Aufgabenanzahl', answerMode: 'Antwortmethode', textAnswer: 'Tastatur', handwritingAnswer: 'Tafel — nach Einrichtung', handwritingNote: 'Handschrift wird nach Anbindung des Erkennungsdienstes verfügbar.', button: 'Modus einstellen', hints: 'Hinweise', simple: 'Einfach', advanced: 'Fortgeschritten', expert: 'Experte' };
       languageData.de.quizCompletion = 'Quizfortschritt';
       languageData.de.taskLimitOptions = { 0: 'Ohne Limit', 10: '10 Aufgaben', 20: '20 Aufgaben', 30: '30 Aufgaben' };
       const settingsLabels = {
@@ -826,14 +917,90 @@
         de: { subject: 'Olympiade-Aufgaben', patterns: 'Gerade Zahlen und Muster', logic: 'Kombinatorik und Logik', parityPlaceholder: 'gerade oder ungerade', modes: {
           'olympiad-parity': ['Gerade oder ungerade', 'Welche Parität?', 'Bestimme, ob das Ergebnis gerade oder ungerade ist.'], 'olympiad-coloring': ['Färbungen', 'Zähle die Möglichkeiten', 'Zähle, wie viele Zellenauswahlen es gibt.'], 'olympiad-patterns': ['Zahlenmuster', 'Setze die Folge fort', 'Finde die Regel und gib die nächste Zahl ein.'], 'olympiad-logic': ['Logikaufgaben', 'Garantien, Paare und Zählen', 'Löse kurze Aufgaben aus Kombinatorik und Logik.'] } }
       };
+      const calculusText = {
+        ru: { subject: 'Анализ', groups: { limits: 'Пределы', derivatives: 'Производные', integrals: 'Первообразная и интегралы' }, modes: {
+          'limits-basic': ['Пределы', 'Раскрой неопределённость 0/0', 'Найди предел дробно-рациональной функции в точке.'],
+          'derivatives-power': ['Производная степени', 'f(x) = ax^n в точке', 'Примени правило степени и подставь точку.'],
+          'derivatives-chain': ['Сложная функция', 'Производная (ax+b)^n', 'Сначала степень снаружи, затем умножь на производную скобки.'],
+          'derivatives-trig': ['Синус и косинус', 'Производные sin x и cos x', 'Вспомни таблицу производных и подставь точку.'],
+          'derivatives-tangent': ['Касательная', 'Угловой коэффициент k', 'Наклон касательной — это значение производной в точке.'],
+          'integrals-basic': ['Первообразная', 'F по f, F(0) = 0', 'Обрати правило степени и найди значение первообразной.'] },
+          hints: {
+          'limits-basic': 'Разложи числитель: (x−c)(x+c), сократи дробь и подставь точку.',
+          'derivatives-power': 'Производная x^n — это n·x^(n−1); затем подставь точку.',
+          'derivatives-chain': 'Сначала степень снаружи, затем умножь на производную скобки.',
+          'derivatives-trig': '(sin x)′ = cos x, (cos x)′ = −sin x; подставь точку.',
+          'derivatives-tangent': 'Угловой коэффициент k = f′(x₀).',
+          'integrals-basic': 'Первообразная x^n — это x^(n+1)/(n+1); помни про F(0) = 0.' } },
+        en: { subject: 'Calculus', groups: { limits: 'Limits', derivatives: 'Derivatives', integrals: 'Antiderivatives and integrals' }, modes: {
+          'limits-basic': ['Limits', 'Resolve the 0/0 form', 'Find the limit of a rational function at a point.'],
+          'derivatives-power': ['Power rule', 'f(x) = ax^n at a point', 'Apply the power rule, then substitute the point.'],
+          'derivatives-chain': ['Chain rule', 'Derivative of (ax+b)^n', 'Differentiate the outer power first, then multiply by the inner derivative.'],
+          'derivatives-trig': ['Sine and cosine', 'Derivatives of sin x and cos x', 'Recall the derivative table and substitute the point.'],
+          'derivatives-tangent': ['Tangent line', 'Slope k of the tangent', 'The tangent slope equals the derivative at the point.'],
+          'integrals-basic': ['Antiderivative', 'F from f with F(0) = 0', 'Reverse the power rule and evaluate the antiderivative.'] },
+          hints: {
+          'limits-basic': 'Factor the numerator: (x−c)(x+c), cancel and substitute.',
+          'derivatives-power': 'The derivative of x^n is n·x^(n−1); then substitute.',
+          'derivatives-chain': 'Outer power first, then multiply by the derivative of the bracket.',
+          'derivatives-trig': '(sin x)′ = cos x, (cos x)′ = −sin x; substitute the point.',
+          'derivatives-tangent': 'Slope k = f′(x₀).',
+          'integrals-basic': 'The antiderivative of x^n is x^(n+1)/(n+1); remember F(0) = 0.' } },
+        fr: { subject: 'Analyse', groups: { limits: 'Limites', derivatives: 'Dérivées', integrals: 'Primitives et intégrales' }, modes: {
+          'limits-basic': ['Limites', 'Lève la forme 0/0', 'Trouve la limite d’une fonction rationnelle en un point.'],
+          'derivatives-power': ['Dérivée d’une puissance', 'f(x) = ax^n en un point', 'Applique la règle des puissances puis remplace le point.'],
+          'derivatives-chain': ['Fonction composée', 'Dérivée de (ax+b)^n', 'Dérive la puissance extérieure, puis multiplie par la dérivée intérieure.'],
+          'derivatives-trig': ['Sinus et cosinus', 'Dérivées de sin x et cos x', 'Rappelle le tableau des dérivées et remplace le point.'],
+          'derivatives-tangent': ['Tangente', 'Coefficient directeur k', 'La pente de la tangente égale la dérivée au point.'],
+          'integrals-basic': ['Primitive', 'F à partir de f, F(0) = 0', 'Inverse la règle des puissances et évalue la primitive.'] },
+          hints: {
+          'limits-basic': 'Factorise le numérateur : (x−c)(x+c), simplifie et remplace.',
+          'derivatives-power': 'La dérivée de x^n est n·x^(n−1) ; remplace ensuite.',
+          'derivatives-chain': 'Puissance extérieure d’abord, puis multiplie par la dérivée intérieure.',
+          'derivatives-trig': '(sin x)′ = cos x, (cos x)′ = −sin x ; remplace le point.',
+          'derivatives-tangent': 'Pente k = f′(x₀).',
+          'integrals-basic': 'La primitive de x^n est x^(n+1)/(n+1) ; n’oublie pas F(0) = 0.' } },
+        es: { subject: 'Análisis', groups: { limits: 'Límites', derivatives: 'Derivadas', integrals: 'Primitivas e integrales' }, modes: {
+          'limits-basic': ['Límites', 'Resuelve la forma 0/0', 'Halla el límite de una función racional en un punto.'],
+          'derivatives-power': ['Derivada de potencias', 'f(x) = ax^n en un punto', 'Aplica la regla de la potencia y sustituye el punto.'],
+          'derivatives-chain': ['Función compuesta', 'Derivada de (ax+b)^n', 'Deriva la potencia exterior y multiplica por la derivada interior.'],
+          'derivatives-trig': ['Seno y coseno', 'Derivadas de sin x y cos x', 'Recuerda la tabla de derivadas y sustituye el punto.'],
+          'derivatives-tangent': ['Recta tangente', 'Pendiente k', 'La pendiente de la tangente es la derivada en el punto.'],
+          'integrals-basic': ['Primitiva', 'F a partir de f, F(0) = 0', 'Invierte la regla de la potencia y evalúa la primitiva.'] },
+          hints: {
+          'limits-basic': 'Factoriza el numerador: (x−c)(x+c), simplifica y sustituye.',
+          'derivatives-power': 'La derivada de x^n es n·x^(n−1); luego sustituye.',
+          'derivatives-chain': 'Primero la potencia exterior, luego multiplica por la derivada interior.',
+          'derivatives-trig': '(sin x)′ = cos x, (cos x)′ = −sin x; sustituye el punto.',
+          'derivatives-tangent': 'Pendiente k = f′(x₀).',
+          'integrals-basic': 'La primitiva de x^n es x^(n+1)/(n+1); recuerda F(0) = 0.' } },
+        de: { subject: 'Analysis', groups: { limits: 'Grenzwerte', derivatives: 'Ableitungen', integrals: 'Stammfunktionen und Integrale' }, modes: {
+          'limits-basic': ['Grenzwerte', 'Löse die Form 0/0', 'Finde den Grenzwert einer rationalen Funktion an einer Stelle.'],
+          'derivatives-power': ['Potenzregel', 'f(x) = ax^n an einer Stelle', 'Wende die Potenzregel an und setze die Stelle ein.'],
+          'derivatives-chain': ['Verkettete Funktion', 'Ableitung von (ax+b)^n', 'Leite die äußere Potenz ab und multipliziere mit der inneren Ableitung.'],
+          'derivatives-trig': ['Sinus und Kosinus', 'Ableitungen von sin x und cos x', 'Nutze die Ableitungstabelle und setze die Stelle ein.'],
+          'derivatives-tangent': ['Tangente', 'Steigung k', 'Die Tangentensteigung ist die Ableitung an der Stelle.'],
+          'integrals-basic': ['Stammfunktion', 'F aus f mit F(0) = 0', 'Kehre die Potenzregel um und werte die Stammfunktion aus.'] },
+          hints: {
+          'limits-basic': 'Zerlege den Zähler: (x−c)(x+c), kürze und setze ein.',
+          'derivatives-power': 'Die Ableitung von x^n ist n·x^(n−1); dann einsetzen.',
+          'derivatives-chain': 'Erst die äußere Potenz, dann mit der inneren Ableitung multiplizieren.',
+          'derivatives-trig': '(sin x)′ = cos x, (cos x)′ = −sin x; Stelle einsetzen.',
+          'derivatives-tangent': 'Steigung k = f′(x₀).',
+          'integrals-basic': 'Die Stammfunktion von x^n ist x^(n+1)/(n+1); denke an F(0) = 0.' } }
+      };
       Object.keys(languageData).forEach((key) => {
         Object.assign(languageData[key].modes, curriculumText[key].modes);
         Object.assign(languageData[key].modes, olympiadText[key].modes);
+        Object.assign(languageData[key].modes, calculusText[key].modes);
         curriculumText[key].subjects.push(olympiadText[key].subject);
         languageData[key].categories.skills = curriculumText[key].skills;
         languageData[key].categories.geometry = curriculumText[key].geometry;
         languageData[key].categories['olympiad-patterns'] = olympiadText[key].patterns;
         languageData[key].categories['olympiad-logic'] = olympiadText[key].logic;
+        languageData[key].categories.limits = calculusText[key].groups.limits;
+        languageData[key].categories.derivatives = calculusText[key].groups.derivatives;
+        languageData[key].categories.integrals = calculusText[key].groups.integrals;
       });
       const interfaceText = {
         ru: { mapTitle: 'Карта знаний', mapSubtitle: 'Три направления развития: арифметика, алгебра и геометрия.', profileTitle: 'Профиль', profileSubtitle: 'Весь прогресс хранится в этом браузере.', level: 'Уровень', xp: 'Опыт', attempts: 'Решено', accuracy: 'Точность', directions: 'Направления', skills: 'Навыки', stage: 'Этап', categories: { arithmetic: 'Арифметика', algebra: 'Алгебра', geometry: 'Геометрия' }, status: { mastered: 'Освоено', learning: 'Изучается', available: 'Доступно' }, skillNames: { derivatives: 'Производные', angles: 'Углы', triangles: 'Треугольники' }, reward: { level: 'Уровень', streak: 'подряд!', seconds: 'сек', correct: 'Верно', wrong: 'Ошибка' }, missing: 'Какое число спряталось в окошке?', twoStep: (extra, factor) => `Сначала вычти ${extra}, затем раздели на ${factor}.` },
@@ -883,6 +1050,7 @@
       }
       let selectedMode = 'addition-ten';
       let currentQuestionMode = 'addition-ten';
+      let currentHint = '';
       let currentLanguage = 'ru';
       let timeLeft = START_TIME, solved = 0, score = 0, streak = 0, answer = 0, timerId = null;
       let gameActive = false, canAnswer = false, nextProblemTimeout = null, audioContext = null, answerKind = 'number';
@@ -940,9 +1108,15 @@
         'olympiad-coloring': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'olympiad-patterns': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
         'olympiad-logic': { difficulty: 'simple', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
-        mixed: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
+        mixed: { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'limits-basic': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'derivatives-power': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'derivatives-chain': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'derivatives-trig': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'derivatives-tangent': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 },
+        'integrals-basic': { difficulty: 'advanced', startTime: 90, timeBonus: 3, streakGoal: 10, taskLimit: 20 }
       };
-      Object.values(modeConfigs).forEach((config) => { config.answerMode = 'text'; });
+      Object.values(modeConfigs).forEach((config) => { config.answerMode = 'text'; config.hints = true; });
       let savedPreferences = {};
       try { savedPreferences = JSON.parse(localStorage.getItem('mathRushPreferencesV1') || '{}'); } catch (error) { savedPreferences = {}; }
       if (languageData[savedPreferences.language]) currentLanguage = savedPreferences.language;
@@ -994,6 +1168,14 @@
         profileProgressPercent.textContent = `${percent}%`;
         profileProgressBar.style.width = `${percent}%`;
         profileProgressBar.parentElement.setAttribute('aria-label', `${language.profile.level}: ${levelFor(profile.totalScore)}`);
+        const mapLevel = $('mapHudLevel'), mapScore = $('mapHudScore'), mapText = $('mapHudProgressText'), mapPct = $('mapHudProgressPercent'), mapBar = $('mapHudProgressBar'), mapLevelLabel = $('mapHudLevelLabel'), mapScoreLabel = $('mapHudScoreLabel');
+        if (mapLevel) mapLevel.textContent = levelFor(profile.totalScore);
+        if (mapScore) mapScore.textContent = profile.totalScore;
+        if (mapText) mapText.textContent = language.profile.progress(current);
+        if (mapPct) mapPct.textContent = `${percent}%`;
+        if (mapBar) mapBar.style.width = `${percent}%`;
+        if (mapLevelLabel) mapLevelLabel.textContent = language.profile.level;
+        if (mapScoreLabel) mapScoreLabel.textContent = language.profile.score;
       }
 
       function addProfilePoint() {
@@ -1075,6 +1257,168 @@
         return label;
       }
 
+      function modeTimeLabel(seconds) { return `${seconds}s`; }
+
+      function modeTimeHint(mode) {
+        const seconds = configFor(mode).startTime;
+        const timerWord = (languageData[currentLanguage] && languageData[currentLanguage].modeSettings && languageData[currentLanguage].modeSettings.timer) || 'Timer';
+        return `${timerWord}: ${modeTimeLabel(seconds)}`;
+      }
+
+      function syncModeTimeButtons(mode) {
+        const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
+        if (!card) return;
+        const button = card.querySelector('.mode-time-button');
+        if (!button) return;
+        const seconds = configFor(mode).startTime;
+        const value = button.querySelector('.time-value');
+        if (value) value.textContent = modeTimeLabel(seconds);
+        else button.textContent = modeTimeLabel(seconds);
+        const hint = modeTimeHint(mode);
+        button.setAttribute('aria-label', hint);
+        button.title = hint;
+      }
+
+      const TIME_MIN = 10, TIME_MAX = 360, TIME_STEP = 5;
+      const TIME_PRESETS = [15, 30, 60, 90, 120, 180, 240, 300];
+
+      function clampModeTime(value, fallback = 90) {
+        const seconds = Math.round(Number(value));
+        if (!Number.isFinite(seconds)) return fallback;
+        return Math.min(TIME_MAX, Math.max(TIME_MIN, seconds));
+      }
+
+      function setModeTime(mode, seconds) {
+        const config = configFor(mode);
+        config.startTime = clampModeTime(seconds, config.startTime);
+        const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
+        if (card && mode !== selectedMode) selectMode(card);
+        else { syncGlobalSettingsControls(); readSettings(); }
+        syncModeCardControls(mode);
+      }
+
+      function syncModeTimePanel(mode) {
+        const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
+        if (!card) return;
+        const panel = card.querySelector('.mode-time-panel');
+        if (!panel) return;
+        const seconds = configFor(mode).startTime;
+        const hint = modeTimeHint(mode);
+        const slider = panel.querySelector('.mode-time-slider');
+        if (slider) { slider.value = String(seconds); slider.setAttribute('aria-label', hint); }
+        const input = panel.querySelector('.mode-time-input');
+        if (input) { if (document.activeElement !== input) input.value = String(seconds); input.setAttribute('aria-label', hint); }
+        const value = panel.querySelector('.mode-time-value');
+        if (value) value.textContent = modeTimeLabel(seconds);
+        panel.querySelectorAll('.mode-preset').forEach((preset) => {
+          const active = Number(preset.dataset.seconds) === seconds;
+          preset.classList.toggle('active', active);
+          preset.setAttribute('aria-pressed', String(active));
+        });
+      }
+
+      function closeModeTimePanels() {
+        document.querySelectorAll('.mode-time-panel').forEach((panel) => panel.classList.add('hidden'));
+        document.querySelectorAll('.mode-time-button').forEach((button) => { button.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); });
+      }
+
+      function toggleModeTimePanel(button) {
+        const card = button.closest('.mode-card');
+        const panel = card.querySelector('.mode-time-panel');
+        const shouldOpen = panel.classList.contains('hidden');
+        closeModeSettings();
+        closeModeTimePanels();
+        if (shouldOpen) {
+          syncModeTimePanel(card.dataset.mode);
+          panel.classList.remove('hidden');
+          button.classList.add('open');
+          button.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      function ensureModeTimeButtons() {
+        document.querySelectorAll('.mode-card').forEach((card) => {
+          const mode = card.dataset.mode;
+          if (!mode) return;
+          let button = card.querySelector('.mode-time-button');
+          if (!button) {
+            button = document.createElement('button');
+            button.className = 'mode-time-button';
+            button.type = 'button';
+            button.dataset.modeTime = mode;
+            const value = document.createElement('span');
+            value.className = 'time-value';
+            value.textContent = modeTimeLabel(configFor(mode).startTime);
+            button.append(value);
+            button.addEventListener('click', (event) => { event.stopPropagation(); toggleModeTimePanel(button); });
+            button.addEventListener('mouseenter', () => {
+              const panel = card.querySelector('.mode-time-panel');
+              if (panel && !panel.classList.contains('hidden')) return;
+              closeModeSettings();
+              closeModeTimePanels();
+              if (panel) syncModeTimePanel(mode);
+              if (panel) panel.classList.remove('hidden');
+              button.classList.add('open');
+              button.setAttribute('aria-expanded', 'true');
+            });
+            card.append(button);
+          }
+          if (!card.querySelector('.mode-time-panel')) {
+            const panel = document.createElement('div');
+            panel.className = 'mode-time-panel hidden';
+            const head = document.createElement('div');
+            head.className = 'mode-time-head';
+            const title = document.createElement('span');
+            title.className = 'mode-settings-label-text';
+            title.dataset.modeSettingLabel = 'startTime';
+            const display = document.createElement('span');
+            display.className = 'mode-time-value';
+            display.textContent = modeTimeLabel(configFor(mode).startTime);
+            head.append(title, display);
+            const slider = document.createElement('input');
+            slider.type = 'range';
+            slider.className = 'mode-time-slider';
+            slider.min = String(TIME_MIN);
+            slider.max = String(TIME_MAX);
+            slider.step = String(TIME_STEP);
+            slider.value = String(configFor(mode).startTime);
+            slider.setAttribute('aria-label', modeTimeHint(mode));
+            slider.addEventListener('input', () => setModeTime(mode, slider.value));
+            const presets = document.createElement('div');
+            presets.className = 'mode-time-presets';
+            TIME_PRESETS.forEach((presetSeconds) => {
+              const preset = document.createElement('button');
+              preset.type = 'button';
+              preset.className = 'mode-preset';
+              preset.dataset.seconds = String(presetSeconds);
+              preset.textContent = modeTimeLabel(presetSeconds);
+              preset.addEventListener('click', (event) => { event.stopPropagation(); setModeTime(mode, presetSeconds); });
+              presets.append(preset);
+            });
+            const custom = document.createElement('label');
+            custom.className = 'mode-time-custom';
+            const rangeHint = document.createElement('span');
+            rangeHint.textContent = `${TIME_MIN}–${TIME_MAX}`;
+            const customInput = document.createElement('input');
+            customInput.type = 'number';
+            customInput.className = 'mode-time-input';
+            customInput.min = String(TIME_MIN);
+            customInput.max = String(TIME_MAX);
+            customInput.step = '1';
+            customInput.value = String(configFor(mode).startTime);
+            customInput.setAttribute('aria-label', modeTimeHint(mode));
+            customInput.addEventListener('change', () => setModeTime(mode, customInput.value));
+            customInput.addEventListener('click', (event) => event.stopPropagation());
+            custom.append(rangeHint, customInput);
+            panel.append(head, slider, presets, custom);
+            panel.addEventListener('click', (event) => event.stopPropagation());
+            card.append(panel);
+          }
+          syncModeTimeButtons(mode);
+          syncModeTimePanel(mode);
+        });
+      }
+
       function organizeMenu() {
         const grid = document.querySelector('.mode-grid');
         if (!grid) return;
@@ -1104,7 +1448,10 @@
           ['algebra', [
             ['equations', ['equations-missing', 'equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'skills-story-equation', 'algebra-systems']],
             ['powers', ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics']],
-            ['functions', ['algebra-inequalities', 'algebra-functions', 'algebra-linear-functions', 'algebra-sequences']]
+            ['functions', ['algebra-inequalities', 'algebra-functions', 'algebra-linear-functions', 'algebra-sequences']],
+            ['limits', ['limits-basic']],
+            ['derivatives', ['derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent']],
+            ['integrals', ['integrals-basic']]
           ]],
           ['geometry', [['geometry', ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates']]]],
           ['olympiad', [
@@ -1125,41 +1472,61 @@
         });
       }
 
+      function makeModeHintControl(mode) {
+        const label = document.createElement('label');
+        label.className = 'mode-settings-label mode-settings-check';
+        const labelText = document.createElement('span');
+        labelText.dataset.modeSettingLabel = 'hints';
+        const control = document.createElement('input');
+        control.type = 'checkbox';
+        control.dataset.mode = mode;
+        control.dataset.modeConfig = 'hints';
+        control.checked = configFor(mode).hints !== false;
+        label.append(labelText, control);
+        return label;
+      }
+
       function ensureModeSettingsControls() {
         document.querySelectorAll('.mode-card').forEach((card) => {
           const mode = card.dataset.mode;
           const panel = card.querySelector('.mode-settings');
-          const difficultyLabel = panel.querySelector('.mode-settings-label');
-          const difficultyText = difficultyLabel.querySelector('.mode-settings-label-text');
-          const difficultyControl = panel.querySelector('.mode-difficulty');
-          difficultyText.dataset.modeSettingLabel = 'difficulty';
-          difficultyControl.dataset.mode = mode;
-          difficultyControl.dataset.modeConfig = 'difficulty';
-          if (mode === 'addition-ten' || mode === 'addition-twenty' || mode === 'subtraction-ten') difficultyLabel.classList.add('hidden');
+          panel.replaceChildren();
           const grid = document.createElement('div');
           grid.className = 'mode-settings-grid';
-          grid.append(difficultyLabel);
-          Object.entries(modeControlOptions).forEach(([key, values]) => grid.append(makeModeControl(mode, key, values)));
-          const answerMode = makeModeControl(mode, 'answerMode', ['text', 'handwriting']);
-          answerMode.querySelector('[value="handwriting"]').disabled = !HANDWRITING_ENABLED;
-          const note = document.createElement('p');
-          note.className = 'answer-mode-note';
-          note.dataset.modeSettingNote = 'handwriting';
-          grid.append(answerMode, note);
+          grid.append(makeModeControl(mode, 'startTime', modeControlOptions.startTime), makeModeHintControl(mode));
           panel.append(grid);
         });
+      }
+
+      function ensureSelectOption(select, value) {
+        if (!select || !select.options) return;
+        const text = String(value);
+        if (![...select.options].some((option) => option.value === text)) {
+          const option = document.createElement('option');
+          option.value = text;
+          option.textContent = text;
+          select.append(option);
+        }
       }
 
       function syncModeCardControls(mode) {
         const card = document.querySelector(`.mode-card[data-mode="${mode}"]`);
         if (!card) return;
         const config = configFor(mode);
-        card.querySelectorAll('[data-mode-config]').forEach((control) => { control.value = String(config[control.dataset.modeConfig]); });
+        card.querySelectorAll('[data-mode-config]').forEach((control) => {
+          const key = control.dataset.modeConfig;
+          if (key === 'startTime' && control.tagName === 'SELECT') ensureSelectOption(control, config.startTime);
+          if (control.type === 'checkbox') control.checked = Boolean(config[key]);
+          else control.value = String(config[key]);
+        });
+        syncModeTimeButtons(mode);
+        syncModeTimePanel(mode);
       }
 
       function syncGlobalSettingsControls() {
         const config = configFor(selectedMode);
         difficultySelect.value = config.difficulty;
+        ensureSelectOption(startTimeSelect, config.startTime);
         startTimeSelect.value = String(config.startTime);
         timeBonusSelect.value = String(config.timeBonus);
         streakGoalSelect.value = String(config.streakGoal);
@@ -1214,6 +1581,11 @@
         if (operation === '×') { numerator = firstNumerator * secondNumerator; denominator = firstDenominator * secondDenominator; }
         if (operation === '/') { numerator = firstNumerator * secondDenominator; denominator = firstDenominator * secondNumerator; }
         return { text: `${fractionText(firstNumerator, firstDenominator)} ${operation} ${fractionText(secondNumerator, secondDenominator)} = ?`, answer: simplifyFraction(numerator, denominator) };
+      }
+
+      function makeTenHint(a, b) {
+        const need = 10 - a, rest = b - need;
+        return rest === 0 ? `${a} + ${need}` : `${a} + ${need} + ${rest}`;
       }
 
       function buildProblem(mode) {
@@ -1522,7 +1894,7 @@
         if (mode === 'addition-twenty') {
           let a = randomInt(1, 9), b = randomInt(1, 9);
           while (a + b < 10) { a = randomInt(1, 9); b = randomInt(1, 9); }
-          return { text: `${a} + ${b} = ?`, answer: a + b };
+          return { text: `${a} + ${b} = ?`, answer: a + b, hint: makeTenHint(a, b) };
         }
         if (mode === 'addition') {
           const difficulty = difficultyFor(mode);
@@ -1536,8 +1908,8 @@
           return { text: `${a} − ${b} = ?`, answer: a - b };
         }
         if (mode === 'subtraction') {
-          let a = randomInt(range.min, range.max), b = randomInt(range.min, a);
-          if (b === a) { if (a < range.max) a += 1; else b -= 1; }
+          const a = randomInt(10, 18);
+          const b = randomInt(Math.max(1, a - 9), 9);
           return { text: `${a} − ${b} = ?`, answer: a - b };
         }
         if (mode === 'addition-subtraction') {
@@ -1569,6 +1941,39 @@
         if (mode === 'fractions-calculate') return buildFractionCalculation(mode);
         if (mode === 'fractions-mixed') {
           return buildProblem(['fractions-simplify', 'fractions-compare', 'fractions-calculate'][randomInt(0, 2)]);
+        }
+        if (mode === 'limits-basic') {
+          const c = randomInt(2, 9);
+          return { text: `lim x→${c} (x² − ${c * c})/(x − ${c}) = ?`, answer: 2 * c, hint: calculusText[currentLanguage].hints['limits-basic'] };
+        }
+        if (mode === 'derivatives-power') {
+          const a = randomInt(1, 5), n = randomInt(2, 3), c = randomInt(1, 3);
+          const sup = n === 2 ? '²' : '³';
+          return { text: `f(x) = ${a}x${sup};  f'(${c}) = ?`, answer: a * n * Math.pow(c, n - 1), hint: calculusText[currentLanguage].hints['derivatives-power'] };
+        }
+        if (mode === 'derivatives-chain') {
+          const a = randomInt(1, 2), b = randomInt(1, 5), n = randomInt(2, 3), c = randomInt(0, 1);
+          const sup = n === 2 ? '²' : '³';
+          return { text: `f(x) = (${a}x + ${b})${sup};  f'(${c}) = ?`, answer: a * n * Math.pow(a * c + b, n - 1), hint: calculusText[currentLanguage].hints['derivatives-chain'] };
+        }
+        if (mode === 'derivatives-trig') {
+          const a = randomInt(2, 9);
+          const useSin = Math.random() < 0.5;
+          const atZero = Math.random() < 0.5;
+          const point = atZero ? '0' : 'π/2';
+          const answer = useSin ? (atZero ? a : 0) : (atZero ? 0 : -a);
+          return { text: `f(x) = ${a} ${useSin ? 'sin' : 'cos'} x;  f'(${point}) = ?`, answer, hint: calculusText[currentLanguage].hints['derivatives-trig'] };
+        }
+        if (mode === 'derivatives-tangent') {
+          const a = randomInt(1, 3), b = randomInt(1, 9), c = randomInt(0, 9), x0 = randomInt(1, 3);
+          return { text: `f(x) = ${a}x² + ${b}x + ${c}, x₀ = ${x0};  k = ?`, answer: 2 * a * x0 + b, hint: calculusText[currentLanguage].hints['derivatives-tangent'] };
+        }
+        if (mode === 'integrals-basic') {
+          const n = randomInt(1, 2);
+          const k = n === 1 ? randomInt(1, 5) : randomInt(1, 3);
+          const a = n === 1 ? 2 * k : 3 * k;
+          const c = n === 1 ? randomInt(1, 4) : randomInt(1, 3);
+          return { text: `f(x) = ${a}x${n === 2 ? '²' : ''}, F(0) = 0;  F(${c}) = ?`, answer: (a * Math.pow(c, n + 1)) / (n + 1), hint: calculusText[currentLanguage].hints['integrals-basic'] };
         }
         return buildProblem('tables');
       }
@@ -1672,7 +2077,8 @@
         problemEl.textContent = built.text;
         problemEl.classList.toggle('word-problem', built.kind === 'word' || built.kind === 'equation');
         problemEl.classList.toggle('column-problem', built.kind === 'column');
-        problemHelp.textContent = built.hint || '';
+        currentHint = built.hint || '';
+        problemHelp.textContent = configFor(mode).hints !== false ? currentHint : '';
         answerInput.value = '';
         const isChoice = answerKind === 'choice';
         answerForm.classList.toggle('hidden', isChoice);
@@ -1979,8 +2385,12 @@
           const modeSettingsButton = card.querySelector('.mode-settings-button');
           modeSettingsButton.setAttribute('aria-label', `${language.modeSettings.button}: ${language.modes[mode][0]}`);
           modeSettingsButton.title = `${language.modeSettings.button}: ${language.modes[mode][0]}`;
+          syncModeTimeButtons(mode);
+          syncModeTimePanel(mode);
           card.querySelectorAll('[data-mode-setting-label]').forEach((label) => { label.textContent = language.modeSettings[label.dataset.modeSettingLabel]; });
           card.querySelectorAll('[data-mode-config]').forEach((control) => {
+            if (control.dataset.modeConfig === 'startTime' && control.tagName === 'SELECT') ensureSelectOption(control, configFor(mode).startTime);
+            if (control.type === 'checkbox') { control.checked = Boolean(configFor(mode)[control.dataset.modeConfig]); return; }
             control.value = String(configFor(mode)[control.dataset.modeConfig]);
             if (control.dataset.modeConfig === 'difficulty') control.querySelectorAll('option').forEach((option) => { option.textContent = language.modeSettings[option.value]; });
             if (control.dataset.modeConfig === 'taskLimit') control.querySelectorAll('option').forEach((option) => { option.textContent = language.taskLimitOptions[option.value]; });
@@ -1989,7 +2399,8 @@
               control.querySelector('[value="handwriting"]').textContent = language.modeSettings.handwritingAnswer;
             }
           });
-          card.querySelector('[data-mode-setting-note="handwriting"]').textContent = language.modeSettings.handwritingNote;
+          const handwritingNote = card.querySelector('[data-mode-setting-note="handwriting"]');
+          if (handwritingNote) handwritingNote.textContent = language.modeSettings.handwritingNote;
           modeSettingsButton.setAttribute('aria-expanded', String(!modeSettings.classList.contains('hidden')));
         });
         document.querySelectorAll('[data-category]').forEach((heading) => { heading.textContent = language.categories[heading.dataset.category]; });
@@ -2058,6 +2469,7 @@
       function closeModeSettings() {
         document.querySelectorAll('.mode-settings').forEach((panel) => panel.classList.add('hidden'));
         document.querySelectorAll('.mode-settings-button').forEach((button) => { button.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); });
+        closeModeTimePanels();
       }
 
       function toggleModeSettings(button) {
@@ -2123,7 +2535,7 @@
           const rect = element.getBoundingClientRect();
           return { x: rect.left - root.left + rect.width / 2, y: (edge === 'top' ? rect.top : rect.bottom) - root.top };
         };
-        ['arithmetic', 'algebra', 'geometry'].forEach((category) => {
+        Object.keys(interfaceText[currentLanguage].categories).forEach((category) => {
           const nodes = [...branches.querySelectorAll(`.skill-slot.${category} .skill-node`)];
           if (!nodes.length) return;
           const start = point(nodes[0], 'top'), end = point(nodes[nodes.length - 1], 'bottom');
@@ -2229,7 +2641,7 @@
           const avg = Math.round(MathRushProgress.skills.reduce((sum, skill) => sum + MathRushProgress.masteryFor(skill.id, data), 0) / Math.max(1, total));
           const cards = [['★', `${mastered}/${total}`, ui.status.mastered], ['◐', `${avg}%`, ui.level], ...Object.entries(categories).map(([key, title]) => ['◆', `${MathRushProgress.categorySummary(key, data).mastery}%`, title])];
           statsHost.textContent = '';
-          cards.slice(0, 4).forEach(([icon, value, label]) => {
+          cards.slice(0, 5).forEach(([icon, value, label]) => {
             const card = document.createElement('div');
             card.className = 'map-stat';
             card.innerHTML = `<span></span><strong></strong>`;
@@ -2301,6 +2713,7 @@
         }
         cancelAnimationFrame(mapLineFrame);
         mapLineFrame = requestAnimationFrame(() => drawMapConnections(branches));
+        if (globalThis.MathRushBoard) globalThis.MathRushBoard.init();
       }
 
       function renderSpaProfile() {
@@ -2752,9 +3165,33 @@
         if (history.replaceState) history.replaceState(null, '', `#${view}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      (() => {
+        try {
+          const shell = typeof $ === 'function' ? $('mapBoardShell') : null;
+          const hudBtn = typeof $ === 'function' ? $('mapHudToggle') : null;
+          const legendBtn = typeof $ === 'function' ? $('mapLegendToggle') : null;
+          const canBind = (el) => el && typeof el.addEventListener === 'function' && el.classList && typeof el.classList.toggle === 'function';
+          if (shell && hudBtn && canBind(hudBtn) && !(hudBtn.dataset && hudBtn.dataset.wired)) {
+            if (hudBtn.dataset) hudBtn.dataset.wired = '1';
+            hudBtn.addEventListener('click', () => {
+              const hidden = shell.classList.toggle('hud-hidden');
+              hudBtn.textContent = hidden ? 'Показать панели' : 'Скрыть панели';
+              if (typeof hudBtn.setAttribute === 'function') hudBtn.setAttribute('aria-pressed', hidden ? 'true' : 'false');
+            });
+          }
+          if (shell && legendBtn && canBind(legendBtn) && !(legendBtn.dataset && legendBtn.dataset.wired)) {
+            if (legendBtn.dataset) legendBtn.dataset.wired = '1';
+            legendBtn.addEventListener('click', () => {
+              const shown = shell.classList.toggle('show-legend');
+              if (typeof legendBtn.setAttribute === 'function') legendBtn.setAttribute('aria-pressed', shown ? 'true' : 'false');
+            });
+          }
+        } catch (_) { /* board HUD is optional in test harnesses */ }
+      })();
 
       organizeMenu();
       ensureModeSettingsControls();
+      ensureModeTimeButtons();
       document.querySelectorAll('.mode-card-main').forEach((button) => button.addEventListener('click', () => {
         selectMode(button.closest('.mode-card'));
         startGame();
@@ -2773,15 +3210,17 @@
           card.querySelector('.mode-settings').classList.add('hidden');
           button.classList.remove('open');
           button.setAttribute('aria-expanded', 'false');
+          closeModeTimePanels();
         });
       });
       document.querySelectorAll('[data-mode-config]').forEach((control) => control.addEventListener('change', () => {
         const mode = control.dataset.mode;
         const config = configFor(mode);
         const key = control.dataset.modeConfig;
-        config[key] = ['difficulty', 'answerMode'].includes(key) ? control.value : Number(control.value);
+        config[key] = control.type === 'checkbox' ? control.checked : (['difficulty', 'answerMode'].includes(key) ? control.value : Number(control.value));
         if (mode !== selectedMode) selectMode(control.closest('.mode-card'));
         else { syncGlobalSettingsControls(); readSettings(); }
+        if (key === 'hints' && gameActive && mode === currentQuestionMode) problemHelp.textContent = control.checked ? currentHint : '';
       }));
       answerForm.addEventListener('submit', submitAnswer);
       keypadToggle.addEventListener('click', () => {
@@ -2854,7 +3293,7 @@
       languagePopover.addEventListener('mouseenter', () => clearTimeout(languageCloseTimer));
       languagePopover.addEventListener('mouseleave', closeLanguageSoon);
       languagePopover.addEventListener('click', (event) => event.stopPropagation());
-      document.addEventListener('click', () => { languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); });
+      document.addEventListener('click', () => { languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); closeModeSettings(); });
       languageSelect.addEventListener('change', () => { currentLanguage = languageSelect.value; savePreference('language', currentLanguage); applyLanguage(); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); });
       $('closeSettingsBtn').addEventListener('click', () => { readSettings(); setSettingsOpen(false); });
       [factorFrom, factorTo].forEach((control) => control.addEventListener('change', readSettings));
@@ -2868,7 +3307,7 @@
       if (requestedCard) { selectMode(requestedCard); setTimeout(startGame, 0); }
       else showAppView(['map', 'profile', 'test'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'tasks');
       document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') { if (!settingsPanel.classList.contains('hidden')) setSettingsOpen(false); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); }
+        if (event.key === 'Escape') { if (!settingsPanel.classList.contains('hidden')) setSettingsOpen(false); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); closeModeSettings(); }
         const tagName = event.target && event.target.tagName;
         const isControl = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA'].includes(tagName);
         if (event.key === 'Enter' && !menuScreen.classList.contains('hidden') && settingsPanel.classList.contains('hidden') && !isControl) startGame();

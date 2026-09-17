@@ -35,6 +35,12 @@
     { id: 'linear-functions', title: 'Линейные функции', category: 'algebra', prerequisites: ['functions', 'equation-two-step', 'order-of-operations', 'parentheses'], mode: 'algebra-linear-functions' },
     { id: 'quadratics', title: 'Квадратные уравнения', category: 'algebra', prerequisites: ['polynomials', 'equation-two-step', 'order-of-operations', 'parentheses'], mode: 'algebra-quadratics' },
     { id: 'derivatives', title: 'Производные', category: 'algebra', prerequisites: ['functions', 'linear-functions', 'polynomials', 'order-of-operations', 'parentheses'], href: 'derivatives.html' },
+    { id: 'limits', title: 'Пределы', category: 'algebra', prerequisites: ['quadratics', 'functions'], mode: 'limits-basic' },
+    { id: 'derivative-power', title: 'Производная степени', category: 'algebra', prerequisites: ['derivatives', 'powers', 'limits'], mode: 'derivatives-power' },
+    { id: 'derivative-chain', title: 'Сложная функция', category: 'algebra', prerequisites: ['derivative-power'], mode: 'derivatives-chain' },
+    { id: 'derivative-trig', title: 'Синус и косинус', category: 'algebra', prerequisites: ['derivative-power', 'functions'], mode: 'derivatives-trig' },
+    { id: 'derivative-tangent', title: 'Касательная', category: 'algebra', prerequisites: ['derivative-power', 'linear-functions'], mode: 'derivatives-tangent' },
+    { id: 'integrals', title: 'Первообразная', category: 'algebra', prerequisites: ['derivative-power'], mode: 'integrals-basic' },
     { id: 'shapes', title: 'Фигуры', category: 'geometry', prerequisites: [], mode: 'geometry-shapes' },
     { id: 'perimeter', title: 'Периметр', category: 'geometry', prerequisites: ['shapes', 'addition'], mode: 'geometry-perimeter' },
     { id: 'angles', title: 'Углы', category: 'geometry', prerequisites: ['shapes', 'subtraction'], mode: 'geometry-angles' },
@@ -58,7 +64,10 @@
     'algebra-quadratics': 'quadratics', 'algebra-systems': 'systems', 'algebra-sequences': 'sequences',
     'geometry-shapes': 'shapes', 'geometry-angles': 'angles', 'geometry-triangles': 'triangles', 'geometry-perimeter': 'perimeter', 'geometry-side': 'perimeter', 'geometry-area': 'area', 'geometry-coordinates': 'coordinates',
     'skills-percent': 'percentages',
-    'derivatives-whiteboard': 'derivatives'
+    'derivatives-whiteboard': 'derivatives',
+    'limits-basic': 'limits',
+    'derivatives-power': 'derivative-power', 'derivatives-chain': 'derivative-chain', 'derivatives-trig': 'derivative-trig', 'derivatives-tangent': 'derivative-tangent',
+    'integrals-basic': 'integrals'
   };
 
   function emptyData() {
