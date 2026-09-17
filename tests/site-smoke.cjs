@@ -42,6 +42,12 @@ assert.match(quizPage, /handwritingAnswer/, 'Per-quiz settings expose the handwr
 assert.match(quizPage, /id="choiceAnswers"/, 'Multiple-choice quizzes have a dedicated answer area');
 assert.match(quizPage, /id="embeddedKeypad"/, 'Touch devices have an embedded answer keypad');
 assert.match(quizPage, /id="keypadToggle"/, 'Desktop users can optionally open the answer keypad');
+assert.match(quizPage, /id="boardToggle"/, 'Quiz stats have a scratch-board toggle');
+assert.match(quizPage, /id="scratchBoard"/, 'Quizzes have a scratch board canvas between answer and badge');
+assert.match(quizPage, /function toggleScratchBoard\(\)/, 'Scratch board opens from the stats toggle');
+assert.match(quizPage, /mode-notime-button/, 'Every quiz card has a no-timer start button');
+assert.match(quizPage, /function startGame\(withoutTime = false\)/, 'Games can start without a timer');
+assert.match(quizPage, /timeless \? '∞'/, 'Timeless games show an infinity timer');
 assert.match(quizPage, /keypadToggle\.addEventListener\('click'/, 'The desktop keypad button toggles the keypad');
 assert.match(quizPage, /answerInput\.readOnly = embedded/, 'Touch input is readonly to suppress the system keyboard');
 assert.match(quizPage, /inputMode = embedded \? 'none'/, 'Touch input disables the system keyboard input mode');
