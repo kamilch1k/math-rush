@@ -20,16 +20,9 @@
     .map-canvas-stats{display:flex;gap:4px;padding:8px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 8px 22px rgba(16,24,40,.08);justify-self:center}
     .map-canvas-stats .board-stat{border:0;box-shadow:none;background:transparent;padding:4px 10px;min-width:78px;text-align:center}
     .map-canvas-stats .board-stat + .board-stat{border-left:1px solid var(--line);border-radius:0}
-    .board-toolbar.map-hud-tools{top:12px;right:12px;margin:0;padding:6px;gap:6px}
-    .board-toolbar button{min-width:38px;height:34px;padding:0 12px;border:1px solid var(--line);border-radius:10px;color:var(--muted);background:#fff;font-size:14px;font-weight:900;line-height:1}
-    .board-toolbar button:hover{border-color:#b9b4ff;color:var(--accent-dark)}
-    .board-toolbar [data-board-zoom-label]{min-width:54px;text-align:center;color:var(--muted);font-size:13px;font-weight:800}
-    .map-hud-legend{left:12px;bottom:12px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;max-width:min(560px,calc(100% - 380px));margin:0;padding:9px 12px;color:var(--muted);font-size:11px;font-weight:700}
-    .map-hud-legend i{display:inline-block;width:22px;height:4px;border-radius:99px;margin-right:6px;vertical-align:middle}
-    .map-hud-toggle{bottom:12px;right:12px;display:flex;gap:6px;padding:6px}
-    .map-hud-toggle button{border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--muted);font-size:12px;font-weight:800;padding:8px 12px}
-    .map-board-shell.hud-hidden .map-hud{opacity:0;pointer-events:none;transform:translateY(4px)}
-    .map-board-shell.hud-hidden .map-hud-tools{opacity:1;pointer-events:auto;transform:none}
+    .map-reset-btn{position:absolute;z-index:7;left:12px;bottom:12px;width:52px;height:52px;padding:0;border:0;border-radius:15px;color:#fff;background:var(--accent);font-size:25px;font-weight:900;line-height:1;box-shadow:0 12px 28px rgba(99,91,255,.4);transition:transform .15s ease,background .15s ease}
+    .map-reset-btn:hover{background:var(--accent-dark);transform:translateY(-2px)}
+    .map-reset-btn:active{transform:translateY(1px)}
     .board-viewport{position:relative;overflow:hidden;height:min(78vh,800px);min-height:420px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at 50% 0%,rgba(99,91,255,.10),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,247,255,.92));box-shadow:0 12px 30px rgba(16,24,40,.06);touch-action:none;overscroll-behavior:none;cursor:grab;user-select:none;-webkit-user-select:none}
     .board-viewport::before{content:'';position:absolute;inset:0;z-index:0;background-image:radial-gradient(circle,#d9dcea 1.1px,transparent 1.4px);background-size:26px 26px;pointer-events:none}
     .board-viewport.panning{cursor:grabbing}
@@ -74,13 +67,13 @@
     .detail-metric strong{font-size:20px}
     .requirements{list-style:none;margin:0;padding:0;display:grid;gap:8px}
     .requirements li{display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#f2f4f7}
-    @media(max-width:800px){.map-page-fullscreen{padding-top:8px;padding-bottom:8px}.branches{grid-template-columns:1fr}.map-board-shell{min-height:0}.map-canvas-head{grid-template-columns:1fr;padding-right:0}.map-canvas-head .lead{display:none}.map-canvas-stats{max-width:100%;overflow-x:auto;justify-self:stretch}.map-hud-legend{display:none}.map-board-shell.show-legend .map-hud-legend{display:flex;bottom:118px;max-width:calc(100% - 24px)}.skill-detail.map-hud-detail{top:auto;bottom:12px;right:12px;left:12px;width:auto;max-height:46%}}
+    @media(max-width:800px){.map-page-fullscreen{padding-top:8px;padding-bottom:8px}.branches{grid-template-columns:1fr}.map-board-shell{min-height:0}.map-canvas-head{grid-template-columns:1fr;padding-right:0}.map-canvas-head .lead{display:none}.map-canvas-stats{max-width:100%;overflow-x:auto;justify-self:stretch}.skill-detail.map-hud-detail{top:auto;bottom:12px;right:12px;left:12px;width:auto;max-height:46%}}
   </style>
 </head>
 <body>
   <main class="page map-page-fullscreen">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a class="active" href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
-    <section class="panel board-frame map-board-shell" aria-label="Карта навыков"><div class="board-viewport" data-board-viewport><div data-board-content><div class="map-canvas-head"><header><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Сначала счёт по нарастающей: сложение и вычитание, умножение и деление, столбики, затем порядок действий, скобки и дроби.</p><div class="board-plaque">Математика · Карта знаний</div></header><div id="boardStats" class="map-canvas-stats board-stats"></div></div><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></div><div class="board-toolbar map-hud map-hud-tools" data-board-toolbar><button type="button" data-board-zoom-out aria-label="Отдалить карту">−</button><span data-board-zoom-label>100%</span><button type="button" data-board-zoom-in aria-label="Приблизить карту">+</button><button type="button" data-board-reset aria-label="Вписать карту в экран">Сброс</button></div><div class="map-hud map-hud-legend"><span><i style="background:#e66b2c"></i>Арифметика</span><span><i style="background:#635bff"></i>Алгебра</span><span><i style="background:#1570ef"></i>Геометрия</span><span>Наведи на карточку — подсветится вся цепочка зависимостей</span></div><div class="map-hud map-hud-toggle"><button type="button" id="mapHudToggle">Скрыть панели</button><button type="button" id="mapLegendToggle">Легенда</button></div><section id="skillDetail" class="panel skill-detail map-hud-detail" aria-live="polite"></section></section>
+    <section class="panel board-frame map-board-shell" aria-label="Карта навыков"><div class="board-viewport" data-board-viewport><div data-board-content><div class="map-canvas-head"><header><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Сначала счёт по нарастающей: сложение и вычитание, умножение и деление, столбики, затем порядок действий, скобки и дроби.</p><div class="board-plaque">Математика · Карта знаний</div></header><div id="boardStats" class="map-canvas-stats board-stats"></div></div><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></div><button type="button" class="map-reset-btn" data-board-home aria-label="Вернуть карту к началу" title="Вернуть карту к началу">↗</button><section id="skillDetail" class="panel skill-detail map-hud-detail" aria-live="polite"></section></section>
   </main>
   <script src="progress.js"></script>
   <script src="map-board.js"></script>
@@ -132,14 +125,6 @@
       });
       const algebraDefault = progress.skillById('powers') || progress.skills[0];
       renderDetail(algebraDefault);
-      const shell = document.querySelector('.map-board-shell');
-      const hudBtn = document.getElementById('mapHudToggle');
-      const legendBtn = document.getElementById('mapLegendToggle');
-      if (shell && hudBtn) hudBtn.addEventListener('click', () => {
-        const hidden = shell.classList.toggle('hud-hidden');
-        hudBtn.textContent = hidden ? 'Показать панели' : 'Скрыть панели';
-      });
-      if (shell && legendBtn) legendBtn.addEventListener('click', () => shell.classList.toggle('show-legend'));
     })();
   </script>
   <!-- Cloudflare Web Analytics -->

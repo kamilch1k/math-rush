@@ -151,6 +151,15 @@
       if (zoomOut) zoomOut.addEventListener('click', function (e) { e.stopPropagation(); zoomAtCenter(state, 1 / 1.25); });
       if (reset) reset.addEventListener('click', function (e) { e.stopPropagation(); state.touched = true; fitAll(state); });
     }
+    // One-tap home button: back to the initial view (upper part, normal zoom).
+    var homeScope = parent || (typeof document !== 'undefined' ? document : null);
+    if (homeScope && homeScope.querySelectorAll) {
+      Array.prototype.forEach.call(homeScope.querySelectorAll('[data-board-home]'), function (btn) {
+        if (btn._boardHomeWired) return;
+        btn._boardHomeWired = true;
+        btn.addEventListener('click', function (e) { e.stopPropagation(); state.touched = false; fit(state); });
+      });
+    }
     content.style.transformOrigin = '0 0';
     viewport.addEventListener('pointerdown', function (e) { onDown(state, e); });
     viewport.addEventListener('pointermove', function (e) { onMove(state, e); });
