@@ -23,11 +23,14 @@ for (const page of ['math-rush.html', 'math-map.html']) {
   assert.match(src, /map-board\.js/, `${page} loads the shared board module`);
   const statsId = page === 'math-rush.html' ? 'mapStats' : 'boardStats';
   assert.match(src, new RegExp(`data-board-content[\\s\\S]*id="${statsId}"`), `${page} map panels live on the canvas above the tree`);
+  if (page === 'math-map.html') assert.match(src, /body\{overflow:hidden/, 'Standalone map never scrolls behind the board');
 }
 const boardJs = fs.readFileSync(path.join('outputs', 'map-board.js'), 'utf8');
 assert.match(boardJs, /Math\.exp\(-delta \* 0\.0025\)/, 'Mouse wheel zooms the board');
 assert.match(boardJs, /function fitAll/, 'Board reset fits the whole map');
 const quizPage = fs.readFileSync(path.join('outputs', 'math-rush.html'), 'utf8');
+assert.match(quizPage, /body\.map-locked/, 'Map view locks page scroll while open');
+assert.match(quizPage, /function fitMapShell\(\)/, 'Map board is sized to the viewport');
 assert.match(quizPage, /--settings-icon: url/, 'Settings buttons share a vector gear icon');
 assert.match(quizPage, /--time-icon: url/, 'Time buttons share a vector clock icon');
 assert.match(quizPage, /mode-time-panel/, 'Each quiz card has a dedicated time picker panel');

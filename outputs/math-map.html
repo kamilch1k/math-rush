@@ -7,8 +7,11 @@
   <title>Карта математики — Math Rush</title>
   <link rel="stylesheet" href="app-shell.css">
   <style>
-    .map-page-fullscreen { max-width: 1400px; }
-    .map-board-shell{position:relative;height:calc(100dvh - 130px);min-height:560px;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:radial-gradient(circle at 50% 0%,rgba(99,91,255,.10),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,247,255,.92));box-shadow:0 12px 30px rgba(16,24,40,.06)}
+    html,body{height:100%}
+    body{overflow:hidden;overscroll-behavior:none}
+    .map-page-fullscreen { max-width: 1400px; height:100vh; height:100dvh; display:flex; flex-direction:column; overflow:hidden; padding-top:12px; padding-bottom:12px; }
+    .map-page-fullscreen .site-nav{position:static;flex:0 0 auto;margin-bottom:12px}
+    .map-board-shell{position:relative;flex:1 1 auto;min-height:0;height:auto;margin-top:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:radial-gradient(circle at 50% 0%,rgba(99,91,255,.10),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,247,255,.92));box-shadow:0 12px 30px rgba(16,24,40,.06);overscroll-behavior:none}
     .map-board-shell .board-viewport{position:absolute;inset:0;height:100%;min-height:0;border:0;border-radius:0;box-shadow:none;background:transparent}
     .map-hud{position:absolute;z-index:6;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 10px 28px rgba(16,24,40,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:opacity .18s ease,transform .18s ease}
     .map-canvas-head{position:relative;z-index:2;display:grid;grid-template-columns:minmax(230px,300px) minmax(0,1fr);gap:12px 16px;align-items:start;padding-right:208px;margin-bottom:20px}
@@ -27,7 +30,7 @@
     .map-hud-toggle button{border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--muted);font-size:12px;font-weight:800;padding:8px 12px}
     .map-board-shell.hud-hidden .map-hud{opacity:0;pointer-events:none;transform:translateY(4px)}
     .map-board-shell.hud-hidden .map-hud-tools{opacity:1;pointer-events:auto;transform:none}
-    .board-viewport{position:relative;overflow:hidden;height:min(78vh,800px);min-height:420px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at 50% 0%,rgba(99,91,255,.10),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,247,255,.92));box-shadow:0 12px 30px rgba(16,24,40,.06);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+    .board-viewport{position:relative;overflow:hidden;height:min(78vh,800px);min-height:420px;border:1px solid var(--line);border-radius:28px;background:radial-gradient(circle at 50% 0%,rgba(99,91,255,.10),transparent 42%),linear-gradient(180deg,rgba(255,255,255,.96),rgba(246,247,255,.92));box-shadow:0 12px 30px rgba(16,24,40,.06);touch-action:none;overscroll-behavior:none;cursor:grab;user-select:none;-webkit-user-select:none}
     .board-viewport::before{content:'';position:absolute;inset:0;z-index:0;background-image:radial-gradient(circle,#d9dcea 1.1px,transparent 1.4px);background-size:26px 26px;pointer-events:none}
     .board-viewport.panning{cursor:grabbing}
     .board-viewport>.branches{will-change:transform}
@@ -71,7 +74,7 @@
     .detail-metric strong{font-size:20px}
     .requirements{list-style:none;margin:0;padding:0;display:grid;gap:8px}
     .requirements li{display:flex;justify-content:space-between;padding:9px 12px;border-radius:10px;background:#f2f4f7}
-    @media(max-width:800px){.branches{grid-template-columns:1fr}.map-board-shell{height:calc(100dvh - 118px);min-height:480px}.map-canvas-head{grid-template-columns:1fr;padding-right:0}.map-canvas-head .lead{display:none}.map-canvas-stats{max-width:100%;overflow-x:auto;justify-self:stretch}.map-hud-legend{display:none}.map-board-shell.show-legend .map-hud-legend{display:flex;bottom:118px;max-width:calc(100% - 24px)}.skill-detail.map-hud-detail{top:auto;bottom:12px;right:12px;left:12px;width:auto;max-height:46%}}
+    @media(max-width:800px){.map-page-fullscreen{padding-top:8px;padding-bottom:8px}.branches{grid-template-columns:1fr}.map-board-shell{min-height:0}.map-canvas-head{grid-template-columns:1fr;padding-right:0}.map-canvas-head .lead{display:none}.map-canvas-stats{max-width:100%;overflow-x:auto;justify-self:stretch}.map-hud-legend{display:none}.map-board-shell.show-legend .map-hud-legend{display:flex;bottom:118px;max-width:calc(100% - 24px)}.skill-detail.map-hud-detail{top:auto;bottom:12px;right:12px;left:12px;width:auto;max-height:46%}}
   </style>
 </head>
 <body>
