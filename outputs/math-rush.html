@@ -194,9 +194,9 @@
     .branch-heading.algebra, .skill-slot.algebra { --branch-color: #635bff; }
     .branch-heading.geometry, .skill-slot.geometry { --branch-color: #1570ef; }
     .map-corner { position: relative; z-index: 2; display: grid; place-items: center; color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
-    .map-reset-btn { position: absolute; z-index: 7; left: 12px; bottom: 12px; width: 52px; height: 52px; padding: 0; border: 0; border-radius: 15px; color: #fff; background: var(--accent); font-size: 25px; font-weight: 900; line-height: 1; box-shadow: 0 12px 28px rgba(99,91,255,.4); transition: transform .15s ease, background .15s ease; }
-    .map-reset-btn:hover { background: var(--accent-dark); transform: translateY(-2px); }
-    .map-reset-btn:active { transform: translateY(1px); }
+    .map-reset-btn { position: absolute; z-index: 7; right: 12px; bottom: 12px; width: 64px; height: 64px; padding: 0; border: 0; border-radius: 18px; color: #fff; background: var(--accent); font-size: 34px; font-weight: 900; line-height: 1; transform: scaleX(1.25); box-shadow: 0 12px 28px rgba(99,91,255,.4); transition: background .15s ease; }
+    .map-reset-btn:hover { background: var(--accent-dark); }
+    .map-reset-btn:active { transform: scaleX(1.25) translateY(2px); }
     .board-viewport { position: relative; overflow: hidden; height: min(78vh, 800px); min-height: 420px; border: 1px solid var(--line); border-radius: 28px; background: radial-gradient(circle at 50% 0%, rgba(99,91,255,.10), transparent 42%), linear-gradient(180deg, rgba(255,255,255,.96), rgba(246,247,255,.92)); box-shadow: 0 12px 30px rgba(16,24,40,.06); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
     .board-viewport::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: radial-gradient(circle, #d9dcea 1.1px, transparent 1.4px); background-size: 26px 26px; pointer-events: none; }
     .board-viewport.panning { cursor: grabbing; }
@@ -664,7 +664,7 @@
           <div class="board-viewport" data-board-viewport>
             <div id="spaBranches" class="skill-map" data-board-content><div class="map-canvas-head"><div class="map-canvas-title"><h2 id="mapViewTitle">Карта знаний</h2><p id="mapViewSubtitle">Три направления развития: арифметика, алгебра и геометрия.</p><div class="board-plaque">Математика · Карта знаний</div></div><div class="map-canvas-side"><div class="map-profile-card" aria-label="Профиль игрока на карте"><div class="hud-level"><span id="mapHudLevelLabel">Уровень</span><strong id="mapHudLevel">1</strong></div><div class="hud-progress"><div class="hud-progress-row"><span id="mapHudProgressText">0/10 до следующего уровня</span><span id="mapHudProgressPercent">0%</span></div><div class="hud-track"><div id="mapHudProgressBar"></div></div></div><div class="hud-score"><span id="mapHudScoreLabel">Общий счёт</span><strong id="mapHudScore">0</strong></div></div><div id="mapStats" class="map-canvas-stats"></div></div></div></div>
           </div>
-          <button type="button" class="map-reset-btn" data-board-home aria-label="Вернуть карту к началу" title="Вернуть карту к началу">↗</button>
+          <button type="button" class="map-reset-btn" data-board-home aria-label="Вернуть карту к началу" title="Вернуть карту к началу">↑</button>
           <div id="mapDetail" class="skill-detail map-hud-detail"></div>
         </div>
       </section>
