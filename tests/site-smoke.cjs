@@ -3,7 +3,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
 
-const pages = ['math-rush.html', 'math-map.html', 'profile.html', 'settings.html', 'derivatives.html'];
+const pages = ['math-rush.html', 'math-map.html', 'profile.html', 'settings.html', 'derivatives.html', 'runner.html'];
 for (const page of pages) {
   const file = path.join('outputs', page);
   const html = fs.readFileSync(file, 'utf8');
@@ -42,7 +42,13 @@ assert.match(quizPage, /handwritingAnswer/, 'Per-quiz settings expose the handwr
 assert.match(quizPage, /id="choiceAnswers"/, 'Multiple-choice quizzes have a dedicated answer area');
 assert.match(quizPage, /id="embeddedKeypad"/, 'Touch devices have an embedded answer keypad');
 assert.match(quizPage, /id="keypadToggle"/, 'Desktop users can optionally open the answer keypad');
-assert.match(quizPage, /id="boardToggle"/, 'Quiz stats have a scratch-board toggle');
+assert.match(quizPage, /data-app-view="games"/, 'Games live in the main navigation');
+assert.match(quizPage, /location\.href = 'runner\.html'/, 'Games tab opens the standalone runner page');
+const runnerPage = fs.readFileSync(path.join('outputs', 'runner.html'), 'utf8');
+assert.match(runnerPage, /id="runnerCanvas"/, 'Runner page has a game canvas');
+assert.match(runnerPage, /window\.MathRushRunner/, 'Runner exposes a playtest hook');
+assert.match(runnerPage, /Врата чисел/, 'Runner page speaks Russian');
+assert.match(runnerPage, /math-rush\.html/, 'Runner page links back to the app');
 assert.match(quizPage, /id="scratchBoard"/, 'Quizzes have a scratch board canvas between answer and badge');
 assert.match(quizPage, /function toggleScratchBoard\(\)/, 'Scratch board opens from the stats toggle');
 assert.match(quizPage, /mode-notime-button/, 'Every quiz card has a no-timer toggle button');

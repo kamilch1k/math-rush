@@ -4,7 +4,8 @@ const PAGE_ROUTES = {
   '/map': '/math-map.html',
   '/profile': '/profile.html',
   '/settings': '/settings.html',
-  '/derivatives': '/derivatives.html'
+  '/derivatives': '/derivatives.html',
+  '/runner': '/runner.html'
 };
 
 export default {

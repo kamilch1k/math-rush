@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f3f6fb">
+  <title>Врата чисел — Math Rush</title>
+  <link rel="stylesheet" href="app-shell.css">
+  <style>
+    .runner-canvas{display:block;width:100%;height:420px;touch-action:none;border:2px solid var(--line);border-radius:18px;background:#f8faff;cursor:pointer}
+    .runner-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .runner-controls button{min-height:56px;border:1px solid var(--line);border-radius:14px;background:#fff;font-size:24px;color:var(--ink)}
+    .runner-controls button:active{background:#eeecff}
+    .runner-actions{margin-top:10px}
+    .runner-actions .button{width:100%}
+    .rules{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+    .rules li{padding:10px 14px;border-radius:12px;background:#f2f4f7;font-size:14px}
+    @media(max-width:520px){.runner-canvas{height:360px}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
+    <header class="hero"><p class="eyebrow">Мини-игра</p><h1>Врата чисел</h1><p class="lead">Веди шар через врата +N и −N. Считай, чтобы выжить: шипы пропускают, только если число не меньше порога. Опыт идёт в профиль и на карту.</p></header>
+    <section class="panel" aria-label="Врата чисел">
+      <canvas id="runnerCanvas" class="runner-canvas" aria-label="Игровое поле: веди шар стрелками или пальцем"></canvas>
+      <div class="runner-controls"><button id="runnerLeft" type="button" aria-label="Влево">◀</button><button id="runnerRight" type="button" aria-label="Вправо">▶</button></div>
+      <div class="runner-actions"><button id="runnerAgain" class="button" type="button">Заново</button></div>
+    </section>
+    <section class="panel" aria-label="Как играть">
+      <h2>Как играть</h2>
+      <ul class="rules">
+        <li>◀ ▶, A / D или веди пальцем по полю. Выбирай врата с лучшим результатом — это тоже засчитывается как решённый пример.</li>
+        <li>Красные шипы с числом пропускают, только если твоё число не меньше порога. Иначе минус жизнь. Жизней три.</li>
+        <li>Если число ушло в минус — оно сгорает до нуля и тоже минус жизнь. Считай на два хода вперёд!</li>
+      </ul>
+    </section>
+  </main>
+  <script src="progress.js"></script>
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+      const t = { over: 'Игра окончена!', score: 'Счёт', best: 'Рекорд' };
+
+      let runner = null;
+
+      function runnerDefault() {
+        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, speed: 175, x: 0.5, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, w: 0, h: 0 };
+      }
+
+      function runnerCanvasEl() { return $('runnerCanvas'); }
+
+      function sizeRunnerCanvas() {
+        const canvas = runnerCanvasEl();
+        if (!canvas || typeof canvas.getContext !== 'function' || !runner) return;
+        const rect = canvas.getBoundingClientRect();
+        const density = Math.min(2, (typeof window !== 'undefined' && window.devicePixelRatio) || 1);
+        runner.w = Math.max(200, Math.round(rect.width));
+        runner.h = 420;
+        if (typeof window !== 'undefined' && window.innerWidth <= 520) runner.h = 360;
+        canvas.width = Math.round(runner.w * density);
+        canvas.height = Math.round(runner.h * density);
+        const context = canvas.getContext('2d');
+        if (context) context.setTransform(density, 0, 0, density, 0, 0);
+      }
+
+      function runnerGateLabel(op) { return `${op.o}${op.v}`; }
+
+      function runnerRandomOp() {
+        const roll = Math.random();
+        if (roll < 0.42) return { o: '+', v: 1 + Math.floor(Math.random() * 9) };
+        if (roll < 0.8) return { o: '−', v: 1 + Math.floor(Math.random() * 9) };
+        return { o: '×', v: 2 + Math.floor(Math.random() * 2) };
+      }
+
+      function runnerApply(op, n) {
+        if (op.o === '+') return n + op.v;
+        if (op.o === '−') return n - op.v;
+        return n * op.v;
+      }
+
+      function runnerOpMode(op) {
+        if (op.o === '+') return 'addition';
+        if (op.o === '−') return 'subtraction';
+        return 'multiplication';
+      }
+
+      function spawnRunnerRow(y, index) {
+        if (index > 0 && index % 4 === 3) {
+          const threshold = Math.max(3, Math.round(runner.n + (Math.random() * 10 - 3)));
+          return { y, kind: 'spike', t: threshold, done: false };
+        }
+        return { y, kind: 'gates', gl: runnerRandomOp(), gr: runnerRandomOp(), done: false };
+      }
+
+      function startRunnerGame() {
+        stopRunnerGame();
+        const keepBest = runner && runner.best ? runner.best : 0;
+        runner = runnerDefault();
+        try { runner.best = Number(localStorage.getItem('mathRushRunnerBest') || keepBest || 0) || 0; } catch (_) { runner.best = keepBest || 0; }
+        runner.active = true;
+        sizeRunnerCanvas();
+        runner.rows = [];
+        let y = -60;
+        for (let index = 0; index < 4; index += 1) { runner.rows.push(spawnRunnerRow(y, index)); y -= 250; }
+        runner.last = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+        drawRunner();
+        if (typeof requestAnimationFrame === 'function') runner.raf = requestAnimationFrame(runnerFrame);
+      }
+
+      function stopRunnerGame() {
+        if (!runner) return;
+        runner.active = false;
+        if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(runner.raf);
+      }
+
+      function runnerResolveGate(row) {
+        const left = runner.x < 0.5;
+        const op = left ? row.gl : row.gr;
+        const other = left ? row.gr : row.gl;
+        const result = runnerApply(op, runner.n);
+        const otherResult = runnerApply(other, runner.n);
+        runner.n = result;
+        runner.score += 1;
+        runner.gates += 1;
+        const correct = result >= otherResult;
+        if (globalThis.MathRushProgress) {
+          try { MathRushProgress.recordAttempt(runnerOpMode(op), correct, 2500, 'simple'); } catch (_) { /* progress is optional */ }
+        }
+        if (runner.n < 0) { runner.n = 0; runner.hp -= 1; runner.shake = 1; }
+        runner.flash = correct ? 1 : 2;
+        if (runner.hp <= 0) runnerGameOver();
+      }
+
+      function runnerResolveSpike(row) {
+        if (runner.n >= row.t) {
+          runner.score += 2;
+          runner.flash = 1;
+        } else {
+          runner.hp -= 1;
+          runner.shake = 1;
+          runner.flash = 2;
+        }
+        if (runner.hp <= 0) runnerGameOver();
+      }
+
+      function runnerGameOver() {
+        runner.over = true;
+        runner.active = false;
+        if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(runner.raf);
+        if (runner.score > runner.best) {
+          runner.best = runner.score;
+          try { localStorage.setItem('mathRushRunnerBest', String(runner.best)); } catch (_) { /* private mode */ }
+        }
+        drawRunner();
+      }
+
+      function runnerFrame(now) {
+        if (!runner || !runner.active) return;
+        const stamp = typeof now === 'number' ? now : Date.now();
+        const dt = Math.min(0.05, Math.max(0, (stamp - runner.last) / 1000));
+        runner.last = stamp;
+        runner.speed = Math.min(430, runner.speed + dt * 7);
+        const dir = (runner.keys.right ? 1 : 0) - (runner.keys.left ? 1 : 0);
+        if (dir !== 0) { runner.x += dir * dt * 1.15; runner.targetX = null; }
+        else if (runner.targetX !== null) runner.x += (runner.targetX - runner.x) * Math.min(1, dt * 10);
+        runner.x = Math.max(0.07, Math.min(0.93, runner.x));
+        runner.score += dt * 0.6;
+        const playerY = runner.h - 100;
+        runner.rows.forEach((row) => {
+          row.y += runner.speed * dt;
+          if (!row.done && row.y >= playerY) {
+            row.done = true;
+            if (row.kind === 'gates') runnerResolveGate(row);
+            else runnerResolveSpike(row);
+          }
+        });
+        runner.rows = runner.rows.filter((row) => row.y < runner.h + 60);
+        let top = runner.rows.length ? runner.rows[0].y : 0;
+        runner.rows.forEach((row) => { if (row.y < top) top = row.y; });
+        let index = runner.rows.length;
+        while (top > -250) { top -= 250; runner.rows.unshift(spawnRunnerRow(top, index)); index += 1; }
+        if (runner.shake > 0) runner.shake = Math.max(0, runner.shake - dt * 3);
+        if (runner.flash > 0) runner.flash = Math.max(0, runner.flash - dt * 4);
+        drawRunner();
+        if (runner.active && typeof requestAnimationFrame === 'function') runner.raf = requestAnimationFrame(runnerFrame);
+      }
+
+      function runnerRoundRect(context, x, y, w, h, r) {
+        context.beginPath();
+        context.moveTo(x + r, y);
+        context.arcTo(x + w, y, x + w, y + h, r);
+        context.arcTo(x + w, y + h, x, y + h, r);
+        context.arcTo(x, y + h, x, y, r);
+        context.arcTo(x, y, x + w, y, r);
+        context.closePath();
+      }
+
+      function drawRunner() {
+        const canvas = runnerCanvasEl();
+        if (!canvas || typeof canvas.getContext !== 'function' || !runner) return;
+        const context = canvas.getContext('2d');
+        if (!context) return;
+        const W = runner.w || 600, H = runner.h || 420;
+        context.save();
+        if (runner.shake > 0) context.translate((Math.random() - 0.5) * 10 * runner.shake, (Math.random() - 0.5) * 8 * runner.shake);
+        context.clearRect(-20, -20, W + 40, H + 40);
+        context.fillStyle = '#f8faff';
+        context.fillRect(-20, -20, W + 40, H + 40);
+        context.fillStyle = '#e6e9f2';
+        for (let gy = 12; gy < H; gy += 28) {
+          for (let gx = 12; gx < W; gx += 28) {
+            context.beginPath();
+            context.arc(gx, gy, 1.6, 0, Math.PI * 2);
+            context.fill();
+          }
+        }
+        const playerY = H - 100;
+        runner.rows.forEach((row) => {
+          if (row.kind === 'gates') {
+            const gw = W / 2 - 14, gh = 62;
+            [['gl', 8], ['gr', W / 2 + 6]].forEach(([side, gx]) => {
+              context.fillStyle = 'rgba(255,255,255,.96)';
+              context.strokeStyle = row.done ? '#d7dae3' : '#635bff';
+              context.lineWidth = 3;
+              runnerRoundRect(context, gx, row.y, gw, gh, 14);
+              context.fill();
+              context.stroke();
+              context.fillStyle = '#101828';
+              context.font = '900 26px Inter, system-ui, sans-serif';
+              context.textAlign = 'center';
+              context.textBaseline = 'middle';
+              context.fillText(runnerGateLabel(row[side]), gx + gw / 2, row.y + gh / 2 + 1);
+            });
+          } else {
+            context.fillStyle = row.done ? '#e4e7ec' : '#d92d20';
+            runnerRoundRect(context, 8, row.y, W - 16, 46, 12);
+            context.fill();
+            context.fillStyle = '#fff';
+            context.font = '900 22px Inter, system-ui, sans-serif';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(`≥ ${row.t}`, W / 2, row.y + 24);
+          }
+        });
+        context.strokeStyle = 'rgba(99,91,255,.25)';
+        context.lineWidth = 2;
+        context.setLineDash([8, 8]);
+        context.beginPath();
+        context.moveTo(W / 2, 0);
+        context.lineTo(W / 2, H);
+        context.stroke();
+        context.setLineDash([]);
+        context.fillStyle = runner.flash === 2 ? '#d92d20' : '#635bff';
+        context.beginPath();
+        context.arc(runner.x * W, playerY, 26, 0, Math.PI * 2);
+        context.fill();
+        context.fillStyle = '#fff';
+        context.font = '900 22px Inter, system-ui, sans-serif';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillText(String(runner.n), runner.x * W, playerY + 1);
+        context.textAlign = 'left';
+        context.font = '800 15px Inter, system-ui, sans-serif';
+        context.fillStyle = '#667085';
+        context.fillText(`❤ ${Math.max(0, runner.hp)}    ${t.score}: ${Math.floor(runner.score)}    ${t.best}: ${runner.best}`, 12, 24);
+        if (runner.over) {
+          context.fillStyle = 'rgba(16,24,40,.55)';
+          context.fillRect(-20, -20, W + 40, H + 40);
+          context.fillStyle = '#fff';
+          context.textAlign = 'center';
+          context.font = '900 34px Inter, system-ui, sans-serif';
+          context.fillText(t.over, W / 2, H / 2 - 34);
+          context.font = '800 20px Inter, system-ui, sans-serif';
+          context.fillText(`${t.score}: ${Math.floor(runner.score)}   ·   ${t.best}: ${runner.best}`, W / 2, H / 2 + 8);
+        }
+        context.restore();
+      }
+
+      $('runnerAgain').addEventListener('click', () => { startRunnerGame(); });
+      const runnerHold = (button, side) => {
+        button.addEventListener('pointerdown', (event) => { event.preventDefault(); if (runner) runner.keys[side] = true; });
+        ['pointerup', 'pointerleave', 'pointercancel'].forEach((type) => button.addEventListener(type, () => { if (runner) runner.keys[side] = false; }));
+      };
+      runnerHold($('runnerLeft'), 'left');
+      runnerHold($('runnerRight'), 'right');
+      const canvas = runnerCanvasEl();
+      canvas.addEventListener('pointerdown', (event) => {
+        if (!runner || !runner.active || runner.over) return;
+        event.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        runner.targetX = (event.clientX - rect.left) / Math.max(1, rect.width);
+      });
+      canvas.addEventListener('pointermove', (event) => {
+        if (!runner || !runner.active || runner.over || !(event.buttons & 1)) return;
+        event.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        runner.targetX = (event.clientX - rect.left) / Math.max(1, rect.width);
+      });
+      document.addEventListener('keydown', (event) => {
+        if (!runner || !runner.active) return;
+        const tag = event.target && event.target.tagName;
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) return;
+        if (['ArrowLeft', 'a', 'A', 'ф', 'Ф'].includes(event.key)) { runner.keys.left = true; event.preventDefault(); }
+        if (['ArrowRight', 'd', 'D', 'в', 'В'].includes(event.key)) { runner.keys.right = true; event.preventDefault(); }
+        if (event.key === 'Enter' && runner.over) { event.preventDefault(); startRunnerGame(); }
+      });
+      document.addEventListener('keyup', (event) => {
+        if (!runner) return;
+        if (['ArrowLeft', 'a', 'A', 'ф', 'Ф'].includes(event.key)) runner.keys.left = false;
+        if (['ArrowRight', 'd', 'D', 'в', 'В'].includes(event.key)) runner.keys.right = false;
+      });
+      window.addEventListener('resize', () => { if (runner && runner.active) { sizeRunnerCanvas(); drawRunner(); } });
+
+      window.MathRushRunner = {
+        state() { return runner; },
+        start: startRunnerGame,
+        frame: runnerFrame,
+        stop: stopRunnerGame
+      };
+
+      startRunnerGame();
+    })();
+  </script>
+  <!-- Cloudflare Web Analytics -->
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"91aa493b474347388ef5d1aae6058937"}'></script>
+</body>
+</html>

@@ -390,7 +390,7 @@
     <section class="card">
       <nav class="page-nav" aria-label="Главная навигация">
         <span class="brand">Math Rush</span>
-        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button><button type="button" data-app-view="test" style="display:none">Тест</button></div>
+        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button><button type="button" data-app-view="games">Игры</button><button type="button" data-app-view="test" style="display:none">Тест</button></div>
         <div class="nav-tools">
           <button id="globalSettingsBtn" class="nav-icon" type="button" aria-label="Настройки" title="Настройки">⚙</button>
           <button id="languageButton" class="nav-icon" type="button" aria-label="Язык" title="Язык" aria-expanded="false">🌐</button>
@@ -2520,8 +2520,8 @@
         languageButton.title = language.languageMenu;
         languageLabel.textContent = language.languageMenu;
         const shell = {
-          ru: ['Задачи', 'Карта', 'Профиль', 'Тест'], en: ['Tasks', 'Map', 'Profile', 'Test'],
-          fr: ['Exercices', 'Carte', 'Profil', 'Test'], es: ['Ejercicios', 'Mapa', 'Perfil', 'Prueba'], de: ['Aufgaben', 'Karte', 'Profil', 'Test']
+          ru: ['Задачи', 'Карта', 'Профиль', 'Игры', 'Тест'], en: ['Tasks', 'Map', 'Profile', 'Games', 'Test'],
+          fr: ['Exercices', 'Carte', 'Profil', 'Jeux', 'Test'], es: ['Ejercicios', 'Mapa', 'Perfil', 'Juegos', 'Prueba'], de: ['Aufgaben', 'Karte', 'Profil', 'Spiele', 'Test']
         }[currentLanguage];
         document.querySelectorAll('[data-app-view]').forEach((button, index) => { button.textContent = shell[index]; });
         $('mapViewTitle').textContent = ui.mapTitle;
@@ -3440,7 +3440,10 @@
       }
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
-      document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => showAppView(button.dataset.appView)));
+      document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => {
+        if (button.dataset.appView === 'games') { location.href = 'runner.html'; return; }
+        showAppView(button.dataset.appView);
+      }));
       $('testCheckBtn').addEventListener('click', checkTestAnswer);
       $('testNextBtn').addEventListener('click', nextTestQuestion);
       $('testSkipBtn').addEventListener('click', skipTestQuestion);
