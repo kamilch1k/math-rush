@@ -46,6 +46,7 @@ assert.match(quizPage, /data-app-view="games"/, 'Games live in the main navigati
 assert.match(quizPage, /id="gamesView"/, 'Games catalog opens from the tab');
 assert.match(quizPage, /id="gamesGrid"/, 'Catalog renders game cards');
 assert.match(quizPage, /game-cover/, 'Catalog cards have cover art');
+assert.match(quizPage, /runner-cover\.jpg/, 'Runner card shows real gameplay');
 assert.match(quizPage, /href: 'runner\.html'/, 'Catalog runner card links to its own page');
 assert.match(quizPage, /function renderGamesHub\(\)/, 'Catalog renders from the hub');
 const runnerPage = fs.readFileSync(path.join('outputs', 'runner.html'), 'utf8');

@@ -333,6 +333,7 @@
     .game-card { position: relative; overflow: hidden; padding: 0 0 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.7); text-align: left; transition: border-color .16s, transform .16s; }
     .game-card:hover { border-color: #b9b4ff; transform: translateY(-2px); }
     .game-cover { display: block; width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+    .game-cover img { display: block; width: 100%; height: auto; }
     .game-body { padding: 14px 16px 0; }
     .game-body strong { display: block; font-size: 16px; }
     .game-body small { display: block; margin: 4px 0 12px; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
@@ -3370,7 +3371,7 @@
       };
 
       const gameCatalog = [
-        { id: 'runner', href: 'runner.html', playable: true, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><defs><linearGradient id="covR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eceffb"/><stop offset="1" stop-color="#d9def2"/></linearGradient></defs><rect width="320" height="140" fill="url(#covR)"/><polygon points="130,140 190,140 172,52 148,52" fill="#c2c9e2"/><rect x="36" y="34" width="104" height="52" rx="10" fill="#fff" stroke="#12b76a" stroke-width="5"/><text x="88" y="70" font-size="30" font-weight="900" text-anchor="middle" fill="#101828" font-family="Inter,system-ui,sans-serif">+7</text><rect x="180" y="34" width="104" height="52" rx="10" fill="#fff" stroke="#d92d20" stroke-width="5"/><text x="232" y="70" font-size="30" font-weight="900" text-anchor="middle" fill="#101828" font-family="Inter,system-ui,sans-serif">−4</text><circle cx="160" cy="114" r="17" fill="#635bff"/><text x="160" y="122" font-size="20" font-weight="900" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif">10</text></svg>' },
+        { id: 'runner', href: 'runner.html', playable: true, cover: '<img src="runner-cover.jpg" alt="">' },
         { id: 'invaders', href: '', playable: false, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="140" fill="#1c2340"/><circle cx="40" cy="26" r="2.5" fill="#fff"/><circle cx="120" cy="52" r="2" fill="#fff"/><circle cx="200" cy="22" r="2.5" fill="#fff"/><circle cx="280" cy="60" r="2" fill="#fff"/><circle cx="250" cy="110" r="2.5" fill="#fff"/><circle cx="70" cy="110" r="2" fill="#fff"/><polygon points="160,52 146,96 174,96" fill="#f04438"/><polygon points="160,52 146,96 160,88 174,96" fill="#fff"/><rect x="152" y="96" width="16" height="10" fill="#f79009"/><rect x="60" y="30" width="56" height="34" rx="9" fill="#635bff"/><text x="88" y="54" font-size="20" font-weight="900" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif">7</text><rect x="206" y="30" width="56" height="34" rx="9" fill="#635bff"/><text x="234" y="54" font-size="20" font-weight="900" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif">12</text></svg>' },
         { id: 'mine', href: '', playable: false, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="140" fill="#4a3220"/><rect y="46" width="320" height="46" fill="#5d4128"/><rect y="92" width="320" height="48" fill="#3a2817"/><path d="M0 46h320M0 92h320M40 0v46M120 0v46M200 0v46M280 0v46M80 46v46M160 46v46M240 46v46M40 92v48M120 92v48M200 92v48M280 92v48" stroke="#2c1f10" stroke-width="3"/><polygon points="160,62 176,82 160,102 144,82" fill="#46c6db" stroke="#fff" stroke-width="4"/><rect x="228" y="18" width="14" height="60" rx="7" transform="rotate(38 235 48)" fill="#b54708"/><polygon points="252,20 282,34 262,58 240,44" fill="#98a2b3"/></svg>' }
       ];
@@ -3388,6 +3389,8 @@
           const cover = document.createElement('div');
           cover.className = 'game-cover';
           cover.innerHTML = game.cover;
+          const coverImg = cover.querySelector('img');
+          if (coverImg) coverImg.alt = t[game.id];
           const body = document.createElement('div');
           body.className = 'game-body';
           const title = document.createElement('strong');
