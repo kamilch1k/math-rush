@@ -62,7 +62,7 @@
       let runner = null;
 
       function runnerDefault() {
-        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, spawnIndex: 0, scene: null, camera: null, renderer: null, ball: null };
+        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, spikes: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, spawnIndex: 0, scene: null, camera: null, renderer: null, ball: null };
       }
 
       function runnerCanvasEl() { return $('runnerCanvas'); }
@@ -242,7 +242,7 @@
         const index = runner.spawnIndex;
         runner.spawnIndex += 1;
         if (index > 0 && index % 4 === 3) {
-          const threshold = Math.max(2, Math.round(runner.n + (Math.random() * 10 - 6)));
+          const threshold = 5 + runner.spikes * 3 + Math.floor(Math.random() * 6);
           return { z, kind: 'spike', t: threshold, done: false, g: null };
         }
         return { z, kind: 'gates', gl: runnerRandomOp(), gr: runnerRandomOp(), done: false, g: null };
@@ -292,6 +292,7 @@
       }
 
       function runnerResolveSpike(row) {
+        runner.spikes += 1;
         if (runner.n >= row.t) {
           runner.score += 2;
           runner.flash = 1;

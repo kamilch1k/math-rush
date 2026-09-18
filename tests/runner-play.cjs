@@ -116,6 +116,7 @@ assert.equal(R.state().n, 10, 'counter starts at 10');
 assert.equal(R.state().hp, 3, 'three lives');
 assert.equal(R.state().rows.length, 4, 'four rows ahead');
 assert.equal(R.state().rows.map((row) => row.kind).join(','), 'gates,gates,gates,spike', 'three gate rows, then spikes');
+assert.ok(R.state().rows[3].t >= 5 && R.state().rows[3].t <= 10, 'first barrier is fair game');
 assert.ok(createdCanvases.length > 0, 'gate labels render to canvas textures');
 
 // 2. steering works in world units
@@ -160,6 +161,7 @@ R.state().n = 50;
 R.state().rows = [{ z: -0.1, kind: 'spike', t: 9999, done: false, g: null }];
 step(1);
 assert.equal(R.state().hp, 2, 'missing the mark costs a life');
+assert.equal(R.state().spikes, 1, 'barriers raise the difficulty win or lose');
 R.state().rows = [{ z: -0.1, kind: 'spike', t: 0, done: false, g: null }];
 const scoreBefore = R.state().score;
 step(1);
