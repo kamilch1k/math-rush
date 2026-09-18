@@ -115,7 +115,7 @@ assert.equal(R.state().active, true, 'game autostarts on page load');
 assert.ok(R.state().scene, 'three.js scene is built');
 assert.ok(R.state().crowd, 'ball crowd exists');
 assert.equal(R.state().shown, 10, 'ball count matches the counter at start');
-assert.equal(R.state().parts.length, 42, 'particle pool is ready');
+assert.equal(R.state().parts.length, 72, 'particle pool is ready');
 assert.equal(R.state().n, 10, 'counter starts at 10');
 assert.equal(R.state().hp, 3, 'three lives');
 assert.equal(R.state().rows.length, 4, 'four rows ahead');
