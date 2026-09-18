@@ -120,7 +120,7 @@ assert.equal(R.state().n, 10, 'counter starts at 10');
 assert.equal(R.state().hp, 3, 'three lives');
 assert.equal(R.state().rows.length, 4, 'four rows ahead');
 assert.equal(R.state().rows.map((row) => row.kind).join(','), 'gates,gates,gates,spike', 'three gate rows, then spikes');
-assert.ok(R.state().rows[3].t >= 5 && R.state().rows[3].t <= 10, 'first barrier is fair game');
+assert.ok(R.state().rows[3].t >= 3 && R.state().rows[3].t <= 8, 'first wall toll is fair game');
 assert.ok(createdCanvases.length > 0, 'gate labels render to canvas textures');
 
 // 2. steering works in world units
@@ -160,18 +160,24 @@ step(1);
 assert.equal(R.state().n, 12, 'right gate applies −3');
 assert.equal(attempts[1].ok, false, '12 loses to 20, so it counts as wrong');
 
-// 5. spikes: pass when strong, bleed when weak
+// 5. toll walls: affordable smashes through, coming up short kills instantly
 R.start();
+attempts.length = 0;
 R.state().n = 50;
+R.state().rows = [{ z: -0.1, kind: 'spike', t: 5, done: false, g: null }];
+step(1);
+assert.equal(R.state().n, 45, 'wall takes its toll');
+assert.equal(R.state().hp, 3, 'paid toll costs no lives');
+assert.equal(R.state().spikes, 1, 'barriers raise the difficulty win or lose');
+assert.equal(attempts.length, 1, 'toll records one attempt');
+assert.equal(attempts[0].mode, 'subtraction', 'toll maps to subtraction');
+assert.equal(attempts[0].ok, true, 'affording the toll counts as correct');
 R.state().rows = [{ z: -0.1, kind: 'spike', t: 9999, done: false, g: null }];
 step(1);
-assert.equal(R.state().hp, 2, 'missing the mark costs a life');
-assert.equal(R.state().spikes, 1, 'barriers raise the difficulty win or lose');
-R.state().rows = [{ z: -0.1, kind: 'spike', t: 0, done: false, g: null }];
-const scoreBefore = R.state().score;
-step(1);
-assert.equal(R.state().hp, 2, 'beating the mark costs nothing');
-assert.ok(R.state().score >= scoreBefore + 2, 'smashing spikes bonus scores');
+assert.equal(R.state().over, true, 'unaffordable wall ends the run on the spot');
+assert.equal(R.state().hp, 0, 'no change: instant death');
+assert.equal(R.state().n, 0, 'crowd is wiped');
+assert.equal(attempts[1].ok, false, 'missing the toll counts as wrong');
 
 // 6. death ends the run, shows overlay, saves best
 R.start();
