@@ -450,7 +450,7 @@
         });
         const alive = [];
         runner.rows.forEach((row) => {
-          if (row.z < 10) { alive.push(row); return; }
+          if (row.z < (row.done ? 2.5 : 10)) { alive.push(row); return; }
           if (row.g && runner.scene) runner.scene.remove(row.g);
           disposeRowMeshes(row);
         });
