@@ -28,9 +28,11 @@ function mockNode() {
     material: { color: { setHex() {} }, transparent: false, dispose() {} },
     color: { setHex() {} },
     aspect: 1,
+    count: 0,
     add() {}, remove() {}, traverse() {},
     setSize() {}, setPixelRatio() {}, render() {}, setClearColor() {},
-    lookAt() {}, updateProjectionMatrix() {}, dispose() {}
+    lookAt() {}, rotateZ() {}, updateProjectionMatrix() {}, dispose() {},
+    setHex() {}, set() {}, setMatrixAt() {}, setColorAt() {}, compose() {}
   };
 }
 function makeCanvas() {
@@ -111,7 +113,9 @@ function step(frames, dtMs = 16.7) {
 // 1. boot: autostart, 3D scene up, sane state
 assert.equal(R.state().active, true, 'game autostarts on page load');
 assert.ok(R.state().scene, 'three.js scene is built');
-assert.ok(R.state().ball, 'player ball exists');
+assert.ok(R.state().crowd, 'ball crowd exists');
+assert.equal(R.state().shown, 10, 'ball count matches the counter at start');
+assert.equal(R.state().parts.length, 42, 'particle pool is ready');
 assert.equal(R.state().n, 10, 'counter starts at 10');
 assert.equal(R.state().hp, 3, 'three lives');
 assert.equal(R.state().rows.length, 4, 'four rows ahead');
@@ -146,6 +150,7 @@ R.state().x = -2;
 R.state().rows = [{ z: -0.1, kind: 'gates', gl: { o: '+', v: 5 }, gr: { o: '−', v: 3 }, done: false, g: null }];
 step(1);
 assert.equal(R.state().n, 15, 'left gate applies +5');
+assert.equal(R.state().shown, 15, 'ball count follows the counter');
 assert.equal(attempts.length, 1, 'gate records exactly one attempt');
 assert.equal(attempts[0].ok, true, '15 beats 7, so it counts as correct');
 assert.equal(attempts[0].mode, 'addition', 'plus gate maps to addition');
@@ -196,6 +201,11 @@ step(1);
 assert.equal(R.state().over, true, 'dead again');
 docHandlers.keydown.forEach((fn) => fn({ key: 'Enter', preventDefault() {}, target: { tagName: 'BODY' } }));
 assert.equal(R.state().active, true, 'Enter restarts after death');
+
+// 8b. crowd caps at 48 balls for huge counters
+R.state().n = 100;
+step(1);
+assert.equal(R.state().shown, 48, 'crowd caps while the counter keeps the real number');
 
 // 9. multiplication gates map to multiplication
 R.start();

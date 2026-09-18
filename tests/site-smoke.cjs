@@ -51,6 +51,7 @@ assert.match(quizPage, /function renderGamesHub\(\)/, 'Catalog renders from the 
 const runnerPage = fs.readFileSync(path.join('outputs', 'runner.html'), 'utf8');
 assert.match(runnerPage, /id="runnerCanvas"/, 'Runner page has a game canvas');
 assert.match(runnerPage, /window\.MathRushRunner/, 'Runner exposes a playtest hook');
+assert.match(runnerPage, /InstancedMesh/, 'Runner crowd renders as one instanced mesh');
 assert.match(runnerPage, /\.hidden\{display:none/, 'Runner overlay visibility is CSS-driven');
 assert.match(runnerPage, /Врата чисел/, 'Runner page speaks Russian');
 assert.match(runnerPage, /math-rush\.html/, 'Runner page links back to the app');

@@ -22,6 +22,8 @@
     .runner-controls button:active{background:#eeecff}
     .runner-actions{margin-top:10px}
     .runner-actions .button{width:100%}
+    @keyframes hudBump{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(1)}}
+    .hud-n.bump,.hud-chip.bump{animation:hudBump .3s ease}
     .runner-note{margin:12px 0 0;color:var(--muted);font-size:13px;text-align:center}
     .rules{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
     .rules li{padding:10px 14px;border-radius:12px;background:#f2f4f7;font-size:14px}
@@ -31,7 +33,7 @@
 <body>
   <main class="page">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
-    <header class="hero"><p class="eyebrow">Мини-игра · 3D</p><h1>Врата чисел 3D</h1><p class="lead">Веди шар через врата +N и −N. Считай, чтобы выжить: шипы пропускают, только если число не меньше порога. Опыт идёт в профиль и на карту.</p></header>
+    <header class="hero"><p class="eyebrow">Мини-игра · 3D</p><h1>Врата чисел 3D</h1><p class="lead">Веди отряд шаров через врата +N и −N: сколько число — столько и шаров. Считай, чтобы выжить: шипы пропускают, только если число не меньше порога. Опыт идёт в профиль и на карту.</p></header>
     <section class="panel" aria-label="Врата чисел 3D">
       <div class="runner-stage">
         <canvas id="runnerCanvas" class="runner-canvas" aria-label="Игровое поле: веди шар стрелками или пальцем"></canvas>
@@ -46,7 +48,7 @@
     <section class="panel" aria-label="Как играть">
       <h2>Как играть</h2>
       <ul class="rules">
-        <li>Выбирай врата с лучшим результатом — верный выбор засчитывается как решённый пример и даёт опыт.</li>
+        <li>Выбирай врата с лучшим результатом: число растёт — и шаров становится больше. Верный выбор засчитывается как решённый пример и даёт опыт.</li>
         <li>Красные шипы с числом пропускают, только если твоё число не меньше порога. Иначе минус жизнь. Жизней три.</li>
         <li>Если число ушло в минус — оно сгорает до нуля и тоже минус жизнь. Считай на два хода вперёд!</li>
       </ul>
@@ -60,9 +62,47 @@
       const hasGL = typeof window !== 'undefined' && !!window.THREE;
 
       let runner = null;
+      let audioCtx = null;
+      const CROWD_MAX = 48;
+      const PARTICLE_MAX = 42;
+
+      function ensureAudio() {
+        try {
+          if (audioCtx) { if (audioCtx.state === 'suspended') audioCtx.resume(); return; }
+          const AC = (typeof window !== 'undefined') && (window.AudioContext || window.webkitAudioContext);
+          if (!AC) return;
+          audioCtx = new AC();
+        } catch (_) { audioCtx = null; }
+      }
+
+      function beep(freq, dur, type, vol, slideTo) {
+        try {
+          if (!audioCtx) return;
+          const t0 = audioCtx.currentTime;
+          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+          o.type = type || 'sine';
+          o.frequency.setValueAtTime(freq, t0);
+          if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t0 + dur);
+          g.gain.setValueAtTime(0.0001, t0);
+          g.gain.exponentialRampToValueAtTime(vol || 0.08, t0 + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+          o.connect(g);
+          g.connect(audioCtx.destination);
+          o.start(t0);
+          o.stop(t0 + dur + 0.02);
+        } catch (_) { /* silent without audio */ }
+      }
+
+      function bumpHud() {
+        const hudN = $('hudN');
+        if (!hudN || !hudN.classList) return;
+        hudN.classList.remove('bump');
+        void hudN.offsetWidth;
+        hudN.classList.add('bump');
+      }
 
       function runnerDefault() {
-        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, spikes: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, spawnIndex: 0, scene: null, camera: null, renderer: null, ball: null };
+        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, spikes: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, bounce: 0, shown: 1, spawnIndex: 0, scene: null, camera: null, renderer: null, crowd: null, slots: [], tmpColor: null, parts: [] };
       }
 
       function runnerCanvasEl() { return $('runnerCanvas'); }
@@ -210,20 +250,59 @@
           stripe.position.set(i % 2 === 0 ? -8.6 : 8.6, 0.03, 10 - i * 5);
           runner.scene.add(stripe);
         }
-        runner.ball = new T.Mesh(
-          new T.SphereGeometry(0.72, 28, 20),
-          new T.MeshStandardMaterial({ color: 0x635bff, roughness: 0.35 })
+        runner.crowd = new T.InstancedMesh(
+          new T.SphereGeometry(0.34, 12, 10),
+          new T.MeshStandardMaterial({ roughness: 0.4 }),
+          CROWD_MAX
         );
-        runner.ball.position.set(0, 0.72, 0);
-        runner.scene.add(runner.ball);
-        const blob = new T.Mesh(
-          new T.CircleGeometry(0.85, 24),
-          new T.MeshBasicMaterial({ color: 0x9aa3c0, transparent: true, opacity: 0.45 })
-        );
-        blob.rotation.x = -Math.PI / 2;
-        blob.position.set(0, 0.02, 0);
-        runner.scene.add(blob);
-        runner.blob = blob;
+        runner.scene.add(runner.crowd);
+        runner.tmpColor = new T.Color(0x635bff);
+        runner.slots = [];
+        for (let i = 0; i < CROWD_MAX; i += 1) {
+          runner.slots.push({ dx: ((i % 8) - 3.5) * 0.72, dz: (Math.floor(i / 8) - 2.5) * 0.72, ph: Math.random() * Math.PI * 2 });
+        }
+        const partGeo = new T.BoxGeometry(0.28, 0.28, 0.28);
+        runner.parts = [];
+        for (let i = 0; i < PARTICLE_MAX; i += 1) {
+          const m = new T.Mesh(partGeo, new T.MeshBasicMaterial({ color: 0xffffff }));
+          m.visible = false;
+          runner.scene.add(m);
+          runner.parts.push({ m, vx: 0, vy: 0, vz: 0, life: 0, max: 1 });
+        }
+      }
+
+      function burst(x, y, z, color, n, power) {
+        if (!runner || !runner.parts) return;
+        let c = 0;
+        for (const p of runner.parts) {
+          if (p.life > 0) continue;
+          p.life = 0.5 + Math.random() * 0.4;
+          p.max = p.life;
+          p.m.visible = true;
+          p.m.material.color.setHex(color);
+          p.m.position.set(x, y, z);
+          p.vx = (Math.random() - 0.5) * power;
+          p.vy = Math.random() * power * 0.9 + 2;
+          p.vz = (Math.random() - 0.5) * power;
+          if (++c >= n) break;
+        }
+      }
+
+      function stepParticles(dt) {
+        if (!runner || !runner.parts) return;
+        for (const p of runner.parts) {
+          if (p.life <= 0) continue;
+          p.life -= dt;
+          if (p.life <= 0) { p.m.visible = false; continue; }
+          p.vy -= 12 * dt;
+          p.m.position.x += p.vx * dt;
+          p.m.position.y += p.vy * dt;
+          p.m.position.z += p.vz * dt;
+          const s = Math.max(0.01, p.life / (p.max || 1));
+          p.m.scale.set(s, s, s);
+          p.m.rotation.x += dt * 5;
+          p.m.rotation.y += dt * 4;
+        }
       }
 
       function runnerGateLabel(op) { return `${op.o}${op.v}`; }
@@ -266,6 +345,8 @@
         runner.active = true;
         $('runnerOver').classList.add('hidden');
         if (!runner.scene) initRunnerGL();
+        runner.bounce = 0;
+        if (runner.parts) runner.parts.forEach((p) => { p.life = 0; p.m.visible = false; });
         updateRunnerHud();
         runner.rows = [];
         let z = -6;
@@ -296,6 +377,11 @@
         }
         if (runner.n < 0) { runner.n = 0; runner.hp -= 1; runner.shake = 1; }
         runner.flash = correct ? 1 : 2;
+        runner.bounce = 1;
+        burst(runner.x, 1.6, 0, correct ? 0x12b76a : 0xd92d20, correct ? 10 : 6, 6);
+        if (correct) { beep(660, 0.1, 'sine', 0.09); beep(880, 0.14, 'sine', 0.09); }
+        else beep(200, 0.18, 'sawtooth', 0.07, 140);
+        bumpHud();
         updateRunnerHud();
         if (runner.hp <= 0) runnerGameOver();
       }
@@ -305,11 +391,17 @@
         if (runner.n >= row.t) {
           runner.score += 2;
           runner.flash = 1;
+          burst(runner.x, 1.6, 0, 0x635bff, 12, 7);
+          beep(523, 0.12, 'triangle', 0.1);
+          beep(784, 0.16, 'triangle', 0.1);
         } else {
           runner.hp -= 1;
           runner.shake = 1;
           runner.flash = 2;
+          burst(runner.x, 1.2, 0, 0xd92d20, 10, 7);
+          beep(150, 0.25, 'sawtooth', 0.09, 90);
         }
+        bumpHud();
         updateRunnerHud();
         if (runner.hp <= 0) runnerGameOver();
       }
@@ -318,6 +410,9 @@
         runner.over = true;
         runner.active = false;
         if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(runner.raf);
+        burst(runner.x, 1.2, 0, 0xd92d20, 22, 9);
+        runner.shake = 1.4;
+        beep(420, 0.5, 'sawtooth', 0.09, 70);
         if (runner.score > runner.best) {
           runner.best = runner.score;
           try { localStorage.setItem('mathRushRunnerBest', String(runner.best)); } catch (_) { /* private mode */ }
@@ -359,33 +454,61 @@
         while (top > -30) { top -= 15; runner.rows.unshift(spawnRunnerRow(top)); }
         if (runner.shake > 0) runner.shake = Math.max(0, runner.shake - dt * 3);
         if (runner.flash > 0) runner.flash = Math.max(0, runner.flash - dt * 4);
+        if (runner.bounce > 0) runner.bounce = Math.max(0, runner.bounce - dt * 2.5);
+        stepParticles(dt);
         drawRunner();
         if (runner.active && typeof requestAnimationFrame === 'function') runner.raf = requestAnimationFrame(runnerFrame);
       }
 
       function drawRunner() {
         if (!runner || !runner.scene) return;
+        const T = window.THREE;
         runner.rows.forEach(syncRowMesh);
-        runner.ball.position.x = runner.x;
-        runner.ball.rotation.x -= (runner.speed * 0.016) / 0.72;
-        runner.blob.position.x = runner.x;
-        const flash = runner.flash;
-        runner.ball.material.color.setHex(flash === 2 ? 0xd92d20 : flash === 1 ? 0x12b76a : 0x635bff);
+        const shown = Math.max(1, Math.min(CROWD_MAX, Math.floor(runner.n)));
+        runner.shown = shown;
+        if (runner.crowd) {
+          runner.crowd.count = shown;
+          const bounce = runner.bounce > 0 ? Math.sin(Math.PI * Math.min(1, runner.bounce)) : 0;
+          const sy = 1 - 0.3 * bounce, sxz = 1 + 0.18 * bounce;
+          const tNow = (typeof performance !== 'undefined' && performance.now) ? performance.now() / 1000 : 0;
+          const colHex = runner.flash === 2 ? 0xd92d20 : runner.flash === 1 ? 0x12b76a : 0x635bff;
+          if (runner.tmpColor) runner.tmpColor.setHex(colHex);
+          const m4 = new T.Matrix4(), q = new T.Quaternion(), vv = new T.Vector3(), ss = new T.Vector3();
+          for (let i = 0; i < shown; i += 1) {
+            const s = runner.slots[i];
+            const bob = Math.sin(tNow * 6 + s.ph) * 0.06 * Math.min(1, runner.speed / 12);
+            vv.set(runner.x + s.dx * sxz, 0.34 * sy + bob, s.dz - 0.4);
+            ss.set(sxz, sy, sxz);
+            m4.compose(vv, q, ss);
+            runner.crowd.setMatrixAt(i, m4);
+            if (runner.tmpColor) runner.crowd.setColorAt(i, runner.tmpColor);
+          }
+          if (runner.crowd.instanceMatrix) runner.crowd.instanceMatrix.needsUpdate = true;
+          if (runner.crowd.instanceColor) runner.crowd.instanceColor.needsUpdate = true;
+        }
+        const fov = 60 + Math.min(1, Math.max(0, (runner.speed - 10) / 11)) * 9;
+        if (Math.abs(runner.camera.fov - fov) > 0.01) {
+          runner.camera.fov = fov;
+          runner.camera.updateProjectionMatrix();
+        }
         const camX = runner.x * 0.45 + (runner.shake > 0 ? (Math.random() - 0.5) * 0.8 * runner.shake : 0);
         runner.camera.position.set(camX, 7.2, 10.5);
         runner.camera.lookAt(camX * 0.6, 1, -8);
+        const lean = ((runner.keys.right ? 1 : 0) - (runner.keys.left ? 1 : 0)) * 0.05;
+        runner.camera.rotateZ(-lean);
         runner.renderer.render(runner.scene, runner.camera);
       }
 
-      $('runnerAgain').addEventListener('click', () => { startRunnerGame(); });
+      $('runnerAgain').addEventListener('click', () => { ensureAudio(); startRunnerGame(); });
       const runnerHold = (button, side) => {
-        button.addEventListener('pointerdown', (event) => { event.preventDefault(); if (runner) runner.keys[side] = true; });
+        button.addEventListener('pointerdown', (event) => { event.preventDefault(); ensureAudio(); if (runner) runner.keys[side] = true; });
         ['pointerup', 'pointerleave', 'pointercancel'].forEach((type) => button.addEventListener(type, () => { if (runner) runner.keys[side] = false; }));
       };
       runnerHold($('runnerLeft'), 'left');
       runnerHold($('runnerRight'), 'right');
       const canvas = runnerCanvasEl();
       canvas.addEventListener('pointerdown', (event) => {
+        ensureAudio();
         if (!runner || !runner.active || runner.over) return;
         event.preventDefault();
         const rect = canvas.getBoundingClientRect();
@@ -403,6 +526,7 @@
         if (!runner) return;
         const tag = event.target && event.target.tagName;
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag)) return;
+        ensureAudio();
         if (event.key === 'Enter' && runner.over) { event.preventDefault(); startRunnerGame(); return; }
         if (!runner.active) return;
         if (['ArrowLeft', 'a', 'A', 'ф', 'Ф'].includes(event.key)) { runner.keys.left = true; event.preventDefault(); }
