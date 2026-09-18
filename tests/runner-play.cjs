@@ -115,6 +115,7 @@ assert.ok(R.state().ball, 'player ball exists');
 assert.equal(R.state().n, 10, 'counter starts at 10');
 assert.equal(R.state().hp, 3, 'three lives');
 assert.equal(R.state().rows.length, 4, 'four rows ahead');
+assert.equal(R.state().rows.map((row) => row.kind).join(','), 'gates,gates,gates,spike', 'three gate rows, then spikes');
 assert.ok(createdCanvases.length > 0, 'gate labels render to canvas textures');
 
 // 2. steering works in world units

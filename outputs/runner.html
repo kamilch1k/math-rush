@@ -7,6 +7,7 @@
   <title>Врата чисел 3D — Math Rush</title>
   <link rel="stylesheet" href="app-shell.css">
   <style>
+    .hidden{display:none!important}
     .runner-stage{position:relative}
     .runner-canvas{display:block;width:100%;height:440px;touch-action:none;border:2px solid var(--line);border-radius:18px;background:#eef1f8;cursor:pointer}
     .runner-hud{position:absolute;top:10px;left:10px;right:10px;display:flex;align-items:center;gap:10px;pointer-events:none}
@@ -61,7 +62,7 @@
       let runner = null;
 
       function runnerDefault() {
-        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, scene: null, camera: null, renderer: null, ball: null };
+        return { active: false, raf: 0, last: 0, n: 10, hp: 3, score: 0, gates: 0, speed: 10, x: 0, targetX: null, keys: {}, rows: [], over: false, best: 0, shake: 0, flash: 0, spawnIndex: 0, scene: null, camera: null, renderer: null, ball: null };
       }
 
       function runnerCanvasEl() { return $('runnerCanvas'); }
@@ -237,9 +238,11 @@
         return 'multiplication';
       }
 
-      function spawnRunnerRow(z, index) {
+      function spawnRunnerRow(z) {
+        const index = runner.spawnIndex;
+        runner.spawnIndex += 1;
         if (index > 0 && index % 4 === 3) {
-          const threshold = Math.max(3, Math.round(runner.n + (Math.random() * 10 - 3)));
+          const threshold = Math.max(2, Math.round(runner.n + (Math.random() * 10 - 6)));
           return { z, kind: 'spike', t: threshold, done: false, g: null };
         }
         return { z, kind: 'gates', gl: runnerRandomOp(), gr: runnerRandomOp(), done: false, g: null };
@@ -257,7 +260,7 @@
         updateRunnerHud();
         runner.rows = [];
         let z = -6;
-        for (let index = 0; index < 4; index += 1) { runner.rows.push(spawnRunnerRow(z, index)); z -= 15; }
+        for (let index = 0; index < 4; index += 1) { runner.rows.push(spawnRunnerRow(z)); z -= 15; }
         runner.last = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
         drawRunner();
         if (typeof requestAnimationFrame === 'function') runner.raf = requestAnimationFrame(runnerFrame);
@@ -343,8 +346,7 @@
         runner.rows = alive;
         let top = runner.rows.length ? runner.rows[0].z : 0;
         runner.rows.forEach((row) => { if (row.z < top) top = row.z; });
-        let index = runner.rows.length;
-        while (top > -30) { top -= 15; runner.rows.unshift(spawnRunnerRow(top, index)); index += 1; }
+        while (top > -30) { top -= 15; runner.rows.unshift(spawnRunnerRow(top)); }
         if (runner.shake > 0) runner.shake = Math.max(0, runner.shake - dt * 3);
         if (runner.flash > 0) runner.flash = Math.max(0, runner.flash - dt * 4);
         drawRunner();
