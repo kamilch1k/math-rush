@@ -338,6 +338,39 @@
     .game-body strong { display: block; font-size: 16px; }
     .game-body small { display: block; margin: 4px 0 12px; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
     .game-soon { position: absolute; top: 12px; right: 12px; padding: 3px 10px; border-radius: 99px; color: #fff; background: var(--accent); font-size: 11px; font-weight: 900; }
+    .mode-card.flash { animation: cardFlash 2.4s ease; }
+    @keyframes cardFlash { 0%, 100% { box-shadow: none; } 18%, 65% { box-shadow: 0 0 0 4px rgba(99,91,255,.55); } }
+    .program-stages { display: flex; flex-direction: column; gap: 12px; }
+    .program-stage { position: relative; padding: 16px 16px 14px 20px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.75); }
+    .program-stage::before { content: attr(data-step); position: absolute; left: -2px; top: 14px; min-width: 30px; height: 30px; padding: 0 6px; border-radius: 0 10px 10px 0; background: #635bff; color: #fff; font-size: 13px; font-weight: 800; line-height: 30px; text-align: center; }
+    .stage-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 4px 22px; }
+    .stage-head strong { font-size: 17px; letter-spacing: -.02em; }
+    .grade-badge { padding: 3px 10px; border-radius: 999px; background: #eceffb; color: #4f46e5; font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .stage-desc { margin: 0 0 8px 22px; color: var(--muted); font-size: 12.5px; }
+    .topic-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px 22px; padding: 0; list-style: none; }
+    .topic-list li { padding: 4px 10px; border-radius: 999px; background: #f2f4f7; font-size: 12.5px; }
+    .task-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-left: 22px; }
+    .task-chips-label { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .task-chip { padding: 5px 11px; border: 1.5px solid #b9b4ff; border-radius: 999px; background: #fff; color: #4f46e5; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
+    .task-chip:hover { background: #eceffb; transform: translateY(-1px); }
+    .exam-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .exam-card { position: relative; padding: 18px 16px; border: 2px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.75); text-align: left; transition: border-color .16s, transform .16s, box-shadow .16s; }
+    .exam-card:hover { border-color: #b9b4ff; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(79,70,229,.14); }
+    .exam-card strong { display: block; font-size: 17px; letter-spacing: -.02em; }
+    .exam-card small { display: block; margin-top: 5px; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+    .exam-meta { display: block; margin-top: 8px; font-size: 12px; font-weight: 700; color: #4f46e5; }
+    .exam-card .primary { width: 100%; margin-top: 12px; padding: 11px; }
+    .exam-guide { display: flex; flex-direction: column; gap: 14px; }
+    .guide-back { align-self: flex-start; }
+    .guide-head h3 { margin: 0; font-size: 22px; letter-spacing: -.02em; }
+    .guide-head p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .guide-section { padding: 14px 16px; border: 2px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.75); }
+    .guide-section h4 { margin: 0 0 8px; font-size: 15px; }
+    .guide-section p { margin: 0; font-size: 13.5px; line-height: 1.55; }
+    .plan-list { margin: 0; padding-left: 20px; font-size: 13.5px; line-height: 1.6; }
+    .plan-list li { margin-bottom: 5px; }
+    .mat-list { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .mat-list a { color: #4f46e5; font-size: 13.5px; font-weight: 700; }
     @media (max-width: 520px) { .game-grid { grid-template-columns: 1fr; } }
     .embedded-keypad { display: none; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
     .embedded-keypad:not(.hidden) { display: grid; }
@@ -400,7 +433,7 @@
     <section class="card">
       <nav class="page-nav" aria-label="Главная навигация">
         <span class="brand">Math Rush</span>
-        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button><button type="button" data-app-view="games">Игры</button><button type="button" data-app-view="test" style="display:none">Тест</button></div>
+        <div class="page-nav-links"><button class="active" type="button" data-app-view="tasks">Задачи</button><button type="button" data-app-view="program">Программа</button><button type="button" data-app-view="exams">Экзамены</button><button type="button" data-app-view="map">Карта</button><button type="button" data-app-view="profile">Профиль</button><button type="button" data-app-view="games">Игры</button><button type="button" data-app-view="test" style="display:none">Тест</button></div>
         <div class="nav-tools">
           <button id="globalSettingsBtn" class="nav-icon" type="button" aria-label="Настройки" title="Настройки">⚙</button>
           <button id="languageButton" class="nav-icon" type="button" aria-label="Язык" title="Язык" aria-expanded="false">🌐</button>
@@ -724,6 +757,17 @@
         <div id="gamesGrid" class="game-grid"></div>
       </section>
 
+      <section id="programView" class="screen spa-view hidden">
+        <div class="view-heading"><div><h2 id="programViewTitle">Программа</h2><p id="programViewSubtitle">Весь курс от счёта до интегралов — иди сверху вниз.</p></div></div>
+        <div id="programStages" class="program-stages"></div>
+      </section>
+
+      <section id="examsView" class="screen spa-view hidden">
+        <div class="view-heading"><div><h2 id="examsViewTitle">Подготовка к экзаменам</h2><p id="examsViewSubtitle">Выбери экзамен — получишь план, темы и ссылки на задачи.</p></div></div>
+        <div id="examsGrid" class="exam-grid"></div>
+        <div id="examGuide" class="exam-guide hidden"></div>
+      </section>
+
       <section id="gameScreen" class="screen game-screen hidden" aria-live="polite">
         <div id="pixelCat" class="voxel-companion" aria-hidden="true"></div>
         <div class="quiz-primary">
@@ -781,6 +825,7 @@
       const $ = (id) => document.getElementById(id);
       const menuScreen = $('menuScreen'), gameScreen = $('gameScreen'), resultScreen = $('resultScreen');
       const mapView = $('mapView'), profileView = $('profileView'), testView = $('testView'), gamesView = $('gamesView');
+      const programView = $('programView'), examsView = $('examsView');
       const timerEl = $('timer'), solvedEl = $('solved'), scoreEl = $('score'), streakEl = $('streak');
       const problemEl = $('problem'), problemHelp = $('problemHelp'), modeBadge = $('modeBadge'), progressBar = $('progressBar');
       const quizCompletion = $('quizCompletion'), quizCompletionLabel = $('quizCompletionLabel'), quizCompletionCount = $('quizCompletionCount'), quizCompletionTrack = $('quizCompletionTrack'), quizCompletionBar = $('quizCompletionBar');
@@ -2536,8 +2581,8 @@
         languageButton.title = language.languageMenu;
         languageLabel.textContent = language.languageMenu;
         const shell = {
-          ru: ['Задачи', 'Карта', 'Профиль', 'Игры', 'Тест'], en: ['Tasks', 'Map', 'Profile', 'Games', 'Test'],
-          fr: ['Exercices', 'Carte', 'Profil', 'Jeux', 'Test'], es: ['Ejercicios', 'Mapa', 'Perfil', 'Juegos', 'Prueba'], de: ['Aufgaben', 'Karte', 'Profil', 'Spiele', 'Test']
+          ru: ['Задачи', 'Программа', 'Экзамены', 'Карта', 'Профиль', 'Игры', 'Тест'], en: ['Tasks', 'Curriculum', 'Exams', 'Map', 'Profile', 'Games', 'Test'],
+          fr: ['Exercices', 'Programme', 'Examens', 'Carte', 'Profil', 'Jeux', 'Test'], es: ['Ejercicios', 'Programa', 'Exámenes', 'Mapa', 'Perfil', 'Juegos', 'Prueba'], de: ['Aufgaben', 'Lehrplan', 'Prüfungen', 'Karte', 'Profil', 'Spiele', 'Test']
         }[currentLanguage];
         document.querySelectorAll('[data-app-view]').forEach((button, index) => { button.textContent = shell[index]; });
         $('mapViewTitle').textContent = ui.mapTitle;
@@ -2548,7 +2593,9 @@
           if (testRun) renderTestRunChrome();
           else renderTestLevels();
         }
-        if (typeof gamesView !== 'undefined' && gamesView && !gamesView.classList.contains('hidden')) renderGamesHub();        $('profileViewTitle').textContent = ui.profileTitle;
+        if (typeof gamesView !== 'undefined' && gamesView && !gamesView.classList.contains('hidden')) renderGamesHub();
+        if (typeof programView !== 'undefined' && programView && !programView.classList.contains('hidden')) renderProgram();
+        if (typeof examsView !== 'undefined' && examsView && !examsView.classList.contains('hidden')) { if (openExamId) openExamGuide(openExamId, true); else renderExams(); }        $('profileViewTitle').textContent = ui.profileTitle;
         $('profileViewSubtitle').textContent = ui.profileSubtitle;
         $('profileDirectionsTitle').textContent = ui.directions;
         $('profileSkillsTitle').textContent = ui.skills;
@@ -3376,6 +3423,260 @@
         { id: 'mine', href: '', playable: false, cover: '<svg viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="140" fill="#4a3220"/><rect y="46" width="320" height="46" fill="#5d4128"/><rect y="92" width="320" height="48" fill="#3a2817"/><path d="M0 46h320M0 92h320M40 0v46M120 0v46M200 0v46M280 0v46M80 46v46M160 46v46M240 46v46M40 92v48M120 92v48M200 92v48M280 92v48" stroke="#2c1f10" stroke-width="3"/><polygon points="160,62 176,82 160,102 144,82" fill="#46c6db" stroke="#fff" stroke-width="4"/><rect x="228" y="18" width="14" height="60" rx="7" transform="rotate(38 235 48)" fill="#b54708"/><polygon points="252,20 282,34 262,58 240,44" fill="#98a2b3"/></svg>' }
       ];
 
+      const programText = {
+        ru: { title: 'Программа', subtitle: 'Весь курс от счёта до интегралов — иди сверху вниз.', practice: 'Практика:', stages: [
+          { grade: '1 класс', title: 'Числа до 20', desc: 'Счёт, сравнение и первые примеры.', topics: ['Счёт до 20 и обратно', 'Сравнение чисел', 'Сложение до 10', 'Вычитание до 10', 'Переход через десяток'], modes: ['addition-ten', 'subtraction-ten', 'addition-twenty', 'skills-compare'] },
+          { grade: '2 класс', title: 'Сложение и вычитание до 100', desc: 'Десятки, таблица умножения и деление.', topics: ['Сложение и вычитание до 100', 'Таблица умножения', 'Деление без остатка', 'Примеры с + и − вместе'], modes: ['addition', 'subtraction', 'addition-subtraction', 'tables', 'division'] },
+          { grade: '3–4 класс', title: 'Столбик и многозначные числа', desc: 'Письменные приёмы вычислений.', topics: ['Сложение в столбик', 'Вычитание в столбик', 'Умножение в столбик', 'Сложное умножение', 'Действия по шагам'], modes: ['column-addition', 'column-subtraction', 'column-multiplication', 'multiplication', 'arithmetic-chain-addition'] },
+          { grade: '4–5 класс', title: 'Выражения и скобки', desc: 'Порядок действий.', topics: ['Порядок действий', 'Скобки', 'Цепочки действий', 'Пропущенное число'], modes: ['arithmetic-order', 'arithmetic-parentheses', 'arithmetic-chain-addition', 'equations-missing'] },
+          { grade: '5–6 класс', title: 'Дроби и проценты', desc: 'Обыкновенные дроби и процент от числа.', topics: ['Сокращение дробей', 'Сравнение дробей', 'Действия с дробями', 'Проценты'], modes: ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed', 'skills-percent'] },
+          { grade: '6 класс', title: 'Отрицательные числа', desc: 'Числовая прямая и знак числа.', topics: ['Сложение с отрицательными', 'Вычитание с отрицательными', 'Модуль числа'], modes: ['arithmetic-negatives', 'subtraction', 'skills-compare'] },
+          { grade: '6–7 класс', title: 'Уравнения', desc: 'От окошка к линейным уравнениям.', topics: ['Уравнения со сложением', 'Уравнения с вычитанием', 'Уравнения с умножением и делением', 'Двухшаговые уравнения', 'Неравенства'], modes: ['equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'algebra-inequalities'] },
+          { grade: '7–9 класс', title: 'Алгебра', desc: 'Степени, многочлены, функции и системы.', topics: ['Степени и корни', 'Многочлены', 'Квадратные уравнения', 'Системы уравнений', 'Функции и графики', 'Прогрессии'], modes: ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-functions', 'algebra-sequences'] },
+          { grade: '5–9 класс', title: 'Геометрия', desc: 'Фигуры, измерения и углы.', topics: ['Фигуры и периметр', 'Площадь', 'Углы', 'Треугольники', 'Координаты'], modes: ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates'] },
+          { grade: '10–11 класс', title: 'Математический анализ', desc: 'Пределы, производные и интегралы.', topics: ['Пределы', 'Производная степени', 'Сложные функции', 'Тригонометрические производные', 'Касательная', 'Первообразная'], modes: ['limits-basic', 'derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent', 'integrals-basic'] },
+          { grade: 'Вне класса', title: 'Олимпиадный трек', desc: 'Логика для конкурсов и олимпиад.', topics: ['Чётность', 'Комбинаторные раскраски', 'Закономерности', 'Логические задачи', 'Текстовые задачи'], modes: ['olympiad-parity', 'olympiad-coloring', 'olympiad-patterns', 'olympiad-logic', 'skills-story-equation'] }
+        ] },
+        en: { title: 'Curriculum', subtitle: 'The whole course from counting to integrals — go top to bottom.', practice: 'Practice:', stages: [
+          { grade: 'Grade 1', title: 'Numbers to 20', desc: 'Counting, comparing and first sums.', topics: ['Counting to 20 and back', 'Comparing numbers', 'Addition to 10', 'Subtraction to 10', 'Bridging through ten'], modes: ['addition-ten', 'subtraction-ten', 'addition-twenty', 'skills-compare'] },
+          { grade: 'Grade 2', title: 'Adding and subtracting to 100', desc: 'Tens, times tables and division.', topics: ['Addition and subtraction to 100', 'Times tables', 'Division without remainders', 'Mixed + and −'], modes: ['addition', 'subtraction', 'addition-subtraction', 'tables', 'division'] },
+          { grade: 'Grades 3–4', title: 'Columns and big numbers', desc: 'Written calculation methods.', topics: ['Column addition', 'Column subtraction', 'Column multiplication', 'Hard multiplication', 'Step-by-step chains'], modes: ['column-addition', 'column-subtraction', 'column-multiplication', 'multiplication', 'arithmetic-chain-addition'] },
+          { grade: 'Grades 4–5', title: 'Expressions and brackets', desc: 'Order of operations.', topics: ['Order of operations', 'Parentheses', 'Chains of operations', 'Missing number'], modes: ['arithmetic-order', 'arithmetic-parentheses', 'arithmetic-chain-addition', 'equations-missing'] },
+          { grade: 'Grades 5–6', title: 'Fractions and percents', desc: 'Common fractions and percent of a number.', topics: ['Simplifying fractions', 'Comparing fractions', 'Operations with fractions', 'Percents'], modes: ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed', 'skills-percent'] },
+          { grade: 'Grade 6', title: 'Negative numbers', desc: 'The number line and sign.', topics: ['Adding with negatives', 'Subtracting with negatives', 'Absolute value'], modes: ['arithmetic-negatives', 'subtraction', 'skills-compare'] },
+          { grade: 'Grades 6–7', title: 'Equations', desc: 'From the missing box to linear equations.', topics: ['x + a = b', 'x − a = b', 'Equations with × and ÷', 'Two-step equations', 'Inequalities'], modes: ['equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'algebra-inequalities'] },
+          { grade: 'Grades 7–9', title: 'Algebra', desc: 'Powers, polynomials, functions and systems.', topics: ['Powers and roots', 'Polynomials', 'Quadratic equations', 'Systems of equations', 'Functions and graphs', 'Progressions'], modes: ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-functions', 'algebra-sequences'] },
+          { grade: 'Grades 5–9', title: 'Geometry', desc: 'Shapes, measures and angles.', topics: ['Shapes and perimeter', 'Area', 'Angles', 'Triangles', 'Coordinates'], modes: ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates'] },
+          { grade: 'Grades 10–11', title: 'Calculus', desc: 'Limits, derivatives and integrals.', topics: ['Limits', 'Power rule', 'Chain rule', 'Trig derivatives', 'Tangent line', 'Antiderivative'], modes: ['limits-basic', 'derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent', 'integrals-basic'] },
+          { grade: 'Beyond class', title: 'Olympiad track', desc: 'Logic for contests and olympiads.', topics: ['Parity', 'Coloring combinatorics', 'Patterns', 'Logic problems', 'Word problems'], modes: ['olympiad-parity', 'olympiad-coloring', 'olympiad-patterns', 'olympiad-logic', 'skills-story-equation'] }
+        ] },
+        fr: { title: 'Programme', subtitle: 'Tout le cours, du calcul aux intégrales — du haut vers le bas.', practice: 'S’entraîner :', stages: [
+          { grade: 'CP–CE1', title: 'Nombres jusqu’à 20', desc: 'Compter, comparer et premières additions.', topics: ['Compter jusqu’à 20', 'Comparer les nombres', 'Additions jusqu’à 10', 'Soustractions jusqu’à 10', 'Passage par la dizaine'], modes: ['addition-ten', 'subtraction-ten', 'addition-twenty', 'skills-compare'] },
+          { grade: 'CE1–CE2', title: 'Calcul jusqu’à 100', desc: 'Dizaines, tables et division.', topics: ['Additions et soustractions jusqu’à 100', 'Tables de multiplication', 'Divisions exactes', 'Mélange + et −'], modes: ['addition', 'subtraction', 'addition-subtraction', 'tables', 'division'] },
+          { grade: 'CE2–CM2', title: 'Calcul posé et grands nombres', desc: 'Méthodes écrites.', topics: ['Addition posée', 'Soustraction posée', 'Multiplication posée', 'Multiplications difficiles', 'Calculs par étapes'], modes: ['column-addition', 'column-subtraction', 'column-multiplication', 'multiplication', 'arithmetic-chain-addition'] },
+          { grade: 'CM–6e', title: 'Expressions et parenthèses', desc: 'Ordre des opérations.', topics: ['Ordre des opérations', 'Parenthèses', 'Chaînes de calcul', 'Nombre manquant'], modes: ['arithmetic-order', 'arithmetic-parentheses', 'arithmetic-chain-addition', 'equations-missing'] },
+          { grade: '6e–5e', title: 'Fractions et pourcentages', desc: 'Fractions et pourcentage d’un nombre.', topics: ['Simplifier les fractions', 'Comparer les fractions', 'Opérations sur les fractions', 'Pourcentages'], modes: ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed', 'skills-percent'] },
+          { grade: '5e', title: 'Nombres négatifs', desc: 'Droite graduée et signe.', topics: ['Addition avec négatifs', 'Soustraction avec négatifs', 'Valeur absolue'], modes: ['arithmetic-negatives', 'subtraction', 'skills-compare'] },
+          { grade: '5e–4e', title: 'Équations', desc: 'De la case vide aux équations.', topics: ['x + a = b', 'x − a = b', 'Équations avec × et ÷', 'Équations en deux étapes', 'Inégalités'], modes: ['equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'algebra-inequalities'] },
+          { grade: '4e–3e', title: 'Algèbre', desc: 'Puissances, polynômes, fonctions et systèmes.', topics: ['Puissances et racines', 'Polynômes', 'Équations du second degré', 'Systèmes', 'Fonctions et graphiques', 'Suites'], modes: ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-functions', 'algebra-sequences'] },
+          { grade: '6e–3e', title: 'Géométrie', desc: 'Figures, mesures et angles.', topics: ['Figures et périmètre', 'Aire', 'Angles', 'Triangles', 'Coordonnées'], modes: ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates'] },
+          { grade: 'Lycée', title: 'Analyse', desc: 'Limites, dérivées et intégrales.', topics: ['Limites', 'Dérivée des puissances', 'Fonctions composées', 'Dérivées trigonométriques', 'Tangente', 'Primitive'], modes: ['limits-basic', 'derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent', 'integrals-basic'] },
+          { grade: 'Hors classe', title: 'Piste olympique', desc: 'Logique pour concours.', topics: ['Parité', 'Coloriages combinatoires', 'Suites logiques', 'Problèmes de logique', 'Problèmes écrits'], modes: ['olympiad-parity', 'olympiad-coloring', 'olympiad-patterns', 'olympiad-logic', 'skills-story-equation'] }
+        ] },
+        es: { title: 'Programa', subtitle: 'Todo el curso, de contar a integrales — de arriba abajo.', practice: 'Practicar:', stages: [
+          { grade: '1.º', title: 'Números hasta 20', desc: 'Contar, comparar y primeras sumas.', topics: ['Contar hasta 20', 'Comparar números', 'Sumas hasta 10', 'Restas hasta 10', 'Paso por la decena'], modes: ['addition-ten', 'subtraction-ten', 'addition-twenty', 'skills-compare'] },
+          { grade: '2.º', title: 'Cálculo hasta 100', desc: 'Decenas, tablas y división.', topics: ['Sumas y restas hasta 100', 'Tablas de multiplicar', 'Divisiones exactas', 'Mezcla + y −'], modes: ['addition', 'subtraction', 'addition-subtraction', 'tables', 'division'] },
+          { grade: '3.º–4.º', title: 'Cálculo en columna', desc: 'Métodos escritos.', topics: ['Suma en columna', 'Resta en columna', 'Multiplicación en columna', 'Multiplicaciones difíciles', 'Cadenas paso a paso'], modes: ['column-addition', 'column-subtraction', 'column-multiplication', 'multiplication', 'arithmetic-chain-addition'] },
+          { grade: '4.º–5.º', title: 'Expresiones y paréntesis', desc: 'Orden de operaciones.', topics: ['Orden de operaciones', 'Paréntesis', 'Cadenas', 'Número perdido'], modes: ['arithmetic-order', 'arithmetic-parentheses', 'arithmetic-chain-addition', 'equations-missing'] },
+          { grade: '5.º–6.º', title: 'Fracciones y porcentajes', desc: 'Fracciones y porcentaje.', topics: ['Simplificar fracciones', 'Comparar fracciones', 'Operaciones con fracciones', 'Porcentajes'], modes: ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed', 'skills-percent'] },
+          { grade: '6.º', title: 'Números negativos', desc: 'Recta numérica y signo.', topics: ['Sumar con negativos', 'Restar con negativos', 'Valor absoluto'], modes: ['arithmetic-negatives', 'subtraction', 'skills-compare'] },
+          { grade: 'Nivel medio', title: 'Ecuaciones', desc: 'De la casilla a las ecuaciones lineales.', topics: ['x + a = b', 'x − a = b', 'Ecuaciones con × y ÷', 'Ecuaciones en dos pasos', 'Desigualdades'], modes: ['equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'algebra-inequalities'] },
+          { grade: 'Secundaria', title: 'Álgebra', desc: 'Potencias, polinomios, funciones y sistemas.', topics: ['Potencias y raíces', 'Polinomios', 'Ecuaciones cuadráticas', 'Sistemas', 'Funciones y gráficas', 'Progresiones'], modes: ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-functions', 'algebra-sequences'] },
+          { grade: 'Primaria–Secundaria', title: 'Geometría', desc: 'Figuras, medidas y ángulos.', topics: ['Figuras y perímetro', 'Área', 'Ángulos', 'Triángulos', 'Coordenadas'], modes: ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates'] },
+          { grade: 'Bachillerato', title: 'Análisis', desc: 'Límites, derivadas e integrales.', topics: ['Límites', 'Derivada de potencias', 'Regla de la cadena', 'Derivadas trigonométricas', 'Recta tangente', 'Primitiva'], modes: ['limits-basic', 'derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent', 'integrals-basic'] },
+          { grade: 'Extra', title: 'Vía olímpica', desc: 'Lógica para concursos.', topics: ['Paridad', 'Coloraciones', 'Patrones', 'Problemas de lógica', 'Problemas de texto'], modes: ['olympiad-parity', 'olympiad-coloring', 'olympiad-patterns', 'olympiad-logic', 'skills-story-equation'] }
+        ] },
+        de: { title: 'Lehrplan', subtitle: 'Der ganze Kurs vom Zählen bis zu Integralen — von oben nach unten.', practice: 'Üben:', stages: [
+          { grade: 'Klasse 1', title: 'Zahlen bis 20', desc: 'Zählen, vergleichen und erste Plusaufgaben.', topics: ['Zählen bis 20', 'Zahlen vergleichen', 'Addition bis 10', 'Subtraktion bis 10', 'Zehnerübergang'], modes: ['addition-ten', 'subtraction-ten', 'addition-twenty', 'skills-compare'] },
+          { grade: 'Klasse 2', title: 'Rechnen bis 100', desc: 'Zehner, Einmaleins und Division.', topics: ['Plus und Minus bis 100', 'Einmaleins', 'Division ohne Rest', 'Gemischte Aufgaben'], modes: ['addition', 'subtraction', 'addition-subtraction', 'tables', 'division'] },
+          { grade: 'Klasse 3–4', title: 'Schriftlich rechnen', desc: 'Schriftliche Verfahren.', topics: ['Schriftliche Addition', 'Schriftliche Subtraktion', 'Schriftliche Multiplikation', 'Schwere Multiplikation', 'Rechenketten'], modes: ['column-addition', 'column-subtraction', 'column-multiplication', 'multiplication', 'arithmetic-chain-addition'] },
+          { grade: 'Klasse 4–5', title: 'Terme und Klammern', desc: 'Rechenreihenfolge.', topics: ['Rechenreihenfolge', 'Klammern', 'Rechenketten', 'Fehlende Zahl'], modes: ['arithmetic-order', 'arithmetic-parentheses', 'arithmetic-chain-addition', 'equations-missing'] },
+          { grade: 'Klasse 5–6', title: 'Brüche und Prozente', desc: 'Brüche und Prozentwert.', topics: ['Brüche kürzen', 'Brüche vergleichen', 'Bruchrechnen', 'Prozente'], modes: ['fractions-simplify', 'fractions-compare', 'fractions-calculate', 'fractions-mixed', 'skills-percent'] },
+          { grade: 'Klasse 6', title: 'Negative Zahlen', desc: 'Zahlengerade und Vorzeichen.', topics: ['Addieren mit Negativen', 'Subtrahieren mit Negativen', 'Betrag'], modes: ['arithmetic-negatives', 'subtraction', 'skills-compare'] },
+          { grade: 'Klasse 6–7', title: 'Gleichungen', desc: 'Vom Kästchen zur linearen Gleichung.', topics: ['x + a = b', 'x − a = b', 'Gleichungen mit × und ÷', 'Zweischritt-Gleichungen', 'Ungleichungen'], modes: ['equations-addition', 'equations-subtraction', 'equations-multiplication', 'equations-division', 'equations-two-step', 'equations', 'algebra-inequalities'] },
+          { grade: 'Klasse 7–9', title: 'Algebra', desc: 'Potenzen, Polynome, Funktionen und Systeme.', topics: ['Potenzen und Wurzeln', 'Polynome', 'Quadratische Gleichungen', 'Gleichungssysteme', 'Funktionen und Graphen', 'Folgen'], modes: ['algebra-powers', 'algebra-roots', 'algebra-polynomials', 'algebra-quadratics', 'algebra-systems', 'algebra-functions', 'algebra-sequences'] },
+          { grade: 'Klasse 5–9', title: 'Geometrie', desc: 'Figuren, Maße und Winkel.', topics: ['Figuren und Umfang', 'Fläche', 'Winkel', 'Dreiecke', 'Koordinaten'], modes: ['geometry-shapes', 'geometry-perimeter', 'geometry-area', 'geometry-side', 'geometry-angles', 'geometry-triangles', 'geometry-coordinates'] },
+          { grade: 'Klasse 10–11', title: 'Analysis', desc: 'Grenzwerte, Ableitungen und Integrale.', topics: ['Grenzwerte', 'Potenzregel', 'Kettenregel', 'Trigonometrische Ableitungen', 'Tangente', 'Stammfunktion'], modes: ['limits-basic', 'derivatives-power', 'derivatives-chain', 'derivatives-trig', 'derivatives-tangent', 'integrals-basic'] },
+          { grade: 'Extra', title: 'Olympiade-Track', desc: 'Logik für Wettbewerbe.', topics: ['Parität', 'Färbungen', 'Muster', 'Logikaufgaben', 'Textaufgaben'], modes: ['olympiad-parity', 'olympiad-coloring', 'olympiad-patterns', 'olympiad-logic', 'skills-story-equation'] }
+        ] }
+      };
+      const examsText = {
+        ru: { title: 'Подготовка к экзаменам', subtitle: 'Выбери экзамен — получишь план, темы и ссылки на задачи.', open: 'Открыть план', back: '← К экзаменам', format: 'Формат', topics: 'Необходимые темы', practice: 'Практика в Math Rush — нажми тему:', plan: 'План подготовки', method: 'Методика', materials: 'Материалы', exams: [
+          { id: 'ege-prof', name: 'ЕГЭ · Профильная математика', org: 'Россия · 11 класс', format: '18 заданий · 235 минут · 32 первичных балла', desc: 'Для поступления туда, где нужна математика. Часть 1 (№1–12) — краткий ответ, часть 2 (№13–18) — развёрнутое решение с баллами за ход рассуждений.',
+            topics: [['Планиметрия: треугольники и углы', 'geometry-triangles'], ['Площади и объёмы', 'geometry-area'], ['Вероятность', 'olympiad-logic'], ['Тригонометрические уравнения', 'equations'], ['Линейные и квадратные уравнения', 'algebra-quadratics'], ['Неравенства', 'algebra-inequalities'], ['Системы уравнений', 'algebra-systems'], ['Функции и производная', 'derivatives-power'], ['Касательная и исследование функций', 'derivatives-tangent'], ['Экономическая задача: проценты', 'skills-percent'], ['Задача с параметром', 'algebra-functions']],
+            plan: ['Реши демовариант ФИПИ и выпиши номера, где теряешь баллы', 'Доведи часть 1 до 11–12 из 12: по одной теме в день в Math Rush', 'Вторую часть учи по цепочке: уравнение → неравенство → стереометрия → экономика → планиметрия → параметр', 'Веди журнал ошибок: каждую ошибку разбирай письменно', 'Раз в неделю — полный пробник на 235 минут без телефона'],
+            method: 'Чередуй темы вместо зубрёжки одной (интерливинг), повторяй по схеме 1–3–7–14 дней, а вторую часть всегда пиши полностью — баллы дают за ход решения.',
+            materials: [['ФИПИ: демоверсии и открытый банк', 'https://fipi.ru'], ['Решу ЕГЭ: тренажёр по номерам', 'https://math-ege.sdamgia.ru']] },
+          { id: 'ege-base', name: 'ЕГЭ · Базовая математика', org: 'Россия · 11 класс · аттестат', format: '21 задание · 180 минут · оценка 2–5', desc: 'Для аттестата и специальностей без математики. Только краткие ответы; для «тройки» достаточно 7 баллов.',
+            topics: [['Арифметика и счёт', 'addition'], ['Дроби', 'fractions-calculate'], ['Проценты', 'skills-percent'], ['Уравнения', 'equations-addition'], ['Степени и корни', 'algebra-powers'], ['Фигуры и площади', 'geometry-area'], ['Вероятность', 'olympiad-logic'], ['Текстовые задачи', 'skills-story-equation'], ['Сравнение величин', 'skills-compare']],
+            plan: ['Реши демо и отметь 5 самых слабых тем', 'Каждый день — по 20 примеров на слабую тему', 'Отдельно разбери графики, таблицы и текстовые задачи', 'Два полных пробника на время'],
+            method: 'База сдаётся скоростью: короткие ежедневные серии без ошибок важнее долгих разборов.',
+            materials: [['ФИПИ: демоверсии и открытый банк', 'https://fipi.ru'], ['Решу ЕГЭ: базовая математика', 'https://mathb-ege.sdamgia.ru']] },
+          { id: 'oge', name: 'ОГЭ · Математика', org: 'Россия · 9 класс', format: '25 заданий · 235 минут · максимум 31 балл', desc: 'Алгебра, геометрия и реальная математика. Задания 1–5 решаются по одному общему тексту — читай его первым.',
+            topics: [['Числа и вычисления', 'addition-subtraction'], ['Дроби и проценты', 'fractions-mixed'], ['Уравнения и системы', 'equations'], ['Неравенства', 'algebra-inequalities'], ['Функции и графики', 'algebra-linear-functions'], ['Прогрессии', 'algebra-sequences'], ['Геометрия: углы и треугольники', 'geometry-triangles'], ['Площади и периметр', 'geometry-perimeter'], ['Текстовые задачи', 'skills-story-equation']],
+            plan: ['Выучи формат: первая часть — скорость, вторая — оформление', 'Задания 1–5: тренируй чтение условия целиком', 'Геометрию учи с чертежом — рисуй каждую задачу', 'Раз в две недели — полный пробник'],
+            method: 'ОГЭ проверяет базу без пробелов: закрой все темы части 1, затем учи оформление части 2 — там баллы за чертёж и логику.',
+            materials: [['ФИПИ: демоверсии и открытый банк', 'https://fipi.ru'], ['Решу ОГЭ: тренажёр', 'https://oge.sdamgia.ru']] },
+          { id: 'ib-aa', name: 'IB · Analysis & Approaches', org: 'International Baccalaureate · Diploma', format: 'SL: работы 1–2 · HL: работы 1–3 · исследование IA 20%', desc: 'Строгая математика для физики, инженерии и computer science. Работа 1 — без калькулятора; у HL есть работа 3 на рассуждения.',
+            topics: [['Числа и алгебра', 'algebra-systems'], ['Функции', 'algebra-functions'], ['Тригонометрия и геометрия', 'geometry-triangles'], ['Статистика и вероятность', 'olympiad-logic'], ['Пределы', 'limits-basic'], ['Производные', 'derivatives-chain'], ['Интегралы', 'integrals-basic'], ['Прогрессии', 'algebra-sequences']],
+            plan: ['Пройди все 5 разделов syllabus по учебнику', 'Решай past papers сначала по темам, потом — целые работы на время', 'Тему исследования IA выбери за полгода до сдачи', 'HL: отдельно тренируй работу 3 — там задачи без шаблона'],
+            method: 'IB оценивает рассуждение: всегда пиши полное решение, а не только ответ — тренируйся по критериям mark schemes.',
+            materials: [['IB: программа Mathematics', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: банк задач IB', 'https://www.revisionvillage.com']] },
+          { id: 'ib-ai', name: 'IB · Applications & Interpretation', org: 'International Baccalaureate · Diploma', format: 'SL: работы 1–2 · HL: работы 1–3 · исследование IA 20%', desc: 'Математика для экономики, биологии и социальных наук: моделирование, статистика и работа с технологиями.',
+            topics: [['Проценты и финансовая математика', 'skills-percent'], ['Функции и модели', 'algebra-linear-functions'], ['Тригонометрия', 'geometry-triangles'], ['Статистика и вероятность', 'olympiad-logic'], ['Прогрессии', 'algebra-sequences'], ['Производные в задачах', 'derivatives-power'], ['Площади и объёмы', 'geometry-area']],
+            plan: ['Освой графический калькулятор: он разрешён везде', 'Учи статистику на реальных данных, а не на абстракции', 'Решай past papers целыми работами', 'IA: возьми данные из своей жизни — это ценится'],
+            method: 'AI — про применение: каждую формулу отрабатывай на реальных числах и всегда проверяй ответ на здравый смысл.',
+            materials: [['IB: программа Mathematics', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: банк задач IB', 'https://www.revisionvillage.com']] },
+          { id: 'bagrut', name: 'Багрут · Математика', org: 'Израиль · 3 / 4 / 5 ехидот', format: 'Два бланка · оценка до 100 · бонус к среднему баллу', desc: '5 ехидот — для науки и инженерии, 4 — для большинства факультетов, 3 — минимум аттестата. Экзамен делится на два бланка в разные дни.',
+            topics: [['Функции и графики', 'algebra-functions'], ['Тригонометрические уравнения', 'equations'], ['Показательная функция и степени', 'algebra-powers'], ['Производные', 'derivatives-power'], ['Интегралы', 'integrals-basic'], ['Последовательности', 'algebra-sequences'], ['Вероятность', 'olympiad-logic'], ['Аналитическая геометрия', 'geometry-coordinates'], ['Площади фигур', 'geometry-area']],
+            plan: ['Выбери уровень и скачай программу с сайта минобразования', 'Решай бланки прошлых лет по темам — это 70% подготовки', 'Доведи первый бланк до автоматизма: он даёт базу баллов', 'Пиши полные пробники в реальном времени экзамена'],
+            method: 'Багрут сдаётся бланками прошлых лет: решай, разбирай каждую ошибку и повторяй тот же бланк через неделю.',
+            materials: [['Минобразования Израиля', 'https://edu.gov.il'], ['Архив бланков прошлых лет', 'https://meyda.education.gov.il']] },
+          { id: 'sat', name: 'SAT · Math', org: 'США · Digital SAT', format: '44 вопроса · 70 минут · 200–800 баллов', desc: 'Два адаптивных модуля: результат первого влияет на сложность второго. Встроены калькулятор и справочник формул.',
+            topics: [['Линейные уравнения', 'equations-two-step'], ['Функции', 'algebra-functions'], ['Квадратные уравнения', 'algebra-quadratics'], ['Проценты и данные', 'skills-percent'], ['Отношения и пропорции', 'fractions-compare'], ['Геометрия', 'geometry-triangles'], ['Площади и объёмы', 'geometry-area'], ['Вероятность', 'olympiad-logic']],
+            plan: ['Пройди диагностику в приложении Bluebook', 'Прокачай 4 домена по одному: алгебра → продвинутая → данные → геометрия', 'Освой встроенный калькулятор Desmos: он решает половину рутины', 'Напиши 4 полных адаптивных пробника'],
+            method: 'Модули адаптивны: не застревай на сложном — лёгкие вопросы первого модуля открывают дорогие баллы второго.',
+            materials: [['College Board: пробники SAT', 'https://satsuite.collegeboard.org/sat'], ['Khan Academy: подготовка к Digital SAT', 'https://www.khanacademy.org/digital-sat']] }
+        ] },
+        en: { title: 'Exam preparation', subtitle: 'Pick an exam — get a plan, topics and links to practice.', open: 'Open plan', back: '← Back to exams', format: 'Format', topics: 'Required topics', practice: 'Practice in Math Rush — tap a topic:', plan: 'Study plan', method: 'Method', materials: 'Materials', exams: [
+          { id: 'ege-prof', name: 'EGE · Advanced Math', org: 'Russia · grade 11', format: '18 tasks · 235 minutes · 32 raw points', desc: 'For university programs requiring math. Part 1 (1–12) — short answers, Part 2 (13–18) — full solutions graded for reasoning.',
+            topics: [['Planimetry: triangles and angles', 'geometry-triangles'], ['Areas and volumes', 'geometry-area'], ['Probability', 'olympiad-logic'], ['Trig equations', 'equations'], ['Linear and quadratic equations', 'algebra-quadratics'], ['Inequalities', 'algebra-inequalities'], ['Systems', 'algebra-systems'], ['Functions and derivatives', 'derivatives-power'], ['Tangent and curve sketching', 'derivatives-tangent'], ['Finance problem: percents', 'skills-percent'], ['Parameter problem', 'algebra-functions']],
+            plan: ['Take the FIPI demo and list the numbers where you lose points', 'Push Part 1 to 11–12 of 12: one topic a day in Math Rush', 'Learn Part 2 in order: equation → inequality → stereometry → finance → planimetry → parameter', 'Keep an error journal: work through every mistake in writing', 'Weekly — a full 235-minute mock with no phone'],
+            method: 'Interleave topics instead of cramming one, repeat on a 1–3–7–14 day schedule, and always write Part 2 in full — points are given for reasoning.',
+            materials: [['FIPI: demos and open bank', 'https://fipi.ru'], ['Reshu EGE: trainer by task number', 'https://math-ege.sdamgia.ru']] },
+          { id: 'ege-base', name: 'EGE · Basic Math', org: 'Russia · grade 11 · diploma', format: '21 tasks · 180 minutes · grades 2–5', desc: 'For the diploma and programs without math. Short answers only; 7 points earn a pass.',
+            topics: [['Arithmetic', 'addition'], ['Fractions', 'fractions-calculate'], ['Percents', 'skills-percent'], ['Equations', 'equations-addition'], ['Powers and roots', 'algebra-powers'], ['Shapes and areas', 'geometry-area'], ['Probability', 'olympiad-logic'], ['Word problems', 'skills-story-equation'], ['Comparing', 'skills-compare']],
+            plan: ['Take the demo and mark your 5 weakest topics', 'Daily — 20 problems on the weak topic', 'Study graphs, tables and word problems separately', 'Two full timed mocks'],
+            method: 'Basic level is about speed: short daily streaks with zero mistakes beat long sessions.',
+            materials: [['FIPI: demos and open bank', 'https://fipi.ru'], ['Reshu EGE: basic math', 'https://mathb-ege.sdamgia.ru']] },
+          { id: 'oge', name: 'OGE · Mathematics', org: 'Russia · grade 9', format: '25 tasks · 235 minutes · max 31 points', desc: 'Algebra, geometry and real-life math. Tasks 1–5 share one text — read it first.',
+            topics: [['Numbers and computation', 'addition-subtraction'], ['Fractions and percents', 'fractions-mixed'], ['Equations and systems', 'equations'], ['Inequalities', 'algebra-inequalities'], ['Functions and graphs', 'algebra-linear-functions'], ['Progressions', 'algebra-sequences'], ['Geometry: angles and triangles', 'geometry-triangles'], ['Areas and perimeter', 'geometry-perimeter'], ['Word problems', 'skills-story-equation']],
+            plan: ['Learn the format: Part 1 is speed, Part 2 is presentation', 'Tasks 1–5: train reading the whole text', 'Study geometry with drawings — sketch every problem', 'A full mock every two weeks'],
+            method: 'OGE tests gapless basics: close every Part 1 topic, then learn Part 2 presentation — points for drawing and logic.',
+            materials: [['FIPI: demos and open bank', 'https://fipi.ru'], ['Reshu OGE: trainer', 'https://oge.sdamgia.ru']] },
+          { id: 'ib-aa', name: 'IB · Analysis & Approaches', org: 'International Baccalaureate · Diploma', format: 'SL: papers 1–2 · HL: papers 1–3 · IA exploration 20%', desc: 'Rigorous math for physics, engineering and computer science. Paper 1 — no calculator; HL adds a reasoning Paper 3.',
+            topics: [['Number and algebra', 'algebra-systems'], ['Functions', 'algebra-functions'], ['Trig and geometry', 'geometry-triangles'], ['Statistics and probability', 'olympiad-logic'], ['Limits', 'limits-basic'], ['Derivatives', 'derivatives-chain'], ['Integrals', 'integrals-basic'], ['Progressions', 'algebra-sequences']],
+            plan: ['Cover all 5 syllabus areas with a textbook', 'Solve past papers by topic first, then whole timed papers', 'Choose your IA exploration topic six months ahead', 'HL: train Paper 3 separately — unscripted problems'],
+            method: 'IB grades reasoning: always write full solutions, not just answers — train against mark schemes.',
+            materials: [['IB: Mathematics curriculum', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: IB question bank', 'https://www.revisionvillage.com']] },
+          { id: 'ib-ai', name: 'IB · Applications & Interpretation', org: 'International Baccalaureate · Diploma', format: 'SL: papers 1–2 · HL: papers 1–3 · IA exploration 20%', desc: 'Math for economics, biology and social sciences: modelling, statistics and technology.',
+            topics: [['Percents and financial math', 'skills-percent'], ['Functions and models', 'algebra-linear-functions'], ['Trigonometry', 'geometry-triangles'], ['Statistics and probability', 'olympiad-logic'], ['Progressions', 'algebra-sequences'], ['Applied derivatives', 'derivatives-power'], ['Areas and volumes', 'geometry-area']],
+            plan: ['Master the graphic calculator: it is allowed everywhere', 'Learn statistics on real data, not abstractions', 'Solve whole past papers', 'IA: use data from your own life — examiners value it'],
+            method: 'AI is about application: drill every formula on real numbers and always sanity-check answers.',
+            materials: [['IB: Mathematics curriculum', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: IB question bank', 'https://www.revisionvillage.com']] },
+          { id: 'bagrut', name: 'Bagrut · Mathematics', org: 'Israel · 3 / 4 / 5 units', format: 'Two papers · score up to 100 · bonus for average', desc: '5 units — for science and engineering, 4 — for most faculties, 3 — the diploma minimum. Two papers on different days.',
+            topics: [['Functions and graphs', 'algebra-functions'], ['Trig equations', 'equations'], ['Exponents and powers', 'algebra-powers'], ['Derivatives', 'derivatives-power'], ['Integrals', 'integrals-basic'], ['Sequences', 'algebra-sequences'], ['Probability', 'olympiad-logic'], ['Analytic geometry', 'geometry-coordinates'], ['Areas', 'geometry-area']],
+            plan: ['Pick your level and download the syllabus from the ministry site', 'Solve past papers by topic — 70% of prep', 'Automate the first paper: it gives the base points', 'Write full mocks in real exam time'],
+            method: 'Bagrut is passed with past papers: solve, analyse every mistake, repeat the same paper a week later.',
+            materials: [['Israeli Ministry of Education', 'https://edu.gov.il'], ['Past papers archive', 'https://meyda.education.gov.il']] },
+          { id: 'sat', name: 'SAT · Math', org: 'USA · Digital SAT', format: '44 questions · 70 minutes · 200–800 points', desc: 'Two adaptive modules: the first sets the difficulty of the second. Built-in calculator and formula sheet.',
+            topics: [['Linear equations', 'equations-two-step'], ['Functions', 'algebra-functions'], ['Quadratics', 'algebra-quadratics'], ['Percents and data', 'skills-percent'], ['Ratios', 'fractions-compare'], ['Geometry', 'geometry-triangles'], ['Areas and volumes', 'geometry-area'], ['Probability', 'olympiad-logic']],
+            plan: ['Take the Bluebook diagnostic', 'Train the 4 domains one by one: algebra → advanced → data → geometry', 'Master the built-in Desmos calculator: it clears half the routine', 'Write 4 full adaptive mocks'],
+            method: 'Modules adapt: never get stuck — easy questions in module one unlock the expensive points of module two.',
+            materials: [['College Board: SAT practice', 'https://satsuite.collegeboard.org/sat'], ['Khan Academy: Digital SAT prep', 'https://www.khanacademy.org/digital-sat']] }
+        ] },
+        fr: { title: 'Préparation aux examens', subtitle: 'Choisis un examen — reçois un plan, des thèmes et des liens vers les exercices.', open: 'Ouvrir le plan', back: '← Examens', format: 'Format', topics: 'Thèmes requis', practice: 'S’entraîner dans Math Rush — touche un thème :', plan: 'Plan de préparation', method: 'Méthode', materials: 'Ressources', exams: [
+          { id: 'ege-prof', name: 'EGE · Maths avancées', org: 'Russie · terminale', format: '18 exercices · 235 minutes · 32 points', desc: 'Pour les filières exigeant les maths. Partie 1 (1–12) — réponses courtes, partie 2 (13–18) — solutions rédigées notées sur le raisonnement.',
+            topics: [['Planimétrie : triangles et angles', 'geometry-triangles'], ['Aires et volumes', 'geometry-area'], ['Probabilités', 'olympiad-logic'], ['Équations trigonométriques', 'equations'], ['Équations linéaires et du second degré', 'algebra-quadratics'], ['Inégalités', 'algebra-inequalities'], ['Systèmes', 'algebra-systems'], ['Fonctions et dérivée', 'derivatives-power'], ['Tangente et étude de fonction', 'derivatives-tangent'], ['Problème financier : pourcentages', 'skills-percent'], ['Problème à paramètre', 'algebra-functions']],
+            plan: ['Fais le sujet démo FIPI et note tes numéros faibles', 'Monte la partie 1 à 11–12/12 : un thème par jour', 'Apprends la partie 2 dans l’ordre : équation → inégalité → stéréométrie → finance → planimétrie → paramètre', 'Tiens un journal d’erreurs, chacune corrigée par écrit', 'Un blanc complet de 235 minutes chaque semaine'],
+            method: 'Alterne les thèmes, répète à 1–3–7–14 jours, et rédige toujours la partie 2 en entier — les points récompensent le raisonnement.',
+            materials: [['FIPI : sujets démo et banque ouverte', 'https://fipi.ru'], ['Rechou EGE : entraînement par numéro', 'https://math-ege.sdamgia.ru']] },
+          { id: 'ege-base', name: 'EGE · Maths de base', org: 'Russie · terminale · diplôme', format: '21 exercices · 180 minutes · notes 2–5', desc: 'Pour le diplôme et les filières sans maths. Réponses courtes ; 7 points suffisent.',
+            topics: [['Calcul', 'addition'], ['Fractions', 'fractions-calculate'], ['Pourcentages', 'skills-percent'], ['Équations', 'equations-addition'], ['Puissances et racines', 'algebra-powers'], ['Figures et aires', 'geometry-area'], ['Probabilités', 'olympiad-logic'], ['Problèmes écrits', 'skills-story-equation'], ['Comparer', 'skills-compare']],
+            plan: ['Fais la démo et marque 5 thèmes faibles', 'Chaque jour — 20 exercices sur le thème faible', 'Étudie graphiques, tableaux et problèmes à part', 'Deux blancs chronométrés'],
+            method: 'Le niveau de base se joue à la vitesse : des séries quotidiennes sans fautes.',
+            materials: [['FIPI : sujets démo et banque ouverte', 'https://fipi.ru'], ['Rechou EGE : maths de base', 'https://mathb-ege.sdamgia.ru']] },
+          { id: 'oge', name: 'OGE · Mathématiques', org: 'Russie · 9e', format: '25 exercices · 235 minutes · 31 points max', desc: 'Algèbre, géométrie et maths réelles. Les exercices 1–5 partagent un texte — lis-le d’abord.',
+            topics: [['Nombres et calcul', 'addition-subtraction'], ['Fractions et pourcentages', 'fractions-mixed'], ['Équations et systèmes', 'equations'], ['Inégalités', 'algebra-inequalities'], ['Fonctions et graphiques', 'algebra-linear-functions'], ['Suites', 'algebra-sequences'], ['Géométrie : angles et triangles', 'geometry-triangles'], ['Aires et périmètres', 'geometry-perimeter'], ['Problèmes écrits', 'skills-story-equation']],
+            plan: ['Apprends le format : partie 1 — vitesse, partie 2 — rédaction', 'Exercices 1–5 : lis tout l’énoncé', 'Géométrie avec figure — dessine chaque problème', 'Un blanc complet toutes les deux semaines'],
+            method: 'L’OGE vérifie des bases sans trous : ferme tous les thèmes de partie 1, puis la rédaction de partie 2.',
+            materials: [['FIPI : sujets démo et banque ouverte', 'https://fipi.ru'], ['Rechou OGE : entraînement', 'https://oge.sdamgia.ru']] },
+          { id: 'ib-aa', name: 'IB · Analyse et approches', org: 'Baccalauréat international · Diplôme', format: 'NS : épreuves 1–2 · H : épreuves 1–3 · exploration IA 20%', desc: 'Maths rigoureuses pour physique, ingénierie et informatique. Épreuve 1 — sans calculatrice ; en H, une épreuve 3 de raisonnement.',
+            topics: [['Nombres et algèbre', 'algebra-systems'], ['Fonctions', 'algebra-functions'], ['Trigonométrie et géométrie', 'geometry-triangles'], ['Statistiques et probabilités', 'olympiad-logic'], ['Limites', 'limits-basic'], ['Dérivées', 'derivatives-chain'], ['Intégrales', 'integrals-basic'], ['Suites', 'algebra-sequences']],
+            plan: ['Couvre les 5 domaines du syllabus avec un manuel', 'Annales par thème, puis épreuves entières chronométrées', 'Choisis ton sujet d’exploration IA six mois avant', 'H : entraîne l’épreuve 3 à part — problèmes inédits'],
+            method: 'L’IB note le raisonnement : rédige toujours des solutions complètes, d’après les barèmes.',
+            materials: [['IB : programme de mathématiques', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village : banque d’exercices IB', 'https://www.revisionvillage.com']] },
+          { id: 'ib-ai', name: 'IB · Applications et interprétation', org: 'Baccalauréat international · Diplôme', format: 'NS : épreuves 1–2 · H : épreuves 1–3 · exploration IA 20%', desc: 'Maths pour économie, biologie et sciences sociales : modélisation, statistiques et technologie.',
+            topics: [['Pourcentages et maths financières', 'skills-percent'], ['Fonctions et modèles', 'algebra-linear-functions'], ['Trigonométrie', 'geometry-triangles'], ['Statistiques et probabilités', 'olympiad-logic'], ['Suites', 'algebra-sequences'], ['Dérivées appliquées', 'derivatives-power'], ['Aires et volumes', 'geometry-area']],
+            plan: ['Maîtrise la calculatrice graphique : autorisée partout', 'Apprends les stats sur des données réelles', 'Fais des annales entières', 'IA : prends des données de ta vie — apprécié'],
+            method: 'L’AI, c’est l’application : chaque formule sur des nombres réels, et vérifie l’ordre de grandeur.',
+            materials: [['IB : programme de mathématiques', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village : banque d’exercices IB', 'https://www.revisionvillage.com']] },
+          { id: 'bagrut', name: 'Bagrut · Mathématiques', org: 'Israël · 3 / 4 / 5 unités', format: 'Deux épreuves · note sur 100 · bonus pour la moyenne', desc: '5 unités — sciences et ingénierie, 4 — la plupart des filières, 3 — minimum du diplôme. Deux épreuves des jours différents.',
+            topics: [['Fonctions et graphiques', 'algebra-functions'], ['Équations trigonométriques', 'equations'], ['Exponentielle et puissances', 'algebra-powers'], ['Dérivées', 'derivatives-power'], ['Intégrales', 'integrals-basic'], ['Suites', 'algebra-sequences'], ['Probabilités', 'olympiad-logic'], ['Géométrie analytique', 'geometry-coordinates'], ['Aires', 'geometry-area']],
+            plan: ['Choisis ton niveau et télécharge le programme du ministère', 'Annales par thème — 70 % de la préparation', 'Automatise la première épreuve : les points de base', 'Blancs entiers en temps réel'],
+            method: 'Le bagrut se gagne avec les annales : résous, analyse chaque erreur, refais la même épreuve une semaine plus tard.',
+            materials: [['Ministère de l’Éducation d’Israël', 'https://edu.gov.il'], ['Archives des épreuves', 'https://meyda.education.gov.il']] },
+          { id: 'sat', name: 'SAT · Maths', org: 'USA · SAT numérique', format: '44 questions · 70 minutes · 200–800 points', desc: 'Deux modules adaptatifs : le premier fixe la difficulté du second. Calculatrice et formulaire intégrés.',
+            topics: [['Équations linéaires', 'equations-two-step'], ['Fonctions', 'algebra-functions'], ['Second degré', 'algebra-quadratics'], ['Pourcentages et données', 'skills-percent'], ['Rapports et proportions', 'fractions-compare'], ['Géométrie', 'geometry-triangles'], ['Aires et volumes', 'geometry-area'], ['Probabilités', 'olympiad-logic']],
+            plan: ['Diagnostic dans l’appli Bluebook', 'Travaille les 4 domaines un par un', 'Maîtrise la calculatrice Desmos intégrée', '4 blancs adaptatifs complets'],
+            method: 'Modules adaptatifs : ne bloque jamais — les faciles du module un ouvrent les gros points du module deux.',
+            materials: [['College Board : sujets SAT', 'https://satsuite.collegeboard.org/sat'], ['Khan Academy : prépa SAT numérique', 'https://www.khanacademy.org/digital-sat']] }
+        ] },
+        es: { title: 'Preparación de exámenes', subtitle: 'Elige un examen y recibe plan, temas y enlaces a ejercicios.', open: 'Abrir plan', back: '← Exámenes', format: 'Formato', topics: 'Temas necesarios', practice: 'Practica en Math Rush — toca un tema:', plan: 'Plan de preparación', method: 'Metodología', materials: 'Materiales', exams: [
+          { id: 'ege-prof', name: 'EGE · Matemática avanzada', org: 'Rusia · 11.º', format: '18 ejercicios · 235 minutos · 32 puntos', desc: 'Para carreras con matemáticas. Parte 1 (1–12) — respuesta corta, parte 2 (13–18) — solución desarrollada.',
+            topics: [['Planimetría: triángulos y ángulos', 'geometry-triangles'], ['Áreas y volúmenes', 'geometry-area'], ['Probabilidad', 'olympiad-logic'], ['Ecuaciones trigonométricas', 'equations'], ['Ecuaciones lineales y cuadráticas', 'algebra-quadratics'], ['Desigualdades', 'algebra-inequalities'], ['Sistemas', 'algebra-systems'], ['Funciones y derivada', 'derivatives-power'], ['Tangente y estudio', 'derivatives-tangent'], ['Problema financiero: porcentajes', 'skills-percent'], ['Parámetro', 'algebra-functions']],
+            plan: ['Haz la demo FIPI y anota tus números débiles', 'Sube la parte 1 a 11–12/12: un tema al día', 'Aprende la parte 2 en orden: ecuación → desigualdad → estereometría → finanzas → planimetría → parámetro', 'Lleva un diario de errores por escrito', 'Un simulacro completo de 235 minutos cada semana'],
+            method: 'Alterna temas, repite a 1–3–7–14 días y redacta siempre la parte 2 entera — puntúan el razonamiento.',
+            materials: [['FIPI: demos y banco abierto', 'https://fipi.ru'], ['Reshu EGE: entrenador por número', 'https://math-ege.sdamgia.ru']] },
+          { id: 'ege-base', name: 'EGE · Matemática básica', org: 'Rusia · 11.º · diploma', format: '21 ejercicios · 180 minutos · notas 2–5', desc: 'Para el diploma y carreras sin matemáticas. Solo respuesta corta; 7 puntos bastan.',
+            topics: [['Aritmética', 'addition'], ['Fracciones', 'fractions-calculate'], ['Porcentajes', 'skills-percent'], ['Ecuaciones', 'equations-addition'], ['Potencias y raíces', 'algebra-powers'], ['Figuras y áreas', 'geometry-area'], ['Probabilidad', 'olympiad-logic'], ['Problemas de texto', 'skills-story-equation'], ['Comparar', 'skills-compare']],
+            plan: ['Haz la demo y marca 5 temas débiles', 'Cada día — 20 ejercicios del tema débil', 'Estudia gráficos, tablas y textos aparte', 'Dos simulacros con tiempo'],
+            method: 'El nivel básico es velocidad: series diarias cortas sin errores.',
+            materials: [['FIPI: demos y banco abierto', 'https://fipi.ru'], ['Reshu EGE: matemática básica', 'https://mathb-ege.sdamgia.ru']] },
+          { id: 'oge', name: 'OGE · Matemáticas', org: 'Rusia · 9.º', format: '25 ejercicios · 235 minutos · máx. 31 puntos', desc: 'Álgebra, geometría y matemática real. Los ejercicios 1–5 comparten un texto — léelo primero.',
+            topics: [['Números y cálculo', 'addition-subtraction'], ['Fracciones y porcentajes', 'fractions-mixed'], ['Ecuaciones y sistemas', 'equations'], ['Desigualdades', 'algebra-inequalities'], ['Funciones y gráficas', 'algebra-linear-functions'], ['Progresiones', 'algebra-sequences'], ['Geometría: ángulos y triángulos', 'geometry-triangles'], ['Áreas y perímetros', 'geometry-perimeter'], ['Problemas de texto', 'skills-story-equation']],
+            plan: ['Aprende el formato: parte 1 — velocidad, parte 2 — redacción', 'Ejercicios 1–5: lee todo el enunciado', 'Geometría con dibujo — dibuja cada problema', 'Un simulacro completo cada dos semanas'],
+            method: 'La OGE exige base sin huecos: cierra la parte 1 y luego la redacción de la parte 2.',
+            materials: [['FIPI: demos y banco abierto', 'https://fipi.ru'], ['Reshu OGE: entrenador', 'https://oge.sdamgia.ru']] },
+          { id: 'ib-aa', name: 'IB · Análisis y enfoques', org: 'Bachillerato Internacional · Diploma', format: 'NM: pruebas 1–2 · NS: pruebas 1–3 · exploración IA 20%', desc: 'Matemática rigurosa para física, ingeniería e informática. Prueba 1 — sin calculadora; en NS, prueba 3 de razonamiento.',
+            topics: [['Números y álgebra', 'algebra-systems'], ['Funciones', 'algebra-functions'], ['Trigonometría y geometría', 'geometry-triangles'], ['Estadística y probabilidad', 'olympiad-logic'], ['Límites', 'limits-basic'], ['Derivadas', 'derivatives-chain'], ['Integrales', 'integrals-basic'], ['Progresiones', 'algebra-sequences']],
+            plan: ['Cubre las 5 áreas del syllabus con un manual', 'Exámenes pasados por tema, luego pruebas enteras con tiempo', 'Elige tu tema IA seis meses antes', 'NS: entrena la prueba 3 aparte'],
+            method: 'El IB califica el razonamiento: redacta soluciones completas según los criterios.',
+            materials: [['IB: programa de matemáticas', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: banco IB', 'https://www.revisionvillage.com']] },
+          { id: 'ib-ai', name: 'IB · Aplicaciones e interpretación', org: 'Bachillerato Internacional · Diploma', format: 'NM: pruebas 1–2 · NS: pruebas 1–3 · exploración IA 20%', desc: 'Matemática para economía, biología y ciencias sociales: modelización, estadística y tecnología.',
+            topics: [['Porcentajes y matemática financiera', 'skills-percent'], ['Funciones y modelos', 'algebra-linear-functions'], ['Trigonometría', 'geometry-triangles'], ['Estadística y probabilidad', 'olympiad-logic'], ['Progresiones', 'algebra-sequences'], ['Derivadas aplicadas', 'derivatives-power'], ['Áreas y volúmenes', 'geometry-area']],
+            plan: ['Domina la calculadora gráfica: permitida en todo', 'Aprende estadística con datos reales', 'Haz pruebas pasadas enteras', 'IA: usa datos de tu vida — se valora'],
+            method: 'AI es aplicación: cada fórmula con números reales y verifica el orden de magnitud.',
+            materials: [['IB: programa de matemáticas', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: banco IB', 'https://www.revisionvillage.com']] },
+          { id: 'bagrut', name: 'Bagrut · Matemáticas', org: 'Israel · 3 / 4 / 5 unidades', format: 'Dos pruebas · nota hasta 100 · bonus al promedio', desc: '5 unidades — ciencia e ingeniería, 4 — la mayoría, 3 — mínimo del diploma. Dos pruebas en días distintos.',
+            topics: [['Funciones y gráficas', 'algebra-functions'], ['Ecuaciones trigonométricas', 'equations'], ['Exponencial y potencias', 'algebra-powers'], ['Derivadas', 'derivatives-power'], ['Integrales', 'integrals-basic'], ['Progresiones', 'algebra-sequences'], ['Probabilidad', 'olympiad-logic'], ['Geometría analítica', 'geometry-coordinates'], ['Áreas', 'geometry-area']],
+            plan: ['Elige nivel y descarga el programa del ministerio', 'Exámenes pasados por tema — 70% de la preparación', 'Automatiza la primera prueba: los puntos base', 'Simulacros enteros en tiempo real'],
+            method: 'El bagrut se gana con exámenes pasados: resuelve, analiza cada error y repite a la semana.',
+            materials: [['Ministerio de Educación de Israel', 'https://edu.gov.il'], ['Archivo de exámenes', 'https://meyda.education.gov.il']] },
+          { id: 'sat', name: 'SAT · Matemáticas', org: 'EE. UU. · SAT digital', format: '44 preguntas · 70 minutos · 200–800 puntos', desc: 'Dos módulos adaptativos: el primero fija la dificultad del segundo. Calculadora y formulario integrados.',
+            topics: [['Ecuaciones lineales', 'equations-two-step'], ['Funciones', 'algebra-functions'], ['Cuadráticas', 'algebra-quadratics'], ['Porcentajes y datos', 'skills-percent'], ['Razones y proporciones', 'fractions-compare'], ['Geometría', 'geometry-triangles'], ['Áreas y volúmenes', 'geometry-area'], ['Probabilidad', 'olympiad-logic']],
+            plan: ['Diagnóstico en la app Bluebook', 'Los 4 dominios uno por uno', 'Domina la Desmos integrada', '4 simulacros adaptativos completos'],
+            method: 'Módulos adaptativos: no te atasques — las fáciles del primero abren los puntos caros del segundo.',
+            materials: [['College Board: práctica SAT', 'https://satsuite.collegeboard.org/sat'], ['Khan Academy: prepa Digital SAT', 'https://www.khanacademy.org/digital-sat']] }
+        ] },
+        de: { title: 'Prüfungsvorbereitung', subtitle: 'Wähle eine Prüfung — du erhältst Plan, Themen und Aufgaben-Links.', open: 'Plan öffnen', back: '← Prüfungen', format: 'Format', topics: 'Pflichtthemen', practice: 'In Math Rush üben — tippe ein Thema an:', plan: 'Vorbereitungsplan', method: 'Methode', materials: 'Materialien', exams: [
+          { id: 'ege-prof', name: 'EGE · Profil-Mathematik', org: 'Russland · Klasse 11', format: '18 Aufgaben · 235 Minuten · 32 Rohpunkte', desc: 'Für Studiengänge mit Mathematik. Teil 1 (1–12) — Kurzantwort, Teil 2 (13–18) — ausführliche Lösung mit Punkten für den Lösungsweg.',
+            topics: [['Planimetrie: Dreiecke und Winkel', 'geometry-triangles'], ['Flächen und Volumina', 'geometry-area'], ['Wahrscheinlichkeit', 'olympiad-logic'], ['Trigonometrische Gleichungen', 'equations'], ['Lineare und quadratische Gleichungen', 'algebra-quadratics'], ['Ungleichungen', 'algebra-inequalities'], ['Systeme', 'algebra-systems'], ['Funktionen und Ableitung', 'derivatives-power'], ['Tangente und Kurvendiskussion', 'derivatives-tangent'], ['Finanzaufgabe: Prozente', 'skills-percent'], ['Parameteraufgabe', 'algebra-functions']],
+            plan: ['Löse die FIPI-Demo und notiere schwache Nummern', 'Bringe Teil 1 auf 11–12/12: ein Thema pro Tag', 'Lerne Teil 2 in Reihenfolge: Gleichung → Ungleichung → Stereometrie → Finanzen → Planimetrie → Parameter', 'Fehlerjournal: jeden Fehler schriftlich aufarbeiten', 'Wöchentlich ein kompletter 235-Minuten-Test'],
+            method: 'Themen mischen statt eines pauken, nach 1–3–7–14 Tagen wiederholen, Teil 2 immer vollständig schreiben — Punkte gibt es für den Weg.',
+            materials: [['FIPI: Demos und offene Bank', 'https://fipi.ru'], ['Reschu EGE: Trainer nach Nummern', 'https://math-ege.sdamgia.ru']] },
+          { id: 'ege-base', name: 'EGE · Basis-Mathematik', org: 'Russland · Klasse 11 · Zeugnis', format: '21 Aufgaben · 180 Minuten · Noten 2–5', desc: 'Für Zeugnis und Fächer ohne Mathematik. Nur Kurzantworten; 7 Punkte genügen.',
+            topics: [['Arithmetik', 'addition'], ['Brüche', 'fractions-calculate'], ['Prozente', 'skills-percent'], ['Gleichungen', 'equations-addition'], ['Potenzen und Wurzeln', 'algebra-powers'], ['Figuren und Flächen', 'geometry-area'], ['Wahrscheinlichkeit', 'olympiad-logic'], ['Textaufgaben', 'skills-story-equation'], ['Vergleichen', 'skills-compare']],
+            plan: ['Demo lösen und 5 schwache Themen markieren', 'Täglich 20 Aufgaben zum schwachen Thema', 'Graphen, Tabellen und Texte getrennt üben', 'Zwei komplette Tests auf Zeit'],
+            method: 'Basis besteht man mit Tempo: kurze fehlerfreie Serien täglich.',
+            materials: [['FIPI: Demos und offene Bank', 'https://fipi.ru'], ['Reschu EGE: Basis-Mathematik', 'https://mathb-ege.sdamgia.ru']] },
+          { id: 'oge', name: 'OGE · Mathematik', org: 'Russland · Klasse 9', format: '25 Aufgaben · 235 Minuten · max. 31 Punkte', desc: 'Algebra, Geometrie und Alltagsmathematik. Aufgaben 1–5 teilen einen Text — lies ihn zuerst.',
+            topics: [['Zahlen und Rechnen', 'addition-subtraction'], ['Brüche und Prozente', 'fractions-mixed'], ['Gleichungen und Systeme', 'equations'], ['Ungleichungen', 'algebra-inequalities'], ['Funktionen und Graphen', 'algebra-linear-functions'], ['Folgen', 'algebra-sequences'], ['Geometrie: Winkel und Dreiecke', 'geometry-triangles'], ['Flächen und Umfang', 'geometry-perimeter'], ['Textaufgaben', 'skills-story-equation']],
+            plan: ['Format lernen: Teil 1 — Tempo, Teil 2 — Darstellung', 'Aufgaben 1–5: ganzen Text lesen', 'Geometrie mit Skizze — jede Aufgabe zeichnen', 'Alle zwei Wochen ein kompletter Test'],
+            method: 'OGE prüft lückenlose Grundlagen: erst Teil 1 schließen, dann Darstellung in Teil 2.',
+            materials: [['FIPI: Demos und offene Bank', 'https://fipi.ru'], ['Reschu OGE: Trainer', 'https://oge.sdamgia.ru']] },
+          { id: 'ib-aa', name: 'IB · Analysis und Ansätze', org: 'International Baccalaureate · Diploma', format: 'SL: Arbeiten 1–2 · HL: Arbeiten 1–3 · IA-Exploration 20%', desc: 'Strenge Mathematik für Physik, Ingenieurwesen und Informatik. Arbeit 1 — ohne Taschenrechner; HL mit Denk-Arbeit 3.',
+            topics: [['Zahlen und Algebra', 'algebra-systems'], ['Funktionen', 'algebra-functions'], ['Trigonometrie und Geometrie', 'geometry-triangles'], ['Statistik und Wahrscheinlichkeit', 'olympiad-logic'], ['Grenzwerte', 'limits-basic'], ['Ableitungen', 'derivatives-chain'], ['Integrale', 'integrals-basic'], ['Folgen', 'algebra-sequences']],
+            plan: ['Alle 5 Syllabus-Bereiche mit Lehrbuch', 'Altklausuren erst nach Themen, dann ganze Arbeiten auf Zeit', 'IA-Thema ein halbes Jahr vorher wählen', 'HL: Arbeit 3 getrennt trainieren'],
+            method: 'IB bewertet das Begründen: immer vollständige Lösungen schreiben, an Mark Schemes üben.',
+            materials: [['IB: Mathematik-Lehrplan', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: IB-Aufgabenbank', 'https://www.revisionvillage.com']] },
+          { id: 'ib-ai', name: 'IB · Anwendungen und Interpretation', org: 'International Baccalaureate · Diploma', format: 'SL: Arbeiten 1–2 · HL: Arbeiten 1–3 · IA-Exploration 20%', desc: 'Mathematik für Wirtschaft, Biologie und Sozialwissenschaften: Modellieren, Statistik und Technologie.',
+            topics: [['Prozente und Finanzmathematik', 'skills-percent'], ['Funktionen und Modelle', 'algebra-linear-functions'], ['Trigonometrie', 'geometry-triangles'], ['Statistik und Wahrscheinlichkeit', 'olympiad-logic'], ['Folgen', 'algebra-sequences'], ['Angewandte Ableitungen', 'derivatives-power'], ['Flächen und Volumina', 'geometry-area']],
+            plan: ['Grafikrechner beherrschen: überall erlaubt', 'Statistik an echten Daten lernen', 'Ganze Altklausuren lösen', 'IA: Daten aus dem eigenen Leben — wird geschätzt'],
+            method: 'AI heißt Anwenden: jede Formel an echten Zahlen üben und Antworten auf Plausibilität prüfen.',
+            materials: [['IB: Mathematik-Lehrplan', 'https://www.ibo.org/programmes/diploma-programme/curriculum/mathematics/'], ['Revision Village: IB-Aufgabenbank', 'https://www.revisionvillage.com']] },
+          { id: 'bagrut', name: 'Bagrut · Mathematik', org: 'Israel · 3 / 4 / 5 Einheiten', format: 'Zwei Arbeiten · bis 100 Punkte · Bonus für den Schnitt', desc: '5 Einheiten — Natur- und Ingenieurwissenschaften, 4 — die meisten Fächer, 3 — Zeugnisminimum. Zwei Arbeiten an verschiedenen Tagen.',
+            topics: [['Funktionen und Graphen', 'algebra-functions'], ['Trigonometrische Gleichungen', 'equations'], ['Exponentialfunktion und Potenzen', 'algebra-powers'], ['Ableitungen', 'derivatives-power'], ['Integrale', 'integrals-basic'], ['Folgen', 'algebra-sequences'], ['Wahrscheinlichkeit', 'olympiad-logic'], ['Analytische Geometrie', 'geometry-coordinates'], ['Flächen', 'geometry-area']],
+            plan: ['Niveau wählen und Lehrplan vom Ministerium laden', 'Altklausuren nach Themen — 70 % der Vorbereitung', 'Erste Arbeit automatisieren: die Basispunkte', 'Komplette Tests in echter Prüfungszeit'],
+            method: 'Bagrut besteht man mit Altklausuren: lösen, jeden Fehler analysieren, gleiche Arbeit nach einer Woche wiederholen.',
+            materials: [['Bildungsministerium Israels', 'https://edu.gov.il'], ['Altklausuren-Archiv', 'https://meyda.education.gov.il']] },
+          { id: 'sat', name: 'SAT · Mathematik', org: 'USA · Digital SAT', format: '44 Fragen · 70 Minuten · 200–800 Punkte', desc: 'Zwei adaptive Module: das erste bestimmt die Schwierigkeit des zweiten. Rechner und Formelsammlung eingebaut.',
+            topics: [['Lineare Gleichungen', 'equations-two-step'], ['Funktionen', 'algebra-functions'], ['Quadratische Gleichungen', 'algebra-quadratics'], ['Prozente und Daten', 'skills-percent'], ['Verhältnisse', 'fractions-compare'], ['Geometrie', 'geometry-triangles'], ['Flächen und Volumina', 'geometry-area'], ['Wahrscheinlichkeit', 'olympiad-logic']],
+            plan: ['Diagnose in der Bluebook-App', 'Die 4 Domänen einzeln trainieren', 'Eingebauten Desmos-Rechner beherrschen', '4 komplette adaptive Tests'],
+            method: 'Adaptive Module: nie festbeißen — leichte Fragen in Modul eins öffnen teure Punkte in Modul zwei.',
+            materials: [['College Board: SAT-Übung', 'https://satsuite.collegeboard.org/sat'], ['Khan Academy: Digital-SAT-Vorbereitung', 'https://www.khanacademy.org/digital-sat']] }
+        ] }
+      };
       function renderGamesHub() {
         const grid = $('gamesGrid');
         if (!grid) return;
@@ -3416,11 +3717,189 @@
         });
       }
 
+      let openExamId = null;
+      function modeChipLabel(mode) {
+        const entry = languageData[currentLanguage] && languageData[currentLanguage].modes[mode];
+        return (entry && entry[0]) || mode;
+      }
+      function makeTaskChip(mode) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'task-chip';
+        chip.dataset.taskMode = mode;
+        chip.textContent = '▸ ' + modeChipLabel(mode);
+        return chip;
+      }
+      function renderProgram() {
+        const host = $('programStages');
+        if (!host) return;
+        const t = programText[currentLanguage] || programText.ru;
+        $('programViewTitle').textContent = t.title;
+        $('programViewSubtitle').textContent = t.subtitle;
+        host.replaceChildren();
+        t.stages.forEach((stage, index) => {
+          const card = document.createElement('article');
+          card.className = 'program-stage';
+          card.dataset.step = String(index + 1);
+          const head = document.createElement('div');
+          head.className = 'stage-head';
+          const badge = document.createElement('span');
+          badge.className = 'grade-badge';
+          badge.textContent = stage.grade;
+          const title = document.createElement('strong');
+          title.textContent = stage.title;
+          head.append(badge, title);
+          const desc = document.createElement('p');
+          desc.className = 'stage-desc';
+          desc.textContent = stage.desc;
+          const list = document.createElement('ul');
+          list.className = 'topic-list';
+          stage.topics.forEach((topic) => {
+            const item = document.createElement('li');
+            item.textContent = topic;
+            list.append(item);
+          });
+          const chips = document.createElement('div');
+          chips.className = 'task-chips';
+          const label = document.createElement('span');
+          label.className = 'task-chips-label';
+          label.textContent = t.practice;
+          chips.append(label);
+          stage.modes.forEach((mode) => chips.append(makeTaskChip(mode)));
+          card.append(head, desc, list, chips);
+          host.append(card);
+        });
+      }
+      function guideSection(title, body) {
+        const section = document.createElement('section');
+        section.className = 'guide-section';
+        const heading = document.createElement('h4');
+        heading.textContent = title;
+        section.append(heading, body);
+        return section;
+      }
+      function renderExams() {
+        const grid = $('examsGrid'), guide = $('examGuide');
+        if (!grid || !guide) return;
+        openExamId = null;
+        guide.classList.add('hidden');
+        guide.replaceChildren();
+        grid.classList.remove('hidden');
+        const t = examsText[currentLanguage] || examsText.ru;
+        $('examsViewTitle').textContent = t.title;
+        $('examsViewSubtitle').textContent = t.subtitle;
+        grid.replaceChildren();
+        t.exams.forEach((exam) => {
+          const card = document.createElement('article');
+          card.className = 'exam-card';
+          const title = document.createElement('strong');
+          title.textContent = exam.name;
+          const desc = document.createElement('small');
+          desc.textContent = exam.desc;
+          const org = document.createElement('span');
+          org.className = 'exam-meta';
+          org.textContent = exam.org;
+          const fmt = document.createElement('span');
+          fmt.className = 'exam-meta';
+          fmt.textContent = exam.format;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'primary';
+          button.textContent = t.open;
+          button.addEventListener('click', () => openExamGuide(exam.id));
+          card.append(title, desc, org, fmt, button);
+          grid.append(card);
+        });
+      }
+      function openExamGuide(id, keepScroll) {
+        const grid = $('examsGrid'), guide = $('examGuide');
+        if (!grid || !guide) return;
+        const t = examsText[currentLanguage] || examsText.ru;
+        const exam = t.exams.find((entry) => entry.id === id);
+        if (!exam) return;
+        openExamId = id;
+        grid.classList.add('hidden');
+        guide.classList.remove('hidden');
+        guide.replaceChildren();
+        const back = document.createElement('button');
+        back.type = 'button';
+        back.className = 'secondary guide-back';
+        back.textContent = t.back;
+        back.addEventListener('click', renderExams);
+        const head = document.createElement('div');
+        head.className = 'guide-head';
+        const heading = document.createElement('h3');
+        heading.textContent = exam.name;
+        const sub = document.createElement('p');
+        sub.textContent = exam.org + ' · ' + exam.format;
+        head.append(heading, sub);
+        const desc = document.createElement('p');
+        desc.textContent = exam.desc;
+        guide.append(back, head, desc);
+        const chips = document.createElement('div');
+        chips.className = 'task-chips';
+        chips.style.marginLeft = '0';
+        const chipsLabel = document.createElement('span');
+        chipsLabel.className = 'task-chips-label';
+        chipsLabel.textContent = t.practice;
+        chips.append(chipsLabel);
+        const plain = document.createElement('ul');
+        plain.className = 'topic-list';
+        plain.style.marginLeft = '0';
+        exam.topics.forEach((entry) => {
+          if (entry[1]) chips.append(makeTaskChip(entry[1]));
+          else {
+            const item = document.createElement('li');
+            item.textContent = entry[0];
+            plain.append(item);
+          }
+        });
+        const topicsBody = document.createElement('div');
+        topicsBody.append(chips);
+        if (plain.children.length) topicsBody.append(plain);
+        guide.append(guideSection(t.topics, topicsBody));
+        const plan = document.createElement('ol');
+        plan.className = 'plan-list';
+        exam.plan.forEach((step) => {
+          const item = document.createElement('li');
+          item.textContent = step;
+          plan.append(item);
+        });
+        guide.append(guideSection(t.plan, plan));
+        const method = document.createElement('p');
+        method.textContent = exam.method;
+        guide.append(guideSection(t.method, method));
+        const mats = document.createElement('ul');
+        mats.className = 'mat-list';
+        exam.materials.forEach((entry) => {
+          const item = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = entry[1];
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = entry[0] + ' ↗';
+          item.append(link);
+          mats.append(item);
+        });
+        guide.append(guideSection(t.materials, mats));
+        if (!keepScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function jumpToTask(mode) {
+        showAppView('tasks');
+        const card = document.querySelector('.mode-card[data-mode="' + mode + '"]');
+        if (!card) return;
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.remove('flash');
+        void card.offsetWidth;
+        card.classList.add('flash');
+        setTimeout(() => card.classList.remove('flash'), 2500);
+      }
+
       function showAppView(view) {
         if (gameActive) goToMenu();
         if (testRun) endTestRun();
-        [menuScreen, mapView, profileView, testView, gamesView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
-        const target = view === 'map' ? mapView : view === 'profile' ? profileView : view === 'test' ? testView : view === 'games' ? gamesView : menuScreen;
+        [menuScreen, mapView, profileView, testView, gamesView, programView, examsView, resultScreen, gameScreen].forEach((screen) => screen.classList.add('hidden'));
+        const target = view === 'map' ? mapView : view === 'profile' ? profileView : view === 'test' ? testView : view === 'games' ? gamesView : view === 'program' ? programView : view === 'exams' ? examsView : menuScreen;
         target.classList.remove('hidden');
         document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === view));
         if (document.body && document.body.classList) document.body.classList.toggle('map-locked', view === 'map');
@@ -3428,6 +3907,8 @@
         if (view === 'profile') renderSpaProfile();
         if (view === 'test') renderTestLevels();
         if (view === 'games') renderGamesHub();
+        if (view === 'program') renderProgram();
+        if (view === 'exams') renderExams();
         if (history.replaceState) history.replaceState(null, '', `#${view}`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -3506,6 +3987,8 @@
         profileView.classList.add('hidden');
         testView.classList.add('hidden');
         gamesView.classList.add('hidden');
+        programView.classList.add('hidden');
+        examsView.classList.add('hidden');
         menuScreen.classList.remove('hidden');
         setSettingsOpen(false);
         document.querySelectorAll('[data-app-view]').forEach((button) => button.classList.toggle('active', button.dataset.appView === 'tasks'));
@@ -3514,6 +3997,12 @@
       $('exitBtn').addEventListener('click', goToMenu);
       $('menuBtn').addEventListener('click', goToMenu);
       document.querySelectorAll('[data-app-view]').forEach((button) => button.addEventListener('click', () => showAppView(button.dataset.appView)));
+      document.addEventListener('click', (event) => {
+        const chip = event.target && event.target.closest ? event.target.closest('[data-task-mode]') : null;
+        if (!chip || !chip.dataset.taskMode) return;
+        event.preventDefault();
+        jumpToTask(chip.dataset.taskMode);
+      });
       $('testCheckBtn').addEventListener('click', checkTestAnswer);
       $('testNextBtn').addEventListener('click', nextTestQuestion);
       $('testSkipBtn').addEventListener('click', skipTestQuestion);
@@ -3552,7 +4041,7 @@
       const requestedMode = globalThis.MathRushProgress && MathRushProgress.modeForSkill(requestedSkill);
       const requestedCard = requestedMode && document.querySelector(`.mode-card[data-mode="${requestedMode}"]`);
       if (requestedCard) { selectMode(requestedCard); setTimeout(startGame, 0); }
-      else showAppView(['map', 'profile', 'test'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'tasks');
+       else showAppView(['map', 'profile', 'test', 'program', 'exams'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'tasks');
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') { if (!settingsPanel.classList.contains('hidden')) setSettingsOpen(false); languagePopover.classList.add('hidden'); languageButton.setAttribute('aria-expanded', 'false'); closeModeSettings(); }
         const tagName = event.target && event.target.tagName;

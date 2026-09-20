@@ -105,4 +105,26 @@ for (const entry of levelBlock.matchAll(/'([a-z0-9-]+)'/g)) {
   if (/^t\d$/.test(entry[1])) continue;
   assert.ok(cardModes.has(entry[1]), `Test playlist mode ${entry[1]} has a quiz card`);
 }
+assert.match(quizPage, /data-app-view="program"/, 'Program lives in the main navigation');
+assert.match(quizPage, /data-app-view="exams"/, 'Exam prep lives in the main navigation');
+assert.match(quizPage, /id="programView"/, 'Program view exists next to tasks, map and profile');
+assert.match(quizPage, /id="programStages"/, 'Curriculum stages render into the program view');
+assert.match(quizPage, /id="examsView"/, 'Exam view exists next to tasks, map and profile');
+assert.match(quizPage, /id="examsGrid"/, 'Exam cards render into the exam view');
+assert.match(quizPage, /id="examGuide"/, 'Exam guides open inside the exam view');
+assert.match(quizPage, /function renderProgram\(\)/, 'Curriculum renders from data');
+assert.match(quizPage, /function renderExams\(\)/, 'Exam cards render from data');
+assert.match(quizPage, /function openExamGuide\(/, 'Exam cards open full prep guides');
+assert.match(quizPage, /function jumpToTask\(/, 'Guide topics link back to task cards');
+assert.match(quizPage, /view === 'program' \? programView/, 'Program view is wired into the app router');
+assert.match(quizPage, /view === 'exams' \? examsView/, 'Exam view is wired into the app router');
+for (const exam of ['ege-prof', 'ege-base', 'oge', 'ib-aa', 'ib-ai', 'bagrut', 'sat']) assert.match(quizPage, new RegExp(`id: '${exam}'`), `${exam} has a prep guide`);
+for (const material of ['fipi\\.ru', 'ibo\\.org', 'collegeboard\\.org', 'edu\\.gov\\.il', 'khanacademy\\.org', 'revisionvillage\\.com']) assert.match(quizPage, new RegExp(material), `Guides link official materials (${material})`);
+const topicBlocks = [...quizPage.matchAll(/topics: \[([\s\S]*?)\]\s*,\s*\n\s*(?:modes|plan):/g)].map((entry) => entry[1]);
+assert.ok(topicBlocks.length >= 18, 'Curriculum stages and exam guides list topics');
+for (const block of topicBlocks) {
+  for (const pair of block.matchAll(/\['[^']*', '([a-z0-9-]+)'\]/g)) {
+    assert.ok(cardModes.has(pair[1]), `Practice link ${pair[1]} has a quiz card`);
+  }
+}
 console.log('Site smoke tests passed');
