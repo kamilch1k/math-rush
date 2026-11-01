@@ -29,11 +29,26 @@ After sign-in, the protected session cookie lasts seven days. Practice restores 
 
 The practice archive supports Russian, English, French, Spanish, and German. The account workspace, multiplication trainer, learning guide, and project overview support Russian and English.
 
+## Learning navigation
+
+The usual learning journey is **My workspace → Learning**, with two subtabs:
+
+- **Methods**: `workspace.html#learning`, with worked explanations and learning materials.
+- **Times tables**: `workspace.html#tables`, with guided multiplication practice.
+
+Guests can use both Learning subtabs without creating an account. The original quizzes remain the primary entry point, with the knowledge map and workspace alongside them. Times tables is part of Learning rather than a separate primary navigation tab.
+
+The workspace displays the guide and trainer inside its learning area. Direct `learn.html` and `multiplication.html` URLs, and the clean aliases `/learn`, `/materials`, and `/multiplication`, remain available for compatibility and existing bookmarks.
+
+Embedded learning pages reuse the workspace's existing progress and cloud-session objects. They wait for account restoration, forward progress events, and do not start a second authentication or synchronization client. Standalone pages keep their own normal bootstrap. Only these two learning pages permit same-origin framing; account pages retain framing protection.
+
+On static mirrors, the account-unavailable screen offers an optional link to the full Math Rush site without redirecting visitors. Forks can change or remove `data-full-site` on the workspace HTML body. Guest learning continues on the current host.
+
 ## Features
 
 - **40+ quiz modes**: addition / subtraction / multiplication / division, column arithmetic, parentheses & order of operations, fractions, percents, equations (1-step → 2-step → linear), new algebra block (powers, roots, polynomials, quadratics, systems, sequences), geometry (shapes → perimeter → area → angles → triangles → coordinates), olympiad logic.
 - **Multiplication trainer**: explore equal groups and arrays, derive facts from familiar ones, then practise products, missing factors, and related division in short rounds without a timer. Review favours recent mistakes and hinted answers; a fact map shows the latest retained result. Guided answers earn no XP.
-- **Learning materials**: an original RU/EN guide to multiplication, with worked examples, ×1/×2/×5/×10 anchors, doubling, splitting facts, and recall after a break. It links to teaching sources and directly to the trainer.
+- **Learning materials**: an original RU/EN guide under Learning → Methods, with worked examples, ×1/×2/×5/×10 anchors, doubling, splitting facts, and recall after a break. Times tables practice is the neighbouring Learning subtab.
 - **Knowledge map board**: chalkboard-style board with three branches (Arithmetic / Algebra / Geometry), prerequisite threads, hover-to-highlight dependency network, mastery % per node, click-to-practice navigation.
 - **Progression**: XP, levels, streaks, per-skill mastery (recency-weighted last 20 attempts), readiness %, locked → available → learning → mastered states.
 - **Round rules**: practice / score / strict-input modes, per-card timer / bonus / streak-goal / task-limit / difficulty / answer-mode overrides, global settings sync.
@@ -98,7 +113,7 @@ npm test
 npm run check:worker
 ```
 
-The multiplication release passed the existing practice suites and all 31 Node test cases, covering account isolation, backend authorization, cloud sync, and the new fact-family/review behavior.
+The workspace Learning integration passed the existing practice suites and all 44 Node test cases, covering account isolation, backend authorization, cloud sync, embedded client identity and cleanup, guest routes, framing rules, and fact-family/review behavior.
 
 ## Deploy (Cloudflare)
 
@@ -108,7 +123,7 @@ Routes: `/` and `/quizzes` → `math-rush.html`; `/learn` and `/materials` → `
 
 ## Multiplication practice and review
 
-Open `/multiplication` for the trainer or `/learn` for the worked guide. `multiplication-core.js` keeps the fact families, answer checks, derived-fact strategies, and review selection separate from the interface. Products, missing factors, and exact related division share the same multiplication fact; swapping the factors also shares its review history.
+Open **My workspace → Learning**: Methods (`workspace.html#learning`) contains the worked guide, and Times tables (`workspace.html#tables`) contains the trainer. The standalone `/multiplication` and `/learn` routes remain supported. `multiplication-core.js` keeps the fact families, answer checks, derived-fact strategies, and review selection separate from the interface. Products, missing factors, and exact related division share the same multiplication fact; swapping the factors also shares its review history.
 
 Review is rebuilt from the latest 500 saved practice attempts, rather than a lifetime record of every fact. Recent mistakes and answers completed with a hint receive more practice. Independent correct recall schedules review after 1, 3, 7, and then 14 days; repeated successes on the same UTC day do not advance that interval. The picker avoids the two most recent facts where the available pool allows it and can include new or not-yet-due facts.
 

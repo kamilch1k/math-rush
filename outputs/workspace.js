@@ -23,7 +23,7 @@
   app.tab = () => {
     const requested = location.hash.slice(1);
     if (requested === 'auth' && state.user) return 'today';
-    return ['today', 'practice', 'assignments', 'feedback', 'tutors', 'profile', 'auth'].includes(requested) ? requested : 'today';
+    return ['today', 'learning', 'tables', 'practice', 'assignments', 'feedback', 'tutors', 'profile', 'auth'].includes(requested) ? requested : 'today';
   };
 
   app.errorText = error => {
@@ -167,15 +167,17 @@
     const tab = app.tab();
     document.documentElement.lang = state.language;
     document.title = app.tr('Личный кабинет — Math Rush', 'Workspace — Math Rush');
-    const nav = [['today', '◷', 'Сегодня', 'Today'], ['practice', 'x²', 'Практика', 'Practice'], ['assignments', '⌁', 'Задания', 'Assignments'], ['feedback', '✳', 'Разбор решений', 'Human feedback'], ['tutors', '∴', 'Преподаватели', 'Tutors'], ['profile', '○', 'Мой профиль', 'Profile']];
-    document.getElementById('workspaceNav').innerHTML = nav.map(([id, icon, ru, en]) => `<a href="#${id}" class="work-nav-link" ${tab === id ? 'aria-current="page"' : ''}><span class="work-nav-icon" aria-hidden="true">${icon}</span>${app.tr(ru, en)}</a>`).join('');
+    const nav = [['today', '◷', 'Сегодня', 'Today'], ['learning', '▤', 'Обучение', 'Learning'], ['practice', 'x²', 'Практика', 'Practice'], ['assignments', '⌁', 'Задания', 'Assignments'], ['feedback', '✳', 'Разбор решений', 'Human feedback'], ['tutors', '∴', 'Преподаватели', 'Tutors'], ['profile', '○', 'Мой профиль', 'Profile']];
+    const activeTab = tab === 'tables' ? 'learning' : tab;
+    document.getElementById('workspaceNav').innerHTML = nav.map(([id, icon, ru, en]) => `<a href="#${id}" class="work-nav-link" ${activeTab === id ? 'aria-current="page"' : ''}><span class="work-nav-icon" aria-hidden="true">${icon}</span>${app.tr(ru, en)}</a>`).join('');
     document.getElementById('workspaceLabel').textContent = app.tr(state.user?.role === 'tutor' ? 'КАБИНЕТ ПРЕПОДАВАТЕЛЯ' : 'МОЙ КАБИНЕТ', state.user?.role === 'tutor' ? 'TUTOR WORKSPACE' : 'MY WORKSPACE');
     document.getElementById('accountBadge').textContent = state.user ? state.user.displayName.charAt(0).toUpperCase() : '∴';
     document.getElementById('sidebarAccount').innerHTML = state.user ? `<strong>${app.e(state.user.displayName)}</strong><span>@${app.e(state.user.username)}</span>` : `<a href="#auth">${app.tr('Войти в профиль', 'Sign in')}</a>`;
     document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === state.language)));
     const labels = { quizzes: ['Все тренажёры', 'Practice archive'], map: ['Карта знаний', 'Learning map'], runner: ['Математический забег', 'Math runner'] };
     document.querySelectorAll('[data-label]').forEach(element => { element.textContent = app.tr(...labels[element.dataset.label]); });
-    const name = tab === 'tutors' && !state.capabilities.database ? 'guest' : tab === 'auth' || tab === 'tutors' ? tab : state.user ? tab : 'guest';
+    const name = tab === 'learning' || tab === 'tables' ? 'learning'
+      : tab === 'tutors' && !state.capabilities.database ? 'guest' : tab === 'auth' || tab === 'tutors' ? tab : state.user ? tab : 'guest';
     document.getElementById('mainContent').innerHTML = '<div id="cloudConflictBanner" aria-live="polite" hidden></div>' + views[name]();
     syncBadge();
   };
@@ -199,18 +201,25 @@
     document.getElementById('recoveryDialog').close();
   });
   global.addEventListener('mathrush:cloud', syncBadge);
+  global.addEventListener('message', event => {
+    const frame = document.getElementById('learningFrame');
+    if (!frame || event.origin !== location.origin || event.source !== frame.contentWindow) return;
+    if (event.data?.type !== 'mathrush:embed-height' || typeof event.data.height !== 'number' || !Number.isFinite(event.data.height)) return;
+    frame.style.height = `${Math.max(240, Math.min(20000, Math.ceil(event.data.height) + 4))}px`;
+  });
   global.addEventListener('hashchange', () => { app.render(); window.scrollTo({ top: 0, behavior: 'instant' }); });
 
   (async () => {
     try { state.capabilities = await app.request('/api/capabilities'); }
     catch (_) { /* Static hosting supports the practice archive. */ }
+    await global.MathRushCloud?.ready;
     if (state.capabilities.database) {
       try {
-        const current = await app.request('/api/me');
-        app.setUser(current.user);
+        const restored = global.MathRushCloud?.currentUser
+          ? global.MathRushCloud.currentUser() : (await app.request('/api/me')).user;
+        app.setUser(restored);
         if (state.user) {
           if (location.hash === '#auth') history.replaceState(null, '', '#today');
-          await global.MathRushCloud?.ready;
           await global.MathRushCloud?.connect(state.user);
           await app.refresh();
         } else {

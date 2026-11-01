@@ -2,8 +2,9 @@
   'use strict';
 
   const preference = 'mathRushHomeLanguage';
-  let language = 'ru';
-  try { language = localStorage.getItem(preference) === 'en' ? 'en' : 'ru'; }
+  const embedded = window.MathRushEmbed?.embedded;
+  let language = embedded ? window.MathRushEmbed.language : 'ru';
+  try { if (!embedded) language = localStorage.getItem(preference) === 'en' ? 'en' : 'ru'; }
   catch (_) { /* Reading preferences is optional. */ }
 
   function setLanguage(next) {
@@ -25,7 +26,7 @@
     document.querySelector('meta[name="description"]').content = next === 'ru'
       ? 'Понятные способы изучать таблицу умножения: равные группы, опорные факты, удвоение и повторение.'
       : 'Learn times tables with equal groups, anchor facts, doubling, worked examples, and spaced review.';
-    try { localStorage.setItem(preference, next); }
+    try { if (!embedded) localStorage.setItem(preference, next); }
     catch (_) { /* The language still changes for this visit. */ }
   }
 

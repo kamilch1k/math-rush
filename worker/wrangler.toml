@@ -1,4 +1,5 @@
 name = "math-rush-link"
+account_id = "56b290855a9df9c3d3f0391561b7e4b1"
 main = "src/index.js"
 compatibility_date = "2026-09-09"
 
@@ -11,6 +12,7 @@ html_handling = "none"
 [[d1_databases]]
 binding = "DB"
 database_name = "math-rush-platform"
+database_id = "aab5205d-ab29-4494-bfdf-95494809c4d8"
 migrations_dir = "migrations"
 
 [ai]

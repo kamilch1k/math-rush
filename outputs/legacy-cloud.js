@@ -20,12 +20,12 @@
       try { language = JSON.parse(global.localStorage.getItem('mathRushPreferencesV1') || '{}').language || language; } catch (_) { /* Keep the page language. */ }
     }
     return language === 'ru' ? {
-      workspace: 'Мой кабинет', materials: 'Как учиться', tables: 'Таблица умножения', source: 'Открытый код · MIT', home: 'Главная', loading: 'Загружаем прогресс…',
+      workspace: 'Мой кабинет', learning: 'Обучение', source: 'Открытый код · MIT', home: 'Главная', loading: 'Загружаем прогресс…',
       guest: 'Гостевой режим · прогресс на этом устройстве', synced: 'Прогресс аккаунта синхронизирован',
       pending: 'Прогресс на устройстве · ожидает синхронизации', offline: 'Нет связи · прогресс аккаунта на устройстве',
       conflict: 'Другая версия прогресса · открой кабинет', account: 'Прогресс аккаунта'
     } : {
-      workspace: 'My workspace', materials: 'Learning guides', tables: 'Times tables', source: 'Open source · MIT', home: 'Home', loading: 'Loading progress…',
+      workspace: 'My workspace', learning: 'Learning', source: 'Open source · MIT', home: 'Home', loading: 'Loading progress…',
       guest: 'Guest practice · saved on this device', synced: 'Account progress synced',
       pending: 'Saved on this device · sync pending', offline: 'Offline · account progress on this device',
       conflict: 'Progress conflict · open your workspace', account: 'Account progress'
@@ -62,12 +62,12 @@
       else document.querySelector('main')?.prepend(host);
     }
     const words = labels();
-    [['learn.html', 'materials'], ['multiplication.html', 'tables'], ['workspace.html', 'workspace'], ['https://github.com/kamilch1k/math-rush', 'source']].forEach(([href, label]) => {
+    [['workspace.html', 'workspace'], ['workspace.html#learning', 'learning'], ['https://github.com/kamilch1k/math-rush', 'source']].forEach(([href, label]) => {
       if ([...host.querySelectorAll('a')].some(link => link.getAttribute('href') === href)) return;
       const link = document.createElement('a');
       link.href = href; link.textContent = words[label];
-      link.dataset.ru = { workspace: 'Мой кабинет', materials: 'Как учиться', tables: 'Таблица умножения', source: 'Открытый код · MIT' }[label];
-      link.dataset.en = { workspace: 'My workspace', materials: 'Learning guides', tables: 'Times tables', source: 'Open source · MIT' }[label];
+      link.dataset.ru = { workspace: 'Мой кабинет', learning: 'Обучение', source: 'Открытый код · MIT' }[label];
+      link.dataset.en = { workspace: 'My workspace', learning: 'Learning', source: 'Open source · MIT' }[label];
       if (label === 'workspace') link.dataset.workspaceLink = '';
       if (originalNav) link.style.cssText = 'display:inline-flex;align-items:center;padding:6px 10px;border:1px solid #e4e7ec;border-radius:10px;color:#4f46e5;background:#fff;text-decoration:none;font:700 12px/1.4 system-ui';
       host.appendChild(link);

@@ -16,6 +16,16 @@
     const tutor = () => s.user?.role === 'tutor';
     const classroom = () => s.classroom?.classroom;
 
+    function fullSiteLink() {
+      const configured = global.document?.body?.dataset.fullSite;
+      if (!configured) return '';
+      try {
+        const destination = new URL(configured);
+        if (destination.protocol !== 'https:' || destination.origin === global.location.origin) return '';
+        return `<p><a class="platform-button small outline" href="${e(destination.href)}">${tr('Открыть полный Math Rush', 'Open full Math Rush')} ↗</a></p>`;
+      } catch (_) { return ''; }
+    }
+
     function archive() {
       return `<div class="work-guest-grid"><a class="work-card work-guest-link" href="math-rush.html"><span class="home-feature-icon">x²</span><h3>${tr('Тренажёры', 'Practice archive')}</h3><p>${tr('Арифметика, алгебра, геометрия и задачи на скорость.', 'Arithmetic, algebra, geometry, and speed challenges.')}</p></a><a class="work-card work-guest-link" href="math-map.html"><span class="home-feature-icon">⌁</span><h3>${tr('Карта знаний', 'Learning map')}</h3><p>${tr('Выбери тему и найди свой следующий шаг.', 'Explore topics and find your next step.')}</p></a><a class="work-card work-guest-link" href="runner.html"><span class="home-feature-icon">↗</span><h3>${tr('Математический забег', 'Math runner')}</h3><p>${tr('Решай задачи в игровом режиме.', 'Solve problems in a playful challenge.')}</p></a></div>`;
     }
@@ -23,7 +33,16 @@
     function guest() {
       return heading('Твой следующий шаг', 'Your next step', tr('Сначала понять. Потом — быстрее.', 'Understand it first. Then go further.')) +
         `<div class="work-card work-welcome"><span class="work-welcome-symbol" aria-hidden="true">∞</span><h2>${tr('Немного практики — уже начало.', 'A little practice is a beginning.')}</h2><p>${tr('Попробуй тренажёры без регистрации. Профиль объединяет облачный прогресс, задания и обратную связь преподавателя.', 'Try the practice archive without signing up. An account brings cloud progress, assignments, and tutor feedback together.')}</p>${s.capabilities.database ? link('auth', 'Создать профиль', 'Create an account', 'lime') : '<a class="platform-button lime" href="math-rush.html">' + tr('Начать практику', 'Start practice') + ' ↗</a>'}</div>` +
-        (!s.capabilities.database ? `<div class="work-message">${tr('Сейчас открыта версия с тренажёрами. Облачные профили, задания и обратная связь работают на основном сайте Math Rush в Cloudflare. Здесь практика сохраняется только на этом устройстве.', 'This host provides the practice archive. Cloud accounts, assignments, and tutor feedback are available on the main Cloudflare-hosted Math Rush site. Practice here is saved only on this device.')}</div>` : '') + archive();
+        (!s.capabilities.database ? `<div class="work-message">${tr('Здесь можно учиться и сохранять практику на этом устройстве. Профили, задания и обратная связь доступны в полной версии Math Rush.', 'You can learn and save practice on this device. Accounts, assignments, and tutor feedback are available on the full Math Rush site.')}${fullSiteLink()}</div>` : '') + archive();
+    }
+
+    function learning() {
+      const tables = app.tab() === 'tables';
+      const title = tables ? tr('Таблица умножения', 'Times-table trainer') : tr('Способы учиться', 'Learning methods');
+      const source = tables ? 'multiplication.html' : 'learn.html';
+      return heading('Обучение', 'Learning', tr('Разберись в способе, затем потренируйся. Можно заниматься без регистрации.', 'Explore a method, then practise it. No account is required.')) +
+        `<nav class="work-learning-tabs" aria-label="${tr('Разделы обучения', 'Learning sections')}"><a href="#learning" ${!tables ? 'aria-current="page"' : ''}>${tr('Методики', 'Methods')}</a><a href="#tables" ${tables ? 'aria-current="page"' : ''}>${tr('Таблица умножения', 'Times tables')}</a></nav>` +
+        `<section class="work-learning-panel" aria-label="${title}"><iframe id="learningFrame" class="work-learning-frame" src="${source}?embedded=1&language=${e(s.language)}" title="${title}" scrolling="no"></iframe></section>`;
     }
 
     function auth() {
@@ -85,6 +104,6 @@
       return heading('Твой профиль', 'Your profile', tr('Цели и настройки твоего учебного пространства.', 'Your goals and learning workspace settings.')) + `<div class="work-columns"><section class="work-card"><h2>@${e(u.username)}</h2><form class="work-form" data-form="profile">${field('displayName', tr('Как тебя называть', 'Display name'), { value: u.displayName, required: true, max: 60 })}${area('goal', tr('Учебная цель', 'Learning goal'), 300, u.goal)}${area('bio', tr(tutor() ? 'О преподавателе' : 'О себе (необязательно)', tutor() ? 'About your teaching' : 'About you (optional)'), 1200, u.bio)}${field('languages', tr('Языки через запятую (до пяти)', 'Languages, separated by commas (up to five)'), { value: u.languages.join(', '), max: 200 })}${tutor() ? `<label class="work-check"><input type="checkbox" name="publicProfile" ${u.publicProfile ? 'checked' : ''}><span>${tr('Показывать имя, описание и языки в публичном каталоге преподавателей.', 'Show my name, bio, and languages in the public tutor directory.')}</span></label>` : `<small>${tr('Профиль ученика не публикуется в каталоге.', 'Learner profiles are not listed in the public directory.')}</small>`}${note()}${submit('Сохранить профиль', 'Save profile')}</form></section><aside class="work-stack"><section class="work-card"><h2>${tr('Твой прогресс', 'Your progress')}</h2><p id="profileSyncDescription">${e(app.syncText())}</p><button class="platform-button small outline" data-action="sync">${tr('Синхронизировать', 'Sync now')} ↻</button><p style="margin-top:18px">${tr('Гостевую практику можно перенести в пустой аккаунт. Прогресс существующего профиля остаётся на месте.', 'Guest practice can be imported into an empty account. Existing account progress is kept.')}</p><button class="work-text-button" data-action="import-guest">${tr('Перенести гостевую практику', 'Import guest practice')}</button><br><button type="button" class="work-text-button" data-action="export-progress">${tr('Скачать прогресс и резервные копии', 'Export progress and device backups')}</button></section>${!tutor() && s.capabilities.tutorInvites ? `<section class="work-card"><h2>${tr('Ты преподаватель?', 'Are you a tutor?')}</h2><p>${tr('Для доступа к классу и заданиям нужен код приглашения преподавателя.', 'A tutor invitation is required to manage a classroom and assignments.')}</p><form class="work-form" data-form="activate">${field('inviteCode', tr('Код преподавателя', 'Tutor invitation'), { required: true, max: 256, type: 'password', autocomplete: 'off' })}${note()}${submit('Активировать', 'Activate')}</form></section>` : ''}<section class="work-card"><h2>${tr('Аккаунт', 'Account')}</h2><p>${tr(tutor() ? 'Роль: преподаватель' : 'Роль: ученик', tutor() ? 'Role: tutor' : 'Role: learner')}</p><button class="work-text-button" data-action="logout">${tr('Выйти из профиля', 'Sign out')}</button></section></aside></div>`;
     }
 
-    return { guest, auth, today, practice, assignments, feedback, tutors, profile };
+    return { guest, auth, today, learning, practice, assignments, feedback, tutors, profile };
   };
 })(window);

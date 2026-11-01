@@ -71,7 +71,8 @@ export default {
       const headers = new Headers(response.headers);
       headers.set('X-Content-Type-Options', 'nosniff');
       headers.set('Referrer-Policy', 'same-origin');
-      headers.set('X-Frame-Options', 'DENY');
+      const learningContent = ['/learn.html', '/multiplication.html'].includes(url.pathname);
+      headers.set('X-Frame-Options', learningContent ? 'SAMEORIGIN' : 'DENY');
       return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
     } catch (error) {
       if (error instanceof HttpError) {

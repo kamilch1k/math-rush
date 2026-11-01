@@ -140,7 +140,10 @@
   function connect(user) {
     if (!user || user.id === null || user.id === undefined || !String(user.id)) return Promise.reject(new TypeError('An authenticated user id is required.'));
     const userId = String(user.id);
-    if (session?.userId === userId) return session.connectPromise || Promise.resolve(status());
+    if (session?.userId === userId) {
+      session.user = user;
+      return session.connectPromise || Promise.resolve(status());
+    }
     generation += 1;
     const wasGuest = !session;
     cancel(session);
@@ -152,7 +155,7 @@
     progress.setAccount(userId);
     const meta = readMeta(userId);
     const candidate = {
-      userId, generation, revision: Number.isInteger(meta.revision) && meta.revision >= 0 ? meta.revision : 0,
+      userId, user, generation, revision: Number.isInteger(meta.revision) && meta.revision >= 0 ? meta.revision : 0,
       dirty: Boolean(meta.dirty), importedGuest: Boolean(meta.importedGuest),
       state: 'connecting', message: '', loaded: false, changes: 0, conflict: null,
       controller: typeof global.AbortController === 'function' ? new global.AbortController() : null
@@ -336,7 +339,7 @@
     return status();
   }
 
-  const api = { connect, disconnect, sync, importGuest, exportLocal, useCloudCopy, status };
+  const api = { connect, disconnect, sync, importGuest, exportLocal, useCloudCopy, status, currentUser: () => session?.user || null };
   global.MathRushCloud = api;
   api.ready = global.location && /^https?:$/.test(global.location.protocol) && typeof global.fetch === 'function'
     ? bootstrap() : Promise.resolve(status());

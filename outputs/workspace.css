@@ -18,6 +18,12 @@
 #sidebarAccount { margin-top: 13px; padding-top: 15px; border-top: 1px solid var(--line); font-size: 11px; }
 #sidebarAccount strong { display: block; color: var(--accent-dark); font-weight: 600; }
 .work-main { width: 100%; max-width: 1420px; margin: 0 auto; padding: 41px clamp(24px, 4vw, 65px) 60px; }
+.work-learning-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; padding: 5px; width: fit-content; max-width: 100%; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.work-learning-tabs a { padding: 10px 16px; border-radius: 10px; color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 800; }
+.work-learning-tabs a[aria-current="page"] { background: var(--accent-soft); color: var(--accent-dark); }
+.work-learning-tabs a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.work-learning-panel { min-width: 0; }
+.work-learning-frame { display: block; width: 100%; height: 480px; border: 0; background: transparent; }
 .work-loading { padding: 50px; text-align: center; font-size: 24px; font-weight: 600; color: var(--accent); }
 .work-page-header { display: flex; align-items: end; justify-content: space-between; gap: 25px; margin-bottom: 30px; }
 .work-page-header h1 { margin: 8px 0 0; font-family: inherit; font-size: 32px; line-height: 1.3; font-weight: 900; letter-spacing: -.05em; }

@@ -1,8 +1,9 @@
 (function (global) {
   'use strict';
   const core = global.MathRushMultiplication, $ = id => document.getElementById(id);
-  let language = 'ru';
-  try { language = localStorage.getItem('mathRushHomeLanguage') === 'en' ? 'en' : 'ru'; } catch (_) {}
+  const embedded = global.MathRushEmbed?.embedded;
+  let language = embedded ? global.MathRushEmbed.language : 'ru';
+  try { if (!embedded) language = localStorage.getItem('mathRushHomeLanguage') === 'en' ? 'en' : 'ru'; } catch (_) {}
   const state = { mode: 'explore', question: null, results: [], recent: [], hinted: false, answered: false, started: 0 };
   const tr = (ru, en) => language === 'ru' ? ru : en;
   const e = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -22,7 +23,7 @@
     document.title = tr('Таблица умножения — Math Rush', 'Times tables — Math Rush');
     document.querySelectorAll('[data-ru][data-en]').forEach(node => { node.textContent = node.dataset[language]; });
     document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === language)));
-    try { localStorage.setItem('mathRushHomeLanguage', language); } catch (_) {}
+    try { if (!embedded) localStorage.setItem('mathRushHomeLanguage', language); } catch (_) {}
     explore(); renderMap();
     if (state.mode !== 'explore') {
       renderQuestion();

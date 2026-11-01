@@ -5,6 +5,19 @@ import { readFileSync } from 'node:fs';
 import worker from '../worker/src/index.js';
 import { rate } from '../worker/src/http.js';
 
+test('only learning content permits same-origin workspace embedding', async () => {
+  const env = { ASSETS: { async fetch() { return new Response('<!doctype html><title>Math Rush</title>'); } } };
+  for (const path of ['/learn', '/materials', '/multiplication', '/learn.html?embedded=1', '/multiplication.html?embedded=1']) {
+    const response = await worker.fetch(new Request(`https://math.example${path}`), env);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('X-Frame-Options'), 'SAMEORIGIN', path);
+  }
+  for (const path of ['/', '/workspace', '/workspace.html', '/profile', '/quizzes']) {
+    const response = await worker.fetch(new Request(`https://math.example${path}`), env);
+    assert.equal(response.headers.get('X-Frame-Options'), 'DENY', path);
+  }
+});
+
 // Exercise the actual handlers against SQLite, using the same prepared-statement
 // and transactional batch contract as D1. No mock authorization or grading code.
 class Statement {

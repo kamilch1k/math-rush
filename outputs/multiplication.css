@@ -1,6 +1,20 @@
 button { cursor:pointer; }
 button:disabled { cursor:default; opacity:.6; }
 [hidden] { display:none!important; }
+.embed-intro { display:none; }
+html.mathrush-embedded body { display:flow-root; min-height:0; margin:0; background:transparent; }
+html.mathrush-embedded .page { width:100%; max-width:none; margin:0; padding:0 0 8px; }
+html.mathrush-embedded .site-nav,
+html.mathrush-embedded .hero,
+html.mathrush-embedded .facts-footer,
+html.mathrush-embedded .learn-skip,
+html.mathrush-embedded .legacy-cloud-status { display:none!important; }
+html.mathrush-embedded .embed-intro { display:block; margin-bottom:18px; }
+html.mathrush-embedded .embed-intro h2 { margin:0 0 8px; font-size:25px; line-height:1.2; letter-spacing:-.035em; }
+html.mathrush-embedded .embed-intro p { margin:0 0 10px; color:var(--muted); }
+html.mathrush-embedded .embed-intro a { color:var(--accent-dark); font-size:14px; font-weight:750; }
+html.mathrush-embedded .panel { box-shadow:none; }
+html.mathrush-embedded .facts-tabs { margin-top:0; }
 :focus-visible { outline:3px solid #aba5ff; outline-offset:3px; }
 .facts-language { display:flex; gap:4px; }
 .facts-language button,.facts-tabs button { border:0; border-radius:10px; padding:9px 12px; color:var(--muted); background:transparent; font-weight:800; }
