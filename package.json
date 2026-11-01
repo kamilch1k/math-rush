@@ -1,0 +1,27 @@
+{
+  "name": "math-rush",
+  "version": "1.0.0",
+  "description": "Fast, arcade-style mental-math trainer that runs as a static site. Pick a mode, solve against the clock, earn XP, and climb a knowledge map from addition to derivatives.",
+  "scripts": {
+    "dev": "wrangler dev --config worker/wrangler.local.toml --port 8787 --persist-to .wrangler/state",
+    "db:local": "wrangler d1 migrations apply math-rush-platform --local --config worker/wrangler.local.toml --persist-to .wrangler/state",
+    "test": "node tests/progress.cjs && node tests/derivatives.cjs && node tests/quiz-settings.cjs && node tests/site-smoke.cjs && node tests/program-exams.cjs && node tests/runner-play.cjs && node --test tests/cloud-progress.test.cjs tests/platform-api.test.mjs tests/legacy-account.test.cjs",
+    "check:worker": "wrangler deploy --dry-run --config worker/wrangler.toml",
+    "deploy": "wrangler deploy --config worker/wrangler.toml"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamilch1k/math-rush.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kamilch1k/math-rush/issues"
+  },
+  "homepage": "https://github.com/kamilch1k/math-rush#readme",
+  "devDependencies": {
+    "wrangler": "^4.156.0"
+  }
+}

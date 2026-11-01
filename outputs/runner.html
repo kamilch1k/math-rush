@@ -33,7 +33,7 @@
   </style>
 </head>
 <body>
-  <main class="page page-runner">
+  <main inert class="page page-runner">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
     <section class="panel game-panel" aria-label="Врата чисел 3D">
       <div class="runner-stage">
@@ -48,9 +48,12 @@
     </section>
   </main>
   <script src="progress.js"></script>
+<script src="cloud-progress.js"></script>
+<script src="legacy-cloud.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
   <script>
-    (() => {
+    (async () => {
+      if (globalThis.MathRushCloud) await MathRushCloud.ready;
       const $ = (id) => document.getElementById(id);
       const hasGL = typeof window !== 'undefined' && !!window.THREE;
 
@@ -379,7 +382,7 @@
         stopRunnerGame();
         const keepBest = runner && runner.best ? runner.best : 0;
         runner = runnerDefault();
-        try { runner.best = Number(localStorage.getItem('mathRushRunnerBest') || keepBest || 0) || 0; } catch (_) { runner.best = keepBest || 0; }
+        try { runner.best = Number(localStorage.getItem(globalThis.MathRushLegacy?.key('mathRushRunnerBest') || 'mathRushRunnerBest') || keepBest || 0) || 0; } catch (_) { runner.best = keepBest || 0; }
         runner.active = true;
         $('runnerOver').classList.add('hidden');
         if (!runner.scene) initRunnerGL();
@@ -463,7 +466,7 @@
         beep(420, 0.5, 'sawtooth', 0.09, 70);
         if (runner.score > runner.best) {
           runner.best = runner.score;
-          try { localStorage.setItem('mathRushRunnerBest', String(runner.best)); } catch (_) { /* private mode */ }
+          try { localStorage.setItem(globalThis.MathRushLegacy?.key('mathRushRunnerBest') || 'mathRushRunnerBest', String(runner.best)); } catch (_) { /* private mode */ }
         }
         drawRunner();
         $('runnerFinal').textContent = `Счёт ${Math.floor(runner.score)} · Рекорд ${Math.floor(runner.best)}`;

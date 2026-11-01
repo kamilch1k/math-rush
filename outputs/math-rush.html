@@ -429,7 +429,7 @@
 </head>
 <body>
   <button id="exitBtn" class="exit-button" type="button" aria-label="В меню" title="В меню">←</button>
-  <main class="app">
+  <main inert class="app">
     <section class="card">
       <nav class="page-nav" aria-label="Главная навигация">
         <span class="brand">Math Rush</span>
@@ -817,9 +817,12 @@
   </main>
 
   <script src="progress.js"></script>
+  <script src="cloud-progress.js"></script>
+  <script src="legacy-cloud.js"></script>
   <script src="map-board.js"></script>
   <script>
-    (() => {
+    (async () => {
+      if (globalThis.MathRushCloud) await MathRushCloud.ready;
       const START_TIME = 90;
       const HANDWRITING_ENABLED = false;
       const $ = (id) => document.getElementById(id);
@@ -1198,6 +1201,9 @@
       function levelFor(totalScore) { return Math.floor(totalScore / LEVEL_STEP) + 1; }
 
       function loadProfile() {
+        const accountScore = globalThis.MathRushLegacy?.score();
+        if (accountScore !== null && accountScore !== undefined) { profile.totalScore = accountScore; return; }
+        profile.totalScore = 0;
         let raw = '';
         try { raw = localStorage.getItem(PROFILE_STORAGE_KEY) || ''; } catch (error) { raw = ''; }
         if (!raw) {
@@ -1213,6 +1219,7 @@
       }
 
       function saveProfile() {
+        if (globalThis.MathRushLegacy?.accountId()) return;
         const raw = JSON.stringify(profile);
         try { localStorage.setItem(PROFILE_STORAGE_KEY, raw); } catch (error) { /* Cookie fallback below. */ }
         try { document.cookie = `${PROFILE_STORAGE_KEY}=${encodeURIComponent(raw)}; Max-Age=31536000; Path=/; SameSite=Lax`; } catch (error) { /* Storage may be unavailable in private file views. */ }
@@ -1242,7 +1249,7 @@
 
       function addProfilePoint() {
         const previousLevel = levelFor(profile.totalScore);
-        profile.totalScore += 1;
+        if (globalThis.MathRushLegacy?.accountId()) loadProfile(); else profile.totalScore += 1;
         saveProfile();
         updateProfileUI();
         return levelFor(profile.totalScore) > previousLevel;
@@ -2968,12 +2975,12 @@
         if (!globalThis.MathRushProgress) return;
         const data = MathRushProgress.load();
         const ui = interfaceText[currentLanguage];
-        const attempts = data.attempts || [];
-        const correct = attempts.filter((attempt) => attempt.isCorrect).length;
+        const attempts = Object.values(data.skills).reduce((sum, skill) => sum + (Number(skill.attempts) || 0), 0);
+        const correct = Object.values(data.skills).reduce((sum, skill) => sum + (Number(skill.correctAttempts) || 0), 0);
         $('spaProfileLevel').textContent = MathRushProgress.levelForXp(data.totalXp);
         $('spaProfileXp').textContent = `${data.totalXp} XP`;
-        $('spaAttempts').textContent = attempts.length;
-        $('spaAccuracy').textContent = `${attempts.length ? Math.round(correct / attempts.length * 100) : 0}%`;
+        $('spaAttempts').textContent = attempts;
+        $('spaAccuracy').textContent = `${attempts ? Math.round(correct / attempts * 100) : 0}%`;
         const categoryNames = ui.categories;
         $('spaCategories').textContent = '';
         Object.entries(categoryNames).forEach(([key, title]) => {
@@ -3043,14 +3050,14 @@
       };
       let testRun = null;
       function loadTestStore() {
-        try { return JSON.parse(localStorage.getItem(TEST_STORE_KEY) || '{}'); } catch (_) { return {}; }
+        try { return JSON.parse(localStorage.getItem(globalThis.MathRushLegacy?.key(TEST_STORE_KEY) || TEST_STORE_KEY) || '{}'); } catch (_) { return {}; }
       }
       function saveTestBest(id, pct) {
         try {
           const store = loadTestStore();
           const prev = (store[id] && store[id].best) || 0;
           store[id] = { best: Math.max(prev, pct), at: new Date().toISOString() };
-          localStorage.setItem(TEST_STORE_KEY, JSON.stringify(store));
+          localStorage.setItem(globalThis.MathRushLegacy?.key(TEST_STORE_KEY) || TEST_STORE_KEY, JSON.stringify(store));
         } catch (_) { /* Best score stays for this visit only. */ }
       }
       function shuffleTestQueue(items) {
@@ -4035,6 +4042,11 @@
       [factorFrom, factorTo].forEach((control) => control.addEventListener('change', readSettings));
       [startTimeSelect, timeBonusSelect, streakGoalSelect, difficultySelect].forEach((control) => control.addEventListener('change', () => { updateSelectedModeConfigFromGlobalControls(control); readSettings(); }));
       document.querySelectorAll('.mix-options input').forEach((control) => control.addEventListener('change', readSettings));
+      if (globalThis.MathRushCloud) window.addEventListener('mathrush:progress', () => Promise.resolve().then(() => {
+        loadProfile(); updateProfileUI();
+        if (!mapView.classList.contains('hidden')) renderSpaMap();
+        if (!profileView.classList.contains('hidden')) renderSpaProfile();
+      }));
       loadProfile();
       applyLanguage();
       const requestedSkill = typeof location === 'undefined' ? '' : new URLSearchParams(location.search).get('skill');

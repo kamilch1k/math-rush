@@ -4,6 +4,8 @@
   const STORAGE_KEY = 'mathRushLearningV2';
   const LEGACY_KEY = 'mathRushProfileV1';
   const MAX_ATTEMPTS = 500;
+  const SKILL_HISTORY = 20;
+  let accountId = null;
 
   const skills = [
     { id: 'addition', title: 'Сложение', category: 'arithmetic', prerequisites: [], mode: 'addition-ten' },
@@ -74,13 +76,40 @@
     return { version: 2, totalXp: 0, attempts: [], skills: {}, streakDays: 0, lastActiveDate: null };
   }
 
+  function storageKey() {
+    return accountId === null ? STORAGE_KEY : `${STORAGE_KEY}:account:${encodeURIComponent(accountId)}`;
+  }
+
+  function setAccount(id) {
+    accountId = id === null || id === undefined ? null : String(id);
+    return load();
+  }
+
+  function recentForSkill(skillId, data) {
+    const retained = data.skills[skillId]?.recentAttempts;
+    return (Array.isArray(retained) ? retained : data.attempts.filter((attempt) => attempt.skillId === skillId)).slice(-SKILL_HISTORY);
+  }
+
+  function normalize(data) {
+    const normalized = Object.assign(emptyData(), data);
+    normalized.attempts = Array.isArray(normalized.attempts) ? normalized.attempts.slice(-MAX_ATTEMPTS) : [];
+    normalized.skills = normalized.skills && typeof normalized.skills === 'object' && !Array.isArray(normalized.skills) ? normalized.skills : {};
+    normalized.totalXp = Math.max(0, Number(normalized.totalXp) || 0);
+    Object.keys(normalized.skills).forEach((id) => {
+      const summary = normalized.skills[id];
+      if (!summary || typeof summary !== 'object') { delete normalized.skills[id]; return; }
+      summary.recentAttempts = recentForSkill(id, normalized);
+    });
+    return normalized;
+  }
+
   function load() {
     let data = emptyData();
     try {
-      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (parsed && parsed.version === 2) data = Object.assign(data, parsed);
+      const parsed = JSON.parse(localStorage.getItem(storageKey()) || 'null');
+      if (parsed && parsed.version === 2) data = normalize(parsed);
     } catch (_) { /* Local storage can be unavailable. */ }
-    if (!data.totalXp) {
+    if (accountId === null && !data.totalXp) {
       try {
         const legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
         if (legacy && Number.isFinite(Number(legacy.totalScore))) data.totalXp = Math.max(0, Math.floor(Number(legacy.totalScore)) * 10);
@@ -90,14 +119,18 @@
   }
 
   function save(data) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (_) { /* Keep the session usable without persistence. */ }
+    data = normalize(data);
+    try { localStorage.setItem(storageKey(), JSON.stringify(data)); } catch (_) { /* Keep the session usable without persistence. */ }
+    if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+      global.dispatchEvent(new global.CustomEvent('mathrush:progress', { detail: { progress: data, accountId } }));
+    }
     return data;
   }
 
   function masteryFor(skillId, data = load()) {
-    const attempts = data.attempts.filter((attempt) => attempt.skillId === skillId);
+    const attempts = recentForSkill(skillId, data);
     if (!attempts.length) return 0;
-    const recent = attempts.slice(-20);
+    const recent = attempts;
     let weight = 0;
     let earned = 0;
     recent.forEach((attempt, index) => {
@@ -117,7 +150,7 @@
 
   function stateFor(skill, data = load()) {
     const mastery = masteryFor(skill.id, data);
-    const attempts = data.attempts.filter((attempt) => attempt.skillId === skill.id).length;
+    const attempts = data.skills[skill.id]?.attempts || recentForSkill(skill.id, data).length;
     if (mastery >= 80) return 'mastered';
     if (attempts) return 'learning';
     if (readinessFor(skill, data) < 35) return 'locked';
@@ -138,7 +171,9 @@
     if (!skills.some((skill) => skill.id === skillId)) return load();
     const data = load();
     const xp = isCorrect ? 10 + ({ simple: 0, advanced: 3, expert: 6 }[difficulty] || 0) : 0;
-    data.attempts.push({ skillId, problemType: mode, isCorrect: Boolean(isCorrect), duration: Math.max(0, Math.round(Number(durationMs) || 0)), difficulty, xp, createdAt: new Date().toISOString() });
+    const recentAttempts = recentForSkill(skillId, data);
+    const attempt = { skillId, problemType: mode, isCorrect: Boolean(isCorrect), duration: Math.max(0, Math.round(Number(durationMs) || 0)), difficulty, xp, createdAt: new Date().toISOString() };
+    data.attempts.push(attempt);
     if (data.attempts.length > MAX_ATTEMPTS) data.attempts = data.attempts.slice(-MAX_ATTEMPTS);
     data.totalXp += xp;
     const summary = data.skills[skillId] || { xp: 0, attempts: 0, correctAttempts: 0, lastPracticedAt: null };
@@ -146,6 +181,7 @@
     summary.attempts += 1;
     if (isCorrect) summary.correctAttempts += 1;
     summary.lastPracticedAt = new Date().toISOString();
+    summary.recentAttempts = recentAttempts.concat(attempt).slice(-SKILL_HISTORY);
     data.skills[skillId] = summary;
     updateDailyStreak(data);
     return save(data);
@@ -162,5 +198,5 @@
     return { mastery, skills: categorySkills.length };
   }
 
-  global.MathRushProgress = { STORAGE_KEY, skills, modeToSkill, load, save, recordAttempt, masteryFor, readinessFor, stateFor, skillById, modeForSkill, hrefForSkill, levelForXp, categorySummary };
+  global.MathRushProgress = { STORAGE_KEY, skills, modeToSkill, emptyData, storageKey, setAccount, load, save, recordAttempt, masteryFor, readinessFor, stateFor, skillById, modeForSkill, hrefForSkill, levelForXp, categorySummary };
 })(window);

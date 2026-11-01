@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f3eb"><title>Личный кабинет — Math Rush</title>
+  <link rel="stylesheet" href="platform.css"><link rel="stylesheet" href="workspace.css">
+  <script src="progress.js" defer></script><script src="cloud-progress.js" defer></script>
+  <script src="workspace-views.js" defer></script><script src="workspace-forms.js" defer></script><script src="workspace.js" defer></script>
+</head>
+<body>
+  <header class="work-header"><a class="platform-brand" href="home.html"><span class="platform-mark" aria-hidden="true">×</span>Math Rush</a><nav class="work-archive" aria-label="Практика"><a href="math-rush.html" data-label="quizzes">Все тренажёры</a><a href="math-map.html" data-label="map">Карта знаний</a><a href="runner.html" data-label="runner">Математический забег</a></nav><div class="work-header-tools"><div class="platform-language" role="group" aria-label="Language / Язык"><button data-language="ru" aria-pressed="true">RU</button><span>/</span><button data-language="en" aria-pressed="false">EN</button></div><span id="accountBadge" class="work-avatar" aria-hidden="true">∴</span></div></header>
+  <div class="work-layout"><aside class="work-sidebar"><div><p class="work-sidebar-label" id="workspaceLabel">МОЙ КАБИНЕТ</p><nav id="workspaceNav" aria-label="Личный кабинет"></nav></div><div class="work-sidebar-bottom"><span class="work-sync-dot"></span><span id="syncStatus" role="status">Загружаем…</span><button type="button" class="work-text-button" data-action="sync" id="syncButton" hidden>↻</button><div id="sidebarAccount"></div></div></aside><main class="work-main" id="mainContent"><div class="work-loading">Math Rush <span>· · ·</span></div></main></div>
+  <div class="work-toast" id="workspaceToast" role="status" hidden></div>
+  <dialog id="recoveryDialog" class="work-recovery"><p class="platform-label" id="recoveryEyebrow">Доступ к профилю</p><h2 id="recoveryTitle">Сохрани код восстановления</h2><p id="recoveryDescription">Этот код показывается один раз. Сохрани его в надёжном месте: он понадобится, если забудешь пароль.</p><code id="recoveryCode"></code><p id="recoveryPrivate">Не отправляй этот код преподавателю или другим людям.</p><button type="button" class="platform-button" id="recoverySaved">Я сохранил код</button></dialog>
+</body>
+</html>

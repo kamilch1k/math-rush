@@ -1,8 +1,19 @@
 # Math Rush — Математический рывок
 
-Fast, arcade-style mental-math trainer that runs as a static site. Pick a mode, solve against the clock, earn XP, and climb a knowledge map from addition to derivatives.
+Maths practice, guided hints, and a human perspective. The platform connects student profiles, saved progress, tutor assignments, and written feedback with the existing arcade trainer and knowledge map.
 
-Live stack: single-file SPA (`outputs/math-rush.html`) + standalone pages + `progress.js` XP engine + Cloudflare Worker for clean routes. No backend, no build step. Progress lives in `localStorage`.
+The Cloudflare Worker provides the account API and D1 persistence. AI hints use an optional Workers AI binding; independently checked mathematical hints remain available when inference is unavailable. Guest practice works without registration. GitHub Pages serves a static mirror of the practice tools; account features require the Cloudflare origin.
+
+## Tutoring platform
+
+- Russian/English home page and student/tutor workspace.
+- Username/passphrase accounts, one-time recovery codes, protected sessions, and account-scoped progress.
+- Server-generated and checked fractions, equations, and percentage questions.
+- Invitation-only tutor activation, classroom codes, assignments, and private written feedback.
+- Opt-in public tutor cards, with no invented teachers or reviews.
+- Explicit guest-progress import, offline account caches, and safe conflict recovery with device exports/backups.
+
+See [platform operations](worker/PLATFORM.md) for database setup, tutor activation, API contracts, and current limitations. This is a practice and written-feedback platform; it does not provide video calls, payment processing, or a staffed tutoring service.
 
 > UI is Russian-first, with full EN / FR / ES / DE translations.
 
@@ -20,7 +31,7 @@ Live stack: single-file SPA (`outputs/math-rush.html`) + standalone pages + `pro
 ## Project structure
 
 ```
-index.html                -> redirect to outputs/math-rush.html
+index.html                -> redirect to outputs/home.html
 outputs/
   math-rush.html          # main SPA: tasks + mapView + profileView + game
   math-map.html           # standalone knowledge-map page (same progress.js)
@@ -39,7 +50,17 @@ worker/
 
 ## Run locally
 
-No dependencies. Any static server works:
+For the complete local platform (Node.js and the locked Wrangler dependency):
+
+```bash
+npm ci
+npm run db:local
+npm run dev
+```
+
+Open the printed local URL. Local configuration uses its own database; it does not contact the production database. To enable a local test tutor, set a test-only `TUTOR_INVITE_CODE` in the ignored `worker/.dev.vars` file.
+
+The static practice archive can also run with any static server:
 
 ```bash
 # from repo root
@@ -55,10 +76,8 @@ Direct file open also works, except `fetch`/worker routes.
 Node only, no deps:
 
 ```bash
-node tests/site-smoke.cjs
-node tests/quiz-settings.cjs
-node tests/progress.cjs
-node tests/derivatives.cjs
+npm test
+npm run check:worker
 ```
 
 ## Deploy (Cloudflare)
@@ -69,7 +88,7 @@ wrangler login
 wrangler deploy
 ```
 
-Routes: `/` `/quizzes` → `math-rush.html`, `/map` → `math-map.html`, `/profile`, `/settings`, `/derivatives`. `/api/check-handwriting` intentionally returns `503 RECOGNITION_NOT_CONFIGURED` until a provider + secret is configured — never put keys in `outputs/`.
+Routes: `/` → `home.html`; `/workspace`, `/learn`, `/dashboard`, `/tutors` → `workspace.html`; `/quizzes` → `math-rush.html`; `/map` → `math-map.html`; plus `/profile`, `/settings`, `/derivatives`, and `/runner`. `/api/check-handwriting` returns `503 RECOGNITION_NOT_CONFIGURED` until a recognition provider is configured. Never put API keys in browser assets.
 
 ## Knowledge map & skills
 

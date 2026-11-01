@@ -71,16 +71,19 @@
   </style>
 </head>
 <body>
-  <main class="page map-page-fullscreen">
+  <main inert class="page map-page-fullscreen">
     <nav class="site-nav" aria-label="Главная навигация"><a class="brand" href="math-rush.html">Math Rush</a><div class="nav-links"><a href="math-rush.html">Задачи</a><a class="active" href="math-map.html">Карта</a><a href="profile.html">Профиль</a><a href="settings.html">Настройки</a></div></nav>
     <section class="panel board-frame map-board-shell" aria-label="Карта навыков"><div class="board-viewport" data-board-viewport><div data-board-content><div class="map-canvas-head"><header><p class="eyebrow">Путь ученика</p><h1>Карта математики</h1><p class="lead">Сначала счёт по нарастающей: сложение и вычитание, умножение и деление, столбики, затем порядок действий, скобки и дроби.</p><div class="board-plaque">Математика · Карта знаний</div></header><div id="boardStats" class="map-canvas-stats board-stats"></div></div><div class="root-node">МАТЕМАТИКА</div><div id="branches" class="branches"></div></div></div><button type="button" class="map-reset-btn" data-board-home aria-label="Вернуть карту к началу" title="Вернуть карту к началу">↑</button><section id="skillDetail" class="panel skill-detail map-hud-detail" aria-live="polite"></section></section>
   </main>
   <script src="progress.js"></script>
+<script src="cloud-progress.js"></script>
+<script src="legacy-cloud.js"></script>
   <script src="map-board.js"></script>
   <script>
-    (() => {
+    (async () => {
+      if (globalThis.MathRushCloud) await MathRushCloud.ready;
       const progress = window.MathRushProgress;
-      const data = progress.load();
+      let data = progress.load();
       const categories = { arithmetic: 'АРИФМЕТИКА', algebra: 'АЛГЕБРА', geometry: 'ГЕОМЕТРИЯ' };
       const branchHost = document.getElementById('branches');
       const detail = document.getElementById('skillDetail');
@@ -95,6 +98,9 @@
         return (depths[id] = 1 + Math.max(...skill.prerequisites.map((pre) => depthOf(pre, [...stack, id]))));
       };
       progress.skills.forEach((skill) => depthOf(skill.id));
+      function render() {
+      data = progress.load();
+      branchHost.textContent = ''; statsHost.textContent = '';
       const total = progress.skills.length;
       const mastered = progress.skills.filter((s) => progress.masteryFor(s.id, data) >= 80).length;
       const avg = Math.round(progress.skills.reduce((sum, s) => sum + progress.masteryFor(s.id, data), 0) / Math.max(1, total));
@@ -125,6 +131,10 @@
       });
       const algebraDefault = progress.skillById('powers') || progress.skills[0];
       renderDetail(algebraDefault);
+      if (globalThis.MathRushBoard) MathRushBoard.init();
+      }
+      render();
+      window.addEventListener('mathrush:progress', render);
     })();
   </script>
   <!-- Cloudflare Web Analytics -->

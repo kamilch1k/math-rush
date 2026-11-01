@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f3eb">
+  <meta name="description" content="Math Rush — практика математики, подсказки и письменная обратная связь преподавателя. Учись в своём темпе и сохраняй прогресс.">
+  <title>Math Rush — математика, которая складывается</title>
+  <link rel="stylesheet" href="platform.css">
+  <script src="home.js" defer></script>
+</head>
+<body>
+  <div class="platform-container">
+    <header class="platform-nav">
+      <a class="platform-brand" href="home.html" aria-label="Math Rush — главная"><span class="platform-mark" aria-hidden="true">×</span>Math Rush</a>
+      <nav class="platform-nav-links" aria-label="Главная навигация">
+        <a href="math-rush.html" data-ru="Практика" data-en="Practice">Практика</a>
+        <a href="math-map.html" data-ru="Карта знаний" data-en="Learning map">Карта знаний</a>
+        <a href="workspace.html#tutors" data-ru="Преподаватель" data-en="Tutor feedback">Преподаватель</a>
+      </nav>
+      <div class="platform-nav-tools">
+        <div class="platform-language" role="group" aria-label="Language / Язык">
+          <button type="button" data-language="ru" aria-pressed="true">RU</button><span aria-hidden="true">/</span><button type="button" data-language="en" aria-pressed="false">EN</button>
+        </div>
+        <a href="workspace.html#auth" class="platform-button small" data-ru="Войти в профиль" data-en="Sign in">Войти в профиль</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="home-hero" aria-labelledby="hero-title">
+        <div class="home-hero-copy">
+          <p class="platform-label" data-ru="Математика, которая складывается" data-en="Make sense of mathematics">Математика, которая складывается</p>
+          <h1 id="hero-title"><span data-ru="Сначала" data-en="Understand">Сначала</span><br><em data-ru="понять." data-en="it first.">понять.</em><br><span data-ru="Потом — быстрее." data-en="Then go further.">Потом — быстрее.</span></h1>
+          <p class="home-intro" data-ru="Короткая практика, понятные подсказки и обратная связь преподавателя. Собери уверенность в математике — шаг за шагом, в своём темпе." data-en="Focused practice, clear hints, and feedback from a tutor. Build confidence in maths — one step at a time, at your own pace.">Короткая практика, понятные подсказки и обратная связь преподавателя. Собери уверенность в математике — шаг за шагом, в своём темпе.</p>
+          <div class="home-hero-actions">
+            <a href="workspace.html#practice" class="platform-button"><span data-ru="Начать учиться" data-en="Start learning">Начать учиться</span><span aria-hidden="true">↗</span></a>
+            <a href="math-rush.html" class="home-text-link"><span data-ru="Попробовать практику" data-en="Try a practice round">Попробовать практику</span><span aria-hidden="true">→</span></a>
+          </div>
+          <p class="home-small-note" data-ru="Практику можно попробовать без регистрации." data-en="You can try practice without creating an account.">Практику можно попробовать без регистрации.</p>
+        </div>
+
+        <div class="home-board" aria-label="Пример пошагового решения уравнения">
+          <div class="home-board-top"><span data-ru="ОДНА ЗАДАЧА. ПОНЯТНЫЙ ПУТЬ." data-en="ONE PROBLEM. A CLEAR PATH.">ОДНА ЗАДАЧА. ПОНЯТНЫЙ ПУТЬ.</span><span class="home-board-tag" data-ru="Пример разбора" data-en="Worked example">Пример разбора</span></div>
+          <div class="home-board-problem"><p data-ru="Найди неизвестное" data-en="Find the unknown">Найди неизвестное</p><div class="home-formula">3<span>x</span> + 5 = 20</div></div>
+          <div class="home-board-step"><span class="home-step-number">1</span><span data-ru="Вычтем 5 из обеих частей → 3x = 15" data-en="Subtract 5 from both sides → 3x = 15">Вычтем 5 из обеих частей → 3x = 15</span></div>
+          <div class="home-board-step"><span class="home-step-number">2</span><span data-ru="Разделим обе части на 3" data-en="Divide both sides by 3">Разделим обе части на 3</span></div>
+          <div class="home-board-answer"><div><small data-ru="ТЕПЕРЬ ВСЁ СХОДИТСЯ" data-en="NOW IT ALL ADDS UP">ТЕПЕРЬ ВСЁ СХОДИТСЯ</small><br><strong>x = 5</strong></div><span class="home-check" aria-hidden="true">✓</span></div>
+          <div class="home-float" aria-hidden="true"><span class="home-float-icon">∴</span><div><strong data-ru="Важен ход мысли" data-en="Reasoning comes first">Важен ход мысли</strong><small data-ru="Разбираем каждый шаг" data-en="Make every step clear">Разбираем каждый шаг</small></div></div>
+        </div>
+      </section>
+
+      <div class="home-trust" aria-label="Возможности платформы">
+        <span><b aria-hidden="true">↗</b><span data-ru="От арифметики к алгебре" data-en="From arithmetic to algebra">От арифметики к алгебре</span></span>
+        <span><b aria-hidden="true">◷</b><span data-ru="В удобном темпе" data-en="At your own pace">В удобном темпе</span></span>
+        <span><b aria-hidden="true">⌁</b><span data-ru="Прогресс в личном профиле" data-en="Progress in your account">Прогресс в личном профиле</span></span>
+        <span><b aria-hidden="true">✳</b><span data-ru="ИИ + помощь человека" data-en="AI + human support">ИИ + помощь человека</span></span>
+      </div>
+
+      <section class="home-section" aria-labelledby="approach-title">
+        <div class="home-section-heading">
+          <div><div class="platform-label" data-ru="Как мы учимся" data-en="How learning works">Как мы учимся</div><h2 id="approach-title" data-ru="Практика. Подсказка. Понимание." data-en="Practice. A hint. Understanding.">Практика. Подсказка. Понимание.</h2></div>
+          <p data-ru="Небольшие шаги помогают разобраться в теме и двигаться дальше." data-en="Small steps help you make sense of a topic and move forward.">Небольшие шаги помогают разобраться в теме и двигаться дальше.</p>
+        </div>
+        <div class="home-feature-grid">
+          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">x²</span><span class="home-feature-number">01 /</span></div><h3 data-ru="Пробуй, решай, повторяй" data-en="Try, solve, repeat">Пробуй, решай, повторяй</h3><p data-ru="Выбери тему на карте знаний, настрой сложность и решай задачи. Возвращайся к тем местам, где нужна ещё практика." data-en="Pick a topic on the learning map, set the difficulty, and solve problems. Revisit the areas that need more practice.">Выбери тему на карте знаний, настрой сложность и решай задачи. Возвращайся к тем местам, где нужна ещё практика.</p><a href="math-map.html"><span data-ru="Посмотреть темы" data-en="Explore topics">Посмотреть темы</span><span aria-hidden="true">↗</span></a></article>
+          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">✧</span><span class="home-feature-number">02 /</span></div><h3 data-ru="Подсказка в нужный момент" data-en="A hint when you need it">Подсказка в нужный момент</h3><p data-ru="Застрял на шаге? Запроси подсказку ИИ, затем попробуй продолжить сам. Ответы ИИ можно проверить и обсудить с преподавателем." data-en="Stuck on a step? Ask for an AI hint, then try to continue yourself. AI responses can be checked and discussed with a tutor.">Застрял на шаге? Запроси подсказку ИИ, затем попробуй продолжить сам. Ответы ИИ можно проверить и обсудить с преподавателем.</p><a href="workspace.html#practice"><span data-ru="Открыть задания" data-en="Open your workspace">Открыть задания</span><span aria-hidden="true">↗</span></a></article>
+          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">∴</span><span class="home-feature-number">03 /</span></div><h3 data-ru="Когда нужен человек" data-en="A human perspective">Когда нужен человек</h3><p data-ru="Отправь решение на письменный разбор преподавателю. Сформулируй вопрос и получи обратную связь по своему ходу рассуждений." data-en="Request written feedback on your solution from a tutor. Explain your question and get feedback on your reasoning.">Отправь решение на письменный разбор преподавателю. Сформулируй вопрос и получи обратную связь по своему ходу рассуждений.</p><a href="workspace.html#tutors"><span data-ru="Запросить разбор" data-en="Request feedback">Запросить разбор</span><span aria-hidden="true">↗</span></a></article>
+        </div>
+      </section>
+
+      <section class="home-section home-path-section" aria-labelledby="path-title">
+        <div class="home-path-copy"><div class="platform-label" data-ru="Твой маршрут" data-en="Your learning path">Твой маршрут</div><h2 id="path-title" data-ru="Свой темп. Видимый прогресс." data-en="Your pace. Visible progress.">Свой темп. Видимый прогресс.</h2><p data-ru="В личном кабинете собраны практика, сохранённый прогресс и задания. Начни с того, что знаешь, и постепенно переходи к новым темам." data-en="Keep practice, saved progress, and assignments together in your workspace. Start with what you know and gradually explore new topics.">В личном кабинете собраны практика, сохранённый прогресс и задания. Начни с того, что знаешь, и постепенно переходи к новым темам.</p><a class="home-text-link" href="workspace.html#auth"><span data-ru="Создать профиль" data-en="Create your profile">Создать профиль</span><span aria-hidden="true">→</span></a></div>
+        <div class="home-path">
+          <div class="home-path-item"><span class="home-path-dot" aria-hidden="true">+</span><div><strong data-ru="Уверенная база" data-en="Build a foundation">Уверенная база</strong><small data-ru="Числа, действия и дроби" data-en="Numbers, operations, and fractions">Числа, действия и дроби</small></div><span class="home-path-arrow" aria-hidden="true">↗</span></div>
+          <div class="home-path-item"><span class="home-path-dot" aria-hidden="true">x</span><div><strong data-ru="Новые связи" data-en="Make connections">Новые связи</strong><small data-ru="Уравнения, функции и геометрия" data-en="Equations, functions, and geometry">Уравнения, функции и геометрия</small></div><span class="home-path-arrow" aria-hidden="true">↗</span></div>
+          <div class="home-path-item"><span class="home-path-dot" aria-hidden="true">∞</span><div><strong data-ru="Следующий шаг — твой" data-en="Your next step awaits">Следующий шаг — твой</strong><small data-ru="Практика и поддержка на твоём уровне" data-en="Practice and support at your level">Практика и поддержка на твоём уровне</small></div><span class="home-path-arrow" aria-hidden="true">→</span></div>
+        </div>
+      </section>
+
+      <section class="home-cta" aria-labelledby="start-title"><div><h2 id="start-title" data-ru="Начнём с одной задачи?" data-en="Shall we start with one problem?">Начнём с одной задачи?</h2><p data-ru="Первый шаг не обязан быть большим. Он просто должен быть твоим." data-en="The first step does not have to be big. It just has to be yours.">Первый шаг не обязан быть большим. Он просто должен быть твоим.</p></div><a href="workspace.html#practice" class="platform-button"><span data-ru="Перейти к практике" data-en="Start practising">Перейти к практике</span><span aria-hidden="true">↗</span></a></section>
+    </main>
+
+    <footer class="platform-footer"><a class="platform-brand" href="home.html"><span class="platform-mark" aria-hidden="true">×</span>Math Rush</a><span data-ru="Учимся понимать. Шаг за шагом." data-en="Learn to understand. One step at a time.">Учимся понимать. Шаг за шагом.</span><div class="home-footer-links"><a href="math-rush.html" data-ru="Практика" data-en="Practice">Практика</a><a href="workspace.html" data-ru="Личный кабинет" data-en="Workspace">Личный кабинет</a></div></footer>
+  </div>
+</body>
+</html>
