@@ -6,7 +6,9 @@ import { getProgress, putProgress } from './progress.js';
 
 const PAGE_ROUTES = {
   '/': '/math-rush.html',
-  '/learn': '/workspace.html',
+  '/learn': '/learn.html',
+  '/materials': '/learn.html',
+  '/multiplication': '/multiplication.html',
   '/dashboard': '/workspace.html',
   '/tutors': '/workspace.html',
   '/workspace': '/workspace.html',

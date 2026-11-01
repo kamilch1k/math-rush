@@ -16,14 +16,16 @@
 
   function labels() {
     let language = document.documentElement.lang;
-    try { language = JSON.parse(global.localStorage.getItem('mathRushPreferencesV1') || '{}').language || language; } catch (_) { /* Keep the page language. */ }
+    if (!document.querySelector('[data-language]')) {
+      try { language = JSON.parse(global.localStorage.getItem('mathRushPreferencesV1') || '{}').language || language; } catch (_) { /* Keep the page language. */ }
+    }
     return language === 'ru' ? {
-      workspace: 'Мой кабинет', home: 'Главная', loading: 'Загружаем прогресс…',
+      workspace: 'Мой кабинет', materials: 'Как учиться', tables: 'Таблица умножения', source: 'Открытый код · MIT', home: 'Главная', loading: 'Загружаем прогресс…',
       guest: 'Гостевой режим · прогресс на этом устройстве', synced: 'Прогресс аккаунта синхронизирован',
       pending: 'Прогресс на устройстве · ожидает синхронизации', offline: 'Нет связи · прогресс аккаунта на устройстве',
       conflict: 'Другая версия прогресса · открой кабинет', account: 'Прогресс аккаунта'
     } : {
-      workspace: 'My workspace', home: 'Home', loading: 'Loading progress…',
+      workspace: 'My workspace', materials: 'Learning guides', tables: 'Times tables', source: 'Open source · MIT', home: 'Home', loading: 'Loading progress…',
       guest: 'Guest practice · saved on this device', synced: 'Account progress synced',
       pending: 'Saved on this device · sync pending', offline: 'Offline · account progress on this device',
       conflict: 'Progress conflict · open your workspace', account: 'Account progress'
@@ -49,19 +51,31 @@
   }
 
   function addNavigation() {
-    const host = document.querySelector('.nav-links') || document.querySelector('main');
-    if (!host || document.querySelector('[data-workspace-link]')) return;
-    const link = document.createElement('a');
-    link.href = 'workspace.html';
-    link.dataset.workspaceLink = '';
-    link.textContent = labels().workspace;
-    if (!document.querySelector('.nav-links')) {
-      link.style.cssText = 'display:inline-block;margin:4px 0 12px;padding:7px 12px;border:1px solid #d0d5dd;border-radius:12px;color:inherit;text-decoration:none;font:600 13px system-ui';
-      host.prepend(link);
-    } else host.appendChild(link);
+    if (document.querySelector('[data-workspace-link]')) return;
+    const originalNav = document.querySelector('.page-nav');
+    let host = document.querySelector('.nav-links');
+    if (originalNav || !host) {
+      host = document.createElement('nav');
+      host.setAttribute('aria-label', 'Math Rush learning');
+      host.style.cssText = 'display:flex;flex-wrap:wrap;gap:7px;padding:10px 18px;border-bottom:1px solid #e4e7ec;background:#ffffffc9';
+      if (originalNav) originalNav.after(host);
+      else document.querySelector('main')?.prepend(host);
+    }
+    const words = labels();
+    [['learn.html', 'materials'], ['multiplication.html', 'tables'], ['workspace.html', 'workspace'], ['https://github.com/kamilch1k/math-rush', 'source']].forEach(([href, label]) => {
+      if ([...host.querySelectorAll('a')].some(link => link.getAttribute('href') === href)) return;
+      const link = document.createElement('a');
+      link.href = href; link.textContent = words[label];
+      link.dataset.ru = { workspace: 'Мой кабинет', materials: 'Как учиться', tables: 'Таблица умножения', source: 'Открытый код · MIT' }[label];
+      link.dataset.en = { workspace: 'My workspace', materials: 'Learning guides', tables: 'Times tables', source: 'Open source · MIT' }[label];
+      if (label === 'workspace') link.dataset.workspaceLink = '';
+      if (originalNav) link.style.cssText = 'display:inline-flex;align-items:center;padding:6px 10px;border:1px solid #e4e7ec;border-radius:10px;color:#4f46e5;background:#fff;text-decoration:none;font:700 12px/1.4 system-ui';
+      host.appendChild(link);
+    });
   }
 
   global.addEventListener('mathrush:cloud', renderStatus);
+  global.addEventListener('mathrush:language', renderStatus);
   Promise.resolve(global.MathRushCloud?.ready).finally(() => {
     api.ready = true;
     addNavigation();

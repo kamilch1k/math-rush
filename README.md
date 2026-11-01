@@ -1,12 +1,18 @@
 # Math Rush — Математический рывок
 
-Maths practice, guided hints, and a human perspective. The platform connects student profiles, saved progress, tutor assignments, and written feedback with the existing arcade trainer and knowledge map.
+An open-source maths-training application for learners, teachers, and anyone who wants to build better practice tools. All application source is available under the [MIT License](LICENSE): run it, study how it works, change it, and share your improvements.
+
+[Source on GitHub](https://github.com/kamilch1k/math-rush) · [Report an issue or suggest a trainer](https://github.com/kamilch1k/math-rush/issues) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+Math Rush combines the existing arcade trainer and knowledge map with optional student profiles, saved progress, tutor assignments, guided hints, and written feedback. There is no account requirement for the static practice tools.
 
 The existing practice screen remains the primary entry point. `home.html` is an optional overview of the tutoring platform.
 
-The Cloudflare Worker provides the account API and D1 persistence. AI hints use an optional Workers AI binding; independently checked mathematical hints remain available when inference is unavailable. Guest practice works without registration. GitHub Pages serves a static mirror of the practice tools; account features require the Cloudflare origin.
+You can self-host the static trainers on any static web host, including GitHub Pages. The included account backend targets Cloudflare Workers and D1; using a different backend requires an adapter. Cloudflare is an optional hosting choice for the project, and optional AI hints use a Workers AI binding. Independently checked mathematical hints remain available when inference is unavailable. Hosting providers and AI models retain their own terms; the MIT license covers the Math Rush application source. Existing legacy pages load Cloudflare Web Analytics, which self-hosters may remove; see [third-party notices](THIRD_PARTY_NOTICES.md) for external requests and asset provenance.
 
 The deployment configuration selects `@cf/meta/llama-3.2-3b-instruct` for brief hint rephrasing. Cloudflare currently lists this model with the existing `messages`/`max_tokens` input and `response` output contract. See the [model reference](https://developers.cloudflare.com/workers-ai/models/llama-3.2-3b-instruct/) and [current usage pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/); availability and pricing should be checked again before deployment.
+
+The optional Llama integration is **Built with Llama**. Model weights are not included; Meta's separate model license is linked in [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Tutoring platform
 
@@ -21,11 +27,13 @@ See [platform operations](worker/PLATFORM.md) for database setup, tutor activati
 
 After sign-in, the protected session cookie lasts seven days. Practice restores a valid session automatically, and the workspace's `#auth` link opens the signed-in workspace directly when the session is still valid.
 
-> UI is Russian-first, with full EN / FR / ES / DE translations.
+The practice archive supports Russian, English, French, Spanish, and German. The account workspace, multiplication trainer, learning guide, and project overview support Russian and English.
 
 ## Features
 
 - **40+ quiz modes**: addition / subtraction / multiplication / division, column arithmetic, parentheses & order of operations, fractions, percents, equations (1-step → 2-step → linear), new algebra block (powers, roots, polynomials, quadratics, systems, sequences), geometry (shapes → perimeter → area → angles → triangles → coordinates), olympiad logic.
+- **Multiplication trainer**: explore equal groups and arrays, derive facts from familiar ones, then practise products, missing factors, and related division in short rounds without a timer. Review favours recent mistakes and hinted answers; a fact map shows the latest retained result. Guided answers earn no XP.
+- **Learning materials**: an original RU/EN guide to multiplication, with worked examples, ×1/×2/×5/×10 anchors, doubling, splitting facts, and recall after a break. It links to teaching sources and directly to the trainer.
 - **Knowledge map board**: chalkboard-style board with three branches (Arithmetic / Algebra / Geometry), prerequisite threads, hover-to-highlight dependency network, mastery % per node, click-to-practice navigation.
 - **Progression**: XP, levels, streaks, per-skill mastery (recency-weighted last 20 attempts), readiness %, locked → available → learning → mastered states.
 - **Round rules**: practice / score / strict-input modes, per-card timer / bonus / streak-goal / task-limit / difficulty / answer-mode overrides, global settings sync.
@@ -41,6 +49,9 @@ index.html                -> redirect to outputs/math-rush.html
 outputs/
   math-rush.html          # main SPA: tasks + mapView + profileView + game
   math-map.html           # standalone knowledge-map page (same progress.js)
+  multiplication.html / multiplication.js / multiplication.css
+  multiplication-core.js # fact families, checking, strategies, review scheduling
+  learn.html / learn.js / learn.css # original RU/EN learning guide
   profile.html / settings.html / derivatives.html
   progress.js             # skills graph, XP, mastery, readiness, storage
   derivatives.js          # polynomial derivative engine
@@ -50,8 +61,9 @@ tests/
   quiz-settings.cjs       # timers + 2000+ generated-problem checks
   progress.cjs            # XP / mastery state machine
   derivatives.cjs         # derivative engine + whiteboard checks
+  multiplication-learning.test.cjs # fact checking, review, guided XP, account isolation
 worker/
-  src/index.js + wrangler.toml  # Cloudflare Worker: clean routes + /api/* stub
+  src/ + migrations/ + wrangler.toml # account API, checked practice, D1 schema
 ```
 
 ## Run locally
@@ -79,22 +91,28 @@ Direct file open also works, except `fetch`/worker routes.
 
 ## Tests
 
-Node only, no deps:
+Node.js 22.13 or later for the built-in SQLite test adapter; install the locked development tools with `npm ci` before checking the Worker bundle:
 
 ```bash
 npm test
 npm run check:worker
 ```
 
+The multiplication release passed the existing practice suites and all 31 Node test cases, covering account isolation, backend authorization, cloud sync, and the new fact-family/review behavior.
+
 ## Deploy (Cloudflare)
 
-```bash
-cd worker
-wrangler login
-wrangler deploy
-```
+Follow [platform operations](worker/PLATFORM.md) to choose the account, create or bind the D1 database, apply migrations, and set a private tutor invitation secret before deploying. AI inference is optional. Use the actual database ID for your own deployment and keep private credentials outside the repository.
 
-Routes: `/` and `/quizzes` → `math-rush.html`; `/workspace`, `/learn`, `/dashboard`, `/tutors` → `workspace.html`; `/map` → `math-map.html`; plus `/profile`, `/settings`, `/derivatives`, and `/runner`. `/home.html` remains available as an optional overview. `/api/check-handwriting` returns `503 RECOGNITION_NOT_CONFIGURED` until a recognition provider is configured. Never put API keys in browser assets.
+Routes: `/` and `/quizzes` → `math-rush.html`; `/learn` and `/materials` → `learn.html`; `/multiplication` → `multiplication.html`; `/workspace`, `/dashboard`, `/tutors` → `workspace.html`; `/map` → `math-map.html`; plus `/profile`, `/settings`, `/derivatives`, and `/runner`. `/home.html` remains available as an optional overview. `/api/check-handwriting` returns `503 RECOGNITION_NOT_CONFIGURED` until a recognition provider is configured. Never put API keys in browser assets.
+
+## Multiplication practice and review
+
+Open `/multiplication` for the trainer or `/learn` for the worked guide. `multiplication-core.js` keeps the fact families, answer checks, derived-fact strategies, and review selection separate from the interface. Products, missing factors, and exact related division share the same multiplication fact; swapping the factors also shares its review history.
+
+Review is rebuilt from the latest 500 saved practice attempts, rather than a lifetime record of every fact. Recent mistakes and answers completed with a hint receive more practice. Independent correct recall schedules review after 1, 3, 7, and then 14 days; repeated successes on the same UTC day do not advance that interval. The picker avoids the two most recent facts where the available pool allows it and can include new or not-yet-due facts.
+
+These intervals are application defaults, not a research-established optimal schedule or a guarantee of memorization. The guide cites broader teaching approaches; its examples were written for Math Rush. The fact map describes retained practice history, not a formal assessment of ability, and facts may leave that history as the 500-attempt window advances.
 
 ## Knowledge map & skills
 
@@ -120,6 +138,12 @@ To add a topic: add `skills[]` + `modeToSkill` in `progress.js`, a `mode-card[da
 - [ ] Seed-shared daily challenge + shareable result cards
 - [ ] Real PWA manifest / service worker
 
+## Contribute
+
+Ideas for clearer explanations, more accessible inputs, additional languages, and better trainers are welcome in [GitHub issues](https://github.com/kamilch1k/math-rush/issues). For a new trainer, include an example problem, the intended learning goal, how answers should be checked, and any source or license for adapted materials. Small changes to an existing trainer are useful too.
+
+Keep explanations and generated answers mathematically checkable, preserve guest practice, and add focused checks for changed grading behavior. Do not add student data, secrets, or copied proprietary question banks to the repository.
+
 ## License
 
-MIT — fork it, break it, learn fast.
+Application source and original project documentation: [MIT](LICENSE). Preserve the copyright and license notice when reusing them. Third-party libraries, external learning resources, hosted services, and AI models retain their own terms; see [third-party notices](THIRD_PARTY_NOTICES.md).

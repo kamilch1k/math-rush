@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#635bff">
-  <meta name="description" content="Math Rush — практика математики, подсказки и письменная обратная связь преподавателя. Учись в своём темпе и сохраняй прогресс.">
-  <title>Math Rush — математика, которая складывается</title>
+  <meta name="description" content="Math Rush — открытый тренажёр математики с картой знаний, подсказками и сохранением прогресса. Код приложения доступен на GitHub по лицензии MIT.">
+  <title>Math Rush — открытый тренажёр математики</title>
   <link rel="stylesheet" href="platform.css">
   <script src="home.js" defer></script>
 </head>
@@ -16,6 +16,7 @@
       <nav class="platform-nav-links" aria-label="Главная навигация">
         <a href="math-rush.html" data-ru="Практика" data-en="Practice">Практика</a>
         <a href="math-map.html" data-ru="Карта знаний" data-en="Learning map">Карта знаний</a>
+        <a href="learn.html" data-ru="Материалы" data-en="Learning materials">Материалы</a>
         <a href="workspace.html#tutors" data-ru="Преподаватель" data-en="Tutor feedback">Преподаватель</a>
       </nav>
       <div class="platform-nav-tools">
@@ -29,12 +30,12 @@
     <main>
       <section class="home-hero" aria-labelledby="hero-title">
         <div class="home-hero-copy">
-          <p class="platform-label" data-ru="Математика, которая складывается" data-en="Make sense of mathematics">Математика, которая складывается</p>
+          <p class="platform-label" data-ru="Открытый тренажёр математики" data-en="Open-source maths training">Открытый тренажёр математики</p>
           <h1 id="hero-title"><span data-ru="Сначала" data-en="Understand">Сначала</span><br><em data-ru="понять." data-en="it first.">понять.</em><br><span data-ru="Потом — быстрее." data-en="Then go further.">Потом — быстрее.</span></h1>
-          <p class="home-intro" data-ru="Короткая практика, понятные подсказки и обратная связь преподавателя. Собери уверенность в математике — шаг за шагом, в своём темпе." data-en="Focused practice, clear hints, and feedback from a tutor. Build confidence in maths — one step at a time, at your own pace.">Короткая практика, понятные подсказки и обратная связь преподавателя. Собери уверенность в математике — шаг за шагом, в своём темпе.</p>
+          <p class="home-intro" data-ru="Тренажёры, карта знаний и понятные подсказки — в своём темпе. Весь код приложения открыт: учись, меняй задания и делись своими улучшениями." data-en="Practice tools, a learning map, and clear hints at your own pace. The application source is open: learn, adapt the exercises, and share your improvements.">Тренажёры, карта знаний и понятные подсказки — в своём темпе. Весь код приложения открыт: учись, меняй задания и делись своими улучшениями.</p>
           <div class="home-hero-actions">
-            <a href="workspace.html#practice" class="platform-button"><span data-ru="Начать учиться" data-en="Start learning">Начать учиться</span><span aria-hidden="true">↗</span></a>
-            <a href="math-rush.html" class="home-text-link"><span data-ru="Попробовать практику" data-en="Try a practice round">Попробовать практику</span><span aria-hidden="true">→</span></a>
+            <a href="math-rush.html" class="platform-button"><span data-ru="Начать тренировку" data-en="Start practising">Начать тренировку</span><span aria-hidden="true">↗</span></a>
+            <a href="multiplication.html" class="home-text-link"><span data-ru="Выучить таблицу умножения" data-en="Learn multiplication facts">Выучить таблицу умножения</span><span aria-hidden="true">→</span></a>
           </div>
           <p class="home-small-note" data-ru="Практику можно попробовать без регистрации." data-en="You can try practice without creating an account.">Практику можно попробовать без регистрации.</p>
         </div>
@@ -53,7 +54,7 @@
         <span><b aria-hidden="true">↗</b><span data-ru="От арифметики к алгебре" data-en="From arithmetic to algebra">От арифметики к алгебре</span></span>
         <span><b aria-hidden="true">◷</b><span data-ru="В удобном темпе" data-en="At your own pace">В удобном темпе</span></span>
         <span><b aria-hidden="true">⌁</b><span data-ru="Прогресс в личном профиле" data-en="Progress in your account">Прогресс в личном профиле</span></span>
-        <span><b aria-hidden="true">✳</b><span data-ru="ИИ + помощь человека" data-en="AI + human support">ИИ + помощь человека</span></span>
+        <span><b aria-hidden="true">✳</b><span data-ru="Открытый код · MIT" data-en="Open source · MIT">Открытый код · MIT</span></span>
       </div>
 
       <section class="home-section" aria-labelledby="approach-title">
@@ -63,8 +64,8 @@
         </div>
         <div class="home-feature-grid">
           <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">x²</span><span class="home-feature-number">01 /</span></div><h3 data-ru="Пробуй, решай, повторяй" data-en="Try, solve, repeat">Пробуй, решай, повторяй</h3><p data-ru="Выбери тему на карте знаний, настрой сложность и решай задачи. Возвращайся к тем местам, где нужна ещё практика." data-en="Pick a topic on the learning map, set the difficulty, and solve problems. Revisit the areas that need more practice.">Выбери тему на карте знаний, настрой сложность и решай задачи. Возвращайся к тем местам, где нужна ещё практика.</p><a href="math-map.html"><span data-ru="Посмотреть темы" data-en="Explore topics">Посмотреть темы</span><span aria-hidden="true">↗</span></a></article>
-          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">✧</span><span class="home-feature-number">02 /</span></div><h3 data-ru="Подсказка в нужный момент" data-en="A hint when you need it">Подсказка в нужный момент</h3><p data-ru="Застрял на шаге? Запроси подсказку ИИ, затем попробуй продолжить сам. Ответы ИИ можно проверить и обсудить с преподавателем." data-en="Stuck on a step? Ask for an AI hint, then try to continue yourself. AI responses can be checked and discussed with a tutor.">Застрял на шаге? Запроси подсказку ИИ, затем попробуй продолжить сам. Ответы ИИ можно проверить и обсудить с преподавателем.</p><a href="workspace.html#practice"><span data-ru="Открыть задания" data-en="Open your workspace">Открыть задания</span><span aria-hidden="true">↗</span></a></article>
-          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">∴</span><span class="home-feature-number">03 /</span></div><h3 data-ru="Когда нужен человек" data-en="A human perspective">Когда нужен человек</h3><p data-ru="Отправь решение на письменный разбор преподавателю. Сформулируй вопрос и получи обратную связь по своему ходу рассуждений." data-en="Request written feedback on your solution from a tutor. Explain your question and get feedback on your reasoning.">Отправь решение на письменный разбор преподавателю. Сформулируй вопрос и получи обратную связь по своему ходу рассуждений.</p><a href="workspace.html#tutors"><span data-ru="Запросить разбор" data-en="Request feedback">Запросить разбор</span><span aria-hidden="true">↗</span></a></article>
+          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">✧</span><span class="home-feature-number">02 /</span></div><h3 data-ru="Подсказка в нужный момент" data-en="A hint when you need it">Подсказка в нужный момент</h3><p data-ru="В кабинете доступны подсказки к дробям, уравнениям и процентам. При подключённом ИИ он может переформулировать подсказку; проверенный вариант остаётся рядом." data-en="The workspace provides hints for fractions, equations, and percentages. Optional AI can rephrase a hint, with the checked version still shown alongside it.">В кабинете доступны подсказки к дробям, уравнениям и процентам. При подключённом ИИ он может переформулировать подсказку; проверенный вариант остаётся рядом.</p><a href="workspace.html#practice"><span data-ru="Открыть задания" data-en="Open your workspace">Открыть задания</span><span aria-hidden="true">↗</span></a></article>
+          <article class="home-feature"><div class="home-feature-top"><span class="home-feature-icon" aria-hidden="true">∴</span><span class="home-feature-number">03 /</span></div><h3 data-ru="Когда нужен человек" data-en="A human perspective">Когда нужен человек</h3><p data-ru="Подключись к классу своего преподавателя по коду и отправь решение на письменный разбор. Задай вопрос о своём ходе рассуждений." data-en="Join your tutor’s classroom using their code and request written feedback on a solution. Ask about the steps in your reasoning.">Подключись к классу своего преподавателя по коду и отправь решение на письменный разбор. Задай вопрос о своём ходе рассуждений.</p><a href="workspace.html#tutors"><span data-ru="Как подключить преподавателя" data-en="Connect with your tutor">Как подключить преподавателя</span><span aria-hidden="true">↗</span></a></article>
         </div>
       </section>
 
@@ -80,7 +81,7 @@
       <section class="home-cta" aria-labelledby="start-title"><div><h2 id="start-title" data-ru="Начнём с одной задачи?" data-en="Shall we start with one problem?">Начнём с одной задачи?</h2><p data-ru="Первый шаг не обязан быть большим. Он просто должен быть твоим." data-en="The first step does not have to be big. It just has to be yours.">Первый шаг не обязан быть большим. Он просто должен быть твоим.</p></div><a href="workspace.html#practice" class="platform-button"><span data-ru="Перейти к практике" data-en="Start practising">Перейти к практике</span><span aria-hidden="true">↗</span></a></section>
     </main>
 
-    <footer class="platform-footer"><a class="platform-brand" href="home.html"><span class="platform-mark" aria-hidden="true">×</span>Math Rush</a><span data-ru="Учимся понимать. Шаг за шагом." data-en="Learn to understand. One step at a time.">Учимся понимать. Шаг за шагом.</span><div class="home-footer-links"><a href="math-rush.html" data-ru="Практика" data-en="Practice">Практика</a><a href="workspace.html" data-ru="Личный кабинет" data-en="Workspace">Личный кабинет</a></div></footer>
+    <footer class="platform-footer"><a class="platform-brand" href="math-rush.html"><span class="platform-mark" aria-hidden="true">×</span>Math Rush</a><span data-ru="Код приложения открыт по лицензии MIT." data-en="Application source is open under MIT.">Код приложения открыт по лицензии MIT.</span><div class="home-footer-links"><a href="math-rush.html" data-ru="Практика" data-en="Practice">Практика</a><a href="https://github.com/kamilch1k/math-rush" data-ru="Код на GitHub" data-en="Source on GitHub">Код на GitHub</a><a href="https://github.com/kamilch1k/math-rush#license" data-ru="Лицензии" data-en="Licenses">Лицензии</a></div></footer>
   </div>
 </body>
 </html>

@@ -167,10 +167,11 @@
   }
 
   function recordAttempt(mode, isCorrect, durationMs, difficulty = 'simple') {
-    const skillId = modeToSkill[mode] || mode;
+    const tableFact = /^tables-(?:guided-)?(?:[1-9]|1[0-2])x(?:[1-9]|1[0-2])$/.test(mode);
+    const skillId = tableFact ? 'multiplication' : modeToSkill[mode] || mode;
     if (!skills.some((skill) => skill.id === skillId)) return load();
     const data = load();
-    const xp = isCorrect ? 10 + ({ simple: 0, advanced: 3, expert: 6 }[difficulty] || 0) : 0;
+    const xp = isCorrect && !mode.startsWith('tables-guided-') ? 10 + ({ simple: 0, advanced: 3, expert: 6 }[difficulty] || 0) : 0;
     const recentAttempts = recentForSkill(skillId, data);
     const attempt = { skillId, problemType: mode, isCorrect: Boolean(isCorrect), duration: Math.max(0, Math.round(Number(durationMs) || 0)), difficulty, xp, createdAt: new Date().toISOString() };
     data.attempts.push(attempt);
