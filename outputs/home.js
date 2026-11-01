@@ -24,4 +24,19 @@
     button.addEventListener('click', () => translate(button.dataset.language));
   });
   translate(language);
+
+  // Restore the server's HttpOnly session without storing login credentials.
+  (async () => {
+    try {
+      const response = await fetch('/api/me', { credentials: 'same-origin', cache: 'no-store' });
+      if (!response.ok || !(await response.json()).user) return;
+      document.querySelectorAll('a[href="workspace.html#auth"]').forEach(link => {
+        link.setAttribute('href', 'workspace.html#today');
+        const label = link.querySelector('[data-ru]') || link;
+        label.dataset.ru = 'Мой кабинет';
+        label.dataset.en = 'My workspace';
+        label.textContent = label.dataset[language];
+      });
+    } catch (_) { /* Guest practice remains available offline and on static hosting. */ }
+  })();
 })();

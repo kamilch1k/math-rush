@@ -2,7 +2,11 @@
 
 Maths practice, guided hints, and a human perspective. The platform connects student profiles, saved progress, tutor assignments, and written feedback with the existing arcade trainer and knowledge map.
 
+The existing practice screen remains the primary entry point. `home.html` is an optional overview of the tutoring platform.
+
 The Cloudflare Worker provides the account API and D1 persistence. AI hints use an optional Workers AI binding; independently checked mathematical hints remain available when inference is unavailable. Guest practice works without registration. GitHub Pages serves a static mirror of the practice tools; account features require the Cloudflare origin.
+
+The deployment configuration selects `@cf/meta/llama-3.2-3b-instruct` for brief hint rephrasing. Cloudflare currently lists this model with the existing `messages`/`max_tokens` input and `response` output contract. See the [model reference](https://developers.cloudflare.com/workers-ai/models/llama-3.2-3b-instruct/) and [current usage pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/); availability and pricing should be checked again before deployment.
 
 ## Tutoring platform
 
@@ -14,6 +18,8 @@ The Cloudflare Worker provides the account API and D1 persistence. AI hints use 
 - Explicit guest-progress import, offline account caches, and safe conflict recovery with device exports/backups.
 
 See [platform operations](worker/PLATFORM.md) for database setup, tutor activation, API contracts, and current limitations. This is a practice and written-feedback platform; it does not provide video calls, payment processing, or a staffed tutoring service.
+
+After sign-in, the protected session cookie lasts seven days. Practice restores a valid session automatically, and the workspace's `#auth` link opens the signed-in workspace directly when the session is still valid.
 
 > UI is Russian-first, with full EN / FR / ES / DE translations.
 
@@ -31,7 +37,7 @@ See [platform operations](worker/PLATFORM.md) for database setup, tutor activati
 ## Project structure
 
 ```
-index.html                -> redirect to outputs/home.html
+index.html                -> redirect to outputs/math-rush.html
 outputs/
   math-rush.html          # main SPA: tasks + mapView + profileView + game
   math-map.html           # standalone knowledge-map page (same progress.js)
@@ -88,7 +94,7 @@ wrangler login
 wrangler deploy
 ```
 
-Routes: `/` → `home.html`; `/workspace`, `/learn`, `/dashboard`, `/tutors` → `workspace.html`; `/quizzes` → `math-rush.html`; `/map` → `math-map.html`; plus `/profile`, `/settings`, `/derivatives`, and `/runner`. `/api/check-handwriting` returns `503 RECOGNITION_NOT_CONFIGURED` until a recognition provider is configured. Never put API keys in browser assets.
+Routes: `/` and `/quizzes` → `math-rush.html`; `/workspace`, `/learn`, `/dashboard`, `/tutors` → `workspace.html`; `/map` → `math-map.html`; plus `/profile`, `/settings`, `/derivatives`, and `/runner`. `/home.html` remains available as an optional overview. `/api/check-handwriting` returns `503 RECOGNITION_NOT_CONFIGURED` until a recognition provider is configured. Never put API keys in browser assets.
 
 ## Knowledge map & skills
 

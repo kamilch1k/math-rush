@@ -20,7 +20,11 @@
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString(state.language === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short' });
   };
-  app.tab = () => ['today', 'practice', 'assignments', 'feedback', 'tutors', 'profile', 'auth'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'today';
+  app.tab = () => {
+    const requested = location.hash.slice(1);
+    if (requested === 'auth' && state.user) return 'today';
+    return ['today', 'practice', 'assignments', 'feedback', 'tutors', 'profile', 'auth'].includes(requested) ? requested : 'today';
+  };
 
   app.errorText = error => {
     const messages = {
@@ -205,6 +209,7 @@
         const current = await app.request('/api/me');
         app.setUser(current.user);
         if (state.user) {
+          if (location.hash === '#auth') history.replaceState(null, '', '#today');
           await global.MathRushCloud?.ready;
           await global.MathRushCloud?.connect(state.user);
           await app.refresh();

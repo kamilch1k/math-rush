@@ -5,7 +5,7 @@ import { answer, dashboard, hint, problem } from './practice.js';
 import { getProgress, putProgress } from './progress.js';
 
 const PAGE_ROUTES = {
-  '/': '/home.html',
+  '/': '/math-rush.html',
   '/learn': '/workspace.html',
   '/dashboard': '/workspace.html',
   '/tutors': '/workspace.html',

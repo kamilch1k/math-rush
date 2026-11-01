@@ -186,12 +186,20 @@ hint available. To add AI rephrasing, configure both:
 binding = "AI"
 
 [vars]
-AI_MODEL = "<a model currently available to this Cloudflare account>"
+AI_MODEL = "@cf/meta/llama-3.2-3b-instruct"
 ```
 
-Preserve any other existing variables. Check the selected model's current
-input/output contract and availability before configuring it. No external AI
-API key is put in the frontend.
+Preserve any other existing variables. The configured model was checked against
+Cloudflare's [model reference](https://developers.cloudflare.com/workers-ai/models/llama-3.2-3b-instruct/)
+on 1 November 2026. Its non-streaming Workers binding accepts `messages` and
+`max_tokens` and returns generated text in `response`, matching `practice.js`
+without an API adapter. The application limits generation to 192 output tokens.
+Cloudflare's [pricing page](https://developers.cloudflare.com/workers-ai/platform/pricing/)
+currently lists approximately $0.051 per million input tokens and $0.335 per
+million output tokens, with an account-wide daily free allocation. Recheck
+availability, account access, and pricing before deployment; neither a model
+name nor the application quota guarantees free usage. No external AI API key
+is put in the frontend.
 
 The model receives only the generated maths question and a verified hint,
 never usernames, profile details, student questions, or private working. It is
@@ -252,3 +260,5 @@ features.
 - [Workers runtime PBKDF2 cap discussion](https://github.com/cloudflare/workerd/issues/1346)
 - [Wrangler asset and binding configuration](https://developers.cloudflare.com/workers/wrangler/configuration/)
 - [Workers AI bindings](https://developers.cloudflare.com/workers-ai/configuration/bindings/)
+- [Configured text model and input/output schema](https://developers.cloudflare.com/workers-ai/models/llama-3.2-3b-instruct/)
+- [Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/)
