@@ -1,0 +1,16 @@
+# Local development only. No remote resources are used by this config.
+name = "math-rush-local"
+main = "src/index.js"
+compatibility_date = "2026-09-09"
+
+[assets]
+directory = "../outputs"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "none"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "math-rush-platform"
+database_id = "local-math-rush-platform"
+migrations_dir = "migrations"

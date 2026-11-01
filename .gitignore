@@ -1,0 +1,11 @@
+node_modules/
+.wrangler/
+worker/.wrangler/
+.dev.vars
+.dev.vars.*
+worker/.dev.vars
+worker/.dev.vars.*
+.env
+.env.*
+work/
+coverage/
